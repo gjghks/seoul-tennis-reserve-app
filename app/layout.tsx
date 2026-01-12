@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 import AdSense from "@/components/AdSense";
 
 export const metadata: Metadata = {
-  title: "Seoul Tennis Reserve | Real-time Court Alerts",
-  description: "Get notified when tennis courts in Seoul become available.",
+  title: "서울 테니스 예약 알림 | 실시간 코트 알림",
+  description: "서울시 공공 테니스장 예약 가능 시 실시간으로 알림을 받으세요.",
 };
 
 export default function RootLayout({
@@ -25,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="ko">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         {/* Replace with actual AdSense Publisher ID */}
         <AdSense pId="ca-pub-0000000000000000" />

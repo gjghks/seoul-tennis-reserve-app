@@ -12,15 +12,15 @@ export default function Home() {
 
         <div className="container relative z-20 text-center animate-fade-in" style={{ paddingTop: '100px' }}>
           <h1 style={{ fontSize: '4rem', marginBottom: '20px', lineHeight: '1.1' }}>
-            Book Your <span style={{ color: 'var(--primary-color)' }}>Court</span><br />
-            In Seconds.
+            <span style={{ color: 'var(--primary-color)' }}>테니스 코트</span><br />
+            빠르게 예약하세요.
           </h1>
           <p style={{ fontSize: '1.2rem', marginBottom: '40px', maxWidth: '600px', margin: '0 auto 40px' }}>
-            Get real-time alerts for Seoul's public tennis courts. Never miss a game again.
+            서울시 공공 테니스장 실시간 알림 서비스. 빈 자리가 나면 바로 알려드립니다.
           </p>
           <div style={{ display: 'flex', gap: '20px', justifyContent: 'center' }}>
             <Link href="/dashboard" className="btn-primary">
-              Get Started
+              시작하기
             </Link>
             <Link href="/#features" style={{
               padding: '12px 24px',
@@ -28,7 +28,7 @@ export default function Home() {
               border: '1px solid var(--primary-color)',
               color: 'var(--primary-color)'
             }}>
-              Learn More
+              더 알아보기
             </Link>
           </div>
         </div>
@@ -38,23 +38,23 @@ export default function Home() {
       <section id="features" style={{ padding: '80px 0' }}>
         <div className="container">
           <h2 style={{ textAlign: 'center', fontSize: '2.5rem', marginBottom: '60px' }}>
-            Why Use Our Service?
+            왜 이 서비스를 사용해야 할까요?
           </h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '30px' }}>
 
             <div className="glass-card">
-              <h3 style={{ fontSize: '1.5rem', marginBottom: '15px' }}>⚡ Real-time Alerts</h3>
-              <p>We monitor the Seoul Public Service Reservation system 24/7 and notify you immediately when a slot opens up.</p>
+              <h3 style={{ fontSize: '1.5rem', marginBottom: '15px' }}>⚡ 실시간 알림</h3>
+              <p>서울시 공공서비스 예약 시스템을 24시간 모니터링하여 빈 자리가 나면 즉시 알려드립니다.</p>
             </div>
 
             <div className="glass-card">
-              <h3 style={{ fontSize: '1.5rem', marginBottom: '15px' }}>📍 Location Based</h3>
-              <p>Filter by your favorite districts (Gu) and only get alerts for courts near you.</p>
+              <h3 style={{ fontSize: '1.5rem', marginBottom: '15px' }}>📍 지역 기반 필터</h3>
+              <p>원하는 구(區)를 선택하면 해당 지역의 테니스장 알림만 받을 수 있습니다.</p>
             </div>
 
             <div className="glass-card">
-              <h3 style={{ fontSize: '1.5rem', marginBottom: '15px' }}>📱 Mobile Ready</h3>
-              <p>Optimized for mobile experience so you can book on the go as soon as the alert pops.</p>
+              <h3 style={{ fontSize: '1.5rem', marginBottom: '15px' }}>📱 모바일 최적화</h3>
+              <p>모바일에서도 편리하게 사용할 수 있어 알림을 받자마자 바로 예약할 수 있습니다.</p>
             </div>
 
           </div>
@@ -64,7 +64,7 @@ export default function Home() {
       {/* Footer */}
       <footer style={{ borderTop: '1px solid var(--glass-border)', padding: '40px 0', marginTop: 'auto' }}>
         <div className="container" style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>
-          <p>&copy; {new Date().getFullYear()} Seoul Tennis Reserve. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} 서울 테니스 예약 알림. All rights reserved.</p>
         </div>
       </footer>
     </main>
