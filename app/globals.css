@@ -1,89 +1,354 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
-  /* Premium Tennis Color Palette */
-  --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 10, 25, 47; /* Navy Blue */
-  --background-end-rgb: 0, 0, 0;
+  /* Tennis Court Theme */
+  --court-green: #2E7D32;
+  --court-green-light: #4CAF50;
+  --court-green-dark: #1B5E20;
+  --court-line: #FFFFFF;
+  --court-surface: #388E3C;
 
-  --primary-color: #00d68f; /* Tennis Green/Neon */
-  --secondary-color: #233554; /* Lighter Navy */
-  --accent-color: #64ffda; /* Light Cyan */
-  --text-primary: #e6f1ff;
-  --text-secondary: #8892b0;
-  
-  --glass-bg: rgba(255, 255, 255, 0.05);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --glass-blur: 10px;
+  /* Neutral Colors */
+  --bg-primary: #FAFAFA;
+  --bg-secondary: #FFFFFF;
+  --bg-card: #FFFFFF;
 
-  --max-width: 1200px;
+  /* Text Colors */
+  --text-primary: #1A1A1A;
+  --text-secondary: #666666;
+  --text-muted: #999999;
+
+  /* Status Colors */
+  --status-available: #2E7D32;
+  --status-closed: #9E9E9E;
+  --status-warning: #F57C00;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      rgb(var(--background-start-rgb)),
-      rgb(var(--background-end-rgb))
-    );
-  min-height: 100vh;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  overflow-x: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-/* Utilities */
+/* Container */
 .container {
-  max-width: var(--max-width);
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 16px;
+}
+
+/* Tennis Court Pattern Background */
+.court-pattern {
+  background: linear-gradient(135deg, var(--court-green) 0%, var(--court-green-dark) 100%);
+  position: relative;
+}
+
+.court-pattern::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--court-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--court-line) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.1;
+}
+
+/* Card Styles */
+.card {
+  background: var(--bg-card);
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid #E5E5E5;
+  transition: all 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--court-green-light);
+}
+
+/* Button Styles */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
 }
 
 .btn-primary {
-  background-color: var(--primary-color);
-  color: #0a192f;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-weight: 600;
-  transition: all 0.2s ease;
-  border: none;
-  cursor: pointer;
-  display: inline-block;
+  background: var(--court-green);
+  color: white;
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 214, 143, 0.4);
+  background: var(--court-green-dark);
 }
 
-.glass-card {
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--glass-border);
-  border-radius: 16px;
-  padding: 24px;
-}
-
-/* Typography */
-h1, h2, h3 {
+.btn-secondary {
+  background: white;
   color: var(--text-primary);
-  font-weight: 700;
+  border: 1px solid #E5E5E5;
 }
 
-p {
-  color: var(--text-secondary);
-  line-height: 1.6;
+.btn-secondary:hover {
+  border-color: var(--court-green);
+  color: var(--court-green);
+}
+
+/* Status Badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.badge-available {
+  background: #E8F5E9;
+  color: var(--status-available);
+}
+
+.badge-closed {
+  background: #F5F5F5;
+  color: var(--status-closed);
+}
+
+/* Input Styles */
+input, select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #E5E5E5;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--court-green);
+}
+
+/* Calendar Styles */
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.calendar-day:hover:not(.disabled) {
+  background: #E8F5E9;
+}
+
+.calendar-day.available {
+  background: var(--court-green);
+  color: white;
+  font-weight: 500;
+}
+
+.calendar-day.available:hover {
+  background: var(--court-green-dark);
+}
+
+.calendar-day.selected {
+  background: var(--court-green-dark);
+  color: white;
+  font-weight: 600;
+}
+
+.calendar-day.disabled {
+  color: #CCC;
+  cursor: not-allowed;
+}
+
+.calendar-day.today {
+  border: 2px solid var(--court-green);
 }
 
 /* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.8s ease-out forwards;
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Skeleton Loading */
+.skeleton {
+  background: linear-gradient(90deg, #F0F0F0 25%, #E0E0E0 50%, #F0F0F0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ============================================
+   NEO-BRUTALISM THEME STYLES
+   ============================================ */
+
+[data-theme="neo-brutalism"] {
+  --court-green: #22c55e;
+  --court-green-light: #4ade80;
+  --court-green-dark: #16a34a;
+  --bg-primary: #dfe5f2;
+  --bg-secondary: #ffffff;
+  --bg-card: #ffffff;
+  --text-primary: #000000;
+  --text-secondary: #374151;
+  --shadow-sm: 2px 2px 0px 0px #000;
+  --shadow-md: 4px 4px 0px 0px #000;
+  --shadow-lg: 6px 6px 0px 0px #000;
+}
+
+[data-theme="neo-brutalism"] body {
+  background-color: var(--bg-primary);
+}
+
+[data-theme="neo-brutalism"] .card-nb {
+  background: var(--bg-card);
+  border-radius: 5px;
+  box-shadow: 4px 4px 0px 0px #000;
+  border: 2px solid #000;
+  transition: all 0.15s ease;
+}
+
+[data-theme="neo-brutalism"] .card-nb:hover {
+  transform: translate(4px, 4px);
+  box-shadow: 0px 0px 0px 0px #000;
+}
+
+[data-theme="neo-brutalism"] .btn-nb {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 5px;
+  font-weight: 700;
+  font-size: 14px;
+  border: 2px solid #000;
+  box-shadow: 4px 4px 0px 0px #000;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+[data-theme="neo-brutalism"] .btn-nb:hover {
+  transform: translate(4px, 4px);
+  box-shadow: 0px 0px 0px 0px #000;
+}
+
+[data-theme="neo-brutalism"] .btn-nb-primary {
+  background: #22c55e;
+  color: #000;
+}
+
+[data-theme="neo-brutalism"] .btn-nb-secondary {
+  background: #88aaee;
+  color: #000;
+}
+
+[data-theme="neo-brutalism"] .btn-nb-yellow {
+  background: #facc15;
+  color: #000;
+}
+
+[data-theme="neo-brutalism"] .badge-nb {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 2px solid #000;
+}
+
+[data-theme="neo-brutalism"] .badge-nb-available {
+  background: #a3e635;
+  color: #000;
+}
+
+[data-theme="neo-brutalism"] .badge-nb-closed {
+  background: #e5e5e5;
+  color: #666;
+}
+
+[data-theme="neo-brutalism"] .court-pattern-nb {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  position: relative;
+  border-bottom: 3px solid #000;
+}
+
+[data-theme="neo-brutalism"] .court-pattern-nb::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(#000 2px, transparent 2px),
+    linear-gradient(90deg, #000 2px, transparent 2px);
+  background-size: 50px 50px;
+  opacity: 0.15;
+}
+
+[data-theme="neo-brutalism"] .input-nb {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #000;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.15s ease;
+  box-shadow: 2px 2px 0px 0px #000;
+}
+
+[data-theme="neo-brutalism"] .input-nb:focus {
+  outline: none;
+  box-shadow: 4px 4px 0px 0px #000;
+}
+
+[data-theme="neo-brutalism"] .header-nb {
+  background: #facc15;
+  border-bottom: 3px solid #000;
+}
+
+[data-theme="neo-brutalism"] .footer-nb {
+  background: #000;
+  color: #fff;
+  border-top: 3px solid #000;
 }
