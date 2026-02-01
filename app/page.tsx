@@ -53,7 +53,7 @@ export default function Home() {
         <div className="container relative z-10">
           <div className="flex flex-row items-center justify-between gap-2 sm:gap-4">
             <div className="min-w-0">
-              <h1 className={`${isNeoBrutalism ? 'text-xl sm:text-2xl md:text-3xl font-black uppercase tracking-tight' : 'text-xl sm:text-xl md:text-2xl font-bold'}`}>
+              <h1 className={`${isNeoBrutalism ? 'text-[22px] sm:text-2xl md:text-3xl font-black uppercase tracking-tight' : 'text-[22px] sm:text-xl md:text-2xl font-bold'}`}>
                 {isNeoBrutalism ? '🎾 서울 공공 테니스장' : '서울시 공공 테니스장'}
               </h1>
               <p className={`text-xs sm:text-sm hidden sm:block ${isNeoBrutalism ? 'text-white/80 font-medium' : 'text-green-100'}`}>
@@ -96,7 +96,7 @@ export default function Home() {
         <FavoriteCourtSection />
       </div>
 
-      <section className="container pb-4 lg:pb-3">
+      <section className="container pb-8 lg:pb-3">
         <div className="mb-4 lg:mb-3">
           <h2 className={`mb-2 ${isNeoBrutalism ? 'text-xl font-black text-black uppercase tracking-tight' : 'text-lg font-semibold text-gray-900'}`}>
             {isNeoBrutalism ? '📍 지역 선택' : '지역 선택'}
