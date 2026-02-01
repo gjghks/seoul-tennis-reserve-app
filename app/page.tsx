@@ -96,7 +96,7 @@ export default function Home() {
         <FavoriteCourtSection />
       </div>
 
-      <section className="container pb-16">
+      <section className="container pb-20">
         <div className="mb-5">
           <h2 className={`mb-1 ${isNeoBrutalism ? 'text-xl font-black text-black uppercase tracking-tight' : 'text-lg font-semibold text-gray-900'}`}>
             {isNeoBrutalism ? '📍 지역 선택' : '지역 선택'}
