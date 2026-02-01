@@ -9,7 +9,7 @@ const DISTRICTS = [
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://seoul-tennis.vercel.app';
+  const baseUrl = 'https://seoul-tennis.com';
 
   const staticPages: MetadataRoute.Sitemap = [
     {

@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/api/', '/my/', '/dashboard/'],
     },
-    sitemap: 'https://seoul-tennis.vercel.app/sitemap.xml',
+    sitemap: 'https://seoul-tennis.com/sitemap.xml',
   };
 }
