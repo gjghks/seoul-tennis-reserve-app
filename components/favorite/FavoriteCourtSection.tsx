@@ -74,8 +74,8 @@ export default function FavoriteCourtSection() {
       <section className="container">
         <div className={`${
           isNeoBrutalism 
-            ? 'bg-[#fef3c7] border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000] p-4 lg:p-3'
-            : 'bg-amber-50 rounded-xl p-4 lg:p-3 border border-amber-100'
+            ? 'bg-[#fef3c7] border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000] p-5'
+            : 'bg-amber-50 rounded-xl p-5 border border-amber-100'
         }`}>
           <div className="flex items-center gap-3 mb-3">
             <span className="text-2xl">{isNeoBrutalism ? '⭐' : '💡'}</span>
@@ -106,8 +106,8 @@ export default function FavoriteCourtSection() {
       <section className="container">
         <div className={`${
           isNeoBrutalism 
-            ? 'bg-white border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000] p-4 lg:p-3'
-            : 'bg-white rounded-xl p-4 lg:p-3 border border-gray-100 shadow-sm'
+            ? 'bg-white border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000] p-5'
+            : 'bg-white rounded-xl p-5 border border-gray-100 shadow-sm'
         }`}>
           <div className="flex items-center gap-3 mb-3">
             <span className="text-2xl">💚</span>
@@ -125,17 +125,17 @@ export default function FavoriteCourtSection() {
 
   return (
     <section className="container">
-      <div className="mb-3">
-        <h2 className={`mb-0.5 ${isNeoBrutalism ? 'text-lg font-black text-black uppercase tracking-tight' : 'text-base font-semibold text-gray-900'}`}>
+      <div className="mb-4">
+        <h2 className={`mb-1 ${isNeoBrutalism ? 'text-lg font-black text-black uppercase tracking-tight' : 'text-base font-semibold text-gray-900'}`}>
           {isNeoBrutalism ? '⭐ 내 즐겨찾기' : '내 즐겨찾기'}
         </h2>
-        <p className={`text-xs sm:text-sm ${isNeoBrutalism ? 'text-black/60 font-medium' : 'text-gray-500'}`}>
+        <p className={`text-sm ${isNeoBrutalism ? 'text-black/60 font-medium' : 'text-gray-500'}`}>
           즐겨찾기한 테니스장의 예약 현황
         </p>
       </div>
 
       {statusLoading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[1, 2, 3].map(i => (
             <div 
               key={i}
@@ -148,7 +148,7 @@ export default function FavoriteCourtSection() {
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {favoritesWithStatus.map(fav => {
             const districtSlug = KOREAN_TO_SLUG[fav.district] || 'gangnam-gu';
             return (

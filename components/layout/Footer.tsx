@@ -7,10 +7,10 @@ export default function Footer() {
   const { isNeoBrutalism } = useTheme();
 
   return (
-    <footer className={isNeoBrutalism
-      ? 'mt-4 lg:mt-2 py-4 lg:py-2 text-center text-sm bg-black text-white border-t-[3px] border-black'
-      : 'mt-4 lg:mt-2 py-4 lg:py-2 text-center text-sm text-gray-400 border-t border-gray-100'
-    }>
+    <footer className={`fixed bottom-0 left-0 right-0 z-40 ${isNeoBrutalism
+      ? 'py-4 lg:py-2 text-center text-sm bg-black text-white border-t-[3px] border-black'
+      : 'py-4 lg:py-2 text-center text-sm text-gray-400 border-t border-gray-100 bg-white'
+    }`}>
       <div className="container space-y-3">
         <p className={isNeoBrutalism ? 'font-bold uppercase tracking-wide' : ''}>
           {isNeoBrutalism ? '🎾 ' : ''}서울시 공공서비스예약 데이터 기반

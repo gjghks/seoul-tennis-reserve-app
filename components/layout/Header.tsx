@@ -16,7 +16,7 @@ export default function Header() {
   };
 
   return (
-    <header className={`sticky top-0 z-50 ${
+    <header className={`shrink-0 sticky top-0 z-50 ${
       isNeoBrutalism 
         ? 'bg-[#facc15] border-b-[3px] border-black' 
         : 'bg-white border-b border-gray-100'

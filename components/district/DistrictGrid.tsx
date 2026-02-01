@@ -35,15 +35,15 @@ function DistrictCard({
       <Link
         href={`/${district.slug}`}
         className={`
-          p-3 lg:p-2 border-2 border-black rounded-[5px] 
-          shadow-[3px_3px_0px_0px_#000] sm:shadow-[4px_4px_0px_0px_#000]
+          flex items-center px-3 py-[18px] border-2 border-black rounded-[5px] 
+          shadow-[2px_2px_0px_0px_#000] sm:shadow-[3px_3px_0px_0px_#000]
           transition-all duration-150 active:scale-[0.98]
-          hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none
-          sm:hover:translate-x-[4px] sm:hover:translate-y-[4px]
+          hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none
+          sm:hover:translate-x-[3px] sm:hover:translate-y-[3px]
           ${bgColor}
         `}
       >
-        <div className="flex items-center justify-between gap-2">
+        <div className="w-full flex items-center justify-between gap-2">
           <h3 className={`font-bold text-sm sm:text-base uppercase tracking-tight truncate ${total === 0 ? 'text-black/50' : 'text-black'}`}>
             {district.nameKo}
           </h3>
@@ -70,9 +70,9 @@ function DistrictCard({
   return (
     <Link
       href={`/${district.slug}`}
-      className={`card p-3 sm:p-4 hover:shadow-md transition-all group active:scale-[0.98] ${total === 0 ? 'bg-gray-50' : ''}`}
+      className={`card flex items-center px-3 py-[18px] hover:shadow-md transition-all group active:scale-[0.98] ${total === 0 ? 'bg-gray-50' : ''}`}
     >
-      <div className="flex items-center justify-between gap-2">
+      <div className="w-full flex items-center justify-between gap-2">
         <h3 className={`font-medium text-sm sm:text-base transition-colors truncate ${total === 0 ? 'text-gray-400' : 'text-gray-900 group-hover:text-green-600'}`}>
           {district.nameKo}
         </h3>
@@ -120,11 +120,11 @@ export default function DistrictGrid({ stats, loading }: DistrictGridProps) {
 
   if (loading) {
     return (
-      <div className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 ${isNeoBrutalism ? 'gap-3 lg:gap-2' : 'gap-2 sm:gap-3 lg:gap-2'}`}>
+      <div className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 ${isNeoBrutalism ? 'gap-3.5' : 'gap-3'}`}>
         {Array.from({ length: 25 }).map((_, i) => (
           <div
             key={i}
-            className={`h-12 sm:h-14 lg:h-11 animate-pulse ${
+            className={`h-14 animate-pulse ${
               isNeoBrutalism
                 ? 'bg-gray-100 border-2 border-black/20 rounded-[5px]'
                 : 'bg-gray-50 rounded-lg'
@@ -137,7 +137,7 @@ export default function DistrictGrid({ stats, loading }: DistrictGridProps) {
   }
 
   return (
-    <div className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 ${isNeoBrutalism ? 'gap-3 lg:gap-2' : 'gap-2 sm:gap-3 lg:gap-2'}`}>
+    <div className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 ${isNeoBrutalism ? 'gap-3.5' : 'gap-3'}`}>
       {sortedDistricts.map((district) => (
         <DistrictCard
           key={district.slug}
