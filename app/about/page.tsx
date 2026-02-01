@@ -97,7 +97,7 @@ export default function AboutPage() {
               서비스 이용 중 문의사항이 있으시면 아래 이메일로 연락해 주세요.
             </p>
             <p className={`mt-2 font-semibold ${isNeoBrutalism ? 'text-black' : 'text-gray-900'}`}>
-              contact.seoul.tennis@gmail.com
+              gjghks84@gmail.com
             </p>
           </section>
         </div>
