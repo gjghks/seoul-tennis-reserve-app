@@ -49,7 +49,7 @@ export default function Home() {
 
   return (
     <div className={isNeoBrutalism ? 'bg-nb-bg min-h-screen' : ''}>
-      <section className={isNeoBrutalism ? 'court-pattern-nb text-white py-6 md:py-8' : 'court-pattern text-white py-6 md:py-8'}>
+      <section className={isNeoBrutalism ? 'court-pattern-nb text-white py-6 md:py-8 lg:py-4' : 'court-pattern text-white py-6 md:py-8 lg:py-4'}>
         <div className="container relative z-10">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
@@ -92,12 +92,12 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="py-6 lg:py-4">
+      <div className="py-6 lg:py-2">
         <FavoriteCourtSection />
       </div>
 
       <section className="container pb-20 lg:pb-8">
-        <div className="mb-5">
+        <div className="mb-5 lg:mb-3">
           <h2 className={`mb-1 ${isNeoBrutalism ? 'text-xl font-black text-black uppercase tracking-tight' : 'text-lg font-semibold text-gray-900'}`}>
             {isNeoBrutalism ? '📍 지역 선택' : '지역 선택'}
           </h2>
