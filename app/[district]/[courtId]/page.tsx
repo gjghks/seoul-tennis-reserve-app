@@ -82,6 +82,20 @@ interface ContentSection {
   title: string;
   items: ContentItem[];
   table: string[][] | null;
+  feeTable?: FeeInfo[];
+  infoCards?: InfoCard[];
+}
+
+interface FeeInfo {
+  type: string;
+  unit?: string;
+  weekday?: string;
+  weekend?: string;
+}
+
+interface InfoCard {
+  label: string;
+  items: string[];
 }
 
 function DetailContent({ content }: { content: string }) {
@@ -206,6 +220,16 @@ function DetailContent({ content }: { content: string }) {
     '주차': { emoji: '🅿️', color: 'blue' },
     '안내': { emoji: '📋', color: 'gray' },
     '이용': { emoji: '🎾', color: 'emerald' },
+    '영리': { emoji: '🚫', color: 'red' },
+    '편법': { emoji: '🚫', color: 'red' },
+    '양도': { emoji: '🚫', color: 'red' },
+    '공지': { emoji: '📢', color: 'blue' },
+    '대관': { emoji: '📋', color: 'teal' },
+    '기타': { emoji: '📌', color: 'gray' },
+    '향후': { emoji: '📅', color: 'teal' },
+    '이용수칙': { emoji: '📖', color: 'indigo' },
+    '할인': { emoji: '💸', color: 'green' },
+    '사용료': { emoji: '💰', color: 'green' },
   };
 
   const getStyle = (title: string) => {
@@ -259,8 +283,15 @@ function DetailContent({ content }: { content: string }) {
     
     if (filteredBlocks.length < 2) return null;
     
+    // Check for data items (bullet points followed by content, not standalone dashes)
+    // A cell like "-" or "~" is NOT a data item, but "- some text" is
     const hasDataItems = filteredBlocks.some(block => 
-      block.some(cell => cell.startsWith('-') || cell.startsWith('·'))
+      block.some(cell => {
+        if (cell.startsWith('·')) return true;
+        // Only treat as data item if dash is followed by space and content
+        if (cell.startsWith('-') && cell.length > 1 && cell[1] === ' ') return true;
+        return false;
+      })
     );
     
     if (hasDataItems) {
@@ -361,15 +392,211 @@ function DetailContent({ content }: { content: string }) {
       .replace(/\/?section\b/gi, '')
       .replace(/\/?article\b/gi, '')
       .replace(/\b(div|span)\s+class="[^"]*"/gi, '')
-      .replace(/(\d+)(결제|이용요금|예약|환불|주의|안내|노쇼|양도|이용질서|대기자|부정|안전|본인|오픈|원칙|제도|금지|규정|정리)/g, '$1. $2')
+      .replace(/(\d+)(결제|이용요금|예약|환불|주의|안내|노쇼|양도|이용질서|대기자|부정|안전|오픈|원칙|제도|금지|규정|정리)/g, '$1. $2')
       .replace(/본\s*안내문은\s*서울시\s*공공예약\s*페이지\s*게시\s*목적의\s*안내문입니다\.\s*\(출력\/모바일\s*열람\s*가능\)/g, '');
     
     cleanText = cleanupTagRemnants(cleanText);
     cautionContent = cleanupTagRemnants(cautionContent);
 
-    const textHeaderPattern = /^[★☆]?\s*(.*테니스장\s*이용\s*안내|이용\s*안내|접수\s*안내|주차\s*관련|환불\s*규정.*|환불규정|예약\s*안내|예약\s*주의\s*사항|이용\s*주의\s*사항|이용\s*제한|기타\s*안내\s*사항|기타\s*안내|영리\s*행위\s*금지|편법\s*및\s*금지.*|이용시\s*주의.*|이용요금\s*안내|이용요금|사용료.*|향후\s*예약일정|예약\s*취소.*변경.*|불이익.*적용.*|주의\s*사항.*|주의사항)/i;
+    const parseFacilityInfo = (text: string): ContentSection[] | null => {
+      const hasTabIndentedContent = text.split('\n').some(l => /^\t[^\t]/.test(l) && l.trim());
+      const isFacilityFormat = /테니스장\s*이용\s*?안내/.test(text) && 
+        (/운영시간/.test(text) || /대관료/.test(text)) &&
+        hasTabIndentedContent;
+      
+      if (!isFacilityFormat) return null;
+      
+      const lines = text.split('\n');
+      const result: ContentSection[] = [];
+      
+      let titleLine = '';
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (trimmed && /테니스장\s*이용\s*?안내/.test(trimmed)) {
+          titleLine = trimmed;
+          break;
+        }
+      }
+      
+      const feeTypes: FeeInfo[] = [];
+      const infoCards: InfoCard[] = [];
+      const notes: string[] = [];
+      let refundTable: string[][] | null = null;
+      
+      let currentHeader = '';
+      let currentUnit = '';
+      let currentItems: string[] = [];
+      
+      const feeKeywords = ['실내 대관료', '실외 대관료', '조명료', '대관료'];
+      const infoKeywords = ['운영시간', '휴관안내', '대관방법', '시설현황'];
+      
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const trimmed = line.trim();
+        if (!trimmed) continue;
+        
+        const isTabbed = line.startsWith('\t') && !line.startsWith('\t\t\t');
+        
+        if (trimmed.startsWith('※')) {
+          notes.push(trimmed);
+          continue;
+        }
+        
+        if (trimmed.startsWith('예시')) {
+          notes.push(trimmed);
+          continue;
+        }
+        
+        if (/환불\s*규정/.test(trimmed)) {
+          const tableContent = lines.slice(i + 1).join('\n');
+          refundTable = parseTabTable(tableContent, '환불 규정');
+          break;
+        }
+        
+        if (isTabbed && !trimmed.startsWith('-')) {
+          if (currentHeader) {
+            const isFeeHeader = feeKeywords.some(k => currentHeader.includes(k));
+            const isInfoHeader = infoKeywords.some(k => currentHeader.includes(k));
+            
+            if (isFeeHeader && currentItems.length > 0) {
+              const weekday = currentItems.find(item => /평일/.test(item))?.replace(/^-\s*/, '') || '';
+              const weekend = currentItems.find(item => /야간|주말|공휴일/.test(item))?.replace(/^-\s*/, '') || '';
+              const lighting = currentItems.find(item => /원$/.test(item) && !/평일|야간|주말/.test(item))?.replace(/^-\s*/, '') || '';
+              
+              if (currentHeader.includes('조명료')) {
+                feeTypes.push({ type: '조명료', unit: currentUnit, weekday: lighting || weekday, weekend: '' });
+              } else {
+                feeTypes.push({ type: currentHeader, unit: currentUnit, weekday, weekend });
+              }
+            } else if (isInfoHeader && currentItems.length > 0) {
+              infoCards.push({ label: currentHeader, items: currentItems.map(item => item.replace(/^-\s*/, '')) });
+            } else if (currentHeader.includes('시설현황')) {
+              infoCards.unshift({ label: '시설현황', items: [currentItems.join(' ').replace(/^-\s*/, '') || currentHeader.replace('시설현황', '').replace(/^\s*:\s*/, '').trim()] });
+            }
+          }
+          
+          if (/시설현황\s*:/.test(trimmed)) {
+            const facilityDesc = trimmed.replace(/시설현황\s*:\s*/, '').trim();
+            if (facilityDesc) {
+              infoCards.unshift({ label: '시설현황', items: [facilityDesc] });
+            }
+            currentHeader = '';
+            currentUnit = '';
+            currentItems = [];
+          } else if (/^\([^)]+\)$/.test(trimmed)) {
+            currentUnit = trimmed;
+          } else {
+            currentHeader = trimmed;
+            currentUnit = '';
+            currentItems = [];
+          }
+        } else if (trimmed.startsWith('-')) {
+          currentItems.push(trimmed);
+        }
+      }
+      
+      if (currentHeader && currentItems.length > 0) {
+        const isFeeHeader = feeKeywords.some(k => currentHeader.includes(k));
+        const isInfoHeader = infoKeywords.some(k => currentHeader.includes(k));
+        
+        if (isFeeHeader) {
+          const weekday = currentItems.find(item => /평일/.test(item))?.replace(/^-\s*/, '') || '';
+          const weekend = currentItems.find(item => /야간|주말|공휴일/.test(item))?.replace(/^-\s*/, '') || '';
+          feeTypes.push({ type: currentHeader, unit: currentUnit, weekday, weekend });
+        } else if (isInfoHeader) {
+          infoCards.push({ label: currentHeader, items: currentItems.map(item => item.replace(/^-\s*/, '')) });
+        }
+      }
+      
+      if (infoCards.length > 0) {
+        result.push({
+          title: titleLine || '시설 안내',
+          items: [],
+          table: null,
+          infoCards: infoCards
+        });
+      }
+      
+      if (feeTypes.length > 0) {
+        result.push({
+          title: '대관료 안내',
+          items: [],
+          table: null,
+          feeTable: feeTypes
+        });
+      }
+      
+      if (notes.length > 0) {
+        result.push({
+          title: '할인 및 유의사항',
+          items: notes.map(note => ({
+            type: note.startsWith('※') ? 'warning' as const : 'text' as const,
+            text: note.replace(/^※\s*/, ''),
+            indent: 0
+          })),
+          table: null
+        });
+      }
+      
+      if (refundTable && refundTable.length > 0) {
+        result.push({
+          title: '환불 규정',
+          items: [],
+          table: refundTable
+        });
+      }
+      
+      return result.length > 0 ? result : null;
+    };
+
+    const facilityParsed = parseFacilityInfo(cleanText);
+    if (facilityParsed) {
+      sections.push(...facilityParsed);
+      
+      if (cautionContent.trim()) {
+        const cautionItems: ContentItem[] = [];
+        cautionContent.split('\n').forEach(line => {
+          const trimmed = line.trim();
+          if (!trimmed) return;
+          if (trimmed.startsWith('※')) {
+            cautionItems.push({ type: 'warning', text: trimmed.replace(/^※\s*/, ''), indent: 0 });
+          } else {
+            cautionItems.push({ type: 'text', text: trimmed, indent: 0 });
+          }
+        });
+        if (cautionItems.length > 0) {
+          sections.push({ title: '주의사항', items: cautionItems, table: null });
+        }
+      }
+      
+      return { sections, standaloneTables };
+    }
+
+    const sectionKeywords = [
+      '테니스장\\s*이용\\s*안내', '이용\\s*안내', '접수\\s*안내', '주차\\s*관련', '주차장\\s*이용',
+      '환불\\s*규정', '환불규정', '예약\\s*안내', '예약\\s*주의', '이용\\s*주의', '이용\\s*제한',
+      '기타\\s*안내', '영리\\s*행위\\s*금지', '사용료', '이용요금\\s*안내', '이용요금', '이용시간',
+      '주의\\s*사항', '공통\\s*사항', '이용\\s*방법', '입금\\s*안내', '우천\\s*취소', '예약\\s*변경',
+      '코트장', '개인\\s*강습', '시설물\\s*보수', '향후\\s*예약', '공지\\s*사항', '대관\\s*기준',
+      '대관방법', '운영시간', '양도.*금지', '불이익.*적용', '편법.*금지', '테니스장\\s*이용수칙'
+    ].join('|');
     
-    const sectionParts = cleanText.split(/(?=\n[○◎□◈★]|\n◇[^◇]+◇|\n\[[^\]]{2,}\]|\n【[^】]+】|\n\s*(?:.*테니스장\s*이용\s*안내|이용\s*안내|접수\s*안내|주차\s*관련|환불\s*규정|환불규정|예약\s*안내|예약\s*주의사항|이용주의사항|이용\s*제한|기타\s*안내|영리\s*행위\s*금지|사용료|이용요금|주의\s*사항)\s*[\n\-])/);
+    const textHeaderPattern = new RegExp(`^[★☆▢]?\\s*(${sectionKeywords})`, 'i');
+    
+    const sectionSplitPattern = new RegExp(
+      `(?=` +
+      `\\n+[○◎□◈★▢]|` +                    // Circle, square, diamond, star markers
+      `\\n◇[^◇\\n]+◇|` +                    // ◇ wrapped text ◇ (single line only)
+      `\\n◈[^◈\\n]+◈|` +                    // ◈ wrapped text ◈ (single line only)
+      `\\n〈[^〉\\n]+〉|` +                   // 〈 wrapped text 〉 (single line only)
+      `\\n\\[[^\\]\\n]{2,}\\]|` +            // [bracket text] (single line only)
+      `\\n【[^】\\n]+】|` +                   // 【bracket text】 (single line only)
+      `\\n\\s*(?:${sectionKeywords})\\s*[\\n\\-:]` +  // Keyword-based sections
+      `)`,
+      'i'
+    );
+    
+    const sectionParts = cleanText.split(sectionSplitPattern);
 
     sectionParts.forEach(part => {
       if (!part.trim()) return;
@@ -383,25 +610,56 @@ function DetailContent({ content }: { content: string }) {
       
       const firstLine = nonEmptyLines[0].trim();
       
-      if (firstLine.match(/^[○◎□]/)) {
-        titleLine = firstLine.replace(/^[○◎□]\s*/, '').trim();
-      } else if (firstLine.match(/^[★☆]/)) {
-        titleLine = firstLine.replace(/^[★☆]\s*/, '').trim();
-      } else if (firstLine.match(/^◈/) || firstLine.match(/◈$/)) {
-        titleLine = firstLine.replace(/^◈\s*/, '').replace(/\s*◈$/, '').trim();
-      } else if (firstLine.match(/^◇/) && firstLine.match(/◇$/)) {
-        titleLine = firstLine.replace(/^◇\s*/, '').replace(/\s*◇$/, '').trim();
-      } else if (firstLine.match(/^\[/) && firstLine.match(/\]$/)) {
-        titleLine = firstLine.replace(/^\[\s*/, '').replace(/\s*\]$/, '').trim();
-      } else if (firstLine.match(/^【/) && firstLine.match(/】$/)) {
-        titleLine = firstLine.replace(/^【\s*/, '').replace(/\s*】$/, '').trim();
+      let firstLineContent = '';
+      
+      const extractTitle = (line: string): { title: string; content: string } => {
+        let cleaned = line;
+        
+        if (/^[○◎□▢]/.test(cleaned)) {
+          cleaned = cleaned.replace(/^[○◎□▢]\s*/, '');
+        } else if (/^[★☆]/.test(cleaned)) {
+          cleaned = cleaned.replace(/^[★☆]\s*/, '');
+        } else if (/^◈/.test(cleaned) || /◈$/.test(cleaned)) {
+          cleaned = cleaned.replace(/^◈\s*/, '').replace(/\s*◈$/, '');
+        } else if (/^◇/.test(cleaned) && /◇$/.test(cleaned)) {
+          cleaned = cleaned.replace(/^◇\s*/, '').replace(/\s*◇$/, '');
+        } else if (/^〈/.test(cleaned) && /〉$/.test(cleaned)) {
+          cleaned = cleaned.replace(/^〈\s*/, '').replace(/\s*〉$/, '');
+        } else if (/^\[/.test(cleaned) && /\]$/.test(cleaned)) {
+          cleaned = cleaned.replace(/^\[\s*/, '').replace(/\s*\]$/, '');
+        } else if (/^【/.test(cleaned) && /】$/.test(cleaned)) {
+          cleaned = cleaned.replace(/^【\s*/, '').replace(/\s*】$/, '');
+        }
+        
+        const colonMatch = cleaned.match(/^([^:]+):\s*(.+)/);
+        if (colonMatch && colonMatch[1].length < 30) {
+          return { title: colonMatch[1].trim(), content: colonMatch[2].trim() };
+        }
+        
+        const periodMatch = cleaned.match(/^([^.]+\.)\s*(.*)/);
+        if (periodMatch && periodMatch[1].length <= 60 && periodMatch[2]) {
+          return { title: periodMatch[1].trim(), content: periodMatch[2].trim() };
+        }
+        
+        return { title: cleaned.trim(), content: '' };
+      };
+      
+      const hasMarker = /^[○◎□▢★☆◈◇〈【\[]/.test(firstLine) || /[◈◇〉】\]]$/.test(firstLine);
+      
+      if (hasMarker) {
+        const extracted = extractTitle(firstLine);
+        titleLine = extracted.title;
+        firstLineContent = extracted.content;
       } else if (textHeaderPattern.test(firstLine)) {
-        titleLine = firstLine.replace(/^[★☆]\s*/, '').trim();
+        titleLine = firstLine.trim();
       } else {
         for (let i = 0; i < Math.min(5, nonEmptyLines.length); i++) {
           const line = nonEmptyLines[i].trim();
-          if (textHeaderPattern.test(line)) {
-            titleLine = line.replace(/^[★☆]\s*/, '').trim();
+          const lineHasMarker = /^[○◎□▢★☆◈◇〈【\[]/.test(line) || /[◈◇〉】\]]$/.test(line);
+          if (lineHasMarker || textHeaderPattern.test(line)) {
+            const extracted = extractTitle(line);
+            titleLine = extracted.title;
+            firstLineContent = extracted.content;
             contentStartIdx = i + 1;
             break;
           }
@@ -410,7 +668,7 @@ function DetailContent({ content }: { content: string }) {
       }
       
       if (!titleLine || titleLine.match(/^(공공시설|시설예약|상세내용|이\s*용\s*안\s*내|1\.|2\.|3\.)/)) return;
-      if (titleLine.length > 50) return;
+      if (titleLine.length > 60) return;
 
       const firstLineIdx = allLines.findIndex(l => l.trim() === nonEmptyLines[0].trim());
       const contentLines = allLines.slice(firstLineIdx + 1);
@@ -426,7 +684,7 @@ function DetailContent({ content }: { content: string }) {
           continue;
         }
         
-        const isNewItem = /^[-◽▪※•*◦▷◈▶►└◇\[(]/.test(trimmed) || /^\d+[.)]\s/.test(trimmed);
+        const isNewItem = /^[-◽▪※•*◦▷◈▶►└◇\[(]/.test(trimmed) || /^\d+[.)]\s/.test(trimmed) || /^예시\)/.test(trimmed);
         
         if (!isNewItem && mergedLines.length > 0 && !mergedLines[mergedLines.length - 1].startsWith('\t')) {
           mergedLines[mergedLines.length - 1] = mergedLines[mergedLines.length - 1] + ' ' + trimmed;
@@ -435,16 +693,51 @@ function DetailContent({ content }: { content: string }) {
         }
       }
 
+      const expandedLines: string[] = [];
+      for (const line of mergedLines) {
+        const infoPattern = /(운영시간\s*:|이용요금\s*:|조명시설\s*:|1회\s*\d+시간)/g;
+        if (infoPattern.test(line) && line.length > 80) {
+          const expanded = line
+            .replace(/(운영시간\s*:)/g, '\n$1')
+            .replace(/(이용요금\s*:)/g, '\n$1')
+            .replace(/(조명시설\s*:)/g, '\n$1')
+            .replace(/(1회\s*\d+시간)/g, '\n$1')
+            .split('\n')
+            .map(s => s.trim())
+            .filter(s => s.length > 0);
+          expandedLines.push(...expanded);
+        } else {
+          expandedLines.push(line);
+        }
+      }
+
       const items: ContentItem[] = [];
       const titleNormalized = titleLine.replace(/\s+/g, '');
+      let lastWasNumbered = false;
       
-      mergedLines.forEach(line => {
+      if (firstLineContent) {
+        items.push({ type: 'text', text: firstLineContent, indent: 0 });
+      }
+      
+      expandedLines.forEach(line => {
         const tabCount = (line.match(/^\t+/) || [''])[0].length;
         if (tabCount >= 3) return;
         
         const text = line.trim();
         if (!text) return;
         if (text.match(/^[\d]+\.\s*(공공시설|시설예약)/)) return;
+        
+        const isGarbage = 
+          /^-+$/.test(text) ||
+          /^상호명?\s*[-:]?\s*$/.test(text) ||
+          /^대표자명?\s*[-:]?\s*$/.test(text) ||
+          /^사업자\s*등록\s*번호\s*[-:]?\s*$/.test(text) ||
+          /^사업장\s*주소\s*[-:]?\s*$/.test(text) ||
+          /^-\s*상호명/.test(text) ||
+          /^-\s*대표자/.test(text) ||
+          /^-\s*사업자/.test(text) ||
+          text.length < 2;
+        if (isGarbage) return;
         
         const textNormalized = text.replace(/\s+/g, '');
         if (textNormalized === titleNormalized || 
@@ -453,8 +746,20 @@ function DetailContent({ content }: { content: string }) {
         let indent = tabCount > 0 ? 1 : 0;
         let cleanLine = text;
         let itemType: ContentItem['type'] = 'text';
+        
+        const isNumberedItem = /^\d+\.\s/.test(text);
+        const isBulletItem = /^[-•◦◇▶►]/.test(text) || text.startsWith('※');
+        const isParenthetical = /^\([^)]+\)/.test(text);
+        const isExample = /^예시\)/.test(text);
+        const isInfoItem = /^(운영시간\s*:|이용요금\s*:|조명시설\s*:|1회\s*\d+시간)/.test(text);
 
-        if (text.startsWith('└')) {
+        if (isExample) {
+          indent = 2;
+          itemType = 'subtext';
+        } else if (isInfoItem) {
+          indent = 2;
+          itemType = 'subtext';
+        } else if (text.startsWith('└')) {
           indent = 2;
           cleanLine = text.replace(/^└\s*/, '');
           itemType = 'subtext';
@@ -466,29 +771,58 @@ function DetailContent({ content }: { content: string }) {
           indent = 2;
           cleanLine = text.replace(/^▷\s*/, '');
           itemType = 'subtext';
-        } else if (text.startsWith('-')) {
+        } else if (isNumberedItem) {
           indent = 1;
-          cleanLine = text.replace(/^-\s*/, '');
-        } else if (text.startsWith('※')) {
-          indent = 1;
-          cleanLine = text.replace(/^※\s*/, '');
-          itemType = 'warning';
-        } else if (text.startsWith('▶') || text.startsWith('►')) {
-          indent = 1;
-          cleanLine = text.replace(/^[▶►]\s*/, '');
-        } else if (text.startsWith('•') || text.startsWith('◦') || text.startsWith('◇')) {
-          indent = 1;
-          cleanLine = text.replace(/^[•◦◇]\s*/, '');
-        } else if (text.startsWith('*') && !text.startsWith('**')) {
-          indent = 1;
-          cleanLine = text.replace(/^\*\s*/, '');
+          cleanLine = text.replace(/^\d+\.\s*/, '');
+          lastWasNumbered = true;
         } else if (text.match(/^\(\d+\)\s/)) {
           indent = 1;
           cleanLine = text.replace(/^\(\d+\)\s*/, '');
-        } else if (text.match(/^\d+\.\s/)) {
+          lastWasNumbered = true;
+        } else if (text.startsWith('-')) {
+          indent = lastWasNumbered ? 2 : 1;
+          cleanLine = text.replace(/^-\s*/, '');
+          if (/^예시\)/.test(cleanLine)) {
+            indent = 2;
+            itemType = 'subtext';
+          }
+        } else if (text.startsWith('※')) {
+          indent = lastWasNumbered ? 2 : 1;
+          cleanLine = text.replace(/^※\s*/, '');
+          itemType = 'warning';
+        } else if (text.startsWith('▶') || text.startsWith('►')) {
+          indent = lastWasNumbered ? 2 : 1;
+          cleanLine = text.replace(/^[▶►]\s*/, '');
+        } else if (text.startsWith('•') || text.startsWith('◦') || text.startsWith('◇')) {
+          indent = lastWasNumbered ? 2 : 1;
+          cleanLine = text.replace(/^[•◦◇]\s*/, '');
+          if (/^예시\)/.test(cleanLine)) {
+            indent = 2;
+            itemType = 'subtext';
+          }
+        } else if (text.startsWith('○')) {
           indent = 1;
-          cleanLine = text.replace(/^\d+\.\s*/, '');
+          cleanLine = text.replace(/^○\s*/, '');
+        } else if (text.startsWith('┌') || text.startsWith('┕')) {
+          indent = 1;
+          cleanLine = text.replace(/^[┌┕]\s*/, '');
+        } else if (text.startsWith('*') && !text.startsWith('**')) {
+          indent = lastWasNumbered ? 2 : 1;
+          cleanLine = text.replace(/^\*\s*/, '');
+          if (/디지털\s*약자|만\s*65세/.test(cleanLine)) {
+            itemType = 'warning';
+          }
+        } else if (isParenthetical) {
+          indent = 2;
+          itemType = 'subtext';
         } else if (text.match(/^◈.*◈$/)) {
+          return;
+        }
+
+        const inlineHeadingPattern = /^(예약\s*주의\s*사항|이용\s*주의\s*사항|환불\s*규정|이용\s*안내|접수\s*안내|주차\s*안내|취소\s*및\s*환불|예약\s*안내|기타\s*안내)$/i;
+        if (inlineHeadingPattern.test(cleanLine)) {
+          items.push({ type: 'heading', text: cleanLine, indent: 0 });
+          lastWasNumbered = false;
           return;
         }
 
@@ -496,10 +830,15 @@ function DetailContent({ content }: { content: string }) {
           const colonIdx = cleanLine.indexOf(':');
           const key = cleanLine.slice(0, colonIdx).trim();
           const val = cleanLine.slice(colonIdx + 1).trim();
-          if (key.length > 0 && key.length < 25 && val) {
+          if (key.length > 0 && key.length < 25 && val && !/^예시\)$/.test(key)) {
             items.push({ type: 'keyvalue', text: val, key, indent });
             return;
           }
+        }
+
+        if (/^예시\)/.test(cleanLine) && itemType === 'text') {
+          indent = 2;
+          itemType = 'subtext';
         }
 
         if (cleanLine && cleanLine.length > 1) {
@@ -507,20 +846,50 @@ function DetailContent({ content }: { content: string }) {
         }
       });
 
-      if (items.length > 0 || table) {
+      if (items.length > 0 || table || titleLine) {
         sections.push({ title: titleLine, items, table });
       }
     });
 
     if (cautionContent.trim()) {
-      const rawCautionLines = cautionContent.split('\n');
-      const mergedCautionLines: string[] = [];
+      const cautionSubheadingPatterns = [
+        /^코트\s*(?:이용\s*)?(?:예약\s*)?(?:질서\s*)?관련$/,
+        /^유의사항$/,
+        /^위반시?\s*불이익/,
+        /^◈\s*위반시?\s*불이익/,
+        /^이용\s*(?:질서\s*)?관련$/,
+        /^예약\s*(?:이용\s*)?관련$/,
+        /^이용규칙\s*위반시?\s*제재\s*사항$/,
+        /사용규칙$/,
+        /^이용료\s*감면\s*혜택$/,
+        /^주의사항\s*-\s*필독$/,
+        /^사용료\s*\(/,
+        /^환불\s*규정$/,
+      ];
       
+      const rawCautionLines = cautionContent.split('\n');
+      
+      const expandedCautionLines: string[] = [];
       for (const line of rawCautionLines) {
         const trimmed = line.trim();
         if (!trimmed) continue;
         
-        const isNewItem = /^[-※•◦▶►\(\d]/.test(trimmed);
+        if ((trimmed.match(/○/g) || []).length > 1) {
+          const parts = trimmed.split(/(?=○)/).map(p => p.trim()).filter(p => p);
+          expandedCautionLines.push(...parts);
+        } else {
+          expandedCautionLines.push(trimmed);
+        }
+      }
+      
+      const mergedCautionLines: string[] = [];
+      for (const trimmed of expandedCautionLines) {
+        if (!trimmed) continue;
+        
+        const isNewItem = /^[-※•◦○◈▶►□\*\(\d]/.test(trimmed) || 
+                          /^\d+차\s*:/.test(trimmed) ||
+                          /^부정\s*예약\s*:/.test(trimmed) ||
+                          cautionSubheadingPatterns.some(p => p.test(trimmed));
         
         if (!isNewItem && mergedCautionLines.length > 0) {
           mergedCautionLines[mergedCautionLines.length - 1] += ' ' + trimmed;
@@ -530,24 +899,71 @@ function DetailContent({ content }: { content: string }) {
       }
       
       const cautionItems: ContentItem[] = [];
+      let lastWasSubheading = false;
+      let lastWasBullet = false;
       
       for (const text of mergedCautionLines) {
-        if (!text || text.length < 3) continue;
+        if (!text || text.length < 2) continue;
         
         let cleanLine = text;
         let indent = 0;
         let itemType: ContentItem['type'] = 'text';
         
-        if (text.match(/^\(\d+\)\s/)) {
+        const isSubheading = cautionSubheadingPatterns.some(p => p.test(text.replace(/^◈\s*/, '')));
+        const isPenaltyItem = /^\d+차\s*:/.test(text) || /^부정\s*예약\s*:/.test(text) || /^\d+차이후\s*:/.test(text);
+        
+        if (isSubheading) {
+          cleanLine = text.replace(/^◈\s*/, '');
+          itemType = 'heading';
+          indent = 0;
+          lastWasSubheading = true;
+          lastWasBullet = false;
+        } else if (isPenaltyItem) {
+          indent = 1;
+          itemType = 'text';
+          lastWasBullet = true;
+        } else if (text.startsWith('○')) {
+          indent = 1;
+          cleanLine = text.replace(/^○\s*/, '');
+          lastWasBullet = true;
+          lastWasSubheading = false;
+        } else if (text.startsWith('◈')) {
+          cleanLine = text.replace(/^◈\s*/, '');
+          itemType = 'heading';
+          indent = 0;
+          lastWasSubheading = true;
+          lastWasBullet = false;
+        } else if (text.startsWith('□')) {
+          indent = 1;
+          cleanLine = text.replace(/^□\s*/, '');
+          lastWasBullet = true;
+        } else if (text.match(/^\(\d+\)\s/)) {
           indent = 1;
           cleanLine = text.replace(/^\(\d+\)\s*/, '');
+          lastWasBullet = true;
         } else if (text.startsWith('-')) {
-          indent = 1;
+          indent = lastWasBullet ? 2 : 1;
           cleanLine = text.replace(/^-\s*/, '');
+          itemType = 'subtext';
+        } else if (text.startsWith('*')) {
+          indent = lastWasBullet ? 2 : 1;
+          cleanLine = text.replace(/^\*\s*/, '');
+          itemType = 'warning';
         } else if (text.startsWith('※')) {
           indent = 1;
           cleanLine = text.replace(/^※\s*/, '');
           itemType = 'warning';
+        } else if (text.startsWith('•') || text.startsWith('◦')) {
+          indent = 1;
+          cleanLine = text.replace(/^[•◦]\s*/, '');
+          lastWasBullet = true;
+        } else {
+          if (lastWasSubheading) {
+            indent = 0;
+          } else if (lastWasBullet) {
+            indent = 2;
+            itemType = 'subtext';
+          }
         }
         
         if (cleanLine && cleanLine.length > 1) {
@@ -560,24 +976,71 @@ function DetailContent({ content }: { content: string }) {
       }
     }
 
-    const numberedKeywords = '결제|이용요금|예약|환불|주의|안내|노쇼|양도|이용질서|대기자|부정|안전|본인|오픈|원칙|제도|금지|규정|정리';
+    const numberedKeywords = '결제|이용요금|예약|환불|주의|안내|노쇼|양도|이용질서|대기자|부정|안전|오픈|원칙|제도|금지|규정|정리|사용료|매일';
     const hasNumberedStructure = new RegExp(`\\d+\\.\\s*(${numberedKeywords})`).test(cleanText);
     
     const parseStructuredContent = (text: string, isMainContent: boolean, skipTitle?: string): ContentItem[] => {
-      const lines = text.split('\n');
+      const rawLines = text.split('\n');
+      const expandedLines: string[] = [];
+      
+      for (const line of rawLines) {
+        const trimmed = line.trim();
+        if (!trimmed) {
+          expandedLines.push(line);
+          continue;
+        }
+        
+        if ((trimmed.match(/○/g) || []).length > 1) {
+          const parts = trimmed.split(/(?=○)/).map(p => p.trim()).filter(p => p);
+          expandedLines.push(...parts);
+          continue;
+        }
+        
+        const infoPattern = /(운영시간\s*:|이용요금\s*:|조명시설\s*:|1회\s*\d+시간)/g;
+        if (infoPattern.test(line) && line.length > 80) {
+          const expanded = line
+            .replace(/(운영시간\s*:)/g, '\n$1')
+            .replace(/(이용요금\s*:)/g, '\n$1')
+            .replace(/(조명시설\s*:)/g, '\n$1')
+            .replace(/(1회\s*\d+시간)/g, '\n$1')
+            .split('\n')
+            .map(s => s.trim())
+            .filter(s => s.length > 0);
+          expandedLines.push(...expanded);
+        } else {
+          expandedLines.push(line);
+        }
+      }
+      
       const items: ContentItem[] = [];
-      const headingPattern = new RegExp(`^\\d+\\.\\s*(${numberedKeywords})`);
+      const headingPattern = new RegExp(`^\\d+\\.\\s*(${numberedKeywords})(?:\\s|$|\\()`);
       const subheadingPatterns = [
         /^기본\s*주의사항$/,
         /^환불\s*없이\s*퇴장/,
         /^사업자\s*정보$/,
         /^필수\s*준수$/,
         /^이용\s*제한\s*안내$/,
+        /^예약\s*주의\s*사항$/,
+        /^이용\s*주의\s*사항$/,
+        /^환불\s*규정$/,
+        /^코트\s*(?:이용\s*)?(?:예약\s*)?(?:질서\s*)?관련$/,
+        /^유의사항$/,
+        /^위반시?\s*불이익/,
+        /^◈\s*위반시?\s*불이익/,
+        /^이용\s*(?:질서\s*)?관련$/,
+        /^예약\s*(?:이용\s*)?관련$/,
+        /^이용규칙\s*위반시?\s*제재\s*사항$/,
+        /사용규칙$/,
+        /^이용료\s*감면\s*혜택$/,
+        /^주의사항\s*-\s*필독$/,
+        /^사용료\s*\(/,
       ];
       
       let afterHeading = false;
+      let lastWasNumbered = false;
+      let lastWasBullet = false;
       
-      for (const line of lines) {
+      for (const line of expandedLines) {
         const trimmedText = line.trim();
         if (!trimmedText || trimmedText.length < 2) continue;
         if (line.startsWith('\t\t\t')) continue;
@@ -588,25 +1051,90 @@ function DetailContent({ content }: { content: string }) {
         let itemType: ContentItem['type'] = 'text';
         
         const isHeading = (isMainContent && headingPattern.test(trimmedText)) ||
-                          (!isMainContent && subheadingPatterns.some(p => p.test(trimmedText)));
+                          (!isMainContent && subheadingPatterns.some(p => p.test(trimmedText.replace(/^◈\s*/, ''))));
+        
+        // Match numbered items with or without space after dot (e.g., "1. text" or "2.text")
+        const isNumberedItem = /^\d+\.(?:\s|[가-힣])/.test(trimmedText);
+        const isCircleBullet = trimmedText.startsWith('○');
+        const isSquareBullet = trimmedText.startsWith('□');
+        const isDiamondMarker = trimmedText.startsWith('◈');
+        const isBulletItem = /^[-•·◦]/.test(trimmedText) || trimmedText.startsWith('※');
+        const isParenthetical = /^\([^)]+\)/.test(trimmedText);
+        const isExample = /^예시\)/.test(trimmedText);
+        const isInfoItem = /^(운영시간\s*:|이용요금\s*:|조명시설\s*:|1회\s*\d+시간)/.test(trimmedText);
+        const isStarNote = trimmedText.startsWith('*') && !trimmedText.startsWith('**');
+        const isPenaltyItem = /^\d+차\s*:/.test(trimmedText) || /^부정\s*예약\s*:/.test(trimmedText) || /^\d+차이후\s*:/.test(trimmedText);
         
         if (isHeading) {
+          cleanLine = trimmedText.replace(/^◈\s*/, '');
           itemType = 'heading';
           afterHeading = true;
+          lastWasNumbered = false;
+          lastWasBullet = false;
+        } else if (isDiamondMarker) {
+          cleanLine = trimmedText.replace(/^◈\s*/, '');
+          itemType = 'heading';
+          afterHeading = true;
+          lastWasNumbered = false;
+          lastWasBullet = false;
+        } else if (isPenaltyItem) {
+          indent = 1;
+          lastWasBullet = true;
+        } else if (isNumberedItem) {
+          indent = 1;
+          cleanLine = trimmedText.replace(/^\d+\.\s*/, '');
+          lastWasNumbered = true;
+          lastWasBullet = false;
         } else if (trimmedText.match(/^\d+\)\s/)) {
           indent = 1;
           cleanLine = trimmedText.replace(/^\d+\)\s*/, '');
-        } else if (trimmedText.startsWith('-') || trimmedText.startsWith('•') || trimmedText.startsWith('·')) {
+          lastWasNumbered = true;
+          lastWasBullet = false;
+        } else if (isCircleBullet) {
           indent = 1;
-          cleanLine = trimmedText.replace(/^[-•·]\s*/, '');
-        } else if (trimmedText.startsWith('※')) {
+          cleanLine = trimmedText.replace(/^○\s*/, '');
+          lastWasBullet = true;
+        } else if (isSquareBullet) {
           indent = 1;
-          cleanLine = trimmedText.replace(/^※\s*/, '');
+          cleanLine = trimmedText.replace(/^□\s*/, '');
+          lastWasBullet = true;
+        } else if (isBulletItem) {
+          indent = lastWasBullet ? 2 : 1;
+          if (trimmedText.startsWith('※')) {
+            cleanLine = trimmedText.replace(/^※\s*/, '');
+            itemType = 'warning';
+          } else {
+            cleanLine = trimmedText.replace(/^[-•·◦]\s*/, '');
+          }
+        } else if (trimmedText.startsWith('-')) {
+          indent = lastWasBullet ? 2 : 1;
+          cleanLine = trimmedText.replace(/^-\s*/, '');
+          itemType = 'subtext';
+        } else if (isStarNote) {
+          indent = lastWasBullet ? 2 : 1;
+          cleanLine = trimmedText.replace(/^\*\s*/, '');
           itemType = 'warning';
+        } else if (isParenthetical) {
+          indent = 2;
+          itemType = 'subtext';
+        } else if (isExample) {
+          indent = 2;
+          itemType = 'subtext';
+        } else if (isInfoItem) {
+          indent = 2;
+          itemType = 'subtext';
         } else if (trimmedText.match(/^(상호명|사업자\s*번호|대표자|주소|대표\s*번호)$/)) {
           itemType = 'subtext';
         } else if (line.startsWith('\t') || afterHeading) {
-          indent = 1;
+          indent = lastWasNumbered || lastWasBullet ? 2 : 1;
+        }
+        
+        if (subheadingPatterns.some(p => p.test(cleanLine.replace(/^◈\s*/, '')))) {
+          cleanLine = cleanLine.replace(/^◈\s*/, '');
+          itemType = 'heading';
+          indent = 0;
+          lastWasNumbered = false;
+          lastWasBullet = false;
         }
         
         if (cleanLine && cleanLine.length > 1) {
@@ -642,8 +1170,12 @@ function DetailContent({ content }: { content: string }) {
   const { sections, standaloneTables } = parseContent();
 
   const highlight = (text: string): React.ReactNode => {
-    const parts = text.split(/(\d{1,2}:\d{2}\s*[~∼－-]\s*\d{1,2}:\d{2}|[0-9,]+원|\d{1,2}월)/g);
+    const splitPattern = /(\d{1,2}:\d{2}\s*[~∼－-]\s*\d{1,2}:\d{2}|[0-9,]+원|\d{1,2}월|0\d{1,2}[-)]\d{3,4}[-)]\d{4}|\d+%|\d+시간|\d+일\s*전)/g;
+    
+    const parts = text.split(splitPattern);
+    
     return parts.map((part, i) => {
+      if (!part) return null;
       if (/\d{1,2}:\d{2}\s*[~∼－-]\s*\d{1,2}:\d{2}/.test(part)) {
         return <code key={i} className="px-1.5 py-0.5 bg-indigo-100 text-indigo-700 rounded font-mono text-xs">{part}</code>;
       }
@@ -653,8 +1185,83 @@ function DetailContent({ content }: { content: string }) {
       if (/\d{1,2}월/.test(part)) {
         return <span key={i} className="font-medium text-blue-600">{part}</span>;
       }
+      if (/0\d{1,2}[-)]\d{3,4}[-)]\d{4}/.test(part)) {
+        return <code key={i} className="px-1.5 py-0.5 bg-pink-100 text-pink-700 rounded font-mono text-xs">{part}</code>;
+      }
+      if (/\d+%/.test(part)) {
+        return <span key={i} className="font-semibold text-orange-600">{part}</span>;
+      }
+      if (/\d+시간/.test(part)) {
+        return <span key={i} className="font-medium text-indigo-600">{part}</span>;
+      }
+      if (/\d+일\s*전/.test(part)) {
+        return <span key={i} className="font-medium text-rose-600">{part}</span>;
+      }
       return part;
     });
+  };
+
+  const formatPenaltyText = (text: string): React.ReactNode => {
+    const hasPenaltyPattern = /\d차\s*위반시\s*:/.test(text) && text.length > 200;
+    if (!hasPenaltyPattern) return null;
+
+    const CATEGORY_START = '@@CATEGORY@@';
+    const CATEGORY_END = '@@/CATEGORY@@';
+    const BULLET_START = '@@BULLET@@';
+    const BULLET_END = '@@/BULLET@@';
+    
+    const normalizedText = text.replace(/\s+/g, ' ').trim();
+    const categoryPattern = /(예약\s*후?\s*미방문\s*시|공공질서\s*위반\s*시[^)]*\)?|예약\s*질서\s*위반\s*시[^)]*\)?)/g;
+    const violationPattern = /(\d차\s*위반시\s*:\s*[^0-9]*?(?:\d+개월\s*이용\s*제한|경고|영구\s*(?:이용\s*)?제한|영구정지))/g;
+
+    const markedText = normalizedText
+      .replace(categoryPattern, `\n\n${CATEGORY_START}$1${CATEGORY_END}`)
+      .replace(violationPattern, `\n  ${BULLET_START}$1${BULLET_END}\n`)
+      // Issue 1: Line break after "영구정지" when followed by Korean text
+      .replace(/영구정지\s+(?=[가-힣])/g, '영구정지\n')
+      // Issue 2: Line break after "주의해 주시기 바랍니다."
+      .replace(/(주의해\s*주시기\s*바랍니다\.)\s*/g, '$1\n')
+      .replace(/^\s*\n+/, '');
+
+    const lines = markedText.split('\n').filter(line => line.trim());
+
+    const renderCategoryLine = (content: string, key: number) => (
+      <div key={key} className="font-bold text-gray-800 mt-3 first:mt-0 border-l-2 border-amber-400 pl-2 py-0.5 bg-amber-50/50">
+        {content}
+      </div>
+    );
+
+    const renderBulletLine = (content: string, key: number) => (
+      <div key={key} className="flex items-start gap-2 ml-4 text-sm text-gray-700">
+        <span className="text-amber-500 shrink-0">•</span>
+        <span>{highlight(content)}</span>
+      </div>
+    );
+
+    const renderDefaultLine = (content: string, key: number) => {
+      const isExample = content.startsWith('예시)');
+      return (
+        <div key={key} className={`text-sm text-gray-700 ${isExample ? 'ml-6' : ''}`}>
+          {highlight(content)}
+        </div>
+      );
+    };
+
+    return (
+      <div className="space-y-2">
+        {lines.map((line, i) => {
+          const trimmed = line.trim();
+          
+          const categoryMatch = trimmed.match(new RegExp(`^${CATEGORY_START}(.+?)${CATEGORY_END}$`));
+          if (categoryMatch) return renderCategoryLine(categoryMatch[1], i);
+          
+          const bulletMatch = trimmed.match(new RegExp(`^${BULLET_START}(.+?)${BULLET_END}$`));
+          if (bulletMatch) return renderBulletLine(bulletMatch[1], i);
+          
+          return renderDefaultLine(trimmed, i);
+        })}
+      </div>
+    );
   };
 
   const renderItem = (item: ContentItem, idx: number) => {
@@ -662,10 +1269,10 @@ function DetailContent({ content }: { content: string }) {
     
     if (item.type === 'heading') {
       return (
-        <li key={idx} className="mt-4 mb-2 first:mt-0 list-none">
-          <strong className="block font-bold text-gray-800 text-base border-l-4 border-blue-500 pl-3 py-1 bg-blue-50 rounded-r">
+        <li key={idx} className="mt-4 mb-2 first:mt-0 list-none" role="presentation">
+          <h4 className="font-bold text-gray-800 text-base border-l-4 border-blue-500 pl-3 py-1 bg-blue-50 rounded-r m-0">
             {item.text}
-          </strong>
+          </h4>
         </li>
       );
     }
@@ -681,9 +1288,11 @@ function DetailContent({ content }: { content: string }) {
 
     if (item.type === 'keyvalue' && item.key) {
       return (
-        <li key={idx} className={`flex items-start gap-3 py-1 ${indentClass} list-none`}>
-          <span className="shrink-0 font-semibold text-gray-600 text-sm min-w-[80px]">{item.key}</span>
-          <span className="text-gray-700 text-sm">{highlight(item.text)}</span>
+        <li key={idx} className={`flex items-start gap-2 py-1 ${indentClass} list-none`}>
+          <span className="shrink-0 text-blue-500 font-bold">•</span>
+          <span className="text-gray-700 text-sm">
+            <span className="font-semibold">{item.key}:</span> {highlight(item.text)}
+          </span>
         </li>
       );
     }
@@ -706,6 +1315,16 @@ function DetailContent({ content }: { content: string }) {
       );
     }
 
+    // Check for penalty text pattern (long text with "N차 위반시:" patterns)
+    const penaltyFormatted = formatPenaltyText(item.text);
+    if (penaltyFormatted) {
+      return (
+        <li key={idx} className="py-1 list-none">
+          {penaltyFormatted}
+        </li>
+      );
+    }
+
     return (
       <li key={idx} className="py-1 text-gray-700 text-sm list-none">{highlight(item.text)}</li>
     );
@@ -715,34 +1334,150 @@ function DetailContent({ content }: { content: string }) {
     if (rows.length === 0) return null;
     const header = rows[0];
     const body = rows.slice(1);
+    
+    const isWideTable = header.length > 6;
+    const isMonthlyTable = header.some(h => /^\d{1,2}월$/.test(h));
+    const currentMonth = new Date().getMonth() + 1;
 
     return (
       <div className="overflow-x-auto mt-4 rounded-lg border border-gray-200 shadow-sm">
-        <table className="w-full text-sm border-collapse">
+        <table className={`text-sm border-collapse ${isWideTable ? 'w-max min-w-full' : 'w-full'}`}>
           <thead>
             <tr className="bg-gray-100">
-              {header.map((cell, i) => (
-                <th key={i} className="px-3 py-2.5 text-center font-bold text-gray-800 border border-gray-200 whitespace-nowrap bg-gray-100">
-                  {cell}
-                </th>
-              ))}
+              {header.map((cell, i) => {
+                const monthMatch = cell.match(/^(\d{1,2})월$/);
+                const isCurrentMonth = monthMatch && parseInt(monthMatch[1]) === currentMonth;
+                return (
+                  <th 
+                    key={i} 
+                    className={`${isWideTable ? 'px-2 py-2' : 'px-3 py-2.5'} text-center font-bold border border-gray-200 whitespace-nowrap ${
+                      i === 0 
+                        ? 'bg-gray-200 sticky left-0 z-10' 
+                        : isCurrentMonth 
+                          ? 'bg-blue-100 text-blue-800' 
+                          : 'bg-gray-100 text-gray-800'
+                    }`}
+                  >
+                    {cell}
+                  </th>
+                );
+              })}
             </tr>
           </thead>
           <tbody>
             {body.map((row, rowIdx) => (
               <tr key={rowIdx} className={rowIdx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                {row.map((cell, cellIdx) => (
-                  <td 
-                    key={cellIdx} 
-                    className={`px-3 py-2 border border-gray-200 ${
-                      cellIdx === 0 
-                        ? 'font-semibold text-gray-700 bg-gray-50 text-center' 
-                        : 'text-gray-600 text-center'
-                    }`}
-                  >
-                    {highlight(cell)}
-                  </td>
-                ))}
+                {row.map((cell, cellIdx) => {
+                  const monthMatch = header[cellIdx]?.match(/^(\d{1,2})월$/);
+                  const isCurrentMonth = monthMatch && parseInt(monthMatch[1]) === currentMonth;
+                  const isEmpty = cell === '-' || cell === '' || cell === '~';
+                  
+                  return (
+                    <td 
+                      key={cellIdx} 
+                      className={`${isWideTable ? 'px-2 py-1.5' : 'px-3 py-2'} border border-gray-200 text-center whitespace-nowrap ${
+                        cellIdx === 0 
+                          ? 'font-semibold text-gray-700 bg-gray-100 sticky left-0 z-10' 
+                          : isCurrentMonth
+                            ? isEmpty 
+                              ? 'bg-blue-50/50 text-gray-400'
+                              : 'bg-blue-50 text-blue-700 font-medium'
+                            : isEmpty 
+                              ? 'text-gray-300' 
+                              : 'text-gray-600'
+                      }`}
+                    >
+                      {isMonthlyTable && isEmpty ? (
+                        <span className="text-gray-300">-</span>
+                      ) : (
+                        highlight(cell)
+                      )}
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+
+  const renderInfoCards = (cards: InfoCard[]) => {
+    const iconMap: Record<string, string> = {
+      '시설현황': '🏟️',
+      '운영시간': '🕐',
+      '휴관안내': '📅',
+      '대관방법': '📋',
+    };
+    
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {cards.map((card, idx) => (
+          <div key={idx} className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-lg">{iconMap[card.label] || '📌'}</span>
+              <h4 className="font-bold text-gray-800 text-sm">{card.label}</h4>
+            </div>
+            <ul className="space-y-1">
+              {card.items.map((item, itemIdx) => (
+                <li key={itemIdx} className="text-sm text-gray-600 flex items-start gap-2">
+                  <span className="text-blue-400 mt-1">•</span>
+                  <span>{highlight(item)}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  const renderFeeTable = (fees: FeeInfo[]) => {
+    return (
+      <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
+        <table className="w-full text-sm border-collapse">
+          <thead>
+            <tr className="bg-gradient-to-r from-emerald-100 to-teal-100">
+              <th className="px-4 py-3 text-left font-bold text-gray-800 border-b border-gray-200">구분</th>
+              <th className="px-4 py-3 text-center font-bold text-gray-800 border-b border-gray-200">단위</th>
+              <th className="px-4 py-3 text-center font-bold text-gray-800 border-b border-gray-200">
+                <span className="inline-flex items-center gap-1">
+                  <span className="w-2 h-2 rounded-full bg-blue-400"></span>
+                  평일
+                </span>
+              </th>
+              <th className="px-4 py-3 text-center font-bold text-gray-800 border-b border-gray-200">
+                <span className="inline-flex items-center gap-1">
+                  <span className="w-2 h-2 rounded-full bg-orange-400"></span>
+                  야간/주말/공휴일
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {fees.map((fee, idx) => (
+              <tr key={idx} className={idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                <td className="px-4 py-3 font-semibold text-gray-700 border-b border-gray-100">
+                  {fee.type.replace('실내 대관료', '🏠 실내').replace('실외 대관료', '🌳 실외').replace('조명료', '💡 조명')}
+                </td>
+                <td className="px-4 py-3 text-center text-gray-500 text-xs border-b border-gray-100">
+                  {fee.unit || '-'}
+                </td>
+                <td className="px-4 py-3 text-center border-b border-gray-100">
+                  {fee.weekday ? (
+                    <span className="inline-flex items-center px-2 py-1 rounded-full bg-blue-50 text-blue-700 font-semibold text-xs">
+                      {fee.weekday.replace(/평일\s*:\s*/, '')}
+                    </span>
+                  ) : '-'}
+                </td>
+                <td className="px-4 py-3 text-center border-b border-gray-100">
+                  {fee.weekend ? (
+                    <span className="inline-flex items-center px-2 py-1 rounded-full bg-orange-50 text-orange-700 font-semibold text-xs">
+                      {fee.weekend.replace(/야간,?\s*주말,?\s*공휴일\s*:\s*/, '')}
+                    </span>
+                  ) : '-'}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -802,6 +1537,8 @@ function DetailContent({ content }: { content: string }) {
                   </div>
 
                   <div className="px-4 py-3 bg-white/80">
+                    {section.infoCards && section.infoCards.length > 0 && renderInfoCards(section.infoCards)}
+                    {section.feeTable && section.feeTable.length > 0 && renderFeeTable(section.feeTable)}
                     {section.items.length > 0 && (
                       <ul className="space-y-0.5 list-none m-0 p-0">
                         {section.items.map((item, itemIdx) => renderItem(item, itemIdx))}

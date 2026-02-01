@@ -35,30 +35,31 @@ function DistrictCard({
       <Link
         href={`/${district.slug}`}
         className={`
-          p-4 border-2 border-black rounded-[5px] 
-          shadow-[4px_4px_0px_0px_#000] 
-          transition-all duration-150
-          hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none
+          p-3 sm:p-4 border-2 border-black rounded-[5px] 
+          shadow-[3px_3px_0px_0px_#000] sm:shadow-[4px_4px_0px_0px_#000]
+          transition-all duration-150 active:scale-[0.98]
+          hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none
+          sm:hover:translate-x-[4px] sm:hover:translate-y-[4px]
           ${bgColor}
         `}
       >
-        <div className="flex items-center justify-between">
-          <h3 className={`font-bold uppercase tracking-tight ${total === 0 ? 'text-black/50' : 'text-black'}`}>
+        <div className="flex items-center justify-between gap-2">
+          <h3 className={`font-bold text-sm sm:text-base uppercase tracking-tight truncate ${total === 0 ? 'text-black/50' : 'text-black'}`}>
             {district.nameKo}
           </h3>
           {loading ? (
-            <div className="w-12 h-5 bg-gray-300 animate-pulse rounded-[3px]" />
+            <div className="w-10 h-5 bg-gray-300 animate-pulse rounded-[3px] shrink-0" />
           ) : hasAvailable ? (
-            <span className="bg-black text-[#a3e635] px-2 py-1 text-xs font-black rounded-[3px] uppercase">
-              {available}개
+            <span className="bg-black text-[#a3e635] px-1.5 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-black rounded-[3px] uppercase shrink-0">
+              {available}
             </span>
           ) : total > 0 ? (
-            <span className="text-xs font-bold text-black/50 uppercase">
+            <span className="text-[10px] sm:text-xs font-bold text-black/50 uppercase shrink-0">
               마감
             </span>
           ) : (
-            <span className="text-xs font-bold text-black/40 uppercase">
-              정보없음
+            <span className="text-[10px] sm:text-xs font-bold text-black/40 uppercase shrink-0">
+              -
             </span>
           )}
         </div>
@@ -69,25 +70,25 @@ function DistrictCard({
   return (
     <Link
       href={`/${district.slug}`}
-      className={`card p-4 hover:shadow-md transition-all group ${total === 0 ? 'bg-gray-50' : ''}`}
+      className={`card p-3 sm:p-4 hover:shadow-md transition-all group active:scale-[0.98] ${total === 0 ? 'bg-gray-50' : ''}`}
     >
-      <div className="flex items-center justify-between">
-        <h3 className={`font-medium transition-colors ${total === 0 ? 'text-gray-400' : 'text-gray-900 group-hover:text-green-600'}`}>
+      <div className="flex items-center justify-between gap-2">
+        <h3 className={`font-medium text-sm sm:text-base transition-colors truncate ${total === 0 ? 'text-gray-400' : 'text-gray-900 group-hover:text-green-600'}`}>
           {district.nameKo}
         </h3>
         {loading ? (
-          <div className="w-12 h-5 skeleton" />
+          <div className="w-10 h-5 skeleton shrink-0" />
         ) : hasAvailable ? (
-          <span className="badge badge-available">
-            {available}개 가능
+          <span className="badge badge-available text-[10px] sm:text-xs shrink-0">
+            {available}개
           </span>
         ) : total > 0 ? (
-          <span className="text-sm text-gray-400">
+          <span className="text-[10px] sm:text-xs text-gray-400 shrink-0">
             마감
           </span>
         ) : (
-          <span className="text-xs text-gray-300">
-            정보없음
+          <span className="text-[10px] sm:text-xs text-gray-300 shrink-0">
+            -
           </span>
         )}
       </div>
@@ -114,23 +115,35 @@ export default function DistrictGrid({ stats, loading }: DistrictGridProps) {
       return aCategory - bCategory;
     }
     
-    if (aCategory === 0) {
-      if (bAvailable !== aAvailable) {
-        return bAvailable - aAvailable;
-      }
-    }
-    
     return a.nameKo.localeCompare(b.nameKo, 'ko');
   });
 
+  if (loading) {
+    return (
+      <div className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 ${isNeoBrutalism ? 'gap-3' : 'gap-2 sm:gap-3'}`}>
+        {Array.from({ length: 25 }).map((_, i) => (
+          <div
+            key={i}
+            className={`h-12 sm:h-14 animate-pulse ${
+              isNeoBrutalism
+                ? 'bg-gray-100 border-2 border-black/20 rounded-[5px]'
+                : 'bg-gray-50 rounded-lg'
+            }`}
+            style={{ animationDelay: `${i * 30}ms` }}
+          />
+        ))}
+      </div>
+    );
+  }
+
   return (
-    <div className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 ${isNeoBrutalism ? 'gap-4' : 'gap-3'}`}>
+    <div className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 ${isNeoBrutalism ? 'gap-3' : 'gap-2 sm:gap-3'}`}>
       {sortedDistricts.map((district) => (
         <DistrictCard
           key={district.slug}
           district={district}
           stats={stats?.[district.nameKo]}
-          loading={loading}
+          loading={false}
           isNeoBrutalism={isNeoBrutalism}
         />
       ))}
