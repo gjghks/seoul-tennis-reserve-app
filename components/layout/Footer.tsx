@@ -8,8 +8,8 @@ export default function Footer() {
 
   return (
     <footer className={isNeoBrutalism
-      ? 'mt-8 py-6 text-center text-sm bg-black text-white border-t-[3px] border-black'
-      : 'mt-8 py-6 text-center text-sm text-gray-400 border-t border-gray-100'
+      ? 'mt-8 lg:mt-4 py-6 text-center text-sm bg-black text-white border-t-[3px] border-black'
+      : 'mt-8 lg:mt-4 py-6 text-center text-sm text-gray-400 border-t border-gray-100'
     }>
       <div className="container space-y-3">
         <p className={isNeoBrutalism ? 'font-bold uppercase tracking-wide' : ''}>
