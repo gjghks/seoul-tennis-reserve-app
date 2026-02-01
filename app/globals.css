@@ -206,6 +206,7 @@ input:focus, select:focus {
 html, body {
   -ms-overflow-style: none;
   scrollbar-width: none;
+  overscroll-behavior: none;
 }
 
 html::-webkit-scrollbar,
