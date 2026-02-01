@@ -19,6 +19,13 @@ export default function Footer() {
           isNeoBrutalism ? 'text-white/70' : 'text-gray-400'
         }`}>
           <Link 
+            href="/about" 
+            className={`hover:underline ${isNeoBrutalism ? 'hover:text-white' : 'hover:text-gray-600'}`}
+          >
+            서비스 소개
+          </Link>
+          <span>|</span>
+          <Link 
             href="/privacy" 
             className={`hover:underline ${isNeoBrutalism ? 'hover:text-white' : 'hover:text-gray-600'}`}
           >

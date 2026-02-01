@@ -114,7 +114,7 @@ export default function PrivacyPage() {
               정보주체의 불만처리 및 피해구제 등을 위하여 아래와 같이 개인정보 보호책임자를 지정하고 있습니다.
             </p>
             <p className="mt-2">
-              문의: 서비스 내 문의하기 또는 이메일을 통해 연락해 주시기 바랍니다.
+              문의: contact.seoul.tennis@gmail.com
             </p>
           </section>
 
