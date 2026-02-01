@@ -62,7 +62,9 @@ export default function DistrictPage({ params }: DistrictPageProps) {
         </div>
       </div>
 
-      <div className="container pt-12 pb-6">
+      <div className="h-6" aria-hidden="true" />
+
+      <div className="container pb-6">
         {loading ? (
           <div className="space-y-4">
             {[1, 2, 3].map(i => (
