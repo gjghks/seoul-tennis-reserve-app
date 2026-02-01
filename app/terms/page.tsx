@@ -6,7 +6,7 @@ export default function TermsPage() {
   const { isNeoBrutalism } = useTheme();
 
   return (
-    <div className="container py-8">
+    <div className="container py-8 scrollbar-hide">
       <div className={`max-w-3xl mx-auto ${
         isNeoBrutalism 
           ? 'bg-white border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000] p-8'

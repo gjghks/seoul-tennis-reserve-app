@@ -38,7 +38,7 @@ export default function Login() {
   };
 
   return (
-    <div className={`min-h-screen flex items-center justify-center p-4 ${isNeoBrutalism ? 'bg-nb-bg' : 'bg-gray-50'}`}>
+    <div className={`min-h-screen flex items-center justify-center p-4 scrollbar-hide ${isNeoBrutalism ? 'bg-nb-bg' : 'bg-gray-50'}`}>
       <div className={isNeoBrutalism
         ? 'w-full max-w-md bg-white border-[3px] border-black rounded-[5px] shadow-[8px_8px_0px_0px_#000] p-8'
         : 'w-full max-w-md bg-white rounded-2xl shadow-lg p-8 border border-gray-100'

@@ -74,7 +74,7 @@ export default function MyPage() {
 
   if (authLoading || (!user && !authLoading)) {
     return (
-      <div className={`container mx-auto px-4 py-8 ${isNeoBrutalism ? 'bg-nb-bg min-h-screen' : ''}`}>
+      <div className={`container mx-auto px-4 py-8 scrollbar-hide ${isNeoBrutalism ? 'bg-nb-bg min-h-screen' : ''}`}>
         <div className="flex items-center justify-center min-h-[400px]">
           <div className={isNeoBrutalism ? 'text-black font-bold' : 'text-gray-400'}>로딩중...</div>
         </div>
@@ -83,7 +83,7 @@ export default function MyPage() {
   }
 
   return (
-    <div className={`container mx-auto px-4 py-8 min-h-screen ${isNeoBrutalism ? 'bg-nb-bg' : ''}`}>
+    <div className={`container mx-auto px-4 py-8 min-h-screen scrollbar-hide ${isNeoBrutalism ? 'bg-nb-bg' : ''}`}>
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className={`text-2xl mb-2 ${isNeoBrutalism ? 'font-black text-black uppercase' : 'font-bold text-gray-900'}`}>

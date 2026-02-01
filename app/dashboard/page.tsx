@@ -11,7 +11,7 @@ export default function DashboardRedirect() {
   }, [router]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center scrollbar-hide">
       <p className="text-gray-400">리다이렉트 중...</p>
     </div>
   );

@@ -18,7 +18,7 @@ export default async function CourtDetailPage({ params }: { params: Promise<{ id
 
     if (!court) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+            <div className="min-h-screen flex items-center justify-center bg-gray-50 scrollbar-hide">
                 <div className="text-center">
                     <h2 className="text-2xl font-bold text-gray-900 mb-2">테니스장을 찾을 수 없습니다</h2>
                     <Link href="/" className="text-green-600 hover:text-green-700 font-medium">
@@ -33,7 +33,7 @@ export default async function CourtDetailPage({ params }: { params: Promise<{ id
     const endDate = court.RCPTENDDT;
 
     return (
-        <div className="bg-[#F8FAFC] min-h-screen pb-20">
+        <div className="bg-[#F8FAFC] min-h-screen pb-20 scrollbar-hide">
             {/* Top Navigation */}
             <div className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-200">
                 <div className="container h-16 flex items-center">

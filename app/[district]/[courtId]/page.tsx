@@ -1700,7 +1700,7 @@ export default function CourtDetailPage() {
   }
 
   return (
-    <div className={`min-h-screen pb-24 ${isNeoBrutalism ? 'bg-nb-bg' : 'bg-gray-50'}`}>
+    <div className={`min-h-screen pb-24 scrollbar-hide ${isNeoBrutalism ? 'bg-nb-bg' : 'bg-gray-50'}`}>
       <StickyHeader 
         court={court} 
         isAvailable={isAvailable || false} 
