@@ -51,40 +51,40 @@ export default function Home() {
     <div className={`h-[calc(100dvh-56px-80px)] overflow-hidden flex flex-col ${isNeoBrutalism ? 'bg-nb-bg' : ''}`}>
       <section className={isNeoBrutalism ? 'court-pattern-nb text-white py-4 lg:py-3' : 'court-pattern text-white py-4 lg:py-3'}>
         <div className="container relative z-10">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div>
-              <h1 className={`mb-2 ${isNeoBrutalism ? 'text-2xl md:text-3xl font-black uppercase tracking-tight' : 'text-xl md:text-2xl font-bold'}`}>
+          <div className="flex flex-row items-center justify-between gap-2 sm:gap-4">
+            <div className="min-w-0">
+              <h1 className={`${isNeoBrutalism ? 'text-lg sm:text-2xl md:text-3xl font-black uppercase tracking-tight' : 'text-lg sm:text-xl md:text-2xl font-bold'}`}>
                 {isNeoBrutalism ? '🎾 서울 공공 테니스장' : '서울시 공공 테니스장'}
               </h1>
-              <p className={`text-sm ${isNeoBrutalism ? 'text-white/80 font-medium' : 'text-green-100'}`}>
+              <p className={`text-xs sm:text-sm hidden sm:block ${isNeoBrutalism ? 'text-white/80 font-medium' : 'text-green-100'}`}>
                 예약 가능한 테니스장을 찾아보세요
               </p>
             </div>
 
             {!loading && !error && (
-              <div className={`flex gap-6 sm:gap-8 ${isNeoBrutalism ? 'bg-black/20 backdrop-blur-sm px-5 py-3 rounded-[5px] border-2 border-white/30' : ''}`}>
+              <div className={`flex gap-3 sm:gap-6 md:gap-8 shrink-0 ${isNeoBrutalism ? 'bg-black/20 backdrop-blur-sm px-3 sm:px-5 py-2 sm:py-3 rounded-[5px] border-2 border-white/30' : ''}`}>
                 <div className="text-center">
-                  <div className={`font-bold ${isNeoBrutalism ? 'text-3xl md:text-4xl text-[#facc15]' : 'text-3xl md:text-4xl'}`}>{totalAvailable}</div>
-                  <div className={`text-xs mt-1 ${isNeoBrutalism ? 'text-white/70 font-semibold uppercase' : 'text-green-200'}`}>예약 가능</div>
+                  <div className={`font-bold ${isNeoBrutalism ? 'text-2xl sm:text-3xl md:text-4xl text-[#facc15]' : 'text-2xl sm:text-3xl md:text-4xl'}`}>{totalAvailable}</div>
+                  <div className={`text-[10px] sm:text-xs mt-0.5 sm:mt-1 ${isNeoBrutalism ? 'text-white/70 font-semibold uppercase' : 'text-green-200'}`}>예약 가능</div>
                 </div>
                 <div className={isNeoBrutalism ? 'w-[2px] bg-white/30' : 'w-px bg-green-400/30'} />
                 <div className="text-center">
-                  <div className={`font-bold ${isNeoBrutalism ? 'text-3xl md:text-4xl' : 'text-3xl md:text-4xl'}`}>{totalCourts}</div>
-                  <div className={`text-xs mt-1 ${isNeoBrutalism ? 'text-white/70 font-semibold uppercase' : 'text-green-200'}`}>전체 시설</div>
+                  <div className={`font-bold ${isNeoBrutalism ? 'text-2xl sm:text-3xl md:text-4xl' : 'text-2xl sm:text-3xl md:text-4xl'}`}>{totalCourts}</div>
+                  <div className={`text-[10px] sm:text-xs mt-0.5 sm:mt-1 ${isNeoBrutalism ? 'text-white/70 font-semibold uppercase' : 'text-green-200'}`}>전체 시설</div>
                 </div>
               </div>
             )}
 
             {loading && (
-              <div className={`flex gap-6 ${isNeoBrutalism ? 'bg-black/20 px-5 py-3 rounded-[5px] border-2 border-white/30' : ''}`}>
+              <div className={`flex gap-3 sm:gap-6 shrink-0 ${isNeoBrutalism ? 'bg-black/20 px-3 sm:px-5 py-2 sm:py-3 rounded-[5px] border-2 border-white/30' : ''}`}>
                 <div className="text-center">
-                  <div className={`h-9 w-14 ${isNeoBrutalism ? 'bg-white/20' : 'bg-white/10'} rounded animate-pulse mb-1`} />
-                  <div className={`h-3 w-14 ${isNeoBrutalism ? 'bg-white/10' : 'bg-white/5'} rounded animate-pulse`} />
+                  <div className={`h-7 sm:h-9 w-10 sm:w-14 ${isNeoBrutalism ? 'bg-white/20' : 'bg-white/10'} rounded animate-pulse mb-1`} />
+                  <div className={`h-3 w-10 sm:w-14 ${isNeoBrutalism ? 'bg-white/10' : 'bg-white/5'} rounded animate-pulse`} />
                 </div>
                 <div className={isNeoBrutalism ? 'w-[2px] bg-white/30' : 'w-px bg-green-400/30'} />
                 <div className="text-center">
-                  <div className={`h-9 w-14 ${isNeoBrutalism ? 'bg-white/20' : 'bg-white/10'} rounded animate-pulse mb-1`} />
-                  <div className={`h-3 w-14 ${isNeoBrutalism ? 'bg-white/10' : 'bg-white/5'} rounded animate-pulse`} />
+                  <div className={`h-7 sm:h-9 w-10 sm:w-14 ${isNeoBrutalism ? 'bg-white/20' : 'bg-white/10'} rounded animate-pulse mb-1`} />
+                  <div className={`h-3 w-10 sm:w-14 ${isNeoBrutalism ? 'bg-white/10' : 'bg-white/5'} rounded animate-pulse`} />
                 </div>
               </div>
             )}
