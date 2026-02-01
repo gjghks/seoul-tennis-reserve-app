@@ -48,7 +48,7 @@ export default function Home() {
     : 0;
 
   return (
-    <div className={isNeoBrutalism ? 'bg-nb-bg min-h-screen' : ''}>
+    <div className={isNeoBrutalism ? 'bg-nb-bg min-h-screen lg:min-h-0' : ''}>
       <section className={isNeoBrutalism ? 'court-pattern-nb text-white py-6 md:py-8' : 'court-pattern text-white py-6 md:py-8'}>
         <div className="container relative z-10">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
