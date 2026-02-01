@@ -30,7 +30,7 @@ export default function PrivacyPage() {
             </p>
             <ul className="list-disc list-inside mt-2 space-y-1">
               <li>회원 가입 및 관리</li>
-              <li>테니스장 예약 알림 서비스 제공</li>
+              <li>테니스장 예약 현황 정보 제공</li>
               <li>서비스 개선 및 맞춤형 서비스 제공</li>
             </ul>
           </section>

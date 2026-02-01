@@ -47,7 +47,7 @@ export default function TermsPage() {
             <p>서비스는 다음의 서비스를 제공합니다:</p>
             <ul className="list-disc list-inside mt-2 space-y-1">
               <li>서울시 공공 테니스장 예약 현황 정보 제공</li>
-              <li>예약 가능 알림 서비스</li>
+              <li>즐겨찾기 기능</li>
               <li>기타 서비스가 정하는 서비스</li>
             </ul>
           </section>
