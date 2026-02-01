@@ -6,13 +6,14 @@ import { ThemeProvider } from "@/contexts/ThemeContext";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import GoogleAdSense from "@/components/GoogleAdSense";
 
 const geist = Geist({
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://seoul-tennis.vercel.app'),
+  metadataBase: new URL('https://seoul-tennis.com'),
   title: {
     default: "서울 테니스 | 공공 테니스장 예약",
     template: "%s | 서울 테니스",
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "ko_KR",
-    url: "https://seoul-tennis.vercel.app",
+    url: "https://seoul-tennis.com",
     siteName: "서울 테니스",
     title: "서울 테니스 | 공공 테니스장 예약",
     description: "서울시 공공 테니스장 예약 현황을 실시간으로 확인하세요.",
@@ -61,6 +62,7 @@ export default function RootLayout({
     <html lang="ko">
       <body className={geist.className}>
         <GoogleAnalytics />
+        <GoogleAdSense />
         <AuthProvider>
           <ThemeProvider>
             <div className="min-h-screen flex flex-col">
