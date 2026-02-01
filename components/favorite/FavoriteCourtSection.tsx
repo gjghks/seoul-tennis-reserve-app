@@ -74,8 +74,8 @@ export default function FavoriteCourtSection() {
       <section className="container">
         <div className={`${
           isNeoBrutalism 
-            ? 'bg-[#fef3c7] border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000] p-4 sm:p-6'
-            : 'bg-amber-50 rounded-xl p-4 sm:p-6 border border-amber-100'
+            ? 'bg-[#fef3c7] border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000] p-4 lg:p-3'
+            : 'bg-amber-50 rounded-xl p-4 lg:p-3 border border-amber-100'
         }`}>
           <div className="flex items-center gap-3 mb-3">
             <span className="text-2xl">{isNeoBrutalism ? '⭐' : '💡'}</span>
@@ -106,8 +106,8 @@ export default function FavoriteCourtSection() {
       <section className="container">
         <div className={`${
           isNeoBrutalism 
-            ? 'bg-white border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000] p-4 sm:p-6'
-            : 'bg-white rounded-xl p-4 sm:p-6 border border-gray-100 shadow-sm'
+            ? 'bg-white border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000] p-4 lg:p-3'
+            : 'bg-white rounded-xl p-4 lg:p-3 border border-gray-100 shadow-sm'
         }`}>
           <div className="flex items-center gap-3 mb-3">
             <span className="text-2xl">💚</span>

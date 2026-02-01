@@ -35,7 +35,7 @@ function DistrictCard({
       <Link
         href={`/${district.slug}`}
         className={`
-          p-3 sm:p-4 border-2 border-black rounded-[5px] 
+          p-3 lg:p-2 border-2 border-black rounded-[5px] 
           shadow-[3px_3px_0px_0px_#000] sm:shadow-[4px_4px_0px_0px_#000]
           transition-all duration-150 active:scale-[0.98]
           hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none
@@ -120,11 +120,11 @@ export default function DistrictGrid({ stats, loading }: DistrictGridProps) {
 
   if (loading) {
     return (
-      <div className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 ${isNeoBrutalism ? 'gap-3' : 'gap-2 sm:gap-3'}`}>
+      <div className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 ${isNeoBrutalism ? 'gap-3 lg:gap-2' : 'gap-2 sm:gap-3 lg:gap-2'}`}>
         {Array.from({ length: 25 }).map((_, i) => (
           <div
             key={i}
-            className={`h-12 sm:h-14 animate-pulse ${
+            className={`h-12 sm:h-14 lg:h-11 animate-pulse ${
               isNeoBrutalism
                 ? 'bg-gray-100 border-2 border-black/20 rounded-[5px]'
                 : 'bg-gray-50 rounded-lg'
@@ -137,7 +137,7 @@ export default function DistrictGrid({ stats, loading }: DistrictGridProps) {
   }
 
   return (
-    <div className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 ${isNeoBrutalism ? 'gap-3' : 'gap-2 sm:gap-3'}`}>
+    <div className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 ${isNeoBrutalism ? 'gap-3 lg:gap-2' : 'gap-2 sm:gap-3 lg:gap-2'}`}>
       {sortedDistricts.map((district) => (
         <DistrictCard
           key={district.slug}
