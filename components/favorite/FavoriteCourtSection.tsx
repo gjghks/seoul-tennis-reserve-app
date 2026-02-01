@@ -6,40 +6,13 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useFavorites, Favorite } from '@/hooks/useFavorites';
 import { SeoulService } from '@/lib/seoulApi';
+import { KOREAN_TO_SLUG } from '@/lib/constants/districts';
 import FavoriteButton from './FavoriteButton';
 
 interface FavoriteWithStatus extends Favorite {
   status?: string;
   isAvailable?: boolean;
 }
-
-const DISTRICT_SLUGS: Record<string, string> = {
-  '강남구': 'gangnam',
-  '강동구': 'gangdong',
-  '강북구': 'gangbuk',
-  '강서구': 'gangseo',
-  '관악구': 'gwanak',
-  '광진구': 'gwangjin',
-  '구로구': 'guro',
-  '금천구': 'geumcheon',
-  '노원구': 'nowon',
-  '도봉구': 'dobong',
-  '동대문구': 'dongdaemun',
-  '동작구': 'dongjak',
-  '마포구': 'mapo',
-  '서대문구': 'seodaemun',
-  '서초구': 'seocho',
-  '성동구': 'seongdong',
-  '성북구': 'seongbuk',
-  '송파구': 'songpa',
-  '양천구': 'yangcheon',
-  '영등포구': 'yeongdeungpo',
-  '용산구': 'yongsan',
-  '은평구': 'eunpyeong',
-  '종로구': 'jongno',
-  '중구': 'jung',
-  '중랑구': 'jungnang',
-};
 
 export default function FavoriteCourtSection() {
   const { user, loading: authLoading } = useAuth();
@@ -177,7 +150,7 @@ export default function FavoriteCourtSection() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {favoritesWithStatus.map(fav => {
-            const districtSlug = DISTRICT_SLUGS[fav.district] || 'gangnam';
+            const districtSlug = KOREAN_TO_SLUG[fav.district] || 'gangnam-gu';
             return (
               <Link
                 key={fav.id}
