@@ -94,7 +94,7 @@ export default function FavoriteCourtSection() {
                 : 'bg-amber-500 text-white px-4 py-2 rounded-lg hover:bg-amber-600 transition-colors'
             }`}
           >
-            Google로 로그인하기
+            로그인하기
           </Link>
         </div>
       </section>
