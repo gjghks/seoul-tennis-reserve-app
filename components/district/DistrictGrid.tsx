@@ -35,7 +35,7 @@ function DistrictCard({
       <Link
         href={`/${district.slug}`}
         className={`
-          flex items-center px-3 py-[18px] border-2 border-black rounded-[5px] 
+          flex items-center px-3 py-[16px] border-2 border-black rounded-[5px] 
           shadow-[2px_2px_0px_0px_#000] sm:shadow-[3px_3px_0px_0px_#000]
           transition-all duration-150 active:scale-[0.98]
           hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none
@@ -70,7 +70,7 @@ function DistrictCard({
   return (
     <Link
       href={`/${district.slug}`}
-      className={`card flex items-center px-3 py-[18px] hover:shadow-md transition-all group active:scale-[0.98] ${total === 0 ? 'bg-gray-50' : ''}`}
+      className={`card flex items-center px-3 py-[16px] hover:shadow-md transition-all group active:scale-[0.98] ${total === 0 ? 'bg-gray-50' : ''}`}
     >
       <div className="w-full flex items-center justify-between gap-2">
         <h3 className={`font-medium text-sm sm:text-base transition-colors truncate ${total === 0 ? 'text-gray-400' : 'text-gray-900 group-hover:text-green-600'}`}>

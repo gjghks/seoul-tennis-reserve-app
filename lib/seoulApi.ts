@@ -3,6 +3,13 @@ import { NextResponse } from 'next/server';
 const API_KEY = process.env.SEOUL_OPEN_DATA_KEY;
 const BASE_URL = 'http://openAPI.seoul.go.kr:8088';
 
+// 서울시 25개 구
+const SEOUL_DISTRICTS = [
+    '강남구', '강동구', '강북구', '강서구', '관악구', '광진구', '구로구', '금천구',
+    '노원구', '도봉구', '동대문구', '동작구', '마포구', '서대문구', '서초구', '성동구',
+    '성북구', '송파구', '양천구', '영등포구', '용산구', '은평구', '종로구', '중구', '중랑구'
+];
+
 export interface SeoulService {
     SVCID: string;
     MAXCLASSNM: string; // e.g. "체육시설"
@@ -66,9 +73,9 @@ export async function fetchTennisAvailability(startIndex = 1, endIndex = 1000): 
         // The API might allow filtering by name in arguments but the standard path is bulk fetch.
         const allServices = data.ListPublicReservationSport.row;
 
-        // Filter for Tennis
         const tennisServices = allServices.filter(svc =>
-            svc.MINCLASSNM === '테니스장' || svc.SVCNM.includes('테니스')
+            (svc.MINCLASSNM === '테니스장' || svc.SVCNM.includes('테니스')) &&
+            SEOUL_DISTRICTS.includes(svc.AREANM)
         );
 
         return tennisServices;
