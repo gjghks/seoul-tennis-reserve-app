@@ -19,7 +19,7 @@ interface Favorite {
 
 export default function MyPage() {
   const router = useRouter();
-  const { user, loading: authLoading, signOut } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const { isNeoBrutalism } = useTheme();
   const [favorites, setFavorites] = useState<Favorite[]>([]);
   const [loading, setLoading] = useState(true);
@@ -67,11 +67,6 @@ export default function MyPage() {
     }
   };
 
-  const handleSignOut = async () => {
-    await signOut();
-    router.push('/');
-  };
-
   if (authLoading || (!user && !authLoading)) {
     return (
       <div className={`container mx-auto px-4 py-8 scrollbar-hide ${isNeoBrutalism ? 'bg-nb-bg min-h-screen' : ''}`}>
@@ -84,22 +79,11 @@ export default function MyPage() {
 
   return (
     <div className={`container mx-auto px-4 py-8 min-h-screen scrollbar-hide ${isNeoBrutalism ? 'bg-nb-bg' : ''}`}>
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className={`text-2xl mb-2 ${isNeoBrutalism ? 'font-black text-black uppercase' : 'font-bold text-gray-900'}`}>
-            {isNeoBrutalism ? '👤 마이페이지' : '마이페이지'}
-          </h1>
-          <p className={isNeoBrutalism ? 'text-black/70 font-medium' : 'text-gray-500'}>{user?.email}</p>
-        </div>
-        <button
-          onClick={handleSignOut}
-          className={isNeoBrutalism
-            ? 'px-4 py-2 text-sm font-bold text-black bg-white border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all'
-            : 'px-4 py-2 text-sm text-gray-500 hover:text-gray-700 border border-gray-200 hover:border-gray-300 rounded-lg transition-colors'
-          }
-        >
-          로그아웃
-        </button>
+      <div className="mb-8">
+        <h1 className={`text-2xl mb-2 ${isNeoBrutalism ? 'font-black text-black uppercase' : 'font-bold text-gray-900'}`}>
+          {isNeoBrutalism ? '👤 마이페이지' : '마이페이지'}
+        </h1>
+        <p className={isNeoBrutalism ? 'text-black/70 font-medium' : 'text-gray-500'}>{user?.email}</p>
       </div>
 
       <div className="max-w-2xl">
