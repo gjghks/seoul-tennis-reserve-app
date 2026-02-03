@@ -55,6 +55,7 @@ export default function LoginPrompt({ isOpen, onClose, message }: LoginPromptPro
             로그인하기
           </Link>
           <button
+            type="button"
             onClick={onClose}
             className={isNeoBrutalism
               ? 'flex-1 py-3 bg-white text-black font-bold border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all'

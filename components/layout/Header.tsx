@@ -29,7 +29,7 @@ export default function Header() {
                 ? 'bg-black rounded-[5px]' 
                 : 'rounded-lg bg-green-600'
             }`}>
-              <svg className={`w-5 h-5 ${isNeoBrutalism ? 'text-[#84cc16]' : 'text-white'}`} viewBox="0 0 24 24" fill="currentColor">
+              <svg className={`w-5 h-5 ${isNeoBrutalism ? 'text-[#84cc16]' : 'text-white'}`} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="2"/>
                 <path d="M12 2C12 12 12 12 22 12" stroke="currentColor" strokeWidth="2" fill="none"/>
                 <path d="M12 22C12 12 12 12 2 12" stroke="currentColor" strokeWidth="2" fill="none"/>
@@ -42,7 +42,9 @@ export default function Header() {
 
           <nav className="flex items-center gap-2">
             <button
+              type="button"
               onClick={toggleTheme}
+              aria-label={isNeoBrutalism ? '미니멀 테마로 변경' : '네오브루탈 테마로 변경'}
               className={`px-3 py-1.5 text-xs font-bold transition-all ${
                 isNeoBrutalism
                   ? 'bg-black text-[#facc15] border-2 border-black rounded-[5px] shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none'
@@ -67,6 +69,7 @@ export default function Header() {
                   마이페이지
                 </Link>
                 <button
+                  type="button"
                   onClick={handleSignOut}
                   className={`px-3 py-1.5 text-sm transition-colors ${
                     isNeoBrutalism

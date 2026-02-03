@@ -31,6 +31,7 @@ export default function Error({
           일시적인 오류가 발생했습니다. 다시 시도해 주세요.
         </p>
         <button
+          type="button"
           onClick={reset}
           className={`px-6 py-3 font-bold transition-all ${
             isNeoBrutalism
