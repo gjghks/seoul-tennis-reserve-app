@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useToast } from '@/contexts/ToastContext';
 import { supabase } from '@/lib/supabase';
 import LoginPrompt from '@/components/auth/LoginPrompt';
 
@@ -25,6 +26,7 @@ export default function FavoriteButton({
 }: FavoriteButtonProps) {
   const { user, loading: authLoading } = useAuth();
   const { isNeoBrutalism } = useTheme();
+  const { showToast } = useToast();
   const [isFavorite, setIsFavorite] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
@@ -74,9 +76,9 @@ export default function FavoriteButton({
 
         if (!error) {
           setIsFavorite(false);
+          showToast('즐겨찾기에서 제거되었습니다', 'info');
         }
       } else {
-        // 즐겨찾기 추가
         const { error } = await supabase
           .from('favorites')
           .insert([{
@@ -89,6 +91,7 @@ export default function FavoriteButton({
 
         if (!error) {
           setIsFavorite(true);
+          showToast('즐겨찾기에 추가되었습니다', 'success');
         }
       }
     } catch {

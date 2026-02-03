@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useToast } from '@/contexts/ToastContext';
 import { supabase } from '@/lib/supabase';
 import { KOREAN_TO_SLUG } from '@/lib/constants/districts';
 
@@ -21,6 +22,7 @@ export default function MyPage() {
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
   const { isNeoBrutalism } = useTheme();
+  const { showToast } = useToast();
   const [favorites, setFavorites] = useState<Favorite[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -64,6 +66,7 @@ export default function MyPage() {
 
     if (!error) {
       setFavorites(favorites.filter(f => f.svc_id !== svcId));
+      showToast('즐겨찾기에서 제거되었습니다', 'info');
     }
   };
 
