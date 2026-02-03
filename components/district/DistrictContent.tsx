@@ -1,5 +1,6 @@
 'use client';
 
+import PullToRefresh from 'react-simple-pull-to-refresh';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useTennisData } from '@/contexts/TennisDataContext';
 import { SeoulService } from '@/lib/seoulApi';
@@ -18,7 +19,21 @@ export default function DistrictContent({
   districtName 
 }: DistrictContentProps) {
   const { isNeoBrutalism } = useTheme();
-  const { courts: allCourts, isLoading } = useTennisData();
+  const { courts: allCourts, isLoading, mutate } = useTennisData();
+
+  const handleRefresh = async () => {
+    await mutate();
+  };
+
+  const RefreshIndicator = (
+    <div className={`flex items-center justify-center py-4 ${isNeoBrutalism ? 'text-black font-bold' : 'text-green-600'}`}>
+      <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24" aria-hidden="true">
+        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+      </svg>
+      <span>새로고침 중...</span>
+    </div>
+  );
 
   const koreanDistrict = SLUG_TO_KOREAN[district] || district;
   
@@ -37,24 +52,34 @@ export default function DistrictContent({
   const loading = isLoading && initialCourts.length === 0;
 
   return (
-    <div className={`min-h-screen pb-20 scrollbar-hide ${isNeoBrutalism ? 'bg-nb-bg' : 'bg-gray-50'}`}>
+    <PullToRefresh
+      onRefresh={handleRefresh}
+      pullingContent={
+        <div className={`flex items-center justify-center py-4 ${isNeoBrutalism ? 'text-black font-bold' : 'text-green-600'}`}>
+          <span>↓ 당겨서 새로고침</span>
+        </div>
+      }
+      refreshingContent={RefreshIndicator}
+      className={`min-h-screen pb-20 scrollbar-hide ${isNeoBrutalism ? 'bg-nb-bg' : 'bg-gray-50'}`}
+    >
       <div className={`sticky top-14 z-40 ${
         isNeoBrutalism 
           ? 'bg-[#88aaee] border-b-[3px] border-black' 
           : 'bg-white border-b border-gray-200'
       }`}>
-        <div className="container py-4 flex items-center justify-between">
-          <Link href="/" className={`text-sm ${
-            isNeoBrutalism 
-              ? 'text-black font-bold hover:underline underline-offset-4' 
-              : 'text-gray-500 hover:text-green-600'
-          }`}>
-            ← 전체 지역
-          </Link>
-          <h1 className={`text-lg ${isNeoBrutalism ? 'font-black text-black uppercase' : 'font-bold text-gray-900'}`}>
-            {isNeoBrutalism ? `${districtName}` : `${districtName} 테니스장`}
+        <div className="container py-4">
+          <nav className={`flex items-center gap-2 text-sm ${isNeoBrutalism ? 'font-bold' : ''}`}>
+            <Link href="/" className={isNeoBrutalism ? 'text-black hover:underline underline-offset-4' : 'text-gray-400 hover:text-green-600 transition-colors'}>
+              홈
+            </Link>
+            <svg className={`w-4 h-4 ${isNeoBrutalism ? 'text-black' : 'text-gray-300'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+            <span className={isNeoBrutalism ? 'text-black/70' : 'text-gray-600'}>{districtName}</span>
+          </nav>
+          <h1 className={`text-xl mt-2 ${isNeoBrutalism ? 'font-black text-black uppercase' : 'font-bold text-gray-900'}`}>
+            {isNeoBrutalism ? `🎾 ${districtName}` : `${districtName} 테니스장`}
           </h1>
-          <div className="w-16" />
         </div>
       </div>
 
@@ -72,12 +97,38 @@ export default function DistrictContent({
             ))}
           </div>
         ) : courts.length === 0 ? (
-          <div className={`text-center py-20 ${
+          <div className={`text-center py-16 ${
             isNeoBrutalism 
-              ? 'text-black font-bold' 
-              : 'text-gray-500'
+              ? 'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]' 
+              : 'bg-white rounded-2xl border border-gray-100'
           }`}>
-            이 지역에는 등록된 공공 테니스장 정보가 없습니다.
+            <div className={`w-20 h-20 mx-auto mb-6 flex items-center justify-center ${
+              isNeoBrutalism 
+                ? 'bg-[#facc15] border-2 border-black rounded-[5px]' 
+                : 'bg-gray-100 rounded-full'
+            }`}>
+              <svg className={`w-10 h-10 ${isNeoBrutalism ? 'text-black' : 'text-gray-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M12 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 className={`text-lg mb-2 ${isNeoBrutalism ? 'font-black text-black uppercase' : 'font-semibold text-gray-900'}`}>
+              등록된 테니스장이 없습니다
+            </h3>
+            <p className={`mb-6 ${isNeoBrutalism ? 'text-black/60 font-medium' : 'text-gray-500'}`}>
+              {districtName}에는 아직 공공 테니스장 정보가 등록되지 않았습니다.
+            </p>
+            <Link
+              href="/"
+              className={isNeoBrutalism
+                ? 'inline-flex items-center gap-2 bg-[#88aaee] text-black font-bold px-5 py-2.5 border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all'
+                : 'inline-flex items-center gap-2 text-green-600 font-medium hover:text-green-700'
+              }
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              다른 지역 둘러보기
+            </Link>
           </div>
         ) : (
           <div className="grid gap-4">
@@ -181,6 +232,6 @@ export default function DistrictContent({
           </div>
         )}
       </div>
-    </div>
+    </PullToRefresh>
   );
 }
