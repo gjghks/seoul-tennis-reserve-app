@@ -72,12 +72,38 @@ export default function DistrictContent({
             ))}
           </div>
         ) : courts.length === 0 ? (
-          <div className={`text-center py-20 ${
+          <div className={`text-center py-16 ${
             isNeoBrutalism 
-              ? 'text-black font-bold' 
-              : 'text-gray-500'
+              ? 'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]' 
+              : 'bg-white rounded-2xl border border-gray-100'
           }`}>
-            이 지역에는 등록된 공공 테니스장 정보가 없습니다.
+            <div className={`w-20 h-20 mx-auto mb-6 flex items-center justify-center ${
+              isNeoBrutalism 
+                ? 'bg-[#facc15] border-2 border-black rounded-[5px]' 
+                : 'bg-gray-100 rounded-full'
+            }`}>
+              <svg className={`w-10 h-10 ${isNeoBrutalism ? 'text-black' : 'text-gray-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M12 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 className={`text-lg mb-2 ${isNeoBrutalism ? 'font-black text-black uppercase' : 'font-semibold text-gray-900'}`}>
+              등록된 테니스장이 없습니다
+            </h3>
+            <p className={`mb-6 ${isNeoBrutalism ? 'text-black/60 font-medium' : 'text-gray-500'}`}>
+              {districtName}에는 아직 공공 테니스장 정보가 등록되지 않았습니다.
+            </p>
+            <Link
+              href="/"
+              className={isNeoBrutalism
+                ? 'inline-flex items-center gap-2 bg-[#88aaee] text-black font-bold px-5 py-2.5 border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all'
+                : 'inline-flex items-center gap-2 text-green-600 font-medium hover:text-green-700'
+              }
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              다른 지역 둘러보기
+            </Link>
           </div>
         ) : (
           <div className="grid gap-4">
