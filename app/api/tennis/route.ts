@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { fetchTennisAvailability, SeoulService } from '@/lib/seoulApi';
+import { fetchTennisAvailability } from '@/lib/seoulApi';
 import { SLUG_TO_KOREAN } from '@/lib/constants/districts';
 
-export const revalidate = 600; // 10분 캐싱
+export const revalidate = 300;
 
 export async function GET(request: NextRequest) {
   try {

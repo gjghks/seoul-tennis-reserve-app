@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useTennisData } from '@/contexts/TennisDataContext';
 import { useFavorites, Favorite } from '@/hooks/useFavorites';
-import { SeoulService } from '@/lib/seoulApi';
 import { KOREAN_TO_SLUG } from '@/lib/constants/districts';
 import FavoriteButton from './FavoriteButton';
 
@@ -18,52 +18,28 @@ export default function FavoriteCourtSection() {
   const { user, loading: authLoading } = useAuth();
   const { isNeoBrutalism } = useTheme();
   const { favorites, loading: favLoading } = useFavorites();
-  const [favoritesWithStatus, setFavoritesWithStatus] = useState<FavoriteWithStatus[]>([]);
-  const [statusLoading, setStatusLoading] = useState(false);
+  const { courts, isLoading: courtsLoading } = useTennisData();
 
-  useEffect(() => {
-    if (favorites.length === 0) {
-      setFavoritesWithStatus([]);
-      return;
-    }
+  const favoritesWithStatus = useMemo(() => {
+    if (favorites.length === 0) return [];
 
-    const fetchStatuses = async () => {
-      setStatusLoading(true);
-      try {
-        const res = await fetch('/api/tennis');
-        if (!res.ok) throw new Error('Failed to fetch');
-        const data = await res.json();
-        const courts: SeoulService[] = data.courts || [];
+    const courtMap = new Map(courts.map(court => [court.SVCID, court]));
 
-        const courtMap = new Map<string, SeoulService>();
-        courts.forEach(court => courtMap.set(court.SVCID, court));
+    const updated: FavoriteWithStatus[] = favorites.map(fav => {
+      const court = courtMap.get(fav.svc_id);
+      return {
+        ...fav,
+        status: court?.SVCSTATNM || '정보 없음',
+        isAvailable: court?.SVCSTATNM === '접수중' || court?.SVCSTATNM?.includes('예약가능'),
+      };
+    });
 
-        const updated = favorites.map(fav => {
-          const court = courtMap.get(fav.svc_id);
-          return {
-            ...fav,
-            status: court?.SVCSTATNM || '정보 없음',
-            isAvailable: court?.SVCSTATNM === '접수중' || court?.SVCSTATNM?.includes('예약가능'),
-          };
-        });
-
-        updated.sort((a, b) => {
-          if (a.isAvailable && !b.isAvailable) return -1;
-          if (!a.isAvailable && b.isAvailable) return 1;
-          return 0;
-        });
-
-        setFavoritesWithStatus(updated);
-      } catch (err) {
-        console.error('Error fetching court statuses:', err);
-        setFavoritesWithStatus(favorites.map(f => ({ ...f, status: '정보 없음' })));
-      } finally {
-        setStatusLoading(false);
-      }
-    };
-
-    fetchStatuses();
-  }, [favorites]);
+    return updated.sort((a, b) => {
+      if (a.isAvailable && !b.isAvailable) return -1;
+      if (!a.isAvailable && b.isAvailable) return 1;
+      return 0;
+    });
+  }, [favorites, courts]);
 
   if (authLoading || favLoading) {
     return null;
@@ -123,11 +99,13 @@ export default function FavoriteCourtSection() {
     );
   }
 
+  const statusLoading = courtsLoading && courts.length === 0;
+
   return (
     <section className="container">
       <div className="mb-4">
         <h2 className={`mb-1 ${isNeoBrutalism ? 'text-lg font-black text-black uppercase tracking-tight' : 'text-base font-semibold text-gray-900'}`}>
-          {isNeoBrutalism ? '⭐ 내 즐겨찾기' : '내 즐겨찾기'}
+          {isNeoBrutalism ? '내 즐겨찾기' : '내 즐겨찾기'}
         </h2>
         <p className={`text-sm ${isNeoBrutalism ? 'text-black/60 font-medium' : 'text-gray-500'}`}>
           즐겨찾기한 테니스장의 예약 현황
@@ -138,7 +116,7 @@ export default function FavoriteCourtSection() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[1, 2, 3].map(i => (
             <div 
-              key={i}
+              key={`fav-skeleton-${i}`}
               className={`h-24 animate-pulse ${
                 isNeoBrutalism 
                   ? 'bg-gray-100 border-[3px] border-black/30 rounded-[10px]'
@@ -181,15 +159,13 @@ export default function FavoriteCourtSection() {
                   }`}>
                     {fav.status}
                   </span>
-                  <div onClick={e => e.preventDefault()}>
-                    <FavoriteButton
-                      svcId={fav.svc_id}
-                      svcName={fav.svc_name}
-                      district={fav.district}
-                      placeName={fav.place_name || undefined}
-                      className="!p-1 !shadow-none"
-                    />
-                  </div>
+                  <FavoriteButton
+                    svcId={fav.svc_id}
+                    svcName={fav.svc_name}
+                    district={fav.district}
+                    placeName={fav.place_name || undefined}
+                    className="!p-1 !shadow-none"
+                  />
                 </div>
                 <h3 className={`font-bold mb-1 line-clamp-1 ${
                   isNeoBrutalism ? 'text-black' : 'text-gray-900'

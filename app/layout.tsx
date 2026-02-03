@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
-import { AuthProvider } from "@/contexts/AuthContext";
-import { ThemeProvider } from "@/contexts/ThemeContext";
+import Providers from "@/components/Providers";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
@@ -63,17 +62,15 @@ export default function RootLayout({
       <body className={geist.className}>
         <GoogleAnalytics />
         <GoogleAdSense />
-        <AuthProvider>
-          <ThemeProvider>
-            <div className="min-h-screen flex flex-col">
-              <Header />
-              <main className="flex-1 flex flex-col pb-20">
-                {children}
-              </main>
-              <Footer />
-            </div>
-          </ThemeProvider>
-        </AuthProvider>
+        <Providers>
+          <div className="min-h-screen flex flex-col">
+            <Header />
+            <main className="flex-1 flex flex-col pb-20">
+              {children}
+            </main>
+            <Footer />
+          </div>
+        </Providers>
       </body>
     </html>
   );

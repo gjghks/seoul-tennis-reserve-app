@@ -1,5 +1,3 @@
-import { NextResponse } from 'next/server';
-
 const API_KEY = process.env.SEOUL_OPEN_DATA_KEY;
 const BASE_URL = 'http://openAPI.seoul.go.kr:8088';
 
@@ -57,7 +55,7 @@ export async function fetchTennisAvailability(startIndex = 1, endIndex = 1000): 
     const url = `${BASE_URL}/${API_KEY}/json/ListPublicReservationSport/${startIndex}/${endIndex}/`;
 
     try {
-        const res = await fetch(url, { next: { revalidate: 0 } }); // No cache
+        const res = await fetch(url, { next: { revalidate: 300 } });
         if (!res.ok) {
             throw new Error(`Failed to fetch Seoul API: ${res.status}`);
         }
