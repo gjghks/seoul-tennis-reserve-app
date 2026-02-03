@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/Providers";
@@ -11,6 +11,14 @@ const geist = Geist({
   subsets: ["latin"],
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  themeColor: "#22c55e",
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://seoul-tennis.com'),
   title: {
@@ -21,6 +29,15 @@ export const metadata: Metadata = {
   keywords: ["서울", "테니스장", "예약", "공공시설", "테니스", "스포츠", "예약현황"],
   authors: [{ name: "서울 테니스" }],
   creator: "서울 테니스",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "서울테니스",
+  },
+  formatDetection: {
+    telephone: false,
+  },
   openGraph: {
     type: "website",
     locale: "ko_KR",
