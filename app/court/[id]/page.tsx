@@ -1,6 +1,7 @@
+import Image from 'next/image';
+import Link from 'next/link';
 import { fetchTennisAvailability } from '@/lib/seoulApi';
 import TimeSlotsWrapper from '@/components/court/TimeSlotsWrapper';
-import Link from 'next/link';
 
 async function getCourt(id: string) {
     const services = await fetchTennisAvailability(1, 1000);
@@ -86,11 +87,13 @@ export default async function CourtDetailPage({ params }: { params: Promise<{ id
                         <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
                             {court.IMGURL ? (
                                 <div className="aspect-video w-full bg-gray-100 relative">
-                                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img
+                                    <Image
                                         src={court.IMGURL}
                                         alt={court.SVCNM}
-                                        className="w-full h-full object-cover"
+                                        fill
+                                        sizes="(max-width: 768px) 100vw, 600px"
+                                        className="object-cover"
+                                        priority
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end p-6">
                                         <p className="text-white font-medium">시설 전경</p>
