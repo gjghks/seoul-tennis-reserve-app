@@ -1,20 +1,14 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useTheme } from '@/contexts/ThemeContext';
 
 export default function Error({
-  error,
   reset,
 }: {
   error: Error & { digest?: string };
   reset: () => void;
 }) {
   const { isNeoBrutalism } = useTheme();
-
-  useEffect(() => {
-    console.error(error);
-  }, [error]);
 
   return (
     <div className="container py-16">

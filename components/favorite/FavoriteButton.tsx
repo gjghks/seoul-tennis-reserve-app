@@ -91,8 +91,7 @@ export default function FavoriteButton({
           setIsFavorite(true);
         }
       }
-    } catch (err) {
-      console.error('Error toggling favorite:', err);
+    } catch {
     } finally {
       setLoading(false);
     }

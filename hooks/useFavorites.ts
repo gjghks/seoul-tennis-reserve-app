@@ -33,9 +33,7 @@ export function useFavorites() {
       .eq('user_id', user.id)
       .order('created_at', { ascending: false });
 
-    if (error) {
-      console.error('Error fetching favorites:', error);
-    } else {
+    if (!error) {
       setFavorites(data || []);
     }
     setLoading(false);

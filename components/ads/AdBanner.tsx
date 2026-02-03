@@ -29,8 +29,7 @@ export default function AdBanner({
     try {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
       isLoaded.current = true;
-    } catch (err) {
-      console.error('AdSense error:', err);
+    } catch {
     }
   }, []);
 

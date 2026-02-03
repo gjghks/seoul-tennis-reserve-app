@@ -88,9 +88,8 @@ export default function CourtDetailPage() {
         } else {
           setCourt(foundCourt);
         }
-      } catch (err) {
+      } catch {
         setError('데이터를 불러오는데 실패했습니다.');
-        console.error(err);
       } finally {
         setLoading(false);
       }
