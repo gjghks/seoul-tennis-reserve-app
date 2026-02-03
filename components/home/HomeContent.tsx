@@ -1,10 +1,15 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import PullToRefresh from 'react-simple-pull-to-refresh';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useTennisData, DistrictStats } from '@/contexts/TennisDataContext';
 import DistrictGrid from '@/components/district/DistrictGrid';
-import FavoriteCourtSection from '@/components/favorite/FavoriteCourtSection';
+
+const FavoriteCourtSection = dynamic(
+  () => import('@/components/favorite/FavoriteCourtSection'),
+  { ssr: false }
+);
 
 interface HomeContentProps {
   initialStats?: Record<string, DistrictStats>;

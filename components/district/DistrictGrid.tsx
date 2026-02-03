@@ -1,5 +1,6 @@
 'use client';
 
+import { memo, useMemo } from 'react';
 import Link from 'next/link';
 import { DISTRICTS, District } from '@/lib/constants/districts';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -14,7 +15,7 @@ interface DistrictGridProps {
   loading?: boolean;
 }
 
-function DistrictCard({
+const DistrictCard = memo(function DistrictCard({
   district,
   stats,
   loading,
@@ -94,29 +95,31 @@ function DistrictCard({
       </div>
     </Link>
   );
-}
+});
 
 export default function DistrictGrid({ stats, loading }: DistrictGridProps) {
   const { isNeoBrutalism } = useTheme();
   
-  const sortedDistricts = [...DISTRICTS].sort((a, b) => {
-    const aStats = stats?.[a.nameKo];
-    const bStats = stats?.[b.nameKo];
-    
-    const aAvailable = aStats?.available || 0;
-    const bAvailable = bStats?.available || 0;
-    const aTotal = aStats?.count || 0;
-    const bTotal = bStats?.count || 0;
-    
-    const aCategory = aAvailable > 0 ? 0 : aTotal > 0 ? 1 : 2;
-    const bCategory = bAvailable > 0 ? 0 : bTotal > 0 ? 1 : 2;
-    
-    if (aCategory !== bCategory) {
-      return aCategory - bCategory;
-    }
-    
-    return a.nameKo.localeCompare(b.nameKo, 'ko');
-  });
+  const sortedDistricts = useMemo(() => {
+    return [...DISTRICTS].sort((a, b) => {
+      const aStats = stats?.[a.nameKo];
+      const bStats = stats?.[b.nameKo];
+      
+      const aAvailable = aStats?.available || 0;
+      const bAvailable = bStats?.available || 0;
+      const aTotal = aStats?.count || 0;
+      const bTotal = bStats?.count || 0;
+      
+      const aCategory = aAvailable > 0 ? 0 : aTotal > 0 ? 1 : 2;
+      const bCategory = bAvailable > 0 ? 0 : bTotal > 0 ? 1 : 2;
+      
+      if (aCategory !== bCategory) {
+        return aCategory - bCategory;
+      }
+      
+      return a.nameKo.localeCompare(b.nameKo, 'ko');
+    });
+  }, [stats]);
 
   if (loading) {
     return (
