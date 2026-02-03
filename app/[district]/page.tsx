@@ -23,6 +23,9 @@ export async function generateMetadata({ params }: DistrictPageProps): Promise<M
   return {
     title: `${koreanDistrict} 테니스장`,
     description: `${koreanDistrict} 공공 테니스장 예약 현황을 확인하세요.`,
+    alternates: {
+      canonical: `/${district}`,
+    },
   };
 }
 

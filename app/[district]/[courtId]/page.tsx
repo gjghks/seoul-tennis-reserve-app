@@ -1,6 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import Script from 'next/script';
 import { useEffect, useState, useRef } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
@@ -10,6 +11,41 @@ import { getDistrictBySlug } from '@/lib/constants/districts';
 import { useTheme } from '@/contexts/ThemeContext';
 import FavoriteButton from '@/components/favorite/FavoriteButton';
 import StickyHeader from '@/components/court-detail/StickyHeader';
+
+function CourtJsonLd({ court, districtSlug }: { court: SeoulService; districtSlug: string }) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SportsActivityLocation",
+    "name": court.SVCNM,
+    "description": `${court.AREANM} ${court.PLACENM} 테니스장`,
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": court.AREANM,
+      "addressRegion": "서울특별시",
+      "addressCountry": "KR"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "addressCountry": "KR"
+    },
+    "telephone": court.TELNO || undefined,
+    "image": court.IMGURL || undefined,
+    "url": `https://seoul-tennis.com/${districtSlug}/${encodeURIComponent(court.SVCID)}`,
+    "openingHours": court.V_MIN && court.V_MAX ? `Mo-Su ${court.V_MIN}-${court.V_MAX}` : undefined,
+    "sportsActivityLocation": {
+      "@type": "SportsActivityLocation",
+      "name": "테니스 코트"
+    }
+  };
+
+  return (
+    <Script
+      id="court-jsonld"
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+}
 
 const DetailContent = dynamic(() => import('@/components/court-detail/DetailContent'), {
   loading: () => <div className="animate-pulse h-64 bg-gray-100 rounded-xl" />,
@@ -137,6 +173,7 @@ export default function CourtDetailPage() {
 
   return (
     <div className={`min-h-screen pb-24 scrollbar-hide ${isNeoBrutalism ? 'bg-nb-bg' : 'bg-gray-50'}`}>
+      <CourtJsonLd court={court} districtSlug={districtSlug} />
       <StickyHeader 
         court={court} 
         isAvailable={isAvailable || false} 

@@ -1,8 +1,15 @@
+import type { Metadata } from 'next';
 import { fetchTennisAvailability } from '@/lib/seoulApi';
 import HomeContent from '@/components/home/HomeContent';
 import { DistrictStats } from '@/contexts/TennisDataContext';
 
 export const revalidate = 300;
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: '/',
+  },
+};
 
 async function getInitialData(): Promise<Record<string, DistrictStats>> {
   try {

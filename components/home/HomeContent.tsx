@@ -54,7 +54,7 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
         </div>
       }
       refreshingContent={RefreshIndicator}
-      className={`h-[calc(100dvh-56px-80px)] overflow-y-auto scrollbar-hide flex flex-col ${isNeoBrutalism ? 'bg-nb-bg' : ''}`}
+      className={`h-[var(--main-height)] overflow-y-auto scrollbar-hide flex flex-col ${isNeoBrutalism ? 'bg-nb-bg' : ''}`}
     >
       <section className={isNeoBrutalism ? 'court-pattern-nb text-white py-4 lg:py-3' : 'court-pattern text-white py-4 lg:py-3'}>
         <div className="container relative z-10">

@@ -69,6 +69,28 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "서울 테니스",
+  "url": "https://seoul-tennis.com",
+  "description": "서울시 공공 테니스장 예약 현황을 실시간으로 확인하세요. 25개 자치구 공공 테니스장 예약 가능 시간을 한눈에.",
+  "inLanguage": "ko-KR",
+  "publisher": {
+    "@type": "Organization",
+    "name": "서울 테니스",
+    "url": "https://seoul-tennis.com"
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://seoul-tennis.com/{district}"
+    },
+    "query-input": "required name=district"
+  }
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -76,6 +98,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className={geist.className}>
         <GoogleAnalytics />
         <GoogleAdSense />
