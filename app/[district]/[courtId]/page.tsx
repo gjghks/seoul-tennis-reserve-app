@@ -10,6 +10,7 @@ import { SeoulService } from '@/lib/seoulApi';
 import { getDistrictBySlug } from '@/lib/constants/districts';
 import { useTheme } from '@/contexts/ThemeContext';
 import FavoriteButton from '@/components/favorite/FavoriteButton';
+import ShareButton from '@/components/ui/ShareButton';
 import StickyHeader from '@/components/court-detail/StickyHeader';
 
 function CourtJsonLd({ court, districtSlug }: { court: SeoulService; districtSlug: string }) {
@@ -221,13 +222,20 @@ export default function CourtDetailPage() {
                 {court.PLACENM}
               </p>
             </div>
-            <FavoriteButton
-              svcId={court.SVCID}
-              svcName={court.SVCNM}
-              district={court.AREANM}
-              placeName={court.PLACENM}
-              showLabel
-            />
+            <div className="flex items-center gap-2">
+              <ShareButton
+                title={court.SVCNM}
+                text={`${court.AREANM} ${court.PLACENM} 테니스장`}
+                showLabel
+              />
+              <FavoriteButton
+                svcId={court.SVCID}
+                svcName={court.SVCNM}
+                district={court.AREANM}
+                placeName={court.PLACENM}
+                showLabel
+              />
+            </div>
           </div>
         </div>
       </div>
