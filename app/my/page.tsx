@@ -107,31 +107,14 @@ export default function MyPage() {
           </div>
         ) : favorites.length === 0 ? (
           <div className={isNeoBrutalism
-            ? 'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] py-12 px-6 text-center'
-            : 'bg-white rounded-2xl border border-gray-100 py-12 px-6 text-center'
+            ? 'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] p-6 text-center'
+            : 'bg-white rounded-xl border border-gray-200 p-6 text-center'
           }>
-            <div className={`w-16 h-16 mx-auto mb-4 flex items-center justify-center ${
-              isNeoBrutalism 
-                ? 'bg-[#f472b6] border-2 border-black rounded-[5px]' 
-                : 'bg-pink-50 rounded-full'
-            }`}>
-              <svg className={`w-8 h-8 ${isNeoBrutalism ? 'text-black' : 'text-pink-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg>
-            </div>
-            <h3 className={`text-lg mb-2 ${isNeoBrutalism ? 'font-black text-black' : 'font-semibold text-gray-900'}`}>
-              즐겨찾기가 비어있습니다
-            </h3>
-            <p className={`mb-6 ${isNeoBrutalism ? 'text-black/60 font-medium' : 'text-gray-500'}`}>
-              자주 가는 테니스장을 즐겨찾기에 추가해보세요!
-            </p>
+            <p className={isNeoBrutalism ? 'text-black/60 font-medium mb-4' : 'text-gray-500 mb-4'}>즐겨찾기한 테니스장이 없습니다.</p>
             <Link href="/" className={isNeoBrutalism
-              ? 'inline-flex items-center gap-2 bg-[#88aaee] text-black font-bold px-5 py-2.5 border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all'
-              : 'inline-flex items-center gap-2 text-green-600 font-medium hover:text-green-700'
+              ? 'inline-block bg-[#88aaee] text-black font-bold px-4 py-2 border-2 border-black rounded-[5px] shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all text-sm'
+              : 'text-green-600 hover:underline text-sm'
             }>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
               테니스장 둘러보기
             </Link>
           </div>
