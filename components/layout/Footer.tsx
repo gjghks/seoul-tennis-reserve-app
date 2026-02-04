@@ -45,6 +45,13 @@ export default function Footer() {
           >
             문의하기
           </Link>
+          <span>|</span>
+          <Link 
+            href="/sitemap-page" 
+            className={`hover:underline ${isNeoBrutalism ? 'hover:text-white' : 'hover:text-gray-600'}`}
+          >
+            사이트맵
+          </Link>
         </div>
       </div>
     </footer>
