@@ -13,6 +13,7 @@ export interface TennisApiResponse {
   total: number;
   byDistrict: Record<string, DistrictStats>;
   courts: SeoulService[];
+  lastUpdated?: string;
 }
 
 interface TennisDataContextType {
@@ -21,6 +22,7 @@ interface TennisDataContextType {
   courts: SeoulService[];
   isLoading: boolean;
   error: Error | undefined;
+  lastUpdated: string | undefined;
   mutate: () => Promise<TennisApiResponse | undefined>;
 }
 
@@ -83,8 +85,9 @@ function TennisDataProviderInner({
     data,
     stats: data?.byDistrict,
     courts: data?.courts || [],
-    isLoading: isLoading && !data, // fallback 있으면 로딩 아님
+    isLoading: isLoading && !data,
     error,
+    lastUpdated: data?.lastUpdated,
     mutate,
   };
 

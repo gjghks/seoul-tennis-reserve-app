@@ -40,6 +40,7 @@ export async function GET(request: NextRequest) {
       total: services.length,
       byDistrict,
       courts: services,
+      lastUpdated: new Date().toISOString(),
     });
   } catch (error) {
     console.error('Error fetching tennis data:', error);

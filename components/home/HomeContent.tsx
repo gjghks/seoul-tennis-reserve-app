@@ -5,6 +5,9 @@ import PullToRefresh from 'react-simple-pull-to-refresh';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useTennisData, DistrictStats } from '@/contexts/TennisDataContext';
 import DistrictGrid from '@/components/district/DistrictGrid';
+import AdBanner from '@/components/ads/AdBanner';
+import { AD_SLOTS } from '@/lib/adConfig';
+import LastUpdated from '@/components/ui/LastUpdated';
 
 const FavoriteCourtSection = dynamic(
   () => import('@/components/favorite/FavoriteCourtSection'),
@@ -17,7 +20,7 @@ interface HomeContentProps {
 
 export default function HomeContent({ initialStats }: HomeContentProps) {
   const { isNeoBrutalism } = useTheme();
-  const { stats, isLoading, error, mutate } = useTennisData();
+  const { stats, isLoading, error, mutate, lastUpdated } = useTennisData();
 
   const displayStats = stats || initialStats;
 
@@ -66,6 +69,12 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
               <p className={`text-xs sm:text-sm hidden sm:block ${isNeoBrutalism ? 'text-white/80 font-medium' : 'text-green-100'}`}>
                 예약 가능한 테니스장을 찾아보세요
               </p>
+              {lastUpdated && (
+                <LastUpdated 
+                  timestamp={lastUpdated} 
+                  className={`mt-1 ${isNeoBrutalism ? 'text-white/60' : 'text-green-200/80'}`} 
+                />
+              )}
             </div>
 
             {!showLoading && !error && (
@@ -103,6 +112,12 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
         <FavoriteCourtSection />
       </div>
 
+      {AD_SLOTS.HOME_TOP && (
+        <div className="container mb-4">
+          <AdBanner adSlot={AD_SLOTS.HOME_TOP} adFormat="horizontal" className="min-h-[90px]" />
+        </div>
+      )}
+
       <section className="container flex-1 flex flex-col pb-6">
         <div className="mb-4 lg:mb-3">
           <h2 className={`mb-2 ${isNeoBrutalism ? 'text-xl font-black text-black uppercase tracking-tight' : 'text-lg font-semibold text-gray-900'}`}>
@@ -128,6 +143,12 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
 
         {!error && (
           <DistrictGrid stats={displayStats || undefined} loading={showLoading} />
+        )}
+
+        {AD_SLOTS.HOME_BOTTOM && (
+          <div className="mt-6">
+            <AdBanner adSlot={AD_SLOTS.HOME_BOTTOM} adFormat="auto" className="min-h-[250px]" />
+          </div>
         )}
       </section>
     </PullToRefresh>

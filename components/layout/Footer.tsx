@@ -38,6 +38,13 @@ export default function Footer() {
           >
             이용약관
           </Link>
+          <span>|</span>
+          <Link 
+            href="/contact" 
+            className={`hover:underline ${isNeoBrutalism ? 'hover:text-white' : 'hover:text-gray-600'}`}
+          >
+            문의하기
+          </Link>
         </div>
       </div>
     </footer>

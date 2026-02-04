@@ -5,6 +5,9 @@ import { useTennisData } from '@/contexts/TennisDataContext';
 import { SeoulService } from '@/lib/seoulApi';
 import { SLUG_TO_KOREAN } from '@/lib/constants/districts';
 import Link from 'next/link';
+import AdBanner from '@/components/ads/AdBanner';
+import { AD_SLOTS } from '@/lib/adConfig';
+import LastUpdated from '@/components/ui/LastUpdated';
 
 interface DistrictContentProps {
   district: string;
@@ -18,7 +21,7 @@ export default function DistrictContent({
   districtName 
 }: DistrictContentProps) {
   const { isNeoBrutalism } = useTheme();
-  const { courts: allCourts, isLoading } = useTennisData();
+  const { courts: allCourts, isLoading, lastUpdated } = useTennisData();
 
   const koreanDistrict = SLUG_TO_KOREAN[district] || district;
   
@@ -51,14 +54,25 @@ export default function DistrictContent({
           }`}>
             ← 전체 지역
           </Link>
-          <h1 className={`text-lg ${isNeoBrutalism ? 'font-black text-black uppercase' : 'font-bold text-gray-900'}`}>
-            {isNeoBrutalism ? `${districtName}` : `${districtName} 테니스장`}
-          </h1>
+          <div className="text-center">
+            <h1 className={`text-lg ${isNeoBrutalism ? 'font-black text-black uppercase' : 'font-bold text-gray-900'}`}>
+              {isNeoBrutalism ? `${districtName}` : `${districtName} 테니스장`}
+            </h1>
+            {lastUpdated && (
+              <LastUpdated timestamp={lastUpdated} className="justify-center mt-0.5" />
+            )}
+          </div>
           <div className="w-16" />
         </div>
       </div>
 
       <div className="h-6" aria-hidden="true" />
+
+      {AD_SLOTS.DISTRICT_TOP && (
+        <div className="container mb-4">
+          <AdBanner adSlot={AD_SLOTS.DISTRICT_TOP} adFormat="horizontal" className="min-h-[90px]" />
+        </div>
+      )}
 
       <div className="container pb-6">
         {loading ? (

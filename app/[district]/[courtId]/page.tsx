@@ -12,6 +12,9 @@ import { useTheme } from '@/contexts/ThemeContext';
 import FavoriteButton from '@/components/favorite/FavoriteButton';
 import ShareButton from '@/components/ui/ShareButton';
 import StickyHeader from '@/components/court-detail/StickyHeader';
+import ReviewSection from '@/components/review/ReviewSection';
+import AdBanner from '@/components/ads/AdBanner';
+import { AD_SLOTS } from '@/lib/adConfig';
 
 function CourtJsonLd({ court, districtSlug }: { court: SeoulService; districtSlug: string }) {
   const jsonLd = {
@@ -372,6 +375,20 @@ export default function CourtDetailPage() {
 
         {court.DTLCONT && <DetailContent content={court.DTLCONT} />}
 
+        {AD_SLOTS.COURT_DETAIL_MIDDLE && (
+          <div className="mb-6">
+            <AdBanner adSlot={AD_SLOTS.COURT_DETAIL_MIDDLE} adFormat="auto" className="min-h-[250px]" />
+          </div>
+        )}
+
+        <div className="mb-6">
+          <ReviewSection
+            courtId={court.SVCID}
+            courtName={court.SVCNM}
+            district={court.AREANM}
+          />
+        </div>
+
         <div className="flex gap-3">
           <Link
             href={`/${districtSlug}`}
@@ -392,6 +409,12 @@ export default function CourtDetailPage() {
             홈으로
           </Link>
         </div>
+
+        {AD_SLOTS.COURT_DETAIL_BOTTOM && (
+          <div className="mt-6">
+            <AdBanner adSlot={AD_SLOTS.COURT_DETAIL_BOTTOM} adFormat="auto" className="min-h-[250px]" />
+          </div>
+        )}
       </div>
 
       {court.SVCURL && isAvailable && (

@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useTheme } from '@/contexts/ThemeContext';
 
 export default function AboutPage() {
@@ -93,12 +94,19 @@ export default function AboutPage() {
             <h2 className={`text-lg font-bold mb-2 ${isNeoBrutalism ? 'text-black' : 'text-gray-900'}`}>
               문의하기
             </h2>
-            <p>
-              서비스 이용 중 문의사항이 있으시면 아래 이메일로 연락해 주세요.
+            <p className="mb-3">
+              서비스 이용 중 문의사항, 건의사항, 오류 신고 등이 있으시면 언제든지 연락해 주세요.
             </p>
-            <p className={`mt-2 font-semibold ${isNeoBrutalism ? 'text-black' : 'text-gray-900'}`}>
-              gjghks84@gmail.com
-            </p>
+            <Link
+              href="/contact"
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
+                isNeoBrutalism
+                  ? 'bg-black text-white border-2 border-black hover:bg-gray-800 font-bold'
+                  : 'bg-green-600 text-white hover:bg-green-700'
+              }`}
+            >
+              📧 문의하기 →
+            </Link>
           </section>
         </div>
       </div>
