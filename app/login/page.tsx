@@ -1,36 +1,42 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useAuth } from '@/contexts/AuthContext';
-import { useEffect } from 'react';
 
 type LoginProvider = 'google' | 'kakao';
 type SupabaseProvider = 'google' | 'kakao';
 
-export default function Login() {
+function LoginContent() {
   const { isNeoBrutalism } = useTheme();
   const { user } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get('redirect') || '/';
   const [loadingProvider, setLoadingProvider] = useState<LoginProvider | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (user) {
-      router.push('/');
+      router.push(redirectTo);
     }
-  }, [user, router]);
+  }, [user, router, redirectTo]);
 
   const handleOAuthLogin = async (displayProvider: LoginProvider, supabaseProvider: SupabaseProvider, scopes?: string) => {
     setLoadingProvider(displayProvider);
     setError(null);
 
+    const callbackUrl = new URL('/auth/callback', window.location.origin);
+    if (redirectTo && redirectTo !== '/') {
+      callbackUrl.searchParams.set('redirect', redirectTo);
+    }
+
     const { error } = await supabase.auth.signInWithOAuth({
       provider: supabaseProvider,
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo: callbackUrl.toString(),
         scopes: scopes,
       },
     });
@@ -117,6 +123,29 @@ export default function Login() {
         <p className={`text-center text-xs mt-6 ${isNeoBrutalism ? 'text-black/50 font-medium' : 'text-gray-400'}`}>
           로그인 시 <a href="/terms" className="underline">이용약관</a> 및 <a href="/privacy" className="underline">개인정보처리방침</a>에 동의하게 됩니다.
         </p>
+      </div>
+    </div>
+  );
+}
+
+export default function Login() {
+  return (
+    <Suspense fallback={<LoginFallback />}>
+      <LoginContent />
+    </Suspense>
+  );
+}
+
+function LoginFallback() {
+  return (
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8 border border-gray-100 animate-pulse">
+        <div className="h-8 bg-gray-200 rounded w-32 mx-auto mb-2" />
+        <div className="h-4 bg-gray-200 rounded w-48 mx-auto mb-8" />
+        <div className="space-y-3">
+          <div className="h-14 bg-gray-200 rounded-lg" />
+          <div className="h-14 bg-gray-200 rounded-lg" />
+        </div>
       </div>
     </div>
   );

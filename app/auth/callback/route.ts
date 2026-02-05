@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get('code');
+  const redirect = requestUrl.searchParams.get('redirect');
   const origin = requestUrl.origin;
 
   if (code) {
@@ -17,5 +18,6 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  return NextResponse.redirect(origin);
+  const redirectUrl = redirect && redirect.startsWith('/') ? `${origin}${redirect}` : origin;
+  return NextResponse.redirect(redirectUrl);
 }

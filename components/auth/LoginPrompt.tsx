@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useTheme } from '@/contexts/ThemeContext';
 
@@ -13,6 +14,8 @@ interface LoginPromptProps {
 export default function LoginPrompt({ isOpen, onClose, message }: LoginPromptProps) {
   const { isNeoBrutalism } = useTheme();
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const pathname = usePathname();
+  const loginUrl = `/login?redirect=${encodeURIComponent(pathname)}`;
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -46,7 +49,7 @@ export default function LoginPrompt({ isOpen, onClose, message }: LoginPromptPro
 
         <div className="flex gap-3">
           <Link
-            href="/login"
+            href={loginUrl}
             className={isNeoBrutalism
               ? 'flex-1 py-3 bg-[#22c55e] text-black font-black text-center border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all uppercase'
               : 'flex-1 py-3 rounded-lg bg-green-600 text-white font-medium text-center hover:bg-green-700 transition-colors'
