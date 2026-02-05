@@ -28,10 +28,13 @@ function LoginContent() {
     setLoadingProvider(displayProvider);
     setError(null);
 
-    const callbackUrl = new URL('/auth/callback', window.location.origin);
+    // Store redirect path in cookie before OAuth redirect
+    // This is more reliable than query params through OAuth flow
     if (redirectTo && redirectTo !== '/') {
-      callbackUrl.searchParams.set('next', redirectTo);
+      document.cookie = `auth_redirect=${encodeURIComponent(redirectTo)}; path=/; max-age=600; SameSite=Lax`;
     }
+
+    const callbackUrl = new URL('/auth/callback', window.location.origin);
 
     const { error } = await supabase.auth.signInWithOAuth({
       provider: supabaseProvider,

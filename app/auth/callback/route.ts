@@ -11,8 +11,12 @@ function sanitizeRedirectPath(path: string | null): string {
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get('code');
-  const next = sanitizeRedirectPath(requestUrl.searchParams.get('next'));
   const origin = requestUrl.origin;
+
+  const authRedirectCookie = request.cookies.get('auth_redirect')?.value;
+  const redirectPath = sanitizeRedirectPath(
+    authRedirectCookie ? decodeURIComponent(authRedirectCookie) : null
+  );
 
   if (code) {
     const supabase = await createSupabaseServerClient();
@@ -25,5 +29,7 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  return NextResponse.redirect(`${origin}${next}`);
+  const response = NextResponse.redirect(`${origin}${redirectPath}`);
+  response.cookies.delete('auth_redirect');
+  return response;
 }
