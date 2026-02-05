@@ -11,7 +11,7 @@ export default function Error({
   const { isNeoBrutalism } = useTheme();
 
   return (
-    <div className="container py-16">
+    <div className="container py-16" role="alert" aria-live="assertive">
       <div className={`max-w-md mx-auto text-center ${
         isNeoBrutalism 
           ? 'bg-[#ff6b6b] border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000] p-8'

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { fetchTennisAvailability } from '@/lib/seoulApi';
 import { SLUG_TO_KOREAN } from '@/lib/constants/districts';
+import { isCourtAvailable } from '@/lib/utils/courtStatus';
 
 export const revalidate = 300;
 
@@ -30,7 +31,7 @@ export async function GET(request: NextRequest) {
         acc[area] = { count: 0, available: 0 };
       }
       acc[area].count++;
-      if (svc.SVCSTATNM === '접수중' || svc.SVCSTATNM.includes('예약가능')) {
+      if (isCourtAvailable(svc.SVCSTATNM)) {
         acc[area].available++;
       }
       return acc;

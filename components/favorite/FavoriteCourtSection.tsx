@@ -8,6 +8,7 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { useTennisData } from '@/contexts/TennisDataContext';
 import { useFavorites, Favorite } from '@/hooks/useFavorites';
 import { KOREAN_TO_SLUG } from '@/lib/constants/districts';
+import { isCourtAvailable } from '@/lib/utils/courtStatus';
 import FavoriteButton from './FavoriteButton';
 
 interface FavoriteWithStatus extends Favorite {
@@ -33,7 +34,7 @@ export default function FavoriteCourtSection() {
       return {
         ...fav,
         status: court?.SVCSTATNM || '정보 없음',
-        isAvailable: court?.SVCSTATNM === '접수중' || court?.SVCSTATNM?.includes('예약가능'),
+        isAvailable: isCourtAvailable(court?.SVCSTATNM),
       };
     });
 

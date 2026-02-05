@@ -123,10 +123,14 @@ export default function DistrictGrid({ stats, loading }: DistrictGridProps) {
 
   if (loading) {
     return (
-      <div className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 ${isNeoBrutalism ? 'gap-3.5' : 'gap-3'}`}>
+      <div
+        className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 ${isNeoBrutalism ? 'gap-3.5' : 'gap-3'}`}
+        aria-busy="true"
+      >
+        <span className="sr-only">지역 목록 로딩 중</span>
         {Array.from({ length: 25 }).map((_, i) => (
           <div
-            key={i}
+            key={`skeleton-${i}`}
             className={`h-14 animate-pulse ${
               isNeoBrutalism
                 ? 'bg-gray-100 border-2 border-black/20 rounded-[5px]'

@@ -65,10 +65,14 @@ function LoginContent() {
         </p>
 
         {error && (
-          <div className={isNeoBrutalism
-            ? 'bg-red-100 border-2 border-black text-red-700 font-bold p-4 rounded-[5px] mb-6 text-center'
-            : 'bg-red-50 border border-red-200 text-red-600 p-4 rounded-lg mb-6 text-center'
-          }>
+          <div
+            role="alert"
+            aria-live="assertive"
+            className={isNeoBrutalism
+              ? 'bg-red-100 border-2 border-black text-red-700 font-bold p-4 rounded-[5px] mb-6 text-center'
+              : 'bg-red-50 border border-red-200 text-red-600 p-4 rounded-lg mb-6 text-center'
+            }
+          >
             {error}
           </div>
         )}
@@ -139,8 +143,9 @@ export default function Login() {
 
 function LoginFallback() {
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50" aria-busy="true">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8 border border-gray-100 animate-pulse">
+        <span className="sr-only">로그인 페이지 로딩 중</span>
         <div className="h-8 bg-gray-200 rounded w-32 mx-auto mb-2" />
         <div className="h-4 bg-gray-200 rounded w-48 mx-auto mb-8" />
         <div className="space-y-3">

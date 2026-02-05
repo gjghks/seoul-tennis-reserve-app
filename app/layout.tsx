@@ -105,12 +105,15 @@ export default function RootLayout({
         />
       </head>
       <body className={geist.className}>
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-green-600 focus:text-white focus:rounded-lg">
+          메인 콘텐츠로 이동
+        </a>
         <GoogleAnalytics />
         <GoogleAdSense />
         <Providers>
           <div className="min-h-screen flex flex-col">
             <Header />
-            <main className="flex-1 flex flex-col pb-20">
+            <main id="main-content" className="flex-1 flex flex-col pb-20">
               {children}
             </main>
             <Footer />

@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { SeoulService } from '@/lib/seoulApi';
 import { District } from '@/lib/constants/districts';
 import { useTheme } from '@/contexts/ThemeContext';
+import { isCourtAvailable } from '@/lib/utils/courtStatus';
 import FavoriteButton from '@/components/favorite/FavoriteButton';
 import ShareButton from '@/components/ui/ShareButton';
 import StickyHeader from '@/components/court-detail/StickyHeader';
@@ -32,10 +33,17 @@ export default function CourtDetailClient({ court, district, districtSlug }: Cou
   const headerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      if (headerRef.current) {
-        const headerBottom = headerRef.current.getBoundingClientRect().bottom;
-        setShowStickyHeader(headerBottom < 0);
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          if (headerRef.current) {
+            const headerBottom = headerRef.current.getBoundingClientRect().bottom;
+            setShowStickyHeader(headerBottom < 0);
+          }
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 
@@ -43,7 +51,7 @@ export default function CourtDetailClient({ court, district, districtSlug }: Cou
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const isAvailable = court.SVCSTATNM === '접수중' || court.SVCSTATNM.includes('예약가능');
+  const isAvailable = isCourtAvailable(court.SVCSTATNM);
 
   const formatDate = (dateStr: string) => {
     if (!dateStr) return '';

@@ -76,7 +76,7 @@ function TennisDataProviderInner({
       fallbackData: initialData,
       revalidateOnFocus: false,
       revalidateOnReconnect: true,
-      refreshInterval: 5 * 60 * 1000, // 5분마다 자동 갱신
+      refreshInterval: 15 * 60 * 1000,
       dedupingInterval: 60 * 1000, // 1분 내 중복 요청 방지
     }
   );
