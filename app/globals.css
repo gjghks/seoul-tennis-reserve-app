@@ -207,9 +207,22 @@ input:focus, select:focus {
   animation: fadeIn 0.3s ease-out;
 }
 
-/* Hide Scrollbar - Global */
+/* Scroll UX - Global */
 html, body {
   overscroll-behavior: none;
+  scroll-behavior: smooth;
+}
+
+/* Mobile touch optimization */
+@media (max-width: 767px) {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .ptr, [class*="overflow-y-auto"], [class*="overflow-auto"] {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
 }
 
 /* Mobile: hide scrollbar for cleaner look */

@@ -118,7 +118,7 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
         </div>
       )}
 
-      <section className="container flex-1 flex flex-col pb-6">
+      <section className="container flex-1 flex flex-col pb-24">
         <div className="mb-4 lg:mb-3">
           <h2 className={`mb-2 ${isNeoBrutalism ? 'text-xl font-black text-black uppercase tracking-tight' : 'text-lg font-semibold text-gray-900'}`}>
             {isNeoBrutalism ? '지역 선택' : '지역 선택'}
