@@ -15,7 +15,7 @@ export default function Footer() {
         <p className={isNeoBrutalism ? 'font-bold uppercase tracking-wide' : ''}>
           {isNeoBrutalism ? '🎾 ' : ''}서울시 공공서비스예약 데이터 기반
         </p>
-        <div className={`flex justify-center gap-4 ${
+        <div className={`flex justify-center gap-[clamp(4px,1.5vw,16px)] text-[clamp(10px,2.8vw,14px)] flex-nowrap whitespace-nowrap ${
           isNeoBrutalism ? 'text-white/70' : 'text-gray-400'
         }`}>
           <Link 
