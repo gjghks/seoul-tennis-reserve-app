@@ -3,16 +3,13 @@
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
-import { useRouter } from 'next/navigation';
 
 export default function Header() {
   const { user, loading, signOut } = useAuth();
   const { toggleTheme, isNeoBrutalism } = useTheme();
-  const router = useRouter();
 
   const handleSignOut = async () => {
     await signOut();
-    router.push('/');
   };
 
   return (

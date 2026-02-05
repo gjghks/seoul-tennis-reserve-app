@@ -1,10 +1,17 @@
 import { createSupabaseServerClient } from '@/lib/supabase-server';
 import { NextRequest, NextResponse } from 'next/server';
 
+function sanitizeRedirectPath(path: string | null): string {
+  if (!path) return '/';
+  if (!path.startsWith('/')) return '/';
+  if (path.startsWith('//')) return '/';
+  return path;
+}
+
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get('code');
-  const redirect = requestUrl.searchParams.get('redirect');
+  const next = sanitizeRedirectPath(requestUrl.searchParams.get('next'));
   const origin = requestUrl.origin;
 
   if (code) {
@@ -18,6 +25,5 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  const redirectUrl = redirect && redirect.startsWith('/') ? `${origin}${redirect}` : origin;
-  return NextResponse.redirect(redirectUrl);
+  return NextResponse.redirect(`${origin}${next}`);
 }

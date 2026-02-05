@@ -20,7 +20,7 @@ function LoginContent() {
 
   useEffect(() => {
     if (user) {
-      router.push(redirectTo);
+      router.replace(redirectTo);
     }
   }, [user, router, redirectTo]);
 
@@ -30,7 +30,7 @@ function LoginContent() {
 
     const callbackUrl = new URL('/auth/callback', window.location.origin);
     if (redirectTo && redirectTo !== '/') {
-      callbackUrl.searchParams.set('redirect', redirectTo);
+      callbackUrl.searchParams.set('next', redirectTo);
     }
 
     const { error } = await supabase.auth.signInWithOAuth({
