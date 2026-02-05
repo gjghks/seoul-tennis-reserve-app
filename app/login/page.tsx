@@ -28,10 +28,8 @@ function LoginContent() {
     setLoadingProvider(displayProvider);
     setError(null);
 
-    // Store redirect path in cookie before OAuth redirect
-    // This is more reliable than query params through OAuth flow
     if (redirectTo && redirectTo !== '/') {
-      document.cookie = `auth_redirect=${encodeURIComponent(redirectTo)}; path=/; max-age=600; SameSite=Lax`;
+      localStorage.setItem('auth_redirect', redirectTo);
     }
 
     const callbackUrl = new URL('/auth/callback', window.location.origin);
