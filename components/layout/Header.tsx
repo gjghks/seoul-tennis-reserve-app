@@ -1,15 +1,18 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
 
 export default function Header() {
   const { user, loading, signOut } = useAuth();
   const { toggleTheme, isNeoBrutalism } = useTheme();
+  const router = useRouter();
 
   const handleSignOut = async () => {
     await signOut();
+    router.refresh();
   };
 
   return (
