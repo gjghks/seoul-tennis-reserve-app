@@ -28,7 +28,7 @@ export default function MyPage() {
 
   useEffect(() => {
     if (!authLoading && !user) {
-      router.push('/login');
+      router.push('/login?redirect=/my');
     }
   }, [user, authLoading, router]);
 

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
 
@@ -9,6 +9,8 @@ export default function Header() {
   const { user, loading, signOut } = useAuth();
   const { toggleTheme, isNeoBrutalism } = useTheme();
   const router = useRouter();
+  const pathname = usePathname();
+  const loginUrl = pathname === '/' ? '/login' : `/login?redirect=${encodeURIComponent(pathname)}`;
 
   const handleSignOut = async () => {
     await signOut();
@@ -82,7 +84,7 @@ export default function Header() {
               </>
             ) : (
               <Link
-                href="/login"
+                href={loginUrl}
                 className={`text-sm py-2 px-4 ${
                   isNeoBrutalism
                     ? 'btn-nb btn-nb-primary'

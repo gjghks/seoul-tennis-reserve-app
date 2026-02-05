@@ -2,6 +2,7 @@
 
 import { useMemo } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useTennisData } from '@/contexts/TennisDataContext';
@@ -19,6 +20,8 @@ export default function FavoriteCourtSection() {
   const { isNeoBrutalism } = useTheme();
   const { favorites, loading: favLoading } = useFavorites();
   const { courts, isLoading: courtsLoading } = useTennisData();
+  const pathname = usePathname();
+  const loginUrl = pathname === '/' ? '/login' : `/login?redirect=${encodeURIComponent(pathname)}`;
 
   const favoritesWithStatus = useMemo(() => {
     if (favorites.length === 0) return [];
@@ -63,7 +66,7 @@ export default function FavoriteCourtSection() {
             로그인하면 자주 이용하는 테니스장을 즐겨찾기에 추가하고 예약 현황을 빠르게 확인할 수 있어요.
           </p>
           <Link
-            href="/login"
+            href={loginUrl}
             className={`inline-block ${
               isNeoBrutalism
                 ? 'bg-black text-[#facc15] font-bold px-4 py-2 rounded-[5px] border-2 border-black shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all'
