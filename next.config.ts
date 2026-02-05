@@ -23,6 +23,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'yeyak.seoul.go.kr',
       },
+      {
+        protocol: 'https',
+        hostname: '**.supabase.co',
+      },
     ],
   },
 };

@@ -1,10 +1,22 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { supabase } from '@/lib/supabase';
 import LoginPrompt from '@/components/auth/LoginPrompt';
+import { compressImage, generateImagePath, getPublicUrl } from '@/lib/imageUtils';
+
+const MAX_IMAGES = 3;
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+
+interface ImagePreview {
+  id: string;
+  file: File;
+  preview: string;
+  uploading?: boolean;
+  error?: string;
+}
 
 interface ReviewFormProps {
   courtId: string;
@@ -21,6 +33,115 @@ export default function ReviewForm({ courtId, courtName, district, onReviewAdded
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const [images, setImages] = useState<ImagePreview[]>([]);
+  const [uploadProgress, setUploadProgress] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileSelect = useCallback(async (files: FileList | null) => {
+    if (!files || files.length === 0) return;
+
+    const remainingSlots = MAX_IMAGES - images.length;
+    if (remainingSlots <= 0) {
+      setError(`최대 ${MAX_IMAGES}장까지만 업로드할 수 있습니다.`);
+      return;
+    }
+
+    const filesToAdd = Array.from(files).slice(0, remainingSlots);
+    const newImages: ImagePreview[] = [];
+
+    for (const file of filesToAdd) {
+      if (file.size > MAX_FILE_SIZE) {
+        setError(`${file.name}: 파일 크기가 5MB를 초과합니다.`);
+        continue;
+      }
+
+      if (!file.type.startsWith('image/')) {
+        setError(`${file.name}: 이미지 파일만 업로드 가능합니다.`);
+        continue;
+      }
+
+      const preview = URL.createObjectURL(file);
+      newImages.push({
+        id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        file,
+        preview,
+      });
+    }
+
+    if (newImages.length > 0) {
+      setImages(prev => [...prev, ...newImages]);
+      setError(null);
+    }
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  }, [images.length]);
+
+  const handleRemoveImage = useCallback((id: string) => {
+    setImages(prev => {
+      const imageToRemove = prev.find(img => img.id === id);
+      if (imageToRemove) {
+        URL.revokeObjectURL(imageToRemove.preview);
+      }
+      return prev.filter(img => img.id !== id);
+    });
+  }, []);
+
+  const handleDrop = useCallback((e: React.DragEvent<HTMLElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    handleFileSelect(e.dataTransfer.files);
+  }, [handleFileSelect]);
+
+  const handleDragOver = useCallback((e: React.DragEvent<HTMLElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+  }, []);
+
+  const uploadImages = async (): Promise<string[]> => {
+    if (images.length === 0 || !user) return [];
+
+    const uploadedUrls: string[] = [];
+    setUploadProgress(`이미지 압축 중... (0/${images.length})`);
+
+    for (let i = 0; i < images.length; i++) {
+      const img = images[i];
+      setUploadProgress(`이미지 압축 중... (${i + 1}/${images.length})`);
+
+      try {
+        const compressed = await compressImage(img.file);
+        const path = generateImagePath(user.id, img.file.name.replace(/\.[^.]+$/, '.webp'));
+
+        setUploadProgress(`업로드 중... (${i + 1}/${images.length})`);
+
+        const { error: uploadError } = await supabase.storage
+          .from('review-images')
+          .upload(path, compressed.blob, {
+            contentType: 'image/webp',
+            upsert: false,
+          });
+
+        if (uploadError) {
+          console.error('Upload error:', uploadError);
+          throw new Error(`이미지 업로드 실패: ${img.file.name}`);
+        }
+
+        const publicUrl = getPublicUrl(
+          'review-images',
+          path,
+          process.env.NEXT_PUBLIC_SUPABASE_URL!
+        );
+        uploadedUrls.push(publicUrl);
+      } catch (err) {
+        console.error('Image upload error:', err);
+        throw err;
+      }
+    }
+
+    setUploadProgress(null);
+    return uploadedUrls;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,6 +160,8 @@ export default function ReviewForm({ courtId, courtName, district, onReviewAdded
     setError(null);
 
     try {
+      const imageUrls = await uploadImages();
+
       const { data: { session } } = await supabase.auth.getSession();
 
       const res = await fetch('/api/reviews', {
@@ -53,6 +176,7 @@ export default function ReviewForm({ courtId, courtName, district, onReviewAdded
           district,
           rating,
           content,
+          images: imageUrls,
         }),
       });
 
@@ -64,11 +188,16 @@ export default function ReviewForm({ courtId, courtName, district, onReviewAdded
 
       setContent('');
       setRating(5);
+      for (const img of images) {
+        URL.revokeObjectURL(img.preview);
+      }
+      setImages([]);
       onReviewAdded();
     } catch (err) {
       setError(err instanceof Error ? err.message : '후기 작성에 실패했습니다.');
     } finally {
       setIsSubmitting(false);
+      setUploadProgress(null);
     }
   };
 
@@ -164,6 +293,94 @@ export default function ReviewForm({ courtId, courtName, district, onReviewAdded
           {content.length}/500
         </div>
       </div>
+
+      <div className="mb-4">
+        <span className={`block mb-2 ${
+          isNeoBrutalism ? 'font-bold text-black' : 'font-medium text-gray-700'
+        }`}>
+          사진 첨부 <span className={isNeoBrutalism ? 'text-black/50 font-normal' : 'text-gray-400 font-normal'}>(선택, 최대 {MAX_IMAGES}장)</span>
+        </span>
+
+        <label
+          onDrop={handleDrop}
+          onDragOver={handleDragOver}
+          className={`relative block border-2 border-dashed rounded-lg p-4 text-center transition-colors ${
+            isNeoBrutalism
+              ? 'border-black/30 hover:border-black/60 bg-gray-50'
+              : 'border-gray-200 hover:border-gray-400 bg-gray-50'
+          } ${images.length >= MAX_IMAGES ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+        >
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={(e) => handleFileSelect(e.target.files)}
+            className="sr-only"
+            disabled={images.length >= MAX_IMAGES}
+          />
+          <div className="flex flex-col items-center gap-2">
+            <svg className={`w-8 h-8 ${isNeoBrutalism ? 'text-black/40' : 'text-gray-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <p className={`text-sm ${isNeoBrutalism ? 'text-black/60' : 'text-gray-500'}`}>
+              클릭하거나 이미지를 드래그하세요
+            </p>
+            <p className={`text-xs ${isNeoBrutalism ? 'text-black/40' : 'text-gray-400'}`}>
+              JPG, PNG, WebP (최대 5MB)
+            </p>
+          </div>
+        </label>
+
+        {images.length > 0 && (
+          <div className="mt-3 grid grid-cols-3 gap-2">
+            {images.map((img) => (
+              <div
+                key={img.id}
+                className={`relative aspect-square rounded-lg overflow-hidden ${
+                  isNeoBrutalism ? 'border-2 border-black' : 'border border-gray-200'
+                }`}
+              >
+                <img
+                  src={img.preview}
+                  alt="미리보기"
+                  className="w-full h-full object-cover"
+                />
+                <button
+                  type="button"
+                  onClick={() => handleRemoveImage(img.id)}
+                  className={`absolute top-1 right-1 w-6 h-6 flex items-center justify-center rounded-full transition-colors ${
+                    isNeoBrutalism
+                      ? 'bg-black text-white hover:bg-red-600'
+                      : 'bg-black/50 text-white hover:bg-red-500'
+                  }`}
+                  aria-label="이미지 삭제"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+                {img.uploading && (
+                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                    <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {uploadProgress && (
+        <div className={`mb-4 p-3 text-sm flex items-center gap-2 ${
+          isNeoBrutalism
+            ? 'bg-blue-100 border-2 border-black rounded-[5px] text-blue-700 font-medium'
+            : 'bg-blue-50 rounded-lg text-blue-600'
+        }`}>
+          <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+          {uploadProgress}
+        </div>
+      )}
 
       {error && (
         <div className={`mb-4 p-3 text-sm ${

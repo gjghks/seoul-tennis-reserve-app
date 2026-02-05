@@ -21,6 +21,7 @@ export interface Review {
   district: string;
   rating: number;
   content: string;
+  images: string[];
   created_at: string;
   updated_at: string;
   user_email?: string;
@@ -70,7 +71,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { court_id, court_name, district, rating, content } = body;
+    const { court_id, court_name, district, rating, content, images } = body;
 
     if (!court_id || !court_name || !district || !rating || !content) {
       return NextResponse.json(
@@ -93,6 +94,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const imageUrls = Array.isArray(images) ? images.slice(0, 3) : [];
+
     const { data, error } = await supabase
       .from('reviews')
       .insert([{
@@ -102,6 +105,7 @@ export async function POST(request: NextRequest) {
         district,
         rating,
         content,
+        images: imageUrls,
       }])
       .select()
       .single();
