@@ -2,6 +2,7 @@
 
 import { useTheme } from '@/contexts/ThemeContext';
 import { useToast } from '@/contexts/ToastContext';
+import { useThemeClass } from '@/lib/cn';
 
 interface ShareButtonProps {
   title: string;
@@ -19,6 +20,7 @@ export default function ShareButton({
   showLabel = false,
 }: ShareButtonProps) {
   const { isNeoBrutalism } = useTheme();
+  const themeClass = useThemeClass();
   const { showToast } = useToast();
 
   const handleShare = async () => {
@@ -56,10 +58,10 @@ export default function ShareButton({
       type="button"
       onClick={handleShare}
       aria-label="공유하기"
-      className={isNeoBrutalism
-        ? `flex items-center gap-2 px-3 py-2 border-2 border-black rounded-[5px] bg-white text-black font-bold shadow-[3px_3px_0px_0px_#000] transition-all hover:bg-[#88aaee] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none ${className}`
-        : `flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 text-gray-500 transition-all hover:bg-gray-200 hover:text-gray-700 ${className}`
-      }
+      className={themeClass(
+        `flex items-center gap-2 px-3 py-2 border-2 border-black rounded-[5px] bg-white text-black font-bold shadow-[3px_3px_0px_0px_#000] transition-all hover:bg-[#88aaee] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none ${className}`,
+        `flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 text-gray-500 transition-all hover:bg-gray-200 hover:text-gray-700 ${className}`
+      )}
     >
       <svg
         className="w-5 h-5"
@@ -76,7 +78,7 @@ export default function ShareButton({
         />
       </svg>
       {showLabel && (
-        <span className={`text-sm ${isNeoBrutalism ? 'uppercase' : ''}`}>
+        <span className={`text-sm ${themeClass('uppercase', '')}`}>
           공유
         </span>
       )}

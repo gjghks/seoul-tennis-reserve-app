@@ -6,6 +6,7 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { useToast } from '@/contexts/ToastContext';
 import { supabase } from '@/lib/supabase';
 import LoginPrompt from '@/components/auth/LoginPrompt';
+import { useThemeClass } from '@/lib/cn';
 
 interface FavoriteButtonProps {
   svcId: string;
@@ -26,6 +27,7 @@ export default function FavoriteButton({
 }: FavoriteButtonProps) {
   const { user, loading: authLoading } = useAuth();
   const { isNeoBrutalism } = useTheme();
+  const themeClass = useThemeClass();
   const { showToast } = useToast();
   const [isFavorite, setIsFavorite] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -94,9 +96,8 @@ export default function FavoriteButton({
           showToast('즐겨찾기에 추가되었습니다', 'success');
         }
       }
-    } catch (err) {
-      console.error('Favorite toggle failed:', err);
-      showToast('오류가 발생했습니다. 다시 시도해주세요.', 'error');
+     } catch {
+       showToast('오류가 발생했습니다. 다시 시도해주세요.', 'error');
     } finally {
       setLoading(false);
     }
@@ -104,7 +105,7 @@ export default function FavoriteButton({
 
   if (authLoading) {
     return (
-      <div className={`w-8 h-8 animate-pulse ${isNeoBrutalism ? 'bg-white border-2 border-black rounded-[5px]' : 'rounded-lg bg-gray-200'} ${className}`} />
+      <div className={`w-8 h-8 animate-pulse ${themeClass('bg-white border-2 border-black rounded-[5px]', 'rounded-lg bg-gray-200')} ${className}`} />
     );
   }
 
@@ -116,18 +117,18 @@ export default function FavoriteButton({
         disabled={loading}
         aria-label={isFavorite ? '즐겨찾기 해제' : '즐겨찾기 추가'}
         aria-pressed={isFavorite}
-        className={isNeoBrutalism
-          ? `flex items-center gap-2 px-3 py-2 border-2 border-black rounded-[5px] transition-all font-bold ${
-              isFavorite
-                ? 'bg-[#f472b6] text-black shadow-[3px_3px_0px_0px_#000]'
-                : 'bg-white text-black shadow-[3px_3px_0px_0px_#000] hover:bg-[#f472b6]'
-            } ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none'} ${className}`
-          : `flex items-center gap-2 px-3 py-2 rounded-lg transition-all ${
-              isFavorite
-                ? 'bg-pink-50 text-pink-600'
-                : 'bg-gray-100 text-gray-500 hover:text-pink-600'
-            } ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-pink-50'} ${className}`
-        }
+        className={themeClass(
+          `flex items-center gap-2 px-3 py-2 border-2 border-black rounded-[5px] transition-all font-bold ${
+            isFavorite
+              ? 'bg-[#f472b6] text-black shadow-[3px_3px_0px_0px_#000]'
+              : 'bg-white text-black shadow-[3px_3px_0px_0px_#000] hover:bg-[#f472b6]'
+          } ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none'} ${className}`,
+          `flex items-center gap-2 px-3 py-2 rounded-lg transition-all ${
+            isFavorite
+              ? 'bg-pink-50 text-pink-600'
+              : 'bg-gray-100 text-gray-500 hover:text-pink-600'
+          } ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-pink-50'} ${className}`
+        )}
       >
         <svg
           className="w-5 h-5"
@@ -144,7 +145,7 @@ export default function FavoriteButton({
           />
         </svg>
         {showLabel && (
-          <span className={`text-sm ${isNeoBrutalism ? 'uppercase' : ''}`}>
+          <span className={`text-sm ${themeClass('uppercase', '')}`}>
             {isFavorite ? '즐겨찾기 해제' : '즐겨찾기'}
           </span>
         )}

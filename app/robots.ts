@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/api/', '/my/', '/dashboard/'],
+      disallow: ['/api/', '/my/'],
     },
     sitemap: 'https://seoul-tennis.com/sitemap.xml',
   };

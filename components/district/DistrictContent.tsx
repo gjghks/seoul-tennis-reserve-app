@@ -8,6 +8,7 @@ import Link from 'next/link';
 import AdBanner from '@/components/ads/AdBanner';
 import { AD_SLOTS } from '@/lib/adConfig';
 import LastUpdated from '@/components/ui/LastUpdated';
+import { useThemeClass } from '@/lib/cn';
 
 interface DistrictContentProps {
   district: string;
@@ -21,6 +22,7 @@ export default function DistrictContent({
   districtName 
 }: DistrictContentProps) {
   const { isNeoBrutalism } = useTheme();
+  const themeClass = useThemeClass();
   const { courts: allCourts, isLoading, lastUpdated } = useTennisData();
 
   const koreanDistrict = SLUG_TO_KOREAN[district] || district;
@@ -40,7 +42,7 @@ export default function DistrictContent({
   const loading = isLoading && initialCourts.length === 0;
 
   return (
-    <div className={`min-h-screen pb-20 scrollbar-hide ${isNeoBrutalism ? 'bg-nb-bg' : 'bg-gray-50'}`}>
+    <div className={`min-h-screen pb-20 scrollbar-hide ${themeClass('bg-nb-bg', 'bg-gray-50')} `}>
       <div className={`sticky top-14 z-40 ${
         isNeoBrutalism 
           ? 'bg-[#88aaee] border-b-[3px] border-black' 
@@ -55,7 +57,7 @@ export default function DistrictContent({
             ← 전체 지역
           </Link>
           <div className="text-center">
-            <h1 className={`text-lg ${isNeoBrutalism ? 'font-black text-black uppercase' : 'font-bold text-gray-900'}`}>
+            <h1 className={`text-lg ${themeClass('font-black text-black uppercase', 'font-bold text-gray-900')} `}>
               {isNeoBrutalism ? `${districtName}` : `${districtName} 테니스장`}
             </h1>
             {lastUpdated && (
@@ -96,14 +98,14 @@ export default function DistrictContent({
                 ? 'bg-[#facc15] border-2 border-black rounded-[5px]' 
                 : 'bg-gray-100 rounded-full'
             }`}>
-              <svg className={`w-10 h-10 ${isNeoBrutalism ? 'text-black' : 'text-gray-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <svg className={`w-10 h-10 ${themeClass('text-black', 'text-gray-400')} `} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M12 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 className={`text-lg mb-2 ${isNeoBrutalism ? 'font-black text-black uppercase' : 'font-semibold text-gray-900'}`}>
+            <h3 className={`text-lg mb-2 ${themeClass('font-black text-black uppercase', 'font-semibold text-gray-900')} `}>
               등록된 테니스장이 없습니다
             </h3>
-            <p className={`mb-6 ${isNeoBrutalism ? 'text-black/60 font-medium' : 'text-gray-500'}`}>
+            <p className={`mb-6 ${themeClass('text-black/60 font-medium', 'text-gray-500')} `}>
               {districtName}에는 아직 공공 테니스장 정보가 등록되지 않았습니다.
             </p>
             <Link

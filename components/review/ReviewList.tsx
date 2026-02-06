@@ -4,7 +4,9 @@ import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/contexts/ToastContext';
 import { supabase } from '@/lib/supabase';
+import { useThemeClass } from '@/lib/cn';
 
 export interface Review {
   id: string;
@@ -31,7 +33,9 @@ interface LightboxState {
 
 export default function ReviewList({ reviews, onReviewDeleted }: ReviewListProps) {
   const { isNeoBrutalism } = useTheme();
+  const themeClass = useThemeClass();
   const { user } = useAuth();
+  const { showToast } = useToast();
   const [lightbox, setLightbox] = useState<LightboxState | null>(null);
 
   const openLightbox = useCallback((images: string[], index: number) => {
@@ -86,7 +90,7 @@ export default function ReviewList({ reviews, onReviewDeleted }: ReviewListProps
 
       onReviewDeleted();
     } catch {
-      alert('후기 삭제에 실패했습니다.');
+      showToast('후기 삭제에 실패했습니다.', 'error');
     }
   };
 
@@ -115,11 +119,7 @@ export default function ReviewList({ reviews, onReviewDeleted }: ReviewListProps
             key={url}
             type="button"
             onClick={() => openLightbox(images, index)}
-            className={`relative w-20 h-20 overflow-hidden flex-shrink-0 ${
-              isNeoBrutalism
-                ? 'border-2 border-black rounded-[5px]'
-                : 'border border-gray-200 rounded-lg'
-            } hover:opacity-80 transition-opacity`}
+            className={`relative w-20 h-20 overflow-hidden flex-shrink-0 ${themeClass('border-2 border-black rounded-[5px]', 'border border-gray-200 rounded-lg')} hover:opacity-80 transition-opacity`}
           >
             <Image
               src={url}
@@ -241,15 +241,11 @@ export default function ReviewList({ reviews, onReviewDeleted }: ReviewListProps
 
   if (reviews.length === 0) {
     return (
-      <div className={`p-8 text-center ${
-        isNeoBrutalism
-          ? 'bg-gray-100 border-2 border-black rounded-[5px]'
-          : 'bg-gray-50 rounded-xl'
-      }`}>
-        <p className={isNeoBrutalism ? 'text-black/60 font-medium' : 'text-gray-400'}>
+      <div className={`p-8 text-center ${themeClass('bg-gray-100 border-2 border-black rounded-[5px]', 'bg-gray-50 rounded-xl')} `}>
+        <p className={themeClass('text-black/60 font-medium', 'text-gray-400')}>
           아직 작성된 후기가 없습니다.
         </p>
-        <p className={`mt-1 text-sm ${isNeoBrutalism ? 'text-black/40' : 'text-gray-300'}`}>
+        <p className={`mt-1 text-sm ${themeClass('text-black/40', 'text-gray-300')} `}>
           첫 번째 후기를 작성해보세요!
         </p>
       </div>
@@ -263,25 +259,17 @@ export default function ReviewList({ reviews, onReviewDeleted }: ReviewListProps
         {reviews.map((review) => (
         <article
           key={review.id}
-          className={`p-4 ${
-            isNeoBrutalism
-              ? 'bg-white border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000]'
-              : 'bg-white rounded-xl border border-gray-100'
-          }`}
+          className={`p-4 ${themeClass('bg-white border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000]', 'bg-white rounded-xl border border-gray-100')}`}
         >
           <div className="flex items-start justify-between gap-3">
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-3 mb-2">
                 <StarRating rating={review.rating} />
-                <span className={`text-sm ${
-                  isNeoBrutalism ? 'text-black/50 font-medium' : 'text-gray-400'
-                }`}>
+                <span className={`text-sm ${themeClass('text-black/50 font-medium', 'text-gray-400')} `}>
                   {formatDate(review.created_at)}
                 </span>
               </div>
-              <p className={`whitespace-pre-wrap break-words ${
-                isNeoBrutalism ? 'text-black/80' : 'text-gray-700'
-              }`}>
+              <p className={`whitespace-pre-wrap break-words ${themeClass('text-black/80', 'text-gray-700')} `}>
                 {review.content}
               </p>
               {review.images && review.images.length > 0 && (
@@ -292,11 +280,7 @@ export default function ReviewList({ reviews, onReviewDeleted }: ReviewListProps
               <button
                 type="button"
                 onClick={() => handleDelete(review.id)}
-                className={`shrink-0 p-2 ${
-                  isNeoBrutalism
-                    ? 'text-red-500 hover:bg-red-100 rounded-[5px] border border-transparent hover:border-black'
-                    : 'text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg'
-                } transition-colors`}
+                className={`shrink-0 p-2 ${themeClass('text-red-500 hover:bg-red-100 rounded-[5px] border border-transparent hover:border-black', 'text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg')} transition-colors`}
                 aria-label="삭제"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

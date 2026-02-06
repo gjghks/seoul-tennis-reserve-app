@@ -9,6 +9,15 @@ const withSerwist = withSerwistInit({
 
 const nextConfig: NextConfig = {
   turbopack: {},
+  async redirects() {
+    return [
+      {
+        source: '/dashboard',
+        destination: '/my',
+        permanent: true,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {

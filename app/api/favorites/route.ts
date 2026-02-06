@@ -1,24 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
-
-// 서버 사이드 Supabase 클라이언트 (쿠키에서 인증 정보 사용)
-function getSupabaseClient(request: NextRequest) {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-
-  // 요청 헤더에서 Authorization 토큰 가져오기
-  const authHeader = request.headers.get('Authorization');
-
-  return createClient(supabaseUrl, supabaseAnonKey, {
-    global: {
-      headers: authHeader ? { Authorization: authHeader } : {},
-    },
-  });
-}
+import { createServerSupabaseClient } from '@/lib/supabaseServer';
 
 // GET: 내 즐겨찾기 목록 조회
 export async function GET(request: NextRequest) {
-  const supabase = getSupabaseClient(request);
+  const supabase = createServerSupabaseClient(request);
 
   const { data: { user }, error: authError } = await supabase.auth.getUser();
 
@@ -48,7 +33,7 @@ export async function GET(request: NextRequest) {
 
 // POST: 즐겨찾기 추가
 export async function POST(request: NextRequest) {
-  const supabase = getSupabaseClient(request);
+  const supabase = createServerSupabaseClient(request);
 
   const { data: { user }, error: authError } = await supabase.auth.getUser();
 
@@ -108,7 +93,7 @@ export async function POST(request: NextRequest) {
 
 // DELETE: 즐겨찾기 삭제
 export async function DELETE(request: NextRequest) {
-  const supabase = getSupabaseClient(request);
+  const supabase = createServerSupabaseClient(request);
 
   const { data: { user }, error: authError } = await supabase.auth.getUser();
 

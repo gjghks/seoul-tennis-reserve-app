@@ -1,26 +1,20 @@
 'use client';
 
-import { useTheme } from '@/contexts/ThemeContext';
+import { useThemeClass } from '@/lib/cn';
 
 export default function PrivacyPage() {
-  const { isNeoBrutalism } = useTheme();
+  const themeClass = useThemeClass();
 
   return (
     <div className="container py-8 scrollbar-hide">
-      <div className={`max-w-3xl mx-auto ${
-        isNeoBrutalism 
-          ? 'bg-white border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000] p-8'
-          : 'bg-white rounded-xl shadow-lg p-8'
-      }`}>
-        <h1 className={`text-2xl font-bold mb-6 ${
-          isNeoBrutalism ? 'text-black' : 'text-gray-900'
-        }`}>
+      <div className={`max-w-3xl mx-auto ${themeClass('bg-white border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000] p-8', 'bg-white rounded-xl shadow-lg p-8')}`}>
+        <h1 className={`text-2xl font-bold mb-6 ${themeClass('text-black', 'text-gray-900')}`}>
           개인정보처리방침
         </h1>
 
-        <div className={`space-y-6 ${isNeoBrutalism ? 'text-black/80' : 'text-gray-600'}`}>
+        <div className={`space-y-6 ${themeClass('text-black/80', 'text-gray-600')}`}>
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${isNeoBrutalism ? 'text-black' : 'text-gray-900'}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
               1. 개인정보의 처리 목적
             </h2>
             <p>
@@ -36,7 +30,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${isNeoBrutalism ? 'text-black' : 'text-gray-900'}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
               2. 수집하는 개인정보 항목
             </h2>
             <ul className="list-disc list-inside space-y-1">
@@ -46,7 +40,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${isNeoBrutalism ? 'text-black' : 'text-gray-900'}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
               3. 개인정보의 처리 및 보유 기간
             </h2>
             <p>
@@ -60,7 +54,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${isNeoBrutalism ? 'text-black' : 'text-gray-900'}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
               4. 개인정보의 제3자 제공
             </h2>
             <p>
@@ -70,7 +64,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${isNeoBrutalism ? 'text-black' : 'text-gray-900'}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
               5. 정보주체의 권리·의무 및 행사방법
             </h2>
             <p>정보주체는 서비스에 대해 언제든지 다음 각 호의 개인정보 보호 관련 권리를 행사할 수 있습니다.</p>
@@ -83,7 +77,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${isNeoBrutalism ? 'text-black' : 'text-gray-900'}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
               6. 개인정보의 안전성 확보조치
             </h2>
             <p>서비스는 개인정보의 안전성 확보를 위해 다음과 같은 조치를 취하고 있습니다.</p>
@@ -95,7 +89,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${isNeoBrutalism ? 'text-black' : 'text-gray-900'}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
               7. 쿠키의 사용
             </h2>
             <p>
@@ -106,7 +100,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${isNeoBrutalism ? 'text-black' : 'text-gray-900'}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
               8. 개인정보 보호책임자
             </h2>
             <p>
@@ -119,7 +113,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${isNeoBrutalism ? 'text-black' : 'text-gray-900'}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
               9. 개인정보처리방침의 변경
             </h2>
             <p>

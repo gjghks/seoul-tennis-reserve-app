@@ -1,17 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
-
-function getSupabaseClient(request: NextRequest) {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-  const authHeader = request.headers.get('Authorization');
-
-  return createClient(supabaseUrl, supabaseAnonKey, {
-    global: {
-      headers: authHeader ? { Authorization: authHeader } : {},
-    },
-  });
-}
+import { createServerSupabaseClient, createAnonSupabaseClient } from '@/lib/supabaseServer';
 
 export interface Review {
   id: string;
@@ -31,9 +19,7 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const courtId = searchParams.get('court_id');
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-  const supabase = createClient(supabaseUrl, supabaseAnonKey);
+  const supabase = createAnonSupabaseClient();
 
   let query = supabase
     .from('reviews')
@@ -58,7 +44,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const supabase = getSupabaseClient(request);
+  const supabase = createServerSupabaseClient(request);
 
   const { data: { user }, error: authError } = await supabase.auth.getUser();
 
@@ -134,7 +120,7 @@ export async function POST(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
-  const supabase = getSupabaseClient(request);
+  const supabase = createServerSupabaseClient(request);
 
   const { data: { user }, error: authError } = await supabase.auth.getUser();
 

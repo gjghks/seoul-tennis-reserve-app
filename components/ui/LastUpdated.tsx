@@ -1,6 +1,6 @@
 'use client';
 
-import { useTheme } from '@/contexts/ThemeContext';
+import { useThemeClass } from '@/lib/cn';
 
 interface LastUpdatedProps {
   timestamp: string | undefined;
@@ -8,7 +8,7 @@ interface LastUpdatedProps {
 }
 
 export default function LastUpdated({ timestamp, className = '' }: LastUpdatedProps) {
-  const { isNeoBrutalism } = useTheme();
+  const themeClass = useThemeClass();
 
   if (!timestamp) return null;
 
@@ -31,11 +31,7 @@ export default function LastUpdated({ timestamp, className = '' }: LastUpdatedPr
   };
 
   return (
-    <div className={`flex items-center gap-1.5 text-xs ${
-      isNeoBrutalism 
-        ? 'text-black/50 font-medium' 
-        : 'text-gray-400'
-    } ${className}`}>
+    <div className={`flex items-center gap-1.5 text-xs ${themeClass('text-black/50 font-medium', 'text-gray-400')} ${className}`}>
       <svg 
         className="w-3.5 h-3.5" 
         fill="none" 

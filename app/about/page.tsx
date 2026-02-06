@@ -1,27 +1,21 @@
 'use client';
 
 import Link from 'next/link';
-import { useTheme } from '@/contexts/ThemeContext';
+import { useThemeClass } from '@/lib/cn';
 
 export default function AboutPage() {
-  const { isNeoBrutalism } = useTheme();
+  const themeClass = useThemeClass();
 
   return (
     <div className="container py-8 scrollbar-hide">
-      <div className={`max-w-3xl mx-auto ${
-        isNeoBrutalism 
-          ? 'bg-white border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000] p-8'
-          : 'bg-white rounded-xl shadow-lg p-8'
-      }`}>
-        <h1 className={`text-2xl font-bold mb-6 ${
-          isNeoBrutalism ? 'text-black' : 'text-gray-900'
-        }`}>
+      <div className={`max-w-3xl mx-auto ${themeClass('bg-white border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000] p-8', 'bg-white rounded-xl shadow-lg p-8')}`}>
+        <h1 className={`text-2xl font-bold mb-6 ${themeClass('text-black', 'text-gray-900')}`}>
           서울 테니스 소개
         </h1>
 
-        <div className={`space-y-8 ${isNeoBrutalism ? 'text-black/80' : 'text-gray-600'}`}>
+        <div className={`space-y-8 ${themeClass('text-black/80', 'text-gray-600')}`}>
           <section>
-            <h2 className={`text-lg font-bold mb-3 ${isNeoBrutalism ? 'text-black' : 'text-gray-900'}`}>
+            <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black', 'text-gray-900')} `}>
               서울 테니스란?
             </h2>
             <p className="leading-relaxed">
@@ -31,7 +25,7 @@ export default function AboutPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-3 ${isNeoBrutalism ? 'text-black' : 'text-gray-900'}`}>
+            <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black', 'text-gray-900')} `}>
               주요 기능
             </h2>
             <ul className="space-y-2">
@@ -55,7 +49,7 @@ export default function AboutPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-3 ${isNeoBrutalism ? 'text-black' : 'text-gray-900'}`}>
+            <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black', 'text-gray-900')} `}>
               데이터 출처
             </h2>
             <p className="leading-relaxed mb-3">
@@ -68,7 +62,7 @@ export default function AboutPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-3 ${isNeoBrutalism ? 'text-black' : 'text-gray-900'}`}>
+            <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black', 'text-gray-900')} `}>
               만든 이유
             </h2>
             <p className="leading-relaxed">
@@ -80,7 +74,7 @@ export default function AboutPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-3 ${isNeoBrutalism ? 'text-black' : 'text-gray-900'}`}>
+            <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black', 'text-gray-900')} `}>
               이용 안내
             </h2>
             <ul className="list-disc list-inside space-y-1">
@@ -90,8 +84,8 @@ export default function AboutPage() {
             </ul>
           </section>
 
-          <section className={`p-4 rounded-lg ${isNeoBrutalism ? 'bg-yellow-100 border-2 border-black' : 'bg-gray-50'}`}>
-            <h2 className={`text-lg font-bold mb-2 ${isNeoBrutalism ? 'text-black' : 'text-gray-900'}`}>
+          <section className={`p-4 rounded-lg ${themeClass('bg-yellow-100 border-2 border-black', 'bg-gray-50')} `}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')} `}>
               문의하기
             </h2>
             <p className="mb-3">
@@ -100,9 +94,7 @@ export default function AboutPage() {
             <Link
               href="/contact"
               className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
-                isNeoBrutalism
-                  ? 'bg-black text-white border-2 border-black hover:bg-gray-800 font-bold'
-                  : 'bg-green-600 text-white hover:bg-green-700'
+                themeClass('bg-black text-white border-2 border-black hover:bg-gray-800 font-bold', 'bg-green-600 text-white hover:bg-green-700')
               }`}
             >
               📧 문의하기 →

@@ -1,26 +1,20 @@
 'use client';
 
-import { useTheme } from '@/contexts/ThemeContext';
+import { useThemeClass } from '@/lib/cn';
 
 export default function TermsPage() {
-  const { isNeoBrutalism } = useTheme();
+  const themeClass = useThemeClass();
 
   return (
     <div className="container py-8 scrollbar-hide">
-      <div className={`max-w-3xl mx-auto ${
-        isNeoBrutalism 
-          ? 'bg-white border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000] p-8'
-          : 'bg-white rounded-xl shadow-lg p-8'
-      }`}>
-        <h1 className={`text-2xl font-bold mb-6 ${
-          isNeoBrutalism ? 'text-black' : 'text-gray-900'
-        }`}>
+      <div className={`max-w-3xl mx-auto ${themeClass('bg-white border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000] p-8', 'bg-white rounded-xl shadow-lg p-8')}`}>
+        <h1 className={`text-2xl font-bold mb-6 ${themeClass('text-black', 'text-gray-900')}`}>
           이용약관
         </h1>
 
-        <div className={`space-y-6 ${isNeoBrutalism ? 'text-black/80' : 'text-gray-600'}`}>
+        <div className={`space-y-6 ${themeClass('text-black/80', 'text-gray-600')}`}>
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${isNeoBrutalism ? 'text-black' : 'text-gray-900'}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
               제1조 (목적)
             </h2>
             <p>
@@ -30,7 +24,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${isNeoBrutalism ? 'text-black' : 'text-gray-900'}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
               제2조 (정의)
             </h2>
             <ul className="list-disc list-inside space-y-1">
@@ -41,7 +35,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${isNeoBrutalism ? 'text-black' : 'text-gray-900'}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
               제3조 (서비스의 제공)
             </h2>
             <p>서비스는 다음의 서비스를 제공합니다:</p>
@@ -53,7 +47,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${isNeoBrutalism ? 'text-black' : 'text-gray-900'}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
               제4조 (서비스 이용)
             </h2>
             <p>
@@ -64,7 +58,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${isNeoBrutalism ? 'text-black' : 'text-gray-900'}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
               제5조 (이용자의 의무)
             </h2>
             <p>이용자는 다음 행위를 하여서는 안 됩니다:</p>
@@ -78,7 +72,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${isNeoBrutalism ? 'text-black' : 'text-gray-900'}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
               제6조 (면책조항)
             </h2>
             <ul className="list-disc list-inside space-y-1">
@@ -89,7 +83,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${isNeoBrutalism ? 'text-black' : 'text-gray-900'}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
               제7조 (분쟁해결)
             </h2>
             <p>
@@ -99,7 +93,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${isNeoBrutalism ? 'text-black' : 'text-gray-900'}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
               부칙
             </h2>
             <p>이 약관은 2024년 1월 1일부터 시행합니다.</p>

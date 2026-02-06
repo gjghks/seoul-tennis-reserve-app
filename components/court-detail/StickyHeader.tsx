@@ -1,6 +1,7 @@
 'use client';
 
 import { SeoulService } from '@/lib/seoulApi';
+import { cn } from '@/lib/cn';
 
 function StickyHeader({ 
   court, 
@@ -35,7 +36,7 @@ function StickyHeader({
                 {!isNeoBrutalism && <span className={`w-1.5 h-1.5 rounded-full ${isAvailable ? 'bg-green-500' : 'bg-gray-400'}`} />}
                 {court.SVCSTATNM}
               </span>
-              <h2 className={`truncate text-sm font-bold ${isNeoBrutalism ? 'text-black' : 'text-gray-900'}`}>
+              <h2 className={cn('truncate text-sm font-bold', isNeoBrutalism && 'text-black', !isNeoBrutalism && 'text-gray-900')}>
                 {court.SVCNM}
               </h2>
             </div>

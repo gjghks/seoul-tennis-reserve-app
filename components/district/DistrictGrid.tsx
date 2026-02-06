@@ -4,6 +4,7 @@ import { memo, useMemo } from 'react';
 import Link from 'next/link';
 import { DISTRICTS, District } from '@/lib/constants/districts';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useThemeClass } from '@/lib/cn';
 
 interface DistrictStats {
   count: number;
@@ -99,6 +100,7 @@ const DistrictCard = memo(function DistrictCard({
 
 export default function DistrictGrid({ stats, loading }: DistrictGridProps) {
   const { isNeoBrutalism } = useTheme();
+  const themeClass = useThemeClass();
   
   const sortedDistricts = useMemo(() => {
     return [...DISTRICTS].sort((a, b) => {
@@ -124,13 +126,13 @@ export default function DistrictGrid({ stats, loading }: DistrictGridProps) {
   if (loading) {
     return (
       <div
-        className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 ${isNeoBrutalism ? 'gap-3.5' : 'gap-3'}`}
+        className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 ${themeClass('gap-3.5', 'gap-3')}`}
         aria-busy="true"
       >
         <span className="sr-only">지역 목록 로딩 중</span>
         {Array.from({ length: 25 }).map((_, i) => (
           <div
-            key={`skeleton-${i}`}
+            key={DISTRICTS[i]?.slug || `skeleton-${i + 1}`}
             className={`h-14 animate-pulse ${
               isNeoBrutalism
                 ? 'bg-gray-100 border-2 border-black/20 rounded-[5px]'
@@ -144,7 +146,7 @@ export default function DistrictGrid({ stats, loading }: DistrictGridProps) {
   }
 
   return (
-    <div className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 ${isNeoBrutalism ? 'gap-3.5' : 'gap-3'}`}>
+    <div className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 ${themeClass('gap-3.5', 'gap-3')} `}>
       {sortedDistricts.map((district) => (
         <DistrictCard
           key={district.slug}

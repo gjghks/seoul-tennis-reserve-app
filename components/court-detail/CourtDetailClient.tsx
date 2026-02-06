@@ -14,6 +14,7 @@ import StickyHeader from '@/components/court-detail/StickyHeader';
 import ReviewSection from '@/components/review/ReviewSection';
 import AdBanner from '@/components/ads/AdBanner';
 import { AD_SLOTS } from '@/lib/adConfig';
+import { useThemeClass } from '@/lib/cn';
 
 const DetailContent = dynamic(() => import('@/components/court-detail/DetailContent'), {
   loading: () => <div className="animate-pulse h-64 bg-gray-100 rounded-xl" />,
@@ -28,6 +29,7 @@ interface CourtDetailClientProps {
 
 export default function CourtDetailClient({ court, district, districtSlug }: CourtDetailClientProps) {
   const { isNeoBrutalism } = useTheme();
+  const themeClass = useThemeClass();
   const [imageError, setImageError] = useState(false);
   const [showStickyHeader, setShowStickyHeader] = useState(false);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -67,7 +69,7 @@ export default function CourtDetailClient({ court, district, districtSlug }: Cou
   ];
 
   return (
-    <div className={`min-h-screen pb-24 scrollbar-hide ${isNeoBrutalism ? 'bg-nb-bg' : 'bg-gray-50'}`}>
+    <div className={`min-h-screen pb-24 scrollbar-hide ${themeClass('bg-nb-bg', 'bg-gray-50')} `}>
       <StickyHeader 
         court={court} 
         isAvailable={isAvailable} 
@@ -75,22 +77,22 @@ export default function CourtDetailClient({ court, district, districtSlug }: Cou
         isNeoBrutalism={isNeoBrutalism}
       />
       
-      <div ref={headerRef} className={isNeoBrutalism ? 'bg-white border-b-[3px] border-black' : 'bg-white border-b border-gray-100'}>
+      <div ref={headerRef} className={themeClass('bg-white border-b-[3px] border-black', 'bg-white border-b border-gray-100')}>
         <div className="container py-4">
-          <nav className={`flex items-center gap-2 text-sm mb-4 ${isNeoBrutalism ? 'font-bold' : ''}`}>
-            <Link href="/" className={isNeoBrutalism ? 'text-black hover:underline underline-offset-4' : 'text-gray-400 hover:text-green-600 transition-colors'}>
+          <nav className={`flex items-center gap-2 text-sm mb-4 ${themeClass('font-bold', '')}`}>
+            <Link href="/" className={themeClass('text-black hover:underline underline-offset-4', 'text-gray-400 hover:text-green-600 transition-colors')}>
               홈
             </Link>
-            <svg className={`w-4 h-4 ${isNeoBrutalism ? 'text-black' : 'text-gray-300'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <svg className={`w-4 h-4 ${themeClass('text-black', 'text-gray-300')} `} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
-            <Link href={`/${districtSlug}`} className={isNeoBrutalism ? 'text-black hover:underline underline-offset-4' : 'text-gray-400 hover:text-green-600 transition-colors'}>
+            <Link href={`/${districtSlug}`} className={themeClass('text-black hover:underline underline-offset-4', 'text-gray-400 hover:text-green-600 transition-colors')}>
               {district.nameKo}
             </Link>
-            <svg className={`w-4 h-4 ${isNeoBrutalism ? 'text-black' : 'text-gray-300'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <svg className={`w-4 h-4 ${themeClass('text-black', 'text-gray-300')} `} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
-            <span className={`truncate max-w-[180px] ${isNeoBrutalism ? 'text-black/70' : 'text-gray-600'}`}>{court.SVCNM}</span>
+            <span className={`truncate max-w-[180px] ${themeClass('text-black/70', 'text-gray-600')} `}>{court.SVCNM}</span>
           </nav>
 
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
@@ -104,12 +106,12 @@ export default function CourtDetailClient({ court, district, districtSlug }: Cou
                   {!isNeoBrutalism && <span className={`w-2 h-2 rounded-full ${isAvailable ? 'bg-green-500 animate-pulse' : 'bg-gray-400'}`} />}
                   {court.SVCSTATNM}
                 </span>
-                <span className={`text-sm ${isNeoBrutalism ? 'text-black/60 font-medium' : 'text-gray-400'}`}>{court.MINCLASSNM}</span>
+                <span className={`text-sm ${themeClass('text-black/60 font-medium', 'text-gray-400')} `}>{court.MINCLASSNM}</span>
               </div>
-              <h1 className={`text-2xl sm:text-3xl mb-2 break-keep ${isNeoBrutalism ? 'font-black text-black uppercase tracking-tight' : 'font-bold text-gray-900'}`}>
+              <h1 className={`text-2xl sm:text-3xl mb-2 break-keep ${themeClass('font-black text-black uppercase tracking-tight', 'font-bold text-gray-900')} `}>
                 {isNeoBrutalism ? `🎾 ${court.SVCNM}` : court.SVCNM}
               </h1>
-              <p className={`flex items-center gap-2 ${isNeoBrutalism ? 'text-black/70 font-medium' : 'text-gray-500'}`}>
+              <p className={`flex items-center gap-2 ${themeClass('text-black/70 font-medium', 'text-gray-500')} `}>
                 <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -199,8 +201,8 @@ export default function CourtDetailClient({ court, district, districtSlug }: Cou
               }>
                 {item.icon}
               </div>
-              <p className={isNeoBrutalism ? 'text-xs text-black/60 mb-1 font-bold uppercase' : 'text-xs text-gray-400 mb-1'}>{item.label}</p>
-              <p className={isNeoBrutalism ? 'font-black text-black text-sm truncate' : 'font-semibold text-gray-800 text-sm truncate'}>{item.value}</p>
+              <p className={themeClass('text-xs text-black/60 mb-1 font-bold uppercase', 'text-xs text-gray-400 mb-1')}>{item.label}</p>
+              <p className={themeClass('font-black text-black text-sm truncate', 'font-semibold text-gray-800 text-sm truncate')}>{item.value}</p>
             </div>
           ))}
         </div>

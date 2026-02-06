@@ -5,12 +5,14 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useAuth } from '@/contexts/AuthContext';
+import { useThemeClass } from '@/lib/cn';
 
 type LoginProvider = 'google' | 'kakao';
 type SupabaseProvider = 'google' | 'kakao';
 
 function LoginContent() {
   const { isNeoBrutalism } = useTheme();
+  const themeClass = useThemeClass();
   const { user } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -52,15 +54,12 @@ function LoginContent() {
   const handleKakaoLogin = () => handleOAuthLogin('kakao', 'kakao');
 
   return (
-    <div className={`min-h-screen flex items-center justify-center p-4 scrollbar-hide ${isNeoBrutalism ? 'bg-nb-bg' : 'bg-gray-50'}`}>
-      <div className={isNeoBrutalism
-        ? 'w-full max-w-md bg-white border-[3px] border-black rounded-[5px] shadow-[8px_8px_0px_0px_#000] p-8'
-        : 'w-full max-w-md bg-white rounded-2xl shadow-lg p-8 border border-gray-100'
-      }>
-        <h1 className={`text-2xl mb-2 text-center ${isNeoBrutalism ? 'font-black text-black uppercase' : 'font-bold text-gray-900'}`}>
+    <div className={`min-h-screen flex items-center justify-center p-4 scrollbar-hide ${themeClass('bg-nb-bg', 'bg-gray-50')}`}>
+      <div className={themeClass('w-full max-w-md bg-white border-[3px] border-black rounded-[5px] shadow-[8px_8px_0px_0px_#000] p-8', 'w-full max-w-md bg-white rounded-2xl shadow-lg p-8 border border-gray-100')}>
+        <h1 className={`text-2xl mb-2 text-center ${themeClass('font-black text-black uppercase', 'font-bold text-gray-900')}`}>
           {isNeoBrutalism ? '🎾 로그인' : '로그인'}
         </h1>
-        <p className={`text-center mb-8 ${isNeoBrutalism ? 'text-black/60 font-medium' : 'text-gray-500'}`}>
+        <p className={`text-center mb-8 ${themeClass('text-black/60 font-medium', 'text-gray-500')}`}>
           소셜 계정으로 간편하게 로그인하세요
         </p>
 
@@ -68,10 +67,7 @@ function LoginContent() {
           <div
             role="alert"
             aria-live="assertive"
-            className={isNeoBrutalism
-              ? 'bg-red-100 border-2 border-black text-red-700 font-bold p-4 rounded-[5px] mb-6 text-center'
-              : 'bg-red-50 border border-red-200 text-red-600 p-4 rounded-lg mb-6 text-center'
-            }
+            className={themeClass('bg-red-100 border-2 border-black text-red-700 font-bold p-4 rounded-[5px] mb-6 text-center', 'bg-red-50 border border-red-200 text-red-600 p-4 rounded-lg mb-6 text-center')}
           >
             {error}
           </div>
@@ -82,10 +78,7 @@ function LoginContent() {
             type="button"
             onClick={handleKakaoLogin}
             disabled={loadingProvider !== null}
-            className={isNeoBrutalism
-              ? 'w-full py-4 bg-[#FEE500] text-[#191919] font-black uppercase border-[3px] border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none transition-all disabled:opacity-50 flex items-center justify-center gap-3'
-              : 'w-full py-4 bg-[#FEE500] text-[#191919] font-semibold rounded-lg hover:bg-[#FDD800] transition-colors disabled:opacity-50 flex items-center justify-center gap-3 shadow-sm'
-            }
+            className={themeClass('w-full py-4 bg-[#FEE500] text-[#191919] font-black uppercase border-[3px] border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none transition-all disabled:opacity-50 flex items-center justify-center gap-3', 'w-full py-4 bg-[#FEE500] text-[#191919] font-semibold rounded-lg hover:bg-[#FDD800] transition-colors disabled:opacity-50 flex items-center justify-center gap-3 shadow-sm')}
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M12 3C6.477 3 2 6.463 2 10.691c0 2.734 1.8 5.129 4.503 6.47-.177.637-.64 2.309-.732 2.665-.114.442.162.436.341.317.14-.093 2.238-1.519 3.147-2.138.553.08 1.123.122 1.704.122 5.523 0 10-3.463 10-7.737C22 6.463 17.523 3 12 3z" />
@@ -97,10 +90,7 @@ function LoginContent() {
             type="button"
             onClick={handleGoogleLogin}
             disabled={loadingProvider !== null}
-            className={isNeoBrutalism
-              ? 'w-full py-4 bg-white text-black font-black uppercase border-[3px] border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none transition-all disabled:opacity-50 flex items-center justify-center gap-3'
-              : 'w-full py-4 bg-white text-gray-700 font-semibold rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors disabled:opacity-50 flex items-center justify-center gap-3 shadow-sm'
-            }
+            className={themeClass('w-full py-4 bg-white text-black font-black uppercase border-[3px] border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none transition-all disabled:opacity-50 flex items-center justify-center gap-3', 'w-full py-4 bg-white text-gray-700 font-semibold rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors disabled:opacity-50 flex items-center justify-center gap-3 shadow-sm')}
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24" aria-hidden="true">
               <path
@@ -125,7 +115,7 @@ function LoginContent() {
 
         </div>
 
-        <p className={`text-center text-xs mt-6 ${isNeoBrutalism ? 'text-black/50 font-medium' : 'text-gray-400'}`}>
+        <p className={`text-center text-xs mt-6 ${themeClass('text-black/50 font-medium', 'text-gray-400')}`}>
           로그인 시 <a href="/terms" className="underline">이용약관</a> 및 <a href="/privacy" className="underline">개인정보처리방침</a>에 동의하게 됩니다.
         </p>
       </div>
