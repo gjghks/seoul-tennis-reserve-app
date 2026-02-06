@@ -15,6 +15,11 @@ const FavoriteCourtSection = dynamic(
   { ssr: false }
 );
 
+const PopularCourts = dynamic(
+  () => import('@/components/home/PopularCourts'),
+  { ssr: false }
+);
+
 interface HomeContentProps {
   initialStats?: Record<string, DistrictStats>;
 }
@@ -112,6 +117,10 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
 
       <div className="pt-4 pb-8 lg:pt-3 lg:pb-6">
         <FavoriteCourtSection />
+      </div>
+
+      <div className="pb-8 lg:pb-6">
+        <PopularCourts />
       </div>
 
       {AD_SLOTS.HOME_TOP && (

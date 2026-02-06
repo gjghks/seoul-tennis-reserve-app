@@ -1,5 +1,7 @@
 'use client';
 
+import { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useTennisData } from '@/contexts/TennisDataContext';
 import { SeoulService } from '@/lib/seoulApi';
@@ -9,6 +11,13 @@ import AdBanner from '@/components/ads/AdBanner';
 import { AD_SLOTS } from '@/lib/adConfig';
 import LastUpdated from '@/components/ui/LastUpdated';
 import { useThemeClass } from '@/lib/cn';
+import FacilityTags from '@/components/ui/FacilityTags';
+import { extractFacilityTags } from '@/lib/utils/facilityTags';
+
+const KakaoMapView = dynamic(
+  () => import('@/components/map/KakaoMapView'),
+  { ssr: false }
+);
 
 interface DistrictContentProps {
   district: string;
@@ -24,6 +33,17 @@ export default function DistrictContent({
   const { isNeoBrutalism } = useTheme();
   const themeClass = useThemeClass();
   const { courts: allCourts, isLoading, lastUpdated } = useTennisData();
+  const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
+
+  useEffect(() => {
+    const saved = localStorage.getItem('tennis-view-mode') as 'list' | 'map' | null;
+    if (saved) setViewMode(saved);
+  }, []);
+
+  const toggleView = (mode: 'list' | 'map') => {
+    setViewMode(mode);
+    localStorage.setItem('tennis-view-mode', mode);
+  };
 
   const koreanDistrict = SLUG_TO_KOREAN[district] || district;
   
@@ -64,7 +84,36 @@ export default function DistrictContent({
               <LastUpdated timestamp={lastUpdated} className="justify-center mt-0.5" />
             )}
           </div>
-          <div className="w-16" />
+          <div className="flex gap-1">
+            <button
+              type="button"
+              onClick={() => toggleView('list')}
+              className={`p-2 rounded-md transition-colors ${
+                viewMode === 'list'
+                  ? isNeoBrutalism ? 'bg-black text-white' : 'bg-green-600 text-white'
+                  : isNeoBrutalism ? 'text-black/50 hover:bg-black/10' : 'text-gray-400 hover:bg-gray-100'
+              }`}
+              aria-label="목록 보기"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              onClick={() => toggleView('map')}
+              className={`p-2 rounded-md transition-colors ${
+                viewMode === 'map'
+                  ? isNeoBrutalism ? 'bg-black text-white' : 'bg-green-600 text-white'
+                  : isNeoBrutalism ? 'text-black/50 hover:bg-black/10' : 'text-gray-400 hover:bg-gray-100'
+              }`}
+              aria-label="지도 보기"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -73,6 +122,12 @@ export default function DistrictContent({
       {AD_SLOTS.DISTRICT_TOP && (
         <div className="container mb-4">
           <AdBanner adSlot={AD_SLOTS.DISTRICT_TOP} adFormat="horizontal" className="min-h-[90px]" />
+        </div>
+      )}
+
+      {viewMode === 'map' && !loading && courts.length > 0 && (
+        <div className="container mb-4">
+          <KakaoMapView courts={courts} district={district} />
         </div>
       )}
 
@@ -125,6 +180,7 @@ export default function DistrictContent({
           <div className="grid gap-4">
             {courts.map((court) => {
               const isAvailable = court.SVCSTATNM === '접수중';
+              const facilityTags = extractFacilityTags(court).filter(tag => tag.key !== 'free' && tag.key !== 'paid');
               
               if (isNeoBrutalism) {
                 return (
@@ -143,6 +199,7 @@ export default function DistrictContent({
                           {court.SVCNM}
                         </h3>
                         <p className="text-sm text-black/70 mt-1 font-medium">{court.PLACENM}</p>
+                        <FacilityTags tags={facilityTags} maxTags={3} className="mt-2" />
                       </Link>
                       <span className={`px-3 py-1 text-xs font-black uppercase border-2 border-black rounded-[3px] ${
                         isAvailable ? 'bg-[#a3e635] text-black' : 'bg-gray-300 text-black/50'
@@ -190,6 +247,7 @@ export default function DistrictContent({
                         {court.SVCNM}
                       </h3>
                       <p className="text-sm text-gray-500 mt-1">{court.PLACENM}</p>
+                      <FacilityTags tags={facilityTags} maxTags={3} className="mt-2" />
                     </Link>
                     <span className={`badge ${isAvailable ? 'badge-available' : 'badge-closed'}`}>
                       {court.SVCSTATNM}

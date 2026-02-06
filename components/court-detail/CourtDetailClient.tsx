@@ -1,7 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { SeoulService } from '@/lib/seoulApi';
@@ -15,10 +15,17 @@ import ReviewSection from '@/components/review/ReviewSection';
 import AdBanner from '@/components/ads/AdBanner';
 import { AD_SLOTS } from '@/lib/adConfig';
 import { useThemeClass } from '@/lib/cn';
+import FacilityTags from '@/components/ui/FacilityTags';
+import { extractFacilityTags } from '@/lib/utils/facilityTags';
+import { convertToWeatherGrid } from '@/lib/utils/weatherGrid';
 
 const DetailContent = dynamic(() => import('@/components/court-detail/DetailContent'), {
   loading: () => <div className="animate-pulse h-64 bg-gray-100 rounded-xl" />,
   ssr: false
+});
+
+const WeatherBadge = dynamic(() => import('@/components/weather/WeatherBadge'), {
+  ssr: false,
 });
 
 interface CourtDetailClientProps {
@@ -54,6 +61,24 @@ export default function CourtDetailClient({ court, district, districtSlug }: Cou
   }, []);
 
   const isAvailable = isCourtAvailable(court.SVCSTATNM);
+  const facilityTags = extractFacilityTags(court);
+  const weatherGrid = useMemo(() => {
+    const longitude = Number.parseFloat(court.X);
+    const latitude = Number.parseFloat(court.Y);
+
+    if (!Number.isFinite(longitude) || !Number.isFinite(latitude)) {
+      return null;
+    }
+
+    return convertToWeatherGrid(longitude, latitude);
+  }, [court.X, court.Y]);
+
+  const isOutdoorCourt = useMemo(() => {
+    const source = `${court.SVCNM || ''} ${court.PLACENM || ''} ${court.DTLCONT || ''}`;
+    const includesOutdoor = /(실외|야외|옥외|노천|outdoor)/i.test(source);
+    const includesIndoor = /(실내|indoor)/i.test(source);
+    return includesOutdoor && !includesIndoor;
+  }, [court.DTLCONT, court.PLACENM, court.SVCNM]);
 
   const formatDate = (dateStr: string) => {
     if (!dateStr) return '';
@@ -118,6 +143,12 @@ export default function CourtDetailClient({ court, district, districtSlug }: Cou
                 </svg>
                 {court.PLACENM}
               </p>
+              {weatherGrid && (
+                <div className="mt-3">
+                  <WeatherBadge nx={weatherGrid.nx} ny={weatherGrid.ny} isOutdoor={isOutdoorCourt} />
+                </div>
+              )}
+              <FacilityTags tags={facilityTags} className="mt-3" />
             </div>
             <div className="flex items-center gap-2">
               <ShareButton
