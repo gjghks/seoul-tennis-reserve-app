@@ -28,6 +28,11 @@ const WeatherBadge = dynamic(() => import('@/components/weather/WeatherBadge'), 
   ssr: false,
 });
 
+const CourtDetailMap = dynamic(() => import('@/components/court-detail/CourtDetailMap'), {
+  loading: () => <div className="animate-pulse h-[200px] bg-gray-100 rounded-xl" />,
+  ssr: false,
+});
+
 interface CourtDetailClientProps {
   court: SeoulService;
   district: District;
@@ -40,6 +45,7 @@ export default function CourtDetailClient({ court, district, districtSlug }: Cou
   const [imageError, setImageError] = useState(false);
   const [showStickyHeader, setShowStickyHeader] = useState(false);
   const headerRef = useRef<HTMLDivElement>(null);
+  const mapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let ticking = false;
@@ -72,6 +78,17 @@ export default function CourtDetailClient({ court, district, districtSlug }: Cou
 
     return convertToWeatherGrid(longitude, latitude);
   }, [court.X, court.Y]);
+
+  const courtCoords = useMemo(() => {
+    const lng = Number.parseFloat(court.X);
+    const lat = Number.parseFloat(court.Y);
+    if (!Number.isFinite(lng) || !Number.isFinite(lat) || lng === 0 || lat === 0) return null;
+    return { lat, lng };
+  }, [court.X, court.Y]);
+
+  const scrollToMap = () => {
+    mapRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
 
   const isOutdoorCourt = useMemo(() => {
     const source = `${court.SVCNM || ''} ${court.PLACENM || ''} ${court.DTLCONT || ''}`;
@@ -136,13 +153,27 @@ export default function CourtDetailClient({ court, district, districtSlug }: Cou
               <h1 className={`text-2xl sm:text-3xl mb-2 break-keep ${themeClass('font-black text-black uppercase tracking-tight', 'font-bold text-gray-900')} `}>
                 {isNeoBrutalism ? `🎾 ${court.SVCNM}` : court.SVCNM}
               </h1>
-              <p className={`flex items-center gap-2 ${themeClass('text-black/70 font-medium', 'text-gray-500')} `}>
-                <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                {court.PLACENM}
-              </p>
+              {courtCoords ? (
+                <button
+                  type="button"
+                  onClick={scrollToMap}
+                  className={`flex items-center gap-2 cursor-pointer hover:underline underline-offset-4 ${themeClass('text-black/70 font-medium', 'text-gray-500 hover:text-green-600')} transition-colors`}
+                >
+                  <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  {court.PLACENM}
+                </button>
+              ) : (
+                <p className={`flex items-center gap-2 ${themeClass('text-black/70 font-medium', 'text-gray-500')} `}>
+                  <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  {court.PLACENM}
+                </p>
+              )}
               {weatherGrid && (
                 <div className="mt-3">
                   <WeatherBadge nx={weatherGrid.nx} ny={weatherGrid.ny} isOutdoor={isOutdoorCourt} />
@@ -267,7 +298,21 @@ export default function CourtDetailClient({ court, district, districtSlug }: Cou
             {court.PLACENM && (
               <div className="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors">
                 <span className="text-gray-500 text-sm">위치</span>
-                <span className="text-gray-900 font-medium text-sm">{court.PLACENM}</span>
+                {courtCoords ? (
+                  <button
+                    type="button"
+                    onClick={scrollToMap}
+                    className="text-green-600 font-medium text-sm hover:underline cursor-pointer flex items-center gap-1"
+                  >
+                    {court.PLACENM}
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  </button>
+                ) : (
+                  <span className="text-gray-900 font-medium text-sm">{court.PLACENM}</span>
+                )}
               </div>
             )}
             {court.TELNO && (
@@ -288,6 +333,29 @@ export default function CourtDetailClient({ court, district, districtSlug }: Cou
             )}
           </div>
         </div>
+
+        {courtCoords && (
+          <div ref={mapRef} className={`mb-6 overflow-hidden ${isNeoBrutalism ? '' : 'bg-white rounded-2xl border border-gray-100'}`}>
+            {!isNeoBrutalism && (
+              <div className="p-5 border-b border-gray-100">
+                <h2 className="font-bold text-gray-900 flex items-center gap-2">
+                  <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  위치
+                </h2>
+              </div>
+            )}
+            <div className={isNeoBrutalism ? '' : 'p-5'}>
+              <CourtDetailMap
+                lat={courtCoords.lat}
+                lng={courtCoords.lng}
+                placeName={court.PLACENM}
+              />
+            </div>
+          </div>
+        )}
 
         {court.DTLCONT && <DetailContent content={court.DTLCONT} />}
 

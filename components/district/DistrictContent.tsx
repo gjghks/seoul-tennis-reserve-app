@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import dynamic from 'next/dynamic';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useTennisData } from '@/contexts/TennisDataContext';
@@ -13,6 +13,12 @@ import LastUpdated from '@/components/ui/LastUpdated';
 import { useThemeClass } from '@/lib/cn';
 import FacilityTags from '@/components/ui/FacilityTags';
 import { extractFacilityTags } from '@/lib/utils/facilityTags';
+import { convertToWeatherGrid } from '@/lib/utils/weatherGrid';
+
+const WeatherBadge = dynamic(
+  () => import('@/components/weather/WeatherBadge'),
+  { ssr: false }
+);
 
 const KakaoMapView = dynamic(
   () => import('@/components/map/KakaoMapView'),
@@ -34,6 +40,8 @@ export default function DistrictContent({
   const themeClass = useThemeClass();
   const { courts: allCourts, isLoading, lastUpdated } = useTennisData();
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
+  const [focusPlaceName, setFocusPlaceName] = useState<string | null>(null);
+  const mapContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const saved = localStorage.getItem('tennis-view-mode') as 'list' | 'map' | null;
@@ -43,6 +51,15 @@ export default function DistrictContent({
   const toggleView = (mode: 'list' | 'map') => {
     setViewMode(mode);
     localStorage.setItem('tennis-view-mode', mode);
+  };
+
+  const handlePlaceClick = (placeName: string) => {
+    setFocusPlaceName(placeName);
+    setViewMode('map');
+    localStorage.setItem('tennis-view-mode', 'map');
+    setTimeout(() => {
+      mapContainerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
   };
 
   const koreanDistrict = SLUG_TO_KOREAN[district] || district;
@@ -58,6 +75,16 @@ export default function DistrictContent({
     if (!isAAvailable && isBAvailable) return 1;
     return 0;
   });
+
+  const districtWeatherGrid = useMemo(() => {
+    const courtWithCoords = courts.find(c => {
+      const x = Number.parseFloat(c.X);
+      const y = Number.parseFloat(c.Y);
+      return Number.isFinite(x) && Number.isFinite(y) && x !== 0 && y !== 0;
+    });
+    if (!courtWithCoords) return null;
+    return convertToWeatherGrid(Number.parseFloat(courtWithCoords.X), Number.parseFloat(courtWithCoords.Y));
+  }, [courts]);
 
   const loading = isLoading && initialCourts.length === 0;
 
@@ -77,9 +104,14 @@ export default function DistrictContent({
             ← 전체 지역
           </Link>
           <div className="text-center">
-            <h1 className={`text-lg ${themeClass('font-black text-black uppercase', 'font-bold text-gray-900')} `}>
-              {isNeoBrutalism ? `${districtName}` : `${districtName} 테니스장`}
-            </h1>
+            <div className="flex items-center justify-center gap-1.5">
+              <h1 className={`text-lg ${themeClass('font-black text-black uppercase', 'font-bold text-gray-900')} `}>
+                {isNeoBrutalism ? `${districtName}` : `${districtName}`}
+              </h1>
+              {districtWeatherGrid && (
+                <WeatherBadge nx={districtWeatherGrid.nx} ny={districtWeatherGrid.ny} compact />
+              )}
+            </div>
             {lastUpdated && (
               <LastUpdated timestamp={lastUpdated} className="justify-center mt-0.5" />
             )}
@@ -126,8 +158,8 @@ export default function DistrictContent({
       )}
 
       {viewMode === 'map' && !loading && courts.length > 0 && (
-        <div className="container mb-4">
-          <KakaoMapView courts={courts} district={district} />
+        <div ref={mapContainerRef} className="container mb-4">
+          <KakaoMapView courts={courts} district={district} focusPlaceName={focusPlaceName} />
         </div>
       )}
 
@@ -191,16 +223,28 @@ export default function DistrictContent({
                     }`}
                   >
                     <div className="flex justify-between items-start mb-3">
-                      <Link
-                        href={`/${district}/${encodeURIComponent(court.SVCID)}`}
-                        className="flex-1 group"
-                      >
-                        <h3 className="text-lg font-black text-black group-hover:text-[#16a34a] uppercase tracking-tight">
-                          {court.SVCNM}
-                        </h3>
-                        <p className="text-sm text-black/70 mt-1 font-medium">{court.PLACENM}</p>
+                      <div className="flex-1">
+                        <Link
+                          href={`/${district}/${encodeURIComponent(court.SVCID)}`}
+                          className="group"
+                        >
+                          <h3 className="text-lg font-black text-black group-hover:text-[#16a34a] uppercase tracking-tight">
+                            {court.SVCNM}
+                          </h3>
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={() => handlePlaceClick(court.PLACENM)}
+                          className="text-sm text-black/70 mt-1 font-medium hover:text-[#16a34a] hover:underline underline-offset-4 cursor-pointer flex items-center gap-1"
+                        >
+                          <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                          </svg>
+                          {court.PLACENM}
+                        </button>
                         <FacilityTags tags={facilityTags} maxTags={3} className="mt-2" />
-                      </Link>
+                      </div>
                       <span className={`px-3 py-1 text-xs font-black uppercase border-2 border-black rounded-[3px] ${
                         isAvailable ? 'bg-[#a3e635] text-black' : 'bg-gray-300 text-black/50'
                       }`}>
@@ -239,16 +283,28 @@ export default function DistrictContent({
                   className="card p-5 bg-white"
                 >
                   <div className="flex justify-between items-start mb-2">
-                    <Link
-                      href={`/${district}/${encodeURIComponent(court.SVCID)}`}
-                      className="flex-1 group"
-                    >
-                      <h3 className="text-lg font-bold text-gray-900 group-hover:text-green-700">
-                        {court.SVCNM}
-                      </h3>
-                      <p className="text-sm text-gray-500 mt-1">{court.PLACENM}</p>
+                    <div className="flex-1">
+                      <Link
+                        href={`/${district}/${encodeURIComponent(court.SVCID)}`}
+                        className="group"
+                      >
+                        <h3 className="text-lg font-bold text-gray-900 group-hover:text-green-700">
+                          {court.SVCNM}
+                        </h3>
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() => handlePlaceClick(court.PLACENM)}
+                        className="text-sm text-gray-500 mt-1 hover:text-green-600 hover:underline underline-offset-4 cursor-pointer flex items-center gap-1 transition-colors"
+                      >
+                        <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        {court.PLACENM}
+                      </button>
                       <FacilityTags tags={facilityTags} maxTags={3} className="mt-2" />
-                    </Link>
+                    </div>
                     <span className={`badge ${isAvailable ? 'badge-available' : 'badge-closed'}`}>
                       {court.SVCSTATNM}
                     </span>

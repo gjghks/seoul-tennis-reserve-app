@@ -9,6 +9,14 @@ import AdBanner from '@/components/ads/AdBanner';
 import { AD_SLOTS } from '@/lib/adConfig';
 import LastUpdated from '@/components/ui/LastUpdated';
 import { useThemeClass } from '@/lib/cn';
+import { convertToWeatherGrid } from '@/lib/utils/weatherGrid';
+
+const WeatherBadge = dynamic(
+  () => import('@/components/weather/WeatherBadge'),
+  { ssr: false }
+);
+
+const SEOUL_WEATHER_GRID = convertToWeatherGrid(126.978, 37.5665);
 
 const FavoriteCourtSection = dynamic(
   () => import('@/components/favorite/FavoriteCourtSection'),
@@ -131,9 +139,16 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
 
       <section className="container flex-1 flex flex-col pb-24">
         <div className="mb-4 lg:mb-3">
-          <h2 className={`mb-2 ${themeClass('text-xl font-black text-black uppercase tracking-tight', 'text-lg font-semibold text-gray-900')}`}>
-            지역 선택
-          </h2>
+          <div className="flex items-center gap-1.5 mb-2">
+            <h2 className={themeClass('text-xl font-black text-black uppercase tracking-tight', 'text-lg font-semibold text-gray-900')}>
+              지역 선택
+            </h2>
+            {SEOUL_WEATHER_GRID && (
+              <span className={themeClass('text-xs font-bold text-black/50', 'text-xs text-gray-400')}>
+                서울 <WeatherBadge nx={SEOUL_WEATHER_GRID.nx} ny={SEOUL_WEATHER_GRID.ny} compact />
+              </span>
+            )}
+          </div>
           <p className={themeClass('text-sm text-black/70 font-medium', 'text-sm text-gray-500')}>
             원하는 지역을 선택하면 해당 지역의 테니스장 목록을 확인할 수 있습니다
           </p>

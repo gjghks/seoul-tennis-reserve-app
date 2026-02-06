@@ -7,6 +7,7 @@ interface WeatherBadgeProps {
   nx: number;
   ny: number;
   isOutdoor?: boolean;
+  compact?: boolean;
 }
 
 interface WeatherResponse {
@@ -44,7 +45,7 @@ function resolveWeatherState(weather: WeatherResponse) {
   return { icon: '☁️', warning: null };
 }
 
-export default function WeatherBadge({ nx, ny, isOutdoor = false }: WeatherBadgeProps) {
+export default function WeatherBadge({ nx, ny, isOutdoor = false, compact = false }: WeatherBadgeProps) {
   const themeClass = useThemeClass();
 
   const { data, isLoading } = useSWR<WeatherResponse>(`/api/weather?nx=${nx}&ny=${ny}`, fetcher, {
@@ -55,6 +56,7 @@ export default function WeatherBadge({ nx, ny, isOutdoor = false }: WeatherBadge
   });
 
   if (isLoading) {
+    if (compact) return null;
     return (
       <div className={themeClass('h-10 w-44 rounded-[5px] border-2 border-black bg-white animate-pulse', 'h-10 w-40 rounded-full border border-gray-200 bg-white animate-pulse')} />
     );
@@ -72,6 +74,18 @@ export default function WeatherBadge({ nx, ny, isOutdoor = false }: WeatherBadge
   const weatherState = resolveWeatherState(data);
   const hasPrecipitation = weatherState.warning !== null;
   const warningLabel = isOutdoor && hasPrecipitation ? weatherState.warning : null;
+
+  if (compact) {
+    return (
+      <span className={themeClass(
+        'inline-flex items-center gap-1 text-xs font-bold text-black/70',
+        'inline-flex items-center gap-1 text-xs text-gray-500'
+      )}>
+        <span className="text-sm leading-none">{weatherState.icon}</span>
+        {Math.round(data.temperature)}°C
+      </span>
+    );
+  }
 
   return (
     <div className="flex items-center gap-2 flex-wrap">
