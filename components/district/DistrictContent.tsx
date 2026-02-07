@@ -85,7 +85,7 @@ export default function DistrictContent({
   const loading = isLoading && initialCourts.length === 0;
 
   return (
-    <div className={`min-h-screen pb-20 scrollbar-hide ${themeClass('bg-nb-bg', 'bg-gray-50')} `}>
+    <div className={`min-h-screen pb-16 scrollbar-hide ${themeClass('bg-nb-bg', 'bg-gray-50')} `}>
       <div className={`sticky top-14 z-40 ${
         isNeoBrutalism 
           ? 'bg-[#88aaee] border-b-[3px] border-black' 

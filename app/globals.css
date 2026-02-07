@@ -8,7 +8,7 @@
 :root {
   /* Layout Dimensions */
   --header-height: 56px;
-  --footer-height: 80px;
+  --footer-height: 60px;
   --main-height: calc(100dvh - var(--header-height) - var(--footer-height));
 
   /* Tennis Court Theme */

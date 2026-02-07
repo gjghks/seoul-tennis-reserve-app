@@ -133,7 +133,7 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
         </div>
       )}
 
-      <section className="container flex-1 flex flex-col pb-24">
+      <section className="container flex-1 flex flex-col pb-20">
         <div className="mb-4 lg:mb-3">
           <div className="flex items-center gap-1.5 mb-2">
             <h2 className={themeClass('text-xl font-black text-black uppercase tracking-tight', 'text-lg font-semibold text-gray-900')}>
