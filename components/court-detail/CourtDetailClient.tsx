@@ -18,7 +18,7 @@ import { useThemeClass } from '@/lib/cn';
 import FacilityTags from '@/components/ui/FacilityTags';
 import { extractFacilityTags } from '@/lib/utils/facilityTags';
 import { convertToWeatherGrid } from '@/lib/utils/weatherGrid';
-import WeatherBadge from '@/components/weather/WeatherBadge';
+import WeatherInfoCard from '@/components/weather/WeatherInfoCard';
 
 const DetailContent = dynamic(() => import('@/components/court-detail/DetailContent'), {
   loading: () => <div className="animate-pulse h-64 bg-gray-100 rounded-xl" />,
@@ -104,7 +104,6 @@ export default function CourtDetailClient({ court, district, districtSlug }: Cou
     { icon: '🕐', label: '운영시간', value: `${court.V_MIN || '00:00'} - ${court.V_MAX || '24:00'}` },
     { icon: '💰', label: '이용료', value: court.PAYATNM || '정보 없음' },
     { icon: '📍', label: '지역', value: court.AREANM },
-    { icon: '👥', label: '이용대상', value: court.USETGTINFO || '누구나' },
   ];
 
   return (
@@ -170,11 +169,6 @@ export default function CourtDetailClient({ court, district, districtSlug }: Cou
                   </svg>
                   {court.PLACENM}
                 </p>
-              )}
-              {weatherGrid && (
-                <div className="mt-3">
-                  <WeatherBadge nx={weatherGrid.nx} ny={weatherGrid.ny} isOutdoor={isOutdoorCourt} />
-                </div>
               )}
               <FacilityTags tags={facilityTags} className="mt-3" />
             </div>
@@ -264,6 +258,28 @@ export default function CourtDetailClient({ court, district, districtSlug }: Cou
               <p className={themeClass('font-black text-black text-sm truncate', 'font-semibold text-gray-800 text-sm truncate')}>{item.value}</p>
             </div>
           ))}
+          {weatherGrid ? (
+            <WeatherInfoCard
+              nx={weatherGrid.nx}
+              ny={weatherGrid.ny}
+              isOutdoor={isOutdoorCourt}
+              isNeoBrutalism={isNeoBrutalism}
+            />
+          ) : (
+            <div className={isNeoBrutalism
+              ? 'bg-white border-2 border-black rounded-[5px] p-4 text-center shadow-[3px_3px_0px_0px_#000]'
+              : 'bg-white rounded-xl p-4 border border-gray-100 text-center'
+            }>
+              <div className={isNeoBrutalism
+                ? 'w-10 h-10 bg-[#facc15] border-2 border-black rounded-[5px] flex items-center justify-center mx-auto mb-2 text-lg'
+                : 'w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-2'
+              }>
+                👥
+              </div>
+              <p className={themeClass('text-xs text-black/60 mb-1 font-bold uppercase', 'text-xs text-gray-400 mb-1')}>이용대상</p>
+              <p className={themeClass('font-black text-black text-sm truncate', 'font-semibold text-gray-800 text-sm truncate')}>{court.USETGTINFO || '누구나'}</p>
+            </div>
+          )}
         </div>
 
         {(court.RCPTBGNDT || court.RCPTENDDT) && (
