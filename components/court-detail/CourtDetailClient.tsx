@@ -117,76 +117,68 @@ export default function CourtDetailClient({ court, district, districtSlug }: Cou
       
       <div ref={headerRef} className={themeClass('bg-white border-b-[3px] border-black', 'bg-white border-b border-gray-100')}>
         <div className="container py-4">
-          <nav className={`flex items-center gap-2 text-sm mb-4 ${themeClass('font-bold', '')}`}>
-            <Link href="/" className={themeClass('text-black hover:underline underline-offset-4', 'text-gray-400 hover:text-green-600 transition-colors')}>
-              홈
-            </Link>
-            <svg className={`w-4 h-4 ${themeClass('text-black', 'text-gray-300')} `} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-            <Link href={`/${districtSlug}`} className={themeClass('text-black hover:underline underline-offset-4', 'text-gray-400 hover:text-green-600 transition-colors')}>
+          <div className="flex items-center justify-between mb-4">
+            <Link
+              href={`/${districtSlug}`}
+              className={`inline-flex items-center gap-1.5 text-sm ${themeClass('font-bold text-black hover:underline underline-offset-4', 'text-gray-500 hover:text-green-600 transition-colors')}`}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
               {district.nameKo}
             </Link>
-            <svg className={`w-4 h-4 ${themeClass('text-black', 'text-gray-300')} `} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-            <span className={`truncate max-w-[180px] ${themeClass('text-black/70', 'text-gray-600')} `}>{court.SVCNM}</span>
-          </nav>
-
-          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-3 mb-2">
-                <span className={`inline-flex items-center gap-1.5 px-3 py-1 text-sm font-semibold ${
-                  isNeoBrutalism
-                    ? `border-2 border-black rounded-[5px] ${isAvailable ? 'bg-[#a3e635] text-black font-black' : 'bg-gray-200 text-black/60'}`
-                    : `rounded-full ${isAvailable ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`
-                }`}>
-                  {!isNeoBrutalism && <span className={`w-2 h-2 rounded-full ${isAvailable ? 'bg-green-500 animate-pulse' : 'bg-gray-400'}`} />}
-                  {court.SVCSTATNM}
-                </span>
-                <span className={`text-sm ${themeClass('text-black/60 font-medium', 'text-gray-400')} `}>{court.MINCLASSNM}</span>
-              </div>
-              <h1 className={`text-2xl sm:text-3xl mb-2 break-keep ${themeClass('font-black text-black uppercase tracking-tight', 'font-bold text-gray-900')} `}>
-                {isNeoBrutalism ? `🎾 ${court.SVCNM}` : court.SVCNM}
-              </h1>
-              {courtCoords ? (
-                <button
-                  type="button"
-                  onClick={scrollToMap}
-                  className={`flex items-center gap-2 cursor-pointer hover:underline underline-offset-4 ${themeClass('text-black/70 font-medium', 'text-gray-500 hover:text-green-600')} transition-colors`}
-                >
-                  <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                  {court.PLACENM}
-                </button>
-              ) : (
-                <p className={`flex items-center gap-2 ${themeClass('text-black/70 font-medium', 'text-gray-500')} `}>
-                  <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                  {court.PLACENM}
-                </p>
-              )}
-              <FacilityTags tags={facilityTags} className="mt-3" />
-            </div>
             <div className="flex items-center gap-2">
               <ShareButton
                 title={court.SVCNM}
                 text={`${court.AREANM} ${court.PLACENM} 테니스장`}
-                showLabel
               />
               <FavoriteButton
                 svcId={court.SVCID}
                 svcName={court.SVCNM}
                 district={court.AREANM}
                 placeName={court.PLACENM}
-                showLabel
               />
             </div>
           </div>
+
+          <h1 className={`text-2xl sm:text-3xl mb-2 break-keep ${themeClass('font-black text-black uppercase tracking-tight', 'font-bold text-gray-900')}`}>
+            {isNeoBrutalism ? `🎾 ${court.SVCNM}` : court.SVCNM}
+          </h1>
+
+          <div className="flex items-center gap-2 flex-wrap">
+            {courtCoords ? (
+              <button
+                type="button"
+                onClick={scrollToMap}
+                className={`inline-flex items-center gap-1.5 cursor-pointer hover:underline underline-offset-4 ${themeClass('text-black/70 font-medium', 'text-gray-500 hover:text-green-600')} transition-colors`}
+              >
+                <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                {court.PLACENM}
+              </button>
+            ) : (
+              <span className={`inline-flex items-center gap-1.5 ${themeClass('text-black/70 font-medium', 'text-gray-500')}`}>
+                <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                {court.PLACENM}
+              </span>
+            )}
+            <span className={themeClass('text-black/30', 'text-gray-300')}>·</span>
+            <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 text-sm font-semibold ${
+              isNeoBrutalism
+                ? `border-2 border-black rounded-[5px] ${isAvailable ? 'bg-[#a3e635] text-black font-black' : 'bg-gray-200 text-black/60'}`
+                : `rounded-full ${isAvailable ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`
+            }`}>
+              {!isNeoBrutalism && <span className={`w-2 h-2 rounded-full ${isAvailable ? 'bg-green-500 animate-pulse' : 'bg-gray-400'}`} />}
+              {court.SVCSTATNM}
+            </span>
+          </div>
+
+          <FacilityTags tags={facilityTags} className="mt-3" />
         </div>
       </div>
 
