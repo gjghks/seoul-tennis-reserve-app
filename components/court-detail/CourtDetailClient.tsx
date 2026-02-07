@@ -168,12 +168,12 @@ export default function CourtDetailClient({ court, district, districtSlug }: Cou
               </span>
             )}
             <span className={themeClass('text-black/30', 'text-gray-300')}>·</span>
-            <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 text-sm font-semibold ${
+            <span className={`inline-flex items-center gap-1.5 px-3 py-1 text-sm font-bold ${
               isNeoBrutalism
-                ? `border-2 border-black rounded-[5px] ${isAvailable ? 'bg-[#a3e635] text-black font-black' : 'bg-gray-200 text-black/60'}`
-                : `rounded-full ${isAvailable ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`
+                ? `border-2 border-black rounded-[5px] ${isAvailable ? 'bg-[#a3e635] text-black font-black' : 'bg-[#fca5a5] text-black font-black'}`
+                : `rounded-full ${isAvailable ? 'bg-green-100 text-green-700' : 'bg-red-50 text-red-600 border border-red-200'}`
             }`}>
-              {!isNeoBrutalism && <span className={`w-2 h-2 rounded-full ${isAvailable ? 'bg-green-500 animate-pulse' : 'bg-gray-400'}`} />}
+              {!isNeoBrutalism && <span className={`w-2 h-2 rounded-full ${isAvailable ? 'bg-green-500 animate-pulse' : 'bg-red-400'}`} />}
               {court.SVCSTATNM}
             </span>
           </div>
@@ -183,7 +183,6 @@ export default function CourtDetailClient({ court, district, districtSlug }: Cou
       </div>
 
       <div className="container py-6">
-        <div className="h-3" />
         {court.SVCURL && (
           <a
             href={court.SVCURL}
