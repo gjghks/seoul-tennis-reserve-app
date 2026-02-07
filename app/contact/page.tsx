@@ -1,10 +1,13 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { useThemeClass } from '@/lib/cn';
+import FeedbackModal from '@/components/feedback/FeedbackModal';
 
 export default function ContactPage() {
   const themeClass = useThemeClass();
+  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
 
   return (
     <div className="container py-8 scrollbar-hide">
@@ -16,18 +19,41 @@ export default function ContactPage() {
         <div className={`space-y-8 ${themeClass('text-black/80', 'text-gray-600')}`}>
           <section>
             <p className="leading-relaxed">
-              서울 테니스 서비스에 대한 문의, 건의사항, 오류 신고 등 
+              서울 테니스 서비스에 대한 문의, 건의사항, 오류 신고 등
               언제든지 연락해 주세요. 빠르게 확인하고 답변 드리겠습니다.
             </p>
           </section>
 
-          <section className={`p-6 rounded-lg ${themeClass('bg-yellow-100 border-2 border-black', 'bg-gray-50')} `}>
-            <h2 className={`text-lg font-bold mb-4 ${themeClass('text-black', 'text-gray-900')} `}>
-              이메일 문의
+          <section className={`p-6 rounded-lg ${themeClass('bg-green-100 border-2 border-black', 'bg-green-50')}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
+              간단한 의견은 의견 보내기로!
             </h2>
+            <p className={`text-sm mb-4 ${themeClass('text-black/70', 'text-gray-500')}`}>
+              로그인 없이 간편하게 개선 제안, 오류 신고, 기타 의견을 보낼 수 있어요.
+            </p>
+            <button
+              onClick={() => setIsFeedbackOpen(true)}
+              className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold transition-all ${
+                themeClass(
+                  'bg-black text-white border-2 border-black hover:bg-gray-800 shadow-[3px_3px_0px_0px_#000]',
+                  'bg-green-600 text-white hover:bg-green-700'
+                )
+              }`}
+            >
+              의견 보내기
+            </button>
+          </section>
+
+          <section className={`p-6 rounded-lg ${themeClass('bg-yellow-100 border-2 border-black', 'bg-gray-50')}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
+              상세한 문의는 이메일로
+            </h2>
+            <p className={`text-sm mb-3 ${themeClass('text-black/70', 'text-gray-500')}`}>
+              답변이 필요한 문의나 상세한 설명이 필요한 경우 이메일로 연락해 주세요.
+            </p>
             <div className="flex items-center gap-3">
               <span className="text-2xl">📧</span>
-              <a 
+              <a
                 href="mailto:gjghks84@gmail.com"
                 className={`text-lg font-semibold hover:underline ${themeClass('text-black', 'text-green-600')}`}
               >
@@ -80,19 +106,6 @@ export default function ContactPage() {
                   </p>
                 </div>
               </li>
-              <li className="flex items-start gap-3">
-                <span className={`w-8 h-8 flex items-center justify-center rounded-full shrink-0 ${themeClass('bg-purple-300 border-2 border-black', 'bg-purple-100')}`}>
-                  🤝
-                </span>
-                <div>
-                  <strong className={themeClass('text-black', 'text-gray-900')}>
-                    제휴 및 협업
-                  </strong>
-                  <p className="text-sm mt-1">
-                    제휴나 협업에 관심이 있으시다면 연락해 주세요.
-                  </p>
-                </div>
-              </li>
             </ul>
           </section>
 
@@ -119,6 +132,11 @@ export default function ContactPage() {
           </div>
         </div>
       </div>
+
+      <FeedbackModal
+        isOpen={isFeedbackOpen}
+        onClose={() => setIsFeedbackOpen(false)}
+      />
     </div>
   );
 }

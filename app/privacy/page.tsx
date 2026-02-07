@@ -23,9 +23,9 @@ export default function PrivacyPage() {
               이용 목적이 변경되는 경우에는 별도의 동의를 받는 등 필요한 조치를 이행할 예정입니다.
             </p>
             <ul className="list-disc list-inside mt-2 space-y-1">
-              <li>회원 가입 및 관리</li>
-              <li>테니스장 예약 현황 정보 제공</li>
-              <li>서비스 개선 및 맞춤형 서비스 제공</li>
+              <li>소셜 로그인을 통한 회원 가입 및 관리</li>
+              <li>즐겨찾기, 이용 후기 등 개인화 기능 제공</li>
+              <li>서비스 이용 통계 분석 및 서비스 개선</li>
             </ul>
           </section>
 
@@ -33,10 +33,15 @@ export default function PrivacyPage() {
             <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
               2. 수집하는 개인정보 항목
             </h2>
+            <p className="mb-2">서비스는 소셜 로그인(OAuth) 방식을 통해 최소한의 정보만 수집합니다.</p>
             <ul className="list-disc list-inside space-y-1">
-              <li>필수항목: 이메일 주소</li>
-              <li>자동수집항목: 서비스 이용 기록, 접속 로그, 쿠키</li>
+              <li><strong>카카오 로그인</strong>: 이메일 주소, 닉네임, 프로필 이미지</li>
+              <li><strong>구글 로그인</strong>: 이메일 주소, 이름, 프로필 이미지</li>
+              <li><strong>자동 수집 항목</strong>: 서비스 이용 기록, 접속 로그, 쿠키, 기기 정보(Google Analytics를 통해 수집)</li>
             </ul>
+            <p className="mt-2 text-sm">
+              ※ 서비스는 비밀번호를 직접 수집하지 않으며, 소셜 로그인 제공자(카카오, 구글)의 인증 시스템을 사용합니다.
+            </p>
           </section>
 
           <section>
@@ -49,18 +54,26 @@ export default function PrivacyPage() {
             </p>
             <ul className="list-disc list-inside mt-2 space-y-1">
               <li>회원 정보: 회원 탈퇴 시까지</li>
+              <li>이용 후기 및 즐겨찾기 데이터: 회원 탈퇴 시까지</li>
               <li>서비스 이용 기록: 3년</li>
+              <li>익명 피드백 데이터: 서비스 개선 목적으로 보관 (개인 식별 정보 미포함)</li>
             </ul>
           </section>
 
           <section>
             <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
-              4. 개인정보의 제3자 제공
+              4. 개인정보의 제3자 제공 및 위탁
             </h2>
-            <p>
-              서비스는 정보주체의 개인정보를 제1조에서 명시한 범위 내에서만 처리하며,
-              정보주체의 동의, 법률의 특별한 규정 등의 경우에만 개인정보를 제3자에게 제공합니다.
+            <p className="mb-2">
+              서비스는 원칙적으로 이용자의 개인정보를 제3자에게 제공하지 않습니다.
+              다만, 서비스 운영을 위해 다음과 같이 개인정보 처리를 위탁하고 있습니다.
             </p>
+            <ul className="list-disc list-inside space-y-1">
+              <li><strong>Supabase</strong>: 회원 인증 및 데이터 저장 (후기, 즐겨찾기, 리뷰 이미지)</li>
+              <li><strong>Google Analytics</strong>: 서비스 이용 통계 분석</li>
+              <li><strong>Google AdSense</strong>: 광고 제공 (쿠키 기반)</li>
+              <li><strong>Vercel</strong>: 웹 서비스 호스팅</li>
+            </ul>
           </section>
 
           <section>
@@ -74,6 +87,9 @@ export default function PrivacyPage() {
               <li>삭제 요구</li>
               <li>처리정지 요구</li>
             </ul>
+            <p className="mt-2">
+              권리 행사는 이메일(gjghks84@gmail.com)을 통해 가능하며, 서비스는 지체 없이 조치하겠습니다.
+            </p>
           </section>
 
           <section>
@@ -82,20 +98,28 @@ export default function PrivacyPage() {
             </h2>
             <p>서비스는 개인정보의 안전성 확보를 위해 다음과 같은 조치를 취하고 있습니다.</p>
             <ul className="list-disc list-inside mt-2 space-y-1">
-              <li>개인정보의 암호화</li>
-              <li>해킹 등에 대비한 기술적 대책</li>
-              <li>접속기록의 보관 및 위변조 방지</li>
+              <li>개인정보의 암호화 (Supabase 기반 데이터 암호화 전송 및 저장)</li>
+              <li>소셜 로그인 OAuth 2.0 프로토콜 사용 (비밀번호 미저장)</li>
+              <li>HTTPS를 통한 통신 구간 암호화</li>
+              <li>Row Level Security(RLS)를 통한 데이터 접근 제어</li>
             </ul>
           </section>
 
           <section>
             <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
-              7. 쿠키의 사용
+              7. 쿠키 및 자동 수집 장치의 사용
             </h2>
-            <p>
-              서비스는 이용자에게 개별적인 맞춤서비스를 제공하기 위해 쿠키(cookie)를 사용합니다.
-              쿠키는 웹사이트를 운영하는데 이용되는 서버가 이용자의 브라우저에게 보내는 작은 텍스트 파일로,
-              이용자의 컴퓨터 하드디스크에 저장됩니다.
+            <p className="mb-2">
+              서비스는 이용자의 편의와 서비스 개선을 위해 쿠키 및 유사 기술을 사용합니다.
+            </p>
+            <ul className="list-disc list-inside space-y-1">
+              <li><strong>인증 쿠키</strong>: 로그인 상태 유지를 위한 세션 쿠키</li>
+              <li><strong>테마 설정</strong>: 선택한 디자인 테마 기억 (로컬 스토리지)</li>
+              <li><strong>Google Analytics 쿠키</strong>: 방문 통계 분석 (익명화 처리)</li>
+              <li><strong>Google AdSense 쿠키</strong>: 맞춤 광고 제공</li>
+            </ul>
+            <p className="mt-2 text-sm">
+              ※ 브라우저 설정에서 쿠키를 거부할 수 있으나, 일부 서비스 기능이 제한될 수 있습니다.
             </p>
           </section>
 
@@ -108,7 +132,7 @@ export default function PrivacyPage() {
               정보주체의 불만처리 및 피해구제 등을 위하여 아래와 같이 개인정보 보호책임자를 지정하고 있습니다.
             </p>
             <p className="mt-2">
-              문의: gjghks84@gmail.com
+              문의: <a href="mailto:gjghks84@gmail.com" className={`font-medium hover:underline ${themeClass('text-black', 'text-green-600')}`}>gjghks84@gmail.com</a>
             </p>
           </section>
 
@@ -117,8 +141,7 @@ export default function PrivacyPage() {
               9. 개인정보처리방침의 변경
             </h2>
             <p>
-              이 개인정보처리방침은 2024년 1월 1일부터 적용됩니다.
-              이전의 개인정보처리방침은 아래에서 확인할 수 있습니다.
+              이 개인정보처리방침은 2025년 2월 7일부터 적용됩니다.
             </p>
           </section>
         </div>
