@@ -6,6 +6,7 @@ import { supabase } from '@/lib/supabase';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useThemeClass } from '@/lib/cn';
+import { sanitizeRedirectPath } from '@/lib/utils/sanitizeRedirect';
 
 type LoginProvider = 'google' | 'kakao';
 type SupabaseProvider = 'google' | 'kakao';
@@ -16,7 +17,7 @@ function LoginContent() {
   const { user } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get('redirect') || '/';
+  const redirectTo = sanitizeRedirectPath(searchParams.get('redirect'));
   const [loadingProvider, setLoadingProvider] = useState<LoginProvider | null>(null);
   const [error, setError] = useState<string | null>(null);
 

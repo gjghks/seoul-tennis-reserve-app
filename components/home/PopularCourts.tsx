@@ -14,6 +14,8 @@ interface PopularCourt {
   avg_rating: number;
   review_count: number;
   favorite_count: number;
+  score: number;
+  popularity_reasons: string[];
 }
 
 interface PopularCourtsResponse {
@@ -39,17 +41,23 @@ function getRankLabel(rank: number, isNeoBrutalism: boolean) {
 }
 
 function RatingStars({ rating }: { rating: number }) {
-  return <span className="tracking-[0.08em] text-[#f59e0b]">{'★'.repeat(Math.round(rating))}</span>;
+  const stars = Math.max(0, Math.min(5, Math.round(rating)));
+  return <span className="tracking-[0.08em] text-[#f59e0b]">{'★'.repeat(stars)}</span>;
 }
 
 export default function PopularCourts() {
   const { isNeoBrutalism } = useTheme();
   const themeClass = useThemeClass();
-  const { data, isLoading } = useSWR<PopularCourtsResponse>('/api/popular-courts', fetcher, {
+  const { data, isLoading, error } = useSWR<PopularCourtsResponse>('/api/popular-courts', fetcher, {
     revalidateOnFocus: false,
     revalidateOnReconnect: true,
     dedupingInterval: 60 * 1000,
+    keepPreviousData: true,
   });
+
+  if (error && !data) {
+    return null;
+  }
 
   if (isLoading && !data) {
     return (
@@ -80,14 +88,15 @@ export default function PopularCourts() {
           인기 테니스장 TOP 5
         </h2>
         <p className={themeClass('text-sm font-medium text-black/60', 'text-sm text-gray-500')}>
-          평점, 후기 수, 즐겨찾기 수를 종합한 실시간 랭킹
+          예약 경쟁률, 평점, 즐겨찾기를 종합한 실시간 랭킹
         </p>
       </div>
 
       <div className="space-y-3">
       {topCourts.map((court, index) => {
         const rank = index + 1;
-        const districtSlug = court.district_slug || KOREAN_TO_SLUG[court.district] || 'gangnam-gu';
+        const districtSlug = court.district_slug || KOREAN_TO_SLUG[court.district];
+        if (!districtSlug) return null;
 
         return (
           <Link
@@ -112,20 +121,43 @@ export default function PopularCourts() {
                   <p className={themeClass('truncate font-black text-black uppercase tracking-tight', 'truncate font-semibold text-gray-900')}>
                     {court.court_name}
                   </p>
-                  <p className={themeClass('text-sm font-medium text-black/65', 'text-sm text-gray-500')}>
-                    {court.district}
-                  </p>
+                  <div className="flex items-center gap-1.5 mt-0.5">
+                    <span className={themeClass('text-sm font-medium text-black/65', 'text-sm text-gray-500')}>
+                      {court.district}
+                    </span>
+                    {court.popularity_reasons?.slice(0, 2).map((reason) => (
+                      <span
+                        key={reason}
+                        className={themeClass(
+                          'inline-block rounded-[3px] border border-black/30 bg-[#facc15]/30 px-1.5 py-0.5 text-[10px] font-bold text-black/70',
+                          'inline-block rounded-full bg-green-50 px-1.5 py-0.5 text-[10px] font-medium text-green-700'
+                        )}
+                      >
+                        {reason}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
 
               <div className="shrink-0 text-right">
-                <p className={themeClass('font-bold text-black', 'font-medium text-gray-800')}>
-                  <RatingStars rating={court.avg_rating} />
-                  <span className="ml-1">{court.avg_rating.toFixed(1)}</span>
-                </p>
-                <p className={themeClass('text-xs font-medium text-black/65', 'text-xs text-gray-500')}>
-                  후기 {court.review_count} · 즐겨찾기 {court.favorite_count}
-                </p>
+                {court.avg_rating > 0 ? (
+                  <p className={themeClass('font-bold text-black', 'font-medium text-gray-800')}>
+                    <RatingStars rating={court.avg_rating} />
+                    <span className="ml-1">{court.avg_rating.toFixed(1)}</span>
+                  </p>
+                ) : (
+                  <p className={themeClass('text-xs font-bold text-black/40', 'text-xs font-medium text-gray-400')}>
+                    평점 없음
+                  </p>
+                )}
+                {(court.review_count > 0 || court.favorite_count > 0) && (
+                  <p className={themeClass('text-xs font-medium text-black/65', 'text-xs text-gray-500')}>
+                    {court.review_count > 0 && `후기 ${court.review_count}`}
+                    {court.review_count > 0 && court.favorite_count > 0 && ' · '}
+                    {court.favorite_count > 0 && `즐겨찾기 ${court.favorite_count}`}
+                  </p>
+                )}
               </div>
             </div>
           </Link>

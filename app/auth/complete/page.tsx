@@ -2,13 +2,7 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-
-function sanitizeRedirectPath(path: string | null): string {
-  if (!path) return '/';
-  if (!path.startsWith('/')) return '/';
-  if (path.startsWith('//')) return '/';
-  return path;
-}
+import { sanitizeRedirectPath } from '@/lib/utils/sanitizeRedirect';
 
 export default function AuthComplete() {
   const router = useRouter();
