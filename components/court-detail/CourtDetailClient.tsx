@@ -21,12 +21,12 @@ import { convertToWeatherGrid } from '@/lib/utils/weatherGrid';
 import WeatherInfoCard from '@/components/weather/WeatherInfoCard';
 
 const DetailContent = dynamic(() => import('@/components/court-detail/DetailContent'), {
-  loading: () => <div className="animate-pulse h-64 bg-gray-100 rounded-xl" />,
+  loading: () => <div className="skeleton h-64 !rounded-xl" />,
   ssr: false
 });
 
 const CourtDetailMap = dynamic(() => import('@/components/court-detail/CourtDetailMap'), {
-  loading: () => <div className="animate-pulse h-[200px] bg-gray-100 rounded-xl" />,
+  loading: () => <div className="skeleton h-[200px] !rounded-xl" />,
   ssr: false,
 });
 

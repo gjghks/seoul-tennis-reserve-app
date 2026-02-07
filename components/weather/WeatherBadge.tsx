@@ -59,7 +59,7 @@ export default function WeatherBadge({ nx, ny, isOutdoor = false, compact = fals
   if (isLoading) {
     if (compact) return null;
     return (
-      <div className={themeClass('h-10 w-44 rounded-[5px] border-2 border-black bg-white animate-pulse', 'h-10 w-40 rounded-full border border-gray-200 bg-white animate-pulse')} />
+      <div className={themeClass('h-10 w-44 skeleton-neo', 'h-10 w-40 skeleton rounded-full')} />
     );
   }
 

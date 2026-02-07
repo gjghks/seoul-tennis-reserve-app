@@ -7,6 +7,7 @@ import { useToast } from '@/contexts/ToastContext';
 import { supabase } from '@/lib/supabase';
 import LoginPrompt from '@/components/auth/LoginPrompt';
 import { useThemeClass } from '@/lib/cn';
+import Spinner from '@/components/ui/Spinner';
 
 interface FavoriteButtonProps {
   svcId: string;
@@ -105,7 +106,7 @@ export default function FavoriteButton({
 
   if (authLoading) {
     return (
-      <div className={`w-8 h-8 animate-pulse ${themeClass('bg-white border-2 border-black rounded-[5px]', 'rounded-lg bg-gray-200')} ${className}`} />
+      <div className={`w-8 h-8 ${themeClass('skeleton-neo', 'skeleton rounded-lg')} ${className}`} />
     );
   }
 
@@ -122,28 +123,32 @@ export default function FavoriteButton({
             isFavorite
               ? 'bg-[#f472b6] text-black shadow-[3px_3px_0px_0px_#000]'
               : 'bg-white text-black shadow-[3px_3px_0px_0px_#000] hover:bg-[#f472b6]'
-          } ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none'} ${className}`,
+          } ${loading ? 'cursor-not-allowed' : 'hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none'} ${className}`,
           `flex items-center gap-2 px-3 py-2 rounded-lg transition-all ${
             isFavorite
               ? 'bg-pink-50 text-pink-600'
               : 'bg-gray-100 text-gray-500 hover:text-pink-600'
-          } ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-pink-50'} ${className}`
+          } ${loading ? 'cursor-not-allowed' : 'hover:bg-pink-50'} ${className}`
         )}
       >
-        <svg
-          className="w-5 h-5"
-          fill={isFavorite ? 'currentColor' : 'none'}
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-          />
-        </svg>
+        {loading ? (
+          <Spinner />
+        ) : (
+          <svg
+            className="w-5 h-5"
+            fill={isFavorite ? 'currentColor' : 'none'}
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+            />
+          </svg>
+        )}
         {showLabel && (
           <span className={`text-sm ${themeClass('uppercase', '')}`}>
             {isFavorite ? '즐겨찾기 해제' : '즐겨찾기'}

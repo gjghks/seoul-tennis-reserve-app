@@ -102,7 +102,7 @@ export default function MyPage() {
         {loading ? (
           <div className="space-y-3">
             {[1, 2, 3].map((value) => (
-              <div key={`skeleton-${value}`} className={`h-20 animate-pulse ${themeClass('bg-white border-2 border-black rounded-[5px]', 'bg-gray-100 rounded-xl')} `} />
+              <div key={`skeleton-${value}`} className={`h-20 ${themeClass('skeleton-neo', 'skeleton !rounded-xl')} `} />
             ))}
           </div>
         ) : fetchError ? (

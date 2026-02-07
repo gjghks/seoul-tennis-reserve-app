@@ -7,6 +7,7 @@ import { supabase } from '@/lib/supabase';
 import LoginPrompt from '@/components/auth/LoginPrompt';
 import { compressImage, generateImagePath, getPublicUrl } from '@/lib/imageUtils';
 import { useThemeClass } from '@/lib/cn';
+import Spinner from '@/components/ui/Spinner';
 
 const MAX_IMAGES = 3;
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
@@ -367,7 +368,7 @@ export default function ReviewForm({ courtId, courtName, district, onReviewAdded
           }`
         )}`}
       >
-        {isSubmitting ? '등록 중...' : '후기 등록'}
+        {isSubmitting ? <><Spinner className="inline" /> 등록 중...</> : '후기 등록'}
       </button>
     </form>
   );

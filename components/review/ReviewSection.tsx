@@ -17,16 +17,21 @@ export default function ReviewSection({ courtId, courtName, district }: ReviewSe
   const themeClass = useThemeClass();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(false);
 
   const fetchReviews = useCallback(async () => {
+    setFetchError(false);
     try {
       const res = await fetch(`/api/reviews?court_id=${encodeURIComponent(courtId)}`);
       if (res.ok) {
         const data = await res.json();
         setReviews(data.reviews || []);
+      } else {
+        setFetchError(true);
       }
-     } catch {
-     } finally {
+    } catch {
+      setFetchError(true);
+    } finally {
       setLoading(false);
     }
   }, [courtId]);
@@ -76,13 +81,27 @@ export default function ReviewSection({ courtId, courtName, district }: ReviewSe
             {[1, 2, 3].map((i) => (
               <div
                 key={i}
-                className={`animate-pulse h-24 ${
+                className={`h-24 ${
                   isNeoBrutalism
-                    ? 'bg-gray-100 border-2 border-black rounded-[5px]'
-                    : 'bg-gray-100 rounded-xl'
+                    ? 'skeleton-neo'
+                    : 'skeleton !rounded-xl'
                 }`}
               />
             ))}
+          </div>
+        ) : fetchError ? (
+          <div className={`p-6 text-center ${themeClass('bg-gray-100 border-2 border-black rounded-[5px]', 'bg-gray-50 rounded-xl')}`}>
+            <p className={`mb-3 ${themeClass('text-black/60 font-bold', 'text-gray-400')}`}>후기를 불러올 수 없습니다</p>
+            <button
+              type="button"
+              onClick={() => { setLoading(true); fetchReviews(); }}
+              className={themeClass(
+                'text-sm font-bold bg-[#facc15] text-black px-4 py-2 border-2 border-black rounded-[5px] shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all',
+                'text-sm font-medium text-green-600 hover:text-green-700 px-4 py-2 border border-gray-200 rounded-lg hover:border-green-300 transition-colors'
+              )}
+            >
+              다시 시도
+            </button>
           </div>
         ) : (
           <ReviewList reviews={reviews} onReviewDeleted={fetchReviews} />

@@ -50,7 +50,7 @@ const DistrictCard = memo(function DistrictCard({
             {district.nameKo}
           </h3>
           {loading ? (
-            <div className="w-10 h-5 bg-gray-300 animate-pulse rounded-[3px] shrink-0" />
+            <div className="w-10 h-5 skeleton-neo !border-0 shrink-0" />
           ) : hasAvailable ? (
             <span className="bg-black text-[#a3e635] px-1.5 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-black rounded-[3px] uppercase shrink-0">
               {available}
@@ -133,10 +133,10 @@ export default function DistrictGrid({ stats, loading }: DistrictGridProps) {
         {Array.from({ length: 25 }).map((_, i) => (
           <div
             key={DISTRICTS[i]?.slug || `skeleton-${i + 1}`}
-            className={`h-14 animate-pulse ${
+            className={`h-14 ${
               isNeoBrutalism
-                ? 'bg-gray-100 border-2 border-black/20 rounded-[5px]'
-                : 'bg-gray-50 rounded-lg'
+                ? 'skeleton-neo'
+                : 'skeleton !rounded-lg'
             }`}
             style={{ animationDelay: `${i * 30}ms` }}
           />

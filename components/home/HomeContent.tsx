@@ -105,13 +105,13 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
             {showLoading && (
               <div className={`flex gap-3 sm:gap-6 shrink-0 ${themeClass('bg-black/20 px-3 sm:px-5 py-2 sm:py-3 rounded-[5px] border-2 border-white/30', '')}`}>
                 <div className="text-center">
-                  <div className={`h-7 sm:h-9 w-10 sm:w-14 ${themeClass('bg-white/20', 'bg-white/10')} rounded animate-pulse mb-1`} />
-                  <div className={`h-3 w-10 sm:w-14 ${themeClass('bg-white/10', 'bg-white/5')} rounded animate-pulse`} />
+                  <div className="h-7 sm:h-9 w-10 sm:w-14 skeleton-light rounded mb-1" />
+                  <div className="h-3 w-10 sm:w-14 skeleton-light rounded" />
                 </div>
                 <div className={themeClass('w-[2px] bg-white/30', 'w-px bg-green-400/30')} />
                 <div className="text-center">
-                  <div className={`h-7 sm:h-9 w-10 sm:w-14 ${themeClass('bg-white/20', 'bg-white/10')} rounded animate-pulse mb-1`} />
-                  <div className={`h-3 w-10 sm:w-14 ${themeClass('bg-white/10', 'bg-white/5')} rounded animate-pulse`} />
+                  <div className="h-7 sm:h-9 w-10 sm:w-14 skeleton-light rounded mb-1" />
+                  <div className="h-3 w-10 sm:w-14 skeleton-light rounded" />
                 </div>
               </div>
             )}

@@ -135,7 +135,7 @@ export default function Login() {
 function LoginFallback() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50" aria-busy="true">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8 border border-gray-100 animate-pulse">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8 border border-gray-100 skeleton">
         <span className="sr-only">로그인 페이지 로딩 중</span>
         <div className="h-8 bg-gray-200 rounded w-32 mx-auto mb-2" />
         <div className="h-4 bg-gray-200 rounded w-48 mx-auto mb-8" />

@@ -111,7 +111,7 @@ export default function FavoriteCourtSection() {
           {[1, 2, 3].map(i => (
             <div 
               key={`fav-skeleton-${i}`}
-              className={`h-24 animate-pulse ${themeClass('bg-gray-100 border-[3px] border-black/30 rounded-[10px]', 'bg-gray-50 rounded-xl')} `}
+              className={`h-24 ${themeClass('skeleton-neo !rounded-[10px] !border-[3px]', 'skeleton !rounded-xl')} `}
             />
           ))}
         </div>

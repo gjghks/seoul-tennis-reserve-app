@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useThemeClass, cn } from '@/lib/cn';
 import { useToast } from '@/contexts/ToastContext';
+import Spinner from '@/components/ui/Spinner';
 
 interface FeedbackModalProps {
   isOpen: boolean;
@@ -197,7 +198,7 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
             )
           )}
         >
-          {isSubmitting ? '제출 중...' : '제출하기'}
+          {isSubmitting ? <><Spinner className="inline" /> 제출 중...</> : '제출하기'}
         </button>
       </div>
     </div>

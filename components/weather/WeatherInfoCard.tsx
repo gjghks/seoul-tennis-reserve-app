@@ -51,8 +51,8 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism }: W
   if (isLoading && !data) {
     return (
       <div className={isNeoBrutalism
-        ? 'bg-white border-2 border-black rounded-[5px] p-4 text-center shadow-[3px_3px_0px_0px_#000] animate-pulse'
-        : 'bg-white rounded-xl p-4 border border-gray-100 text-center animate-pulse'
+        ? 'border-2 border-black rounded-[5px] p-4 text-center shadow-[3px_3px_0px_0px_#000] skeleton-neo'
+        : 'rounded-xl p-4 border border-gray-100 text-center skeleton'
       }>
         <div className={isNeoBrutalism
           ? 'w-10 h-10 bg-[#facc15]/50 border-2 border-black/20 rounded-[5px] mx-auto mb-2'

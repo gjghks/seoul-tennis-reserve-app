@@ -163,10 +163,10 @@ export default function DistrictContent({
         {loading ? (
           <div className="space-y-4">
             {[1, 2, 3].map(i => (
-              <div key={`skeleton-${i}`} className={`h-32 animate-pulse ${
+              <div key={`skeleton-${i}`} className={`h-32 ${
                 isNeoBrutalism 
-                  ? 'bg-white border-2 border-black rounded-[5px]' 
-                  : 'bg-gray-200 rounded-xl'
+                  ? 'skeleton-neo' 
+                  : 'skeleton !rounded-xl'
               }`} />
             ))}
           </div>

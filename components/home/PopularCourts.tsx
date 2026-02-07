@@ -48,7 +48,7 @@ function RatingStars({ rating }: { rating: number }) {
 export default function PopularCourts() {
   const { isNeoBrutalism } = useTheme();
   const themeClass = useThemeClass();
-  const { data, isLoading, error } = useSWR<PopularCourtsResponse>('/api/popular-courts', fetcher, {
+  const { data, isLoading, error, mutate } = useSWR<PopularCourtsResponse>('/api/popular-courts', fetcher, {
     revalidateOnFocus: false,
     revalidateOnReconnect: true,
     dedupingInterval: 60 * 1000,
@@ -56,7 +56,26 @@ export default function PopularCourts() {
   });
 
   if (error && !data) {
-    return null;
+    return (
+      <section className="container">
+        <div className={themeClass(
+          'p-6 text-center bg-white border-2 border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000]',
+          'p-6 text-center bg-white rounded-xl border border-gray-100'
+        )}>
+          <p className={themeClass('text-black/60 font-bold mb-3', 'text-gray-400 mb-3')}>인기 랭킹을 불러올 수 없습니다</p>
+          <button
+            type="button"
+            onClick={() => mutate()}
+            className={themeClass(
+              'text-sm font-bold bg-[#facc15] text-black px-4 py-2 border-2 border-black rounded-[5px] shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all',
+              'text-sm font-medium text-green-600 hover:text-green-700 px-4 py-2 border border-gray-200 rounded-lg hover:border-green-300 transition-colors'
+            )}
+          >
+            다시 시도
+          </button>
+        </div>
+      </section>
+    );
   }
 
   if (isLoading && !data) {
@@ -66,8 +85,8 @@ export default function PopularCourts() {
           <div
             key={`popular-skeleton-${i}`}
             className={themeClass(
-              'h-20 animate-pulse rounded-[10px] border-[3px] border-black/20 bg-gray-100',
-              'h-20 animate-pulse rounded-xl border border-gray-100 bg-gray-50'
+              'h-20 skeleton-neo !rounded-[10px] !border-[3px]',
+              'h-20 skeleton !rounded-xl'
             )}
           />
         ))}
