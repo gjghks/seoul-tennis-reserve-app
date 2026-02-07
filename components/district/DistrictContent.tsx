@@ -14,11 +14,7 @@ import { useThemeClass } from '@/lib/cn';
 import FacilityTags from '@/components/ui/FacilityTags';
 import { extractFacilityTags } from '@/lib/utils/facilityTags';
 import { convertToWeatherGrid } from '@/lib/utils/weatherGrid';
-
-const WeatherBadge = dynamic(
-  () => import('@/components/weather/WeatherBadge'),
-  { ssr: false }
-);
+import WeatherBadge from '@/components/weather/WeatherBadge';
 
 const KakaoMapView = dynamic(
   () => import('@/components/map/KakaoMapView'),

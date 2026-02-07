@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { unstable_cache } from 'next/cache';
 
 type WeatherPayload = {
   temperature: number | null;
@@ -23,7 +24,7 @@ interface KmaResponse {
   };
 }
 
-export const revalidate = 1800;
+const CACHE_TTL = 30 * 60; // 30 minutes
 
 const EMPTY_WEATHER: WeatherPayload = {
   temperature: null,
@@ -80,13 +81,52 @@ function resolveSky(pty?: string): string | null {
   }
 }
 
+function fetchWeatherData(nx: string, ny: string): Promise<WeatherPayload> {
+  return unstable_cache(
+    async (): Promise<WeatherPayload> => {
+      const weatherKey = process.env.WEATHER_API_KEY;
+      if (!weatherKey) return EMPTY_WEATHER;
+
+      const { baseDate, baseTime } = toKstBaseDateTime();
+      const params = new URLSearchParams({
+        pageNo: '1',
+        numOfRows: '100',
+        dataType: 'JSON',
+        base_date: baseDate,
+        base_time: baseTime,
+        nx,
+        ny,
+        authKey: weatherKey,
+      });
+
+      const response = await fetch(
+        `https://apihub.kma.go.kr/api/typ02/openApi/VilageFcstInfoService_2.0/getUltraSrtNcst?${params.toString()}`,
+      );
+
+      if (!response.ok) return EMPTY_WEATHER;
+
+      const data = (await response.json()) as KmaResponse;
+      const items = data.response?.body?.items?.item;
+
+      if (!items || items.length === 0) return EMPTY_WEATHER;
+
+      const itemMap = new Map(items.map((item) => [item.category, item.obsrValue]));
+
+      return {
+        temperature: parseNumeric(itemMap.get('T1H')),
+        humidity: parseNumeric(itemMap.get('REH')),
+        rainfall: parseNumeric(itemMap.get('RN1')),
+        windSpeed: parseNumeric(itemMap.get('WSD')),
+        sky: resolveSky(itemMap.get('PTY')),
+      };
+    },
+    [`weather-${nx}-${ny}`],
+    { revalidate: CACHE_TTL, tags: ['weather'] }
+  )();
+}
+
 export async function GET(request: NextRequest) {
   try {
-    const weatherKey = process.env.WEATHER_API_KEY;
-    if (!weatherKey) {
-      return NextResponse.json(EMPTY_WEATHER);
-    }
-
     const { searchParams } = new URL(request.url);
     const nx = searchParams.get('nx');
     const ny = searchParams.get('ny');
@@ -95,44 +135,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(EMPTY_WEATHER);
     }
 
-    const { baseDate, baseTime } = toKstBaseDateTime();
-    const params = new URLSearchParams({
-      pageNo: '1',
-      numOfRows: '100',
-      dataType: 'JSON',
-      base_date: baseDate,
-      base_time: baseTime,
-      nx,
-      ny,
-      authKey: weatherKey,
-    });
-
-    const response = await fetch(
-      `https://apihub.kma.go.kr/api/typ02/openApi/VilageFcstInfoService_2.0/getUltraSrtNcst?${params.toString()}`,
-      { next: { revalidate: 1800 } }
-    );
-
-    if (!response.ok) {
-      return NextResponse.json(EMPTY_WEATHER);
-    }
-
-    const data = (await response.json()) as KmaResponse;
-    const items = data.response?.body?.items?.item;
-
-    if (!items || items.length === 0) {
-      return NextResponse.json(EMPTY_WEATHER);
-    }
-
-    const itemMap = new Map(items.map((item) => [item.category, item.obsrValue]));
-
-    const payload: WeatherPayload = {
-      temperature: parseNumeric(itemMap.get('T1H')),
-      humidity: parseNumeric(itemMap.get('REH')),
-      rainfall: parseNumeric(itemMap.get('RN1')),
-      windSpeed: parseNumeric(itemMap.get('WSD')),
-      sky: resolveSky(itemMap.get('PTY')),
-    };
-
+    const payload = await fetchWeatherData(nx, ny);
     return NextResponse.json(payload);
   } catch {
     return NextResponse.json(EMPTY_WEATHER);

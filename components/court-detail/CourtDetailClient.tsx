@@ -18,14 +18,11 @@ import { useThemeClass } from '@/lib/cn';
 import FacilityTags from '@/components/ui/FacilityTags';
 import { extractFacilityTags } from '@/lib/utils/facilityTags';
 import { convertToWeatherGrid } from '@/lib/utils/weatherGrid';
+import WeatherBadge from '@/components/weather/WeatherBadge';
 
 const DetailContent = dynamic(() => import('@/components/court-detail/DetailContent'), {
   loading: () => <div className="animate-pulse h-64 bg-gray-100 rounded-xl" />,
   ssr: false
-});
-
-const WeatherBadge = dynamic(() => import('@/components/weather/WeatherBadge'), {
-  ssr: false,
 });
 
 const CourtDetailMap = dynamic(() => import('@/components/court-detail/CourtDetailMap'), {

@@ -10,11 +10,7 @@ import { AD_SLOTS } from '@/lib/adConfig';
 import LastUpdated from '@/components/ui/LastUpdated';
 import { useThemeClass } from '@/lib/cn';
 import { convertToWeatherGrid } from '@/lib/utils/weatherGrid';
-
-const WeatherBadge = dynamic(
-  () => import('@/components/weather/WeatherBadge'),
-  { ssr: false }
-);
+import WeatherBadge from '@/components/weather/WeatherBadge';
 
 const SEOUL_WEATHER_GRID = convertToWeatherGrid(126.978, 37.5665);
 

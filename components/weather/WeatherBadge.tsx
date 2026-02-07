@@ -53,6 +53,7 @@ export default function WeatherBadge({ nx, ny, isOutdoor = false, compact = fals
     revalidateOnReconnect: true,
     refreshInterval: 30 * 60 * 1000,
     dedupingInterval: 30 * 60 * 1000,
+    keepPreviousData: true,
   });
 
   if (isLoading) {
