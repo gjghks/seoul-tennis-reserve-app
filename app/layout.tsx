@@ -46,20 +46,11 @@ export const metadata: Metadata = {
     siteName: "서울 테니스",
     title: "서울 테니스 | 공공 테니스장 예약",
     description: "서울시 공공 테니스장 예약 현황을 실시간으로 확인하세요.",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "서울 테니스 - 공공 테니스장 예약",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "서울 테니스 | 공공 테니스장 예약",
     description: "서울시 공공 테니스장 예약 현황을 실시간으로 확인하세요.",
-    images: ["/og-image.png"],
   },
   robots: {
     index: true,
