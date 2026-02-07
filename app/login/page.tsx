@@ -7,9 +7,25 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useThemeClass } from '@/lib/cn';
 import { sanitizeRedirectPath } from '@/lib/utils/sanitizeRedirect';
+import { isInAppBrowser, getInAppBrowserName, openInExternalBrowser } from '@/lib/utils/inAppBrowser';
 
 type LoginProvider = 'google' | 'kakao';
 type SupabaseProvider = 'google' | 'kakao';
+
+const AUTH_ERROR_MESSAGES: Record<string, string> = {
+  access_denied: '로그인이 거부되었습니다. 네트워크 환경에 따라 일시적으로 차단될 수 있으니, 다른 로그인 방법을 시도하거나 잠시 후 다시 시도해주세요.',
+  disallowed_useragent: '현재 브라우저에서는 Google 로그인이 지원되지 않습니다. 기본 브라우저(Chrome, Safari 등)에서 열어주세요.',
+  auth_error: '로그인 처리 중 문제가 발생했습니다. 다시 시도해주세요.',
+  server_error: '서버에 일시적인 문제가 발생했습니다. 잠시 후 다시 시도해주세요.',
+  temporarily_unavailable: '로그인 서비스가 일시적으로 이용 불가합니다. 잠시 후 다시 시도해주세요.',
+};
+
+const DEFAULT_AUTH_ERROR = '로그인 중 문제가 발생했습니다. 다른 로그인 방법을 시도하거나 잠시 후 다시 시도해주세요.';
+
+function getAuthErrorMessage(errorCode: string | null, errorDescription: string | null): string | null {
+  if (!errorCode) return null;
+  return AUTH_ERROR_MESSAGES[errorCode] ?? errorDescription ?? DEFAULT_AUTH_ERROR;
+}
 
 function LoginContent() {
   const { isNeoBrutalism } = useTheme();
@@ -20,12 +36,28 @@ function LoginContent() {
   const redirectTo = sanitizeRedirectPath(searchParams.get('redirect'));
   const [loadingProvider, setLoadingProvider] = useState<LoginProvider | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [inAppBrowser, setInAppBrowser] = useState(false);
+  const [inAppBrowserName, setInAppBrowserName] = useState<string | null>(null);
+
+  useEffect(() => {
+    setInAppBrowser(isInAppBrowser());
+    setInAppBrowserName(getInAppBrowserName());
+  }, []);
 
   useEffect(() => {
     if (user) {
       router.replace(redirectTo);
     }
   }, [user, router, redirectTo]);
+
+  useEffect(() => {
+    const errorCode = searchParams.get('error');
+    const errorDescription = searchParams.get('error_description');
+    const message = getAuthErrorMessage(errorCode, errorDescription);
+    if (message) {
+      setError(message);
+    }
+  }, [searchParams]);
 
   const handleOAuthLogin = async (displayProvider: LoginProvider, supabaseProvider: SupabaseProvider, scopes?: string) => {
     setLoadingProvider(displayProvider);
@@ -64,6 +96,34 @@ function LoginContent() {
           소셜 계정으로 간편하게 로그인하세요
         </p>
 
+        {inAppBrowser && (
+          <div
+            className={themeClass(
+              'bg-amber-100 border-2 border-black text-amber-900 font-bold p-4 rounded-[5px] mb-6',
+              'bg-amber-50 border border-amber-200 text-amber-800 p-4 rounded-lg mb-6'
+            )}
+          >
+            <p className="text-sm font-semibold mb-1">
+              {inAppBrowserName
+                ? `${inAppBrowserName} 앱 내 브라우저를 사용 중입니다`
+                : '앱 내 브라우저를 사용 중입니다'}
+            </p>
+            <p className="text-xs opacity-80 mb-3">
+              Google 로그인은 Chrome, Safari 등 기본 브라우저에서만 가능합니다. 카카오 로그인은 그대로 이용 가능합니다.
+            </p>
+            <button
+              type="button"
+              onClick={() => openInExternalBrowser()}
+              className={themeClass(
+                'w-full py-2 bg-amber-900 text-white text-sm font-black border-2 border-black rounded-[5px] shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all',
+                'w-full py-2 bg-amber-700 text-white text-sm font-semibold rounded-lg hover:bg-amber-800 transition-colors'
+              )}
+            >
+              기본 브라우저에서 열기
+            </button>
+          </div>
+        )}
+
         {error && (
           <div
             role="alert"
@@ -90,7 +150,7 @@ function LoginContent() {
           <button
             type="button"
             onClick={handleGoogleLogin}
-            disabled={loadingProvider !== null}
+            disabled={loadingProvider !== null || inAppBrowser}
             className={themeClass('w-full py-4 bg-white text-black font-black uppercase border-[3px] border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none transition-all disabled:opacity-50 flex items-center justify-center gap-3', 'w-full py-4 bg-white text-gray-700 font-semibold rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors disabled:opacity-50 flex items-center justify-center gap-3 shadow-sm')}
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24" aria-hidden="true">
@@ -111,7 +171,7 @@ function LoginContent() {
                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
               />
             </svg>
-            {loadingProvider === 'google' ? '로그인 중...' : 'Google로 계속하기'}
+            {inAppBrowser ? '기본 브라우저에서 이용 가능' : loadingProvider === 'google' ? '로그인 중...' : 'Google로 계속하기'}
           </button>
 
         </div>
