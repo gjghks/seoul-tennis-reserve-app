@@ -67,8 +67,20 @@ export default function NavigationProgress() {
       }
     };
 
+    const originalPushState = history.pushState.bind(history);
+    history.pushState = function pushStateIntercepted(...args: Parameters<typeof history.pushState>) {
+      const url = args[2];
+      if (url && String(url) !== pathname) {
+        setTimeout(start, 0);
+      }
+      return originalPushState(...args);
+    };
+
     document.addEventListener('click', handleClick, { capture: true });
-    return () => document.removeEventListener('click', handleClick, { capture: true });
+    return () => {
+      document.removeEventListener('click', handleClick, { capture: true });
+      history.pushState = originalPushState;
+    };
   }, [pathname, start]);
 
   useEffect(() => () => cleanup(), [cleanup]);
