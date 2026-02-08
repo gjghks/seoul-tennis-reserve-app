@@ -132,7 +132,7 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
         <PopularCourts />
       </div>
 
-      <div className="container pb-4">
+      <div className="container pb-8 lg:pb-6">
         <InstallPrompt />
       </div>
 
