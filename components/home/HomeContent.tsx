@@ -10,7 +10,7 @@ import { AD_SLOTS } from '@/lib/adConfig';
 import LastUpdated from '@/components/ui/LastUpdated';
 import { useThemeClass } from '@/lib/cn';
 import { convertToWeatherGrid } from '@/lib/utils/weatherGrid';
-import WeatherBadge from '@/components/weather/WeatherBadge';
+import HomeWeatherCard from '@/components/weather/HomeWeatherCard';
 
 const SEOUL_WEATHER_GRID = convertToWeatherGrid(126.978, 37.5665);
 
@@ -121,6 +121,9 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
               </div>
             )}
           </div>
+          {SEOUL_WEATHER_GRID && (
+            <HomeWeatherCard nx={SEOUL_WEATHER_GRID.nx} ny={SEOUL_WEATHER_GRID.ny} />
+          )}
         </div>
       </section>
 
@@ -148,11 +151,7 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
             <h2 className={themeClass('text-xl font-black text-black uppercase tracking-tight', 'text-lg font-semibold text-gray-900')}>
               지역 선택
             </h2>
-            {SEOUL_WEATHER_GRID && (
-              <span className={themeClass('text-xs font-bold text-black/50', 'text-xs text-gray-400')}>
-                서울 <WeatherBadge nx={SEOUL_WEATHER_GRID.nx} ny={SEOUL_WEATHER_GRID.ny} compact />
-              </span>
-            )}
+
           </div>
           <p className={themeClass('text-sm text-black/70 font-medium', 'text-sm text-gray-500')}>
             원하는 지역을 선택하면 해당 지역의 테니스장 목록을 확인할 수 있습니다
