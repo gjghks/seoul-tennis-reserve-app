@@ -40,6 +40,7 @@ export default function DistrictContent({
   const mapContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const saved = localStorage.getItem('tennis-view-mode') as 'list' | 'map' | null;
     if (saved) setViewMode(saved);
   }, []);

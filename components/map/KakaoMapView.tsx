@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useCallback, useEffect } from 'react';
+import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import { Map as KakaoMap, MapMarker, CustomOverlayMap, ZoomControl, useKakaoLoader } from 'react-kakao-maps-sdk';
 import { useRouter } from 'next/navigation';
 import { SeoulService } from '@/lib/seoulApi';
@@ -36,6 +36,7 @@ export default function KakaoMapView({ courts, district, focusPlaceName }: Kakao
   const router = useRouter();
   const [selectedGroup, setSelectedGroup] = useState<CourtGroup | null>(null);
   const [mapCenter, setMapCenter] = useState<{ lat: number; lng: number } | null>(null);
+  const [mapLevel, setMapLevel] = useState(5);
 
   const [, error] = useKakaoLoader({
     appkey: process.env.NEXT_PUBLIC_KAKAO_MAP_KEY!,
@@ -77,18 +78,21 @@ export default function KakaoMapView({ courts, district, focusPlaceName }: Kakao
     return { lat: avgLat, lng: avgLng };
   }, [courtGroups]);
 
+  const hasFittedBounds = useRef(false);
+  const mapRef = useRef<kakao.maps.Map | null>(null);
+
   useEffect(() => {
     if (!focusPlaceName || courtGroups.length === 0) return;
     const target = courtGroups.find(g => g.placeName === focusPlaceName);
     if (target) {
       setSelectedGroup(target);
-      setMapCenter({ lat: target.lat + 0.003, lng: target.lng });
+      setMapCenter({ lat: target.lat, lng: target.lng });
     }
   }, [focusPlaceName, courtGroups]);
 
   const handleMarkerClick = useCallback((group: CourtGroup) => {
     setSelectedGroup(group);
-    setMapCenter({ lat: group.lat + 0.003, lng: group.lng });
+    setMapCenter({ lat: group.lat, lng: group.lng });
   }, []);
 
   const handleDetailClick = useCallback((svcId: string) => {
@@ -122,8 +126,22 @@ export default function KakaoMapView({ courts, district, focusPlaceName }: Kakao
       <KakaoMap
         center={mapCenter || initialCenter}
         style={{ width: '100%', height: '400px' }}
-        level={5}
+        level={mapLevel}
         onClick={() => setSelectedGroup(null)}
+        onCreate={(map) => {
+          mapRef.current = map;
+          if (hasFittedBounds.current || courtGroups.length === 0) return;
+          const bounds = new kakao.maps.LatLngBounds();
+          for (const group of courtGroups) {
+            bounds.extend(new kakao.maps.LatLng(group.lat, group.lng));
+          }
+          map.setBounds(bounds, 50, 50, 50, 50);
+          hasFittedBounds.current = true;
+          requestAnimationFrame(() => {
+            const fittedLevel = map.getLevel();
+            setMapLevel(fittedLevel + 1);
+          });
+        }}
       >
         <ZoomControl position="RIGHT" />
         {courtGroups.map(group => (
@@ -143,7 +161,7 @@ export default function KakaoMapView({ courts, district, focusPlaceName }: Kakao
         {selectedGroup && (
           <CustomOverlayMap
             position={{ lat: selectedGroup.lat, lng: selectedGroup.lng }}
-            yAnchor={1.3}
+            yAnchor={0.5}
             zIndex={10}
           >
             {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
@@ -151,7 +169,7 @@ export default function KakaoMapView({ courts, district, focusPlaceName }: Kakao
               onClick={(e) => e.stopPropagation()}
               onMouseDown={(e) => e.stopPropagation()}
               onTouchStart={(e) => e.stopPropagation()}
-              style={{ display: 'block', whiteSpace: 'normal', width: 280, padding: 12, boxSizing: 'border-box' }}
+              style={{ display: 'block', whiteSpace: 'normal', width: 320, padding: 14, boxSizing: 'border-box' }}
               className={
                 isNeoBrutalism
                   ? 'bg-white border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000]'
@@ -176,7 +194,7 @@ export default function KakaoMapView({ courts, district, focusPlaceName }: Kakao
                 </button>
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 4, maxHeight: selectedGroup.courts.length > 5 ? 200 : undefined, overflowY: selectedGroup.courts.length > 5 ? 'auto' : undefined }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 5, maxHeight: selectedGroup.courts.length > 8 ? 300 : undefined, overflowY: selectedGroup.courts.length > 8 ? 'auto' : undefined }}>
                 {selectedGroup.courts.map(court => {
                   const isAvailable = court.SVCSTATNM === '접수중';
                   const shortName = getShortName(court.SVCNM, selectedGroup.placeName);
@@ -189,31 +207,29 @@ export default function KakaoMapView({ courts, district, focusPlaceName }: Kakao
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
-                        gap: 6,
+                        gap: 8,
                         width: '100%',
                         textAlign: 'left',
-                        padding: '5px 8px',
-                        fontSize: 12,
+                        padding: '6px 10px',
+                        fontSize: 13,
+                        lineHeight: 1.4,
                         cursor: 'pointer',
                         background: 'none',
-                        border: isNeoBrutalism ? '1px solid rgba(0,0,0,0.1)' : '1px solid #f0f0f0',
-                        borderRadius: 4,
-                        whiteSpace: 'nowrap',
-                        overflow: 'hidden',
+                        border: isNeoBrutalism ? '1px solid rgba(0,0,0,0.15)' : '1px solid #e5e5e5',
+                        borderRadius: 5,
                       }}
                     >
                       <span style={{
                         fontWeight: 500,
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
                         color: isNeoBrutalism ? '#000' : '#333',
+                        wordBreak: 'keep-all',
                       }}>
                         {shortName}
                       </span>
                       <span style={{
                         flexShrink: 0,
-                        padding: '1px 6px',
-                        fontSize: 10,
+                        padding: '2px 8px',
+                        fontSize: 11,
                         fontWeight: 700,
                         borderRadius: 3,
                         background: isAvailable ? (isNeoBrutalism ? '#a3e635' : '#dcfce7') : (isNeoBrutalism ? '#e5e5e5' : '#f3f4f6'),
@@ -232,3 +248,5 @@ export default function KakaoMapView({ courts, district, focusPlaceName }: Kakao
     </div>
   );
 }
+
+
