@@ -11,6 +11,7 @@ export const TEXT_HEADER_PATTERN = new RegExp(`^[★☆▢]?\\s*(${SECTION_KEYWO
 export const SECTION_SPLIT_PATTERN = new RegExp(
   `(?=` +
   `\\n+[○◎□◈★▢]|` +
+  `\\n+▶|` +
   `\\n◇[^◇\\n]+◇|` +
   `\\n◈[^◈\\n]+◈|` +
   `\\n〈[^〉\\n]+〉|` +

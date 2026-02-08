@@ -377,7 +377,7 @@ export const parseContent = (content: string): { sections: ContentSection[]; sta
     
     let firstLineContent = '';
     
-    const hasMarker = /^[○◎□▢★☆◈◇〈【\[]/.test(firstLine) || /[◈◇〉】\]]$/.test(firstLine);
+    const hasMarker = /^[○◎□▢★☆◈◇〈【\[▶]/.test(firstLine) || /[◈◇〉】\]]$/.test(firstLine);
     
     if (hasMarker) {
       const extracted = extractTitle(firstLine);
@@ -388,7 +388,7 @@ export const parseContent = (content: string): { sections: ContentSection[]; sta
     } else {
       for (let i = 0; i < Math.min(5, nonEmptyLines.length); i++) {
         const line = nonEmptyLines[i].trim();
-        const lineHasMarker = /^[○◎□▢★☆◈◇〈【\[]/.test(line) || /[◈◇〉】\]]$/.test(line);
+        const lineHasMarker = /^[○◎□▢★☆◈◇〈【\[▶]/.test(line) || /[◈◇〉】\]]$/.test(line);
         if (lineHasMarker || TEXT_HEADER_PATTERN.test(line)) {
           const extracted = extractTitle(line);
           titleLine = extracted.title;

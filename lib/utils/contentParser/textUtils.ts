@@ -30,6 +30,8 @@ export const extractTitle = (line: string): { title: string; content: string } =
   
   if (/^[○◎□▢]/.test(cleaned)) {
     cleaned = cleaned.replace(/^[○◎□▢]\s*/, '');
+  } else if (/^▶/.test(cleaned)) {
+    cleaned = cleaned.replace(/^▶\s*/, '');
   } else if (/^[★☆]/.test(cleaned)) {
     cleaned = cleaned.replace(/^[★☆]\s*/, '');
   } else if (/^◈/.test(cleaned) || /◈$/.test(cleaned)) {
