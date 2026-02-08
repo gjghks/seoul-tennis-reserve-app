@@ -24,6 +24,11 @@ const PopularCourts = dynamic(
   { ssr: false }
 );
 
+const InstallPrompt = dynamic(
+  () => import('@/components/pwa/InstallPrompt'),
+  { ssr: false }
+);
+
 interface HomeContentProps {
   initialStats?: Record<string, DistrictStats>;
 }
@@ -125,6 +130,10 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
 
       <div className="pb-8 lg:pb-6">
         <PopularCourts />
+      </div>
+
+      <div className="container pb-4">
+        <InstallPrompt />
       </div>
 
       {AD_SLOTS.HOME_TOP && (
