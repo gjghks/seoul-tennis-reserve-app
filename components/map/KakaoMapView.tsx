@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import { Map as KakaoMap, MapMarker, CustomOverlayMap, ZoomControl, useKakaoLoader } from 'react-kakao-maps-sdk';
 import { useRouter } from 'next/navigation';
 import { SeoulService } from '@/lib/seoulApi';
@@ -36,7 +36,6 @@ export default function KakaoMapView({ courts, district, focusPlaceName }: Kakao
   const router = useRouter();
   const [selectedGroup, setSelectedGroup] = useState<CourtGroup | null>(null);
   const [mapCenter, setMapCenter] = useState<{ lat: number; lng: number } | null>(null);
-  const [mapLevel, setMapLevel] = useState(5);
 
   const [, error] = useKakaoLoader({
     appkey: process.env.NEXT_PUBLIC_KAKAO_MAP_KEY!,
@@ -71,15 +70,45 @@ export default function KakaoMapView({ courts, district, focusPlaceName }: Kakao
     return Array.from(map.values());
   }, [validCourts]);
 
-  const initialCenter = useMemo(() => {
-    if (courtGroups.length === 0) return { lat: 37.5665, lng: 126.978 };
-    const avgLat = courtGroups.reduce((sum, g) => sum + g.lat, 0) / courtGroups.length;
-    const avgLng = courtGroups.reduce((sum, g) => sum + g.lng, 0) / courtGroups.length;
-    return { lat: avgLat, lng: avgLng };
-  }, [courtGroups]);
+  const { initialCenter, initialLevel } = useMemo(() => {
+    if (courtGroups.length === 0) {
+      return { initialCenter: { lat: 37.5665, lng: 126.978 }, initialLevel: 5 };
+    }
+    if (courtGroups.length === 1) {
+      return { initialCenter: { lat: courtGroups[0].lat, lng: courtGroups[0].lng }, initialLevel: 4 };
+    }
 
-  const hasFittedBounds = useRef(false);
-  const mapRef = useRef<kakao.maps.Map | null>(null);
+    let minLat = Infinity, maxLat = -Infinity, minLng = Infinity, maxLng = -Infinity;
+    for (const g of courtGroups) {
+      minLat = Math.min(minLat, g.lat);
+      maxLat = Math.max(maxLat, g.lat);
+      minLng = Math.min(minLng, g.lng);
+      maxLng = Math.max(maxLng, g.lng);
+    }
+
+    const center = { lat: (minLat + maxLat) / 2, lng: (minLng + maxLng) / 2 };
+
+    const latDelta = maxLat - minLat;
+    const lngDelta = maxLng - minLng;
+    const latMeters = latDelta * 111320;
+    const lngMeters = lngDelta * 88900;
+    const maxSpanMeters = Math.max(latMeters, lngMeters);
+
+    const MAP_HEIGHT_PX = 400;
+    const PADDING_FACTOR = 2.2;
+    const requiredMeters = maxSpanMeters * PADDING_FACTOR;
+
+    let level = 1;
+    for (let l = 1; l <= 14; l++) {
+      const metersPerPx = Math.pow(2, l - 1) * 0.5;
+      if (metersPerPx * MAP_HEIGHT_PX >= requiredMeters) {
+        level = l;
+        break;
+      }
+    }
+
+    return { initialCenter: center, initialLevel: level };
+  }, [courtGroups]);
 
   useEffect(() => {
     if (!focusPlaceName || courtGroups.length === 0) return;
@@ -126,23 +155,8 @@ export default function KakaoMapView({ courts, district, focusPlaceName }: Kakao
       <KakaoMap
         center={mapCenter || initialCenter}
         style={{ width: '100%', height: '400px' }}
-        level={mapLevel}
+        level={initialLevel}
         onClick={() => setSelectedGroup(null)}
-        onCreate={(map) => {
-          mapRef.current = map;
-          if (hasFittedBounds.current || courtGroups.length === 0) return;
-          const bounds = new kakao.maps.LatLngBounds();
-          for (const group of courtGroups) {
-            bounds.extend(new kakao.maps.LatLng(group.lat, group.lng));
-          }
-          map.setBounds(bounds, 50, 50, 50, 50);
-          hasFittedBounds.current = true;
-          requestAnimationFrame(() => {
-            const fittedLevel = map.getLevel();
-            const extraZoom = window.innerWidth <= 768 ? 3 : 1;
-            setMapLevel(fittedLevel + extraZoom);
-          });
-        }}
       >
         <ZoomControl position="RIGHT" />
         {courtGroups.map(group => (
@@ -249,5 +263,3 @@ export default function KakaoMapView({ courts, district, focusPlaceName }: Kakao
     </div>
   );
 }
-
-
