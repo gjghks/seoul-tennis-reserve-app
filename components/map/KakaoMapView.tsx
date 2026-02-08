@@ -139,7 +139,8 @@ export default function KakaoMapView({ courts, district, focusPlaceName }: Kakao
           hasFittedBounds.current = true;
           requestAnimationFrame(() => {
             const fittedLevel = map.getLevel();
-            setMapLevel(fittedLevel + 1);
+            const extraZoom = window.innerWidth <= 768 ? 2 : 1;
+            setMapLevel(fittedLevel + extraZoom);
           });
         }}
       >
