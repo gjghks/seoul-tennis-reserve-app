@@ -84,6 +84,7 @@ export default function WeatherBadge({ nx, ny, isOutdoor = false, compact = fals
       )}>
         <span className="text-sm leading-none">{weatherState.icon}</span>
         {Math.round(data.temperature)}°C
+        {data.sky && <span className="text-[10px] opacity-70">{data.sky}</span>}
       </span>
     );
   }

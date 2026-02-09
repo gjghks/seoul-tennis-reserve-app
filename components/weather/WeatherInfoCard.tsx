@@ -101,6 +101,11 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism }: W
       <p className={themeClass('font-black text-black text-sm', 'font-semibold text-gray-800 text-sm')}>
         {Math.round(data.temperature!)}°C {data.sky ?? ''}
       </p>
+      <div className={themeClass('flex items-center justify-center gap-1.5 mt-1 text-[10px] font-bold text-black/50', 'flex items-center justify-center gap-1.5 mt-1 text-[10px] text-gray-400')}>
+        {data.humidity !== null && <span>습도 {data.humidity}%</span>}
+        {data.humidity !== null && data.windSpeed !== null && <span>·</span>}
+        {data.windSpeed !== null && <span>바람 {data.windSpeed}m/s</span>}
+      </div>
       {warning && (
         <p className={themeClass(
           'text-[10px] font-bold text-red-600 mt-1',
