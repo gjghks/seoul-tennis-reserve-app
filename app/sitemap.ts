@@ -1,12 +1,5 @@
 import { MetadataRoute } from 'next';
-
-const DISTRICTS = [
-  'gangnam', 'gangdong', 'gangbuk', 'gangseo', 'gwanak',
-  'gwangjin', 'guro', 'geumcheon', 'nowon', 'dobong',
-  'dongdaemun', 'dongjak', 'mapo', 'seodaemun', 'seocho',
-  'seongdong', 'seongbuk', 'songpa', 'yangcheon', 'yeongdeungpo',
-  'yongsan', 'eunpyeong', 'jongno', 'jung', 'jungnang'
-];
+import { DISTRICTS } from '@/lib/constants/districts';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://seoul-tennis.com';
@@ -45,7 +38,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   const districtPages: MetadataRoute.Sitemap = DISTRICTS.map((district) => ({
-    url: `${baseUrl}/${district}`,
+    url: `${baseUrl}/${district.slug}`,
     lastModified: new Date(),
     changeFrequency: 'hourly' as const,
     priority: 0.8,
