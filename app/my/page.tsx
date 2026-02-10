@@ -8,6 +8,7 @@ import { useToast } from '@/contexts/ToastContext';
 import { supabase } from '@/lib/supabase';
 import { KOREAN_TO_SLUG } from '@/lib/constants/districts';
 import { useThemeClass } from '@/lib/cn';
+import { useRecentCourts } from '@/lib/hooks/useRecentCourts';
 
 interface Favorite {
   id: string;
@@ -23,6 +24,7 @@ export default function MyPage() {
   const { isNeoBrutalism } = useTheme();
   const themeClass = useThemeClass();
   const { showToast } = useToast();
+  const { recentCourts, clearRecentCourts, isHydrated } = useRecentCourts();
   const [favorites, setFavorites] = useState<Favorite[]>([]);
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState(false);
@@ -70,7 +72,7 @@ export default function MyPage() {
     }
   };
 
-  if (authLoading || !user) {
+  if (authLoading) {
     return (
       <div className={`container mx-auto px-4 py-8 scrollbar-hide ${themeClass('bg-nb-bg min-h-screen', '')}`}>
         <div className="flex items-center justify-center min-h-[400px]">
@@ -86,10 +88,88 @@ export default function MyPage() {
         <h1 className={`text-2xl mb-2 ${themeClass('font-black text-black uppercase', 'font-bold text-gray-900')} `}>
           {isNeoBrutalism ? '👤 마이페이지' : '마이페이지'}
         </h1>
-        <p className={themeClass('text-black/70 font-medium', 'text-gray-500')}>{user?.email}</p>
+        {user && <p className={themeClass('text-black/70 font-medium', 'text-gray-500')}>{user.email}</p>}
       </div>
 
-      <div className="max-w-2xl">
+      {isHydrated && recentCourts.length > 0 && (
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className={`text-lg flex items-center gap-2 ${themeClass('font-black text-black uppercase', 'font-semibold text-gray-900')} `}>
+              {isNeoBrutalism ? '🕐' : (
+                <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              )}
+              최근 본 코트 ({recentCourts.length})
+            </h2>
+            <button
+              type="button"
+              onClick={clearRecentCourts}
+              className={`text-sm ${themeClass('font-bold text-black/60 hover:text-red-600', 'text-gray-400 hover:text-red-500')} transition-colors`}
+            >
+              전체 삭제
+            </button>
+          </div>
+          <div className="space-y-3">
+            {recentCourts.map((court) => (
+              <div
+                key={court.svcId}
+                className={isNeoBrutalism
+                  ? 'bg-white border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] p-4 flex items-center justify-between gap-4'
+                  : 'bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between gap-4'
+                }
+              >
+                <Link
+                  href={`/${court.districtSlug}/${encodeURIComponent(court.svcId)}`}
+                  className="flex-1 min-w-0"
+                >
+                  <h3 className={`truncate transition-colors ${themeClass('font-bold text-black hover:text-[#16a34a]', 'font-medium text-gray-900 hover:text-green-600')} `}>
+                    {court.svcName}
+                  </h3>
+                  <p className={`text-sm truncate ${themeClass('text-black/60', 'text-gray-500')} `}>
+                    {court.district} {court.placeName && `· ${court.placeName}`}
+                  </p>
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {isHydrated && recentCourts.length === 0 && !user && (
+        <div className={isNeoBrutalism
+          ? 'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] py-12 px-6 text-center mb-8'
+          : 'bg-white rounded-2xl border border-gray-100 py-12 px-6 text-center mb-8'
+        }>
+          <div className={`w-16 h-16 mx-auto mb-4 flex items-center justify-center ${
+            isNeoBrutalism 
+              ? 'bg-[#bfdbfe] border-2 border-black rounded-[5px]' 
+              : 'bg-blue-50 rounded-full'
+          }`}>
+            <svg className={`w-8 h-8 ${themeClass('text-black', 'text-blue-400')} `} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 className={`text-lg mb-2 ${themeClass('font-black text-black', 'font-semibold text-gray-900')} `}>
+            최근 본 코트가 없습니다
+          </h3>
+          <p className={`mb-6 ${themeClass('text-black/60 font-medium', 'text-gray-500')} `}>
+            테니스장을 둘러보면 여기에 표시됩니다
+          </p>
+          <Link href="/" className={isNeoBrutalism
+            ? 'inline-flex items-center gap-2 bg-[#88aaee] text-black font-bold px-5 py-2.5 border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all'
+            : 'inline-flex items-center gap-2 text-green-600 font-medium hover:text-green-700'
+          }>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            테니스장 둘러보기
+          </Link>
+        </div>
+      )}
+
+      {user && (
+        <div className="max-w-2xl">
         <h2 className={`text-lg mb-4 flex items-center gap-2 ${themeClass('font-black text-black uppercase', 'font-semibold text-gray-900')} `}>
           {isNeoBrutalism ? '❤️' : (
             <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -185,8 +265,41 @@ export default function MyPage() {
               );
             })}
           </div>
-        )}
-      </div>
+         )}
+       </div>
+      )}
+
+      {!user && (
+        <div className={isNeoBrutalism
+          ? 'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] py-12 px-6 text-center'
+          : 'bg-white rounded-2xl border border-gray-100 py-12 px-6 text-center'
+        }>
+          <div className={`w-16 h-16 mx-auto mb-4 flex items-center justify-center ${
+            isNeoBrutalism 
+              ? 'bg-[#fca5a5] border-2 border-black rounded-[5px]' 
+              : 'bg-red-50 rounded-full'
+          }`}>
+            <svg className={`w-8 h-8 ${themeClass('text-black', 'text-red-400')} `} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+          </div>
+          <h3 className={`text-lg mb-2 ${themeClass('font-black text-black', 'font-semibold text-gray-900')} `}>
+            로그인이 필요합니다
+          </h3>
+          <p className={`mb-6 ${themeClass('text-black/60 font-medium', 'text-gray-500')} `}>
+            로그인하면 즐겨찾기를 이용할 수 있습니다
+          </p>
+          <Link href="/" className={isNeoBrutalism
+            ? 'inline-flex items-center gap-2 bg-[#88aaee] text-black font-bold px-5 py-2.5 border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all'
+            : 'inline-flex items-center gap-2 text-green-600 font-medium hover:text-green-700'
+          }>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+            홈으로 돌아가기
+          </Link>
+        </div>
+      )}
     </div>
-  );
+   );
 }

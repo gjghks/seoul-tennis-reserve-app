@@ -19,6 +19,7 @@ import FacilityTags from '@/components/ui/FacilityTags';
 import { extractFacilityTags } from '@/lib/utils/facilityTags';
 import { convertToWeatherGrid } from '@/lib/utils/weatherGrid';
 import WeatherInfoCard from '@/components/weather/WeatherInfoCard';
+import { useRecentCourts } from '@/lib/hooks/useRecentCourts';
 
 const DetailContent = dynamic(() => import('@/components/court-detail/DetailContent'), {
   loading: () => <div className="skeleton h-64 !rounded-xl" />,
@@ -39,10 +40,22 @@ interface CourtDetailClientProps {
 export default function CourtDetailClient({ court, district, districtSlug }: CourtDetailClientProps) {
   const { isNeoBrutalism } = useTheme();
   const themeClass = useThemeClass();
+  const { addRecentCourt } = useRecentCourts();
   const [imageError, setImageError] = useState(false);
   const [showStickyHeader, setShowStickyHeader] = useState(false);
   const headerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    addRecentCourt({
+      svcId: court.SVCID,
+      svcName: court.SVCNM,
+      district: court.AREANM,
+      placeName: court.PLACENM,
+      districtSlug,
+      viewedAt: Date.now(),
+    });
+  }, [court.SVCID, addRecentCourt, court.SVCNM, court.AREANM, court.PLACENM, districtSlug]);
 
   useEffect(() => {
     let ticking = false;
