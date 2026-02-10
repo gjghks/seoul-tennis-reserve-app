@@ -196,14 +196,17 @@ export default function KakaoMapView({ courts, district, focusPlaceName, onPlace
              yAnchor={1.3}
              zIndex={5}
            >
-             <div
-               style={{
-                 padding: '6px 12px',
-                 fontSize: 13,
-                 fontWeight: 600,
-                 whiteSpace: 'nowrap',
-                 pointerEvents: 'none',
-               }}
+              <div
+                ref={(el) => {
+                  if (el?.parentElement) el.parentElement.style.pointerEvents = 'none';
+                }}
+                style={{
+                  padding: '6px 12px',
+                  fontSize: 13,
+                  fontWeight: 600,
+                  whiteSpace: 'nowrap',
+                  pointerEvents: 'none',
+                }}
                className={
                  isNeoBrutalism
                    ? 'bg-white border-2 border-black rounded-[5px] shadow-[2px_2px_0px_0px_#000]'
