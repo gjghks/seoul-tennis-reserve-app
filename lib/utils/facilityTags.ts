@@ -102,8 +102,20 @@ export function extractFacilityTags(court: SeoulService): FacilityTag[] {
   }
 
   const endTime = toMinutes(court.V_MAX || '');
-  if (endTime !== null && endTime > 18 * 60) {
+  if (endTime !== null && endTime >= 20 * 60) {
     pushTag({ key: 'night-available', label: '야간 이용 가능', icon: '🌙', color: 'bg-indigo-200' });
+  }
+
+  const svcName = normalizeText(court.SVCNM || '');
+  const hasOutdoorInName = /야외|아웃도어/.test(svcName);
+  const hasIndoorInName = /실내|인도어/.test(svcName);
+  if (hasOutdoorInName && seen.has('indoor')) {
+    const idx = tags.findIndex(t => t.key === 'indoor');
+    if (idx !== -1) { tags.splice(idx, 1); seen.delete('indoor'); }
+  }
+  if (hasIndoorInName && seen.has('outdoor')) {
+    const idx = tags.findIndex(t => t.key === 'outdoor');
+    if (idx !== -1) { tags.splice(idx, 1); seen.delete('outdoor'); }
   }
 
   return tags;
