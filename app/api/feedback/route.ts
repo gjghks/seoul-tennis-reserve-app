@@ -1,10 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createAnonSupabaseClient } from '@/lib/supabaseServer';
+import { createRateLimiter } from '@/lib/rateLimit';
 
 const VALID_CATEGORIES = ['feature', 'bug', 'other'] as const;
 type FeedbackCategory = (typeof VALID_CATEGORIES)[number];
 
+const limiter = createRateLimiter({ windowMs: 60_000, maxRequests: 5 });
+
 export async function POST(request: NextRequest) {
+  const rateLimitResult = await limiter(request);
+  if (!rateLimitResult.success) {
+    return NextResponse.json(
+      { error: '요청이 너무 많습니다. 잠시 후 다시 시도해주세요.' },
+      {
+        status: 429,
+        headers: {
+          'Retry-After': String(Math.ceil((rateLimitResult.resetTime - Date.now()) / 1000)),
+        },
+      }
+    );
+  }
+
   try {
     const body = await request.json();
     const { category, content } = body as { category: unknown; content: unknown };

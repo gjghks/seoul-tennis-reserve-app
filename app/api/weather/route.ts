@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { unstable_cache } from 'next/cache';
+import { createRateLimiter } from '@/lib/rateLimit';
 
 type WeatherPayload = {
   temperature: number | null;
@@ -25,6 +26,7 @@ interface KmaResponse {
 }
 
 const CACHE_TTL = 30 * 60; // 30 minutes
+const limiter = createRateLimiter({ windowMs: 60_000, maxRequests: 60 });
 
 const EMPTY_WEATHER: WeatherPayload = {
   temperature: null,
@@ -126,6 +128,19 @@ function fetchWeatherData(nx: string, ny: string): Promise<WeatherPayload> {
 }
 
 export async function GET(request: NextRequest) {
+  const rateLimitResult = await limiter(request);
+  if (!rateLimitResult.success) {
+    return NextResponse.json(
+      { error: '요청이 너무 많습니다. 잠시 후 다시 시도해주세요.' },
+      {
+        status: 429,
+        headers: {
+          'Retry-After': String(Math.ceil((rateLimitResult.resetTime - Date.now()) / 1000)),
+        },
+      }
+    );
+  }
+
   try {
     const { searchParams } = new URL(request.url);
     const nx = searchParams.get('nx');

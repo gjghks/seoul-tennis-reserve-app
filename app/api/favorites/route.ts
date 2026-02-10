@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerSupabaseClient } from '@/lib/supabaseServer';
+import { createRateLimiter } from '@/lib/rateLimit';
+
+const limiter = createRateLimiter({ windowMs: 60_000, maxRequests: 30 });
 
 // GET: 내 즐겨찾기 목록 조회
-export async function GET(request: NextRequest) {
-  const supabase = createServerSupabaseClient(request);
+export async function GET() {
+  const supabase = await createServerSupabaseClient();
 
   const { data: { user }, error: authError } = await supabase.auth.getUser();
 
@@ -33,7 +36,20 @@ export async function GET(request: NextRequest) {
 
 // POST: 즐겨찾기 추가
 export async function POST(request: NextRequest) {
-  const supabase = createServerSupabaseClient(request);
+  const rateLimitResult = await limiter(request);
+  if (!rateLimitResult.success) {
+    return NextResponse.json(
+      { error: '요청이 너무 많습니다. 잠시 후 다시 시도해주세요.' },
+      {
+        status: 429,
+        headers: {
+          'Retry-After': String(Math.ceil((rateLimitResult.resetTime - Date.now()) / 1000)),
+        },
+      }
+    );
+  }
+
+  const supabase = await createServerSupabaseClient();
 
   const { data: { user }, error: authError } = await supabase.auth.getUser();
 
@@ -93,7 +109,20 @@ export async function POST(request: NextRequest) {
 
 // DELETE: 즐겨찾기 삭제
 export async function DELETE(request: NextRequest) {
-  const supabase = createServerSupabaseClient(request);
+  const rateLimitResult = await limiter(request);
+  if (!rateLimitResult.success) {
+    return NextResponse.json(
+      { error: '요청이 너무 많습니다. 잠시 후 다시 시도해주세요.' },
+      {
+        status: 429,
+        headers: {
+          'Retry-After': String(Math.ceil((rateLimitResult.resetTime - Date.now()) / 1000)),
+        },
+      }
+    );
+  }
+
+  const supabase = await createServerSupabaseClient();
 
   const { data: { user }, error: authError } = await supabase.auth.getUser();
 

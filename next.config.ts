@@ -18,19 +18,48 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          { key: 'X-Frame-Options', value: 'DENY' },
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          { key: 'X-DNS-Prefetch-Control', value: 'on' },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload',
+          },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=()',
+          },
+          {
+            key: 'Content-Security-Policy',
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://pagead2.googlesyndication.com https://www.googletagmanager.com https://adservice.google.com https://tpc.googlesyndication.com https://dapi.kakao.com https://t1.daumcdn.net",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://t1.daumcdn.net",
+              "img-src 'self' data: blob: https:",
+              "font-src 'self' https://fonts.gstatic.com",
+              "connect-src 'self' https://*.supabase.co https://pagead2.googlesyndication.com https://www.google-analytics.com https://openAPI.seoul.go.kr:8088 https://apihub.kma.go.kr https://dapi.kakao.com wss://*.supabase.co",
+              "frame-src 'self' https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com",
+              "object-src 'none'",
+              "base-uri 'self'",
+              "form-action 'self'",
+              "frame-ancestors 'none'",
+            ].join('; '),
+          },
+        ],
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {
         protocol: 'https',
         hostname: '**.seoul.go.kr',
-      },
-      {
-        protocol: 'http',
-        hostname: '**.seoul.go.kr',
-      },
-      {
-        protocol: 'https',
-        hostname: 'yeyak.seoul.go.kr',
       },
       {
         protocol: 'https',

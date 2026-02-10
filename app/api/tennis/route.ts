@@ -3,8 +3,11 @@ import { fetchTennisAvailability, getCachedTennisData } from '@/lib/seoulApi';
 import { SLUG_TO_KOREAN } from '@/lib/constants/districts';
 import { isCourtAvailable } from '@/lib/utils/courtStatus';
 import type { SeoulService } from '@/lib/seoulApi';
+import { createRateLimiter } from '@/lib/rateLimit';
 
 export const revalidate = 300;
+
+const limiter = createRateLimiter({ windowMs: 60_000, maxRequests: 60 });
 
 function buildTennisResponse(services: SeoulService[], district: string | null, stale = false) {
   if (district) {
@@ -41,6 +44,19 @@ function buildTennisResponse(services: SeoulService[], district: string | null, 
 }
 
 export async function GET(request: NextRequest) {
+  const rateLimitResult = await limiter(request);
+  if (!rateLimitResult.success) {
+    return NextResponse.json(
+      { error: '요청이 너무 많습니다. 잠시 후 다시 시도해주세요.' },
+      {
+        status: 429,
+        headers: {
+          'Retry-After': String(Math.ceil((rateLimitResult.resetTime - Date.now()) / 1000)),
+        },
+      }
+    );
+  }
+
   const { searchParams } = new URL(request.url);
   const district = searchParams.get('district'); // slug 또는 한글
 
