@@ -14,6 +14,7 @@ export default function NavigationProgress() {
   const prevPathname = useRef(pathname);
   const timerRef = useRef<ReturnType<typeof setTimeout>>(null);
   const trickleRef = useRef<ReturnType<typeof setInterval>>(null);
+  const completedAtRef = useRef(0);
 
   const cleanup = useCallback(() => {
     if (timerRef.current) clearTimeout(timerRef.current);
@@ -21,6 +22,8 @@ export default function NavigationProgress() {
   }, []);
 
   const start = useCallback(() => {
+    if (Date.now() - completedAtRef.current < 500) return;
+
     cleanup();
     setState('loading');
     setWidth(15);
@@ -36,6 +39,7 @@ export default function NavigationProgress() {
 
   const complete = useCallback(() => {
     cleanup();
+    completedAtRef.current = Date.now();
     setState('complete');
     setWidth(100);
 
