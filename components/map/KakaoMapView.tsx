@@ -36,6 +36,7 @@ export default function KakaoMapView({ courts, district, focusPlaceName, onPlace
   const { isNeoBrutalism } = useTheme();
   const router = useRouter();
   const [selectedGroup, setSelectedGroup] = useState<CourtGroup | null>(null);
+  const [hoveredGroup, setHoveredGroup] = useState<CourtGroup | null>(null);
   const [mapCenter, setMapCenter] = useState<{ lat: number; lng: number } | null>(null);
 
   const [, error] = useKakaoLoader({
@@ -121,6 +122,7 @@ export default function KakaoMapView({ courts, district, focusPlaceName, onPlace
   }, [focusPlaceName, courtGroups]);
 
   const handleMarkerClick = useCallback((group: CourtGroup) => {
+    setHoveredGroup(null);
     setSelectedGroup(group);
     setMapCenter({ lat: group.lat, lng: group.lng });
   }, []);
@@ -157,24 +159,64 @@ export default function KakaoMapView({ courts, district, focusPlaceName, onPlace
         center={mapCenter || initialCenter}
         style={{ width: '100%', height: '400px' }}
         level={initialLevel}
-        onClick={() => setSelectedGroup(null)}
+        onClick={() => {
+          setSelectedGroup(null);
+          setHoveredGroup(null);
+        }}
       >
         <ZoomControl position="RIGHT" />
-        {courtGroups.map(group => (
-          <MapMarker
-            key={group.key}
-            position={{ lat: group.lat, lng: group.lng }}
-            image={{
-              src: group.hasAvailable
-                ? 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png'
-                : 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png',
-              size: { width: 24, height: 35 },
-            }}
-            onClick={() => handleMarkerClick(group)}
-          />
-        ))}
+         {courtGroups.map(group => (
+           <MapMarker
+             key={group.key}
+             position={{ lat: group.lat, lng: group.lng }}
+             image={{
+               src: group.hasAvailable
+                 ? 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png'
+                 : 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png',
+               size: { width: 24, height: 35 },
+             }}
+             onClick={() => handleMarkerClick(group)}
+             onMouseOver={() => { if (!selectedGroup) setHoveredGroup(group); }}
+             onMouseOut={() => setHoveredGroup(null)}
+           />
+         ))}
 
-        {selectedGroup && (
+         {hoveredGroup && !selectedGroup && (
+           <CustomOverlayMap
+             position={{ lat: hoveredGroup.lat, lng: hoveredGroup.lng }}
+             yAnchor={1.3}
+             zIndex={5}
+           >
+             <div
+               style={{
+                 padding: '6px 12px',
+                 fontSize: 13,
+                 fontWeight: 600,
+                 whiteSpace: 'nowrap',
+                 pointerEvents: 'none',
+               }}
+               className={
+                 isNeoBrutalism
+                   ? 'bg-white border-2 border-black rounded-[5px] shadow-[2px_2px_0px_0px_#000]'
+                   : 'bg-white border border-gray-200 rounded-lg shadow-md'
+               }
+             >
+               <span style={{ color: isNeoBrutalism ? '#000' : '#111' }}>
+                 {hoveredGroup.placeName}
+               </span>
+               <span style={{
+                 marginLeft: 6,
+                 fontSize: 11,
+                 fontWeight: 500,
+                 color: isNeoBrutalism ? 'rgba(0,0,0,0.5)' : '#6b7280',
+               }}>
+                 · 접수중 {hoveredGroup.courts.filter(c => c.SVCSTATNM === '접수중').length}/{hoveredGroup.courts.length}개
+               </span>
+             </div>
+           </CustomOverlayMap>
+         )}
+
+         {selectedGroup && (
           <CustomOverlayMap
             position={{ lat: selectedGroup.lat, lng: selectedGroup.lng }}
             yAnchor={0.5}
