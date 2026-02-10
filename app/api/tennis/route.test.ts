@@ -3,6 +3,7 @@ import { NextRequest } from 'next/server';
 
 vi.mock('@/lib/seoulApi', () => ({
   fetchTennisAvailability: vi.fn(),
+  getCachedTennisData: vi.fn(),
 }));
 
 vi.mock('@/lib/utils/courtStatus', () => ({
@@ -90,6 +91,7 @@ const mockTennisData = [
 describe('GET /api/tennis', () => {
   beforeEach(() => {
     vi.resetModules();
+    vi.clearAllMocks();
   });
 
   it('should return all courts when no district filter is provided', async () => {
@@ -170,9 +172,11 @@ describe('GET /api/tennis', () => {
 
   it('should return 500 error when fetchTennisAvailability throws', async () => {
     const { fetchTennisAvailability } = await import('@/lib/seoulApi');
+    const { getCachedTennisData } = await import('@/lib/seoulApi');
     const { GET } = await import('./route');
 
     vi.mocked(fetchTennisAvailability).mockRejectedValue(new Error('API Error'));
+    vi.mocked(getCachedTennisData).mockReturnValue(null);
 
     const request = new NextRequest('http://localhost:3000/api/tennis');
     const response = await GET(request);
@@ -180,5 +184,32 @@ describe('GET /api/tennis', () => {
 
     expect(response.status).toBe(500);
     expect(data.error).toBe('Failed to fetch tennis data');
+  });
+
+  it('should return 200 with stale data when fetchTennisAvailability throws and cache exists', async () => {
+    const { fetchTennisAvailability, getCachedTennisData } = await import('@/lib/seoulApi');
+    const { isCourtAvailable } = await import('@/lib/utils/courtStatus');
+    const { GET } = await import('./route');
+
+    vi.mocked(fetchTennisAvailability).mockRejectedValue(new Error('API Error'));
+    vi.mocked(getCachedTennisData).mockReturnValue({
+      data: mockTennisData,
+      timestamp: Date.now() - 60_000,
+    });
+    vi.mocked(isCourtAvailable).mockImplementation((status) =>
+      status === '접수중' || status === '예약가능'
+    );
+
+    const request = new NextRequest('http://localhost:3000/api/tennis');
+    const response = await GET(request);
+    const data = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(data.stale).toBe(true);
+    expect(data.total).toBe(3);
+    expect(data.courts).toHaveLength(3);
+    expect(data.byDistrict['강남구'].count).toBe(2);
+    expect(data.byDistrict['송파구'].available).toBe(1);
+    expect(data.lastUpdated).toBeDefined();
   });
 });

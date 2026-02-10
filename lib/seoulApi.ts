@@ -1,5 +1,8 @@
 const API_KEY = process.env.SEOUL_OPEN_DATA_KEY;
 const BASE_URL = 'http://openAPI.seoul.go.kr:8088';
+const REQUEST_TIMEOUT_MS = 10_000;
+const MAX_RETRIES = 3;
+const RETRY_DELAYS_MS = [1_000, 2_000, 4_000] as const;
 
 // 서울시 25개 구
 const SEOUL_DISTRICTS = [
@@ -45,6 +48,21 @@ export interface SeoulApiResponse {
     };
 }
 
+interface TennisDataCache {
+    data: SeoulService[];
+    timestamp: number;
+}
+
+let tennisDataCache: TennisDataCache | null = null;
+
+function wait(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+export function getCachedTennisData(): TennisDataCache | null {
+    return tennisDataCache;
+}
+
 export async function fetchTennisAvailability(startIndex = 1, endIndex = 1000): Promise<SeoulService[]> {
     if (!API_KEY) {
         console.error('SEOUL_OPEN_DATA_KEY is missing');
@@ -54,31 +72,61 @@ export async function fetchTennisAvailability(startIndex = 1, endIndex = 1000): 
     // API Format: KEY/TYPE/SERVICE/START_INDEX/END_INDEX/
     const url = `${BASE_URL}/${API_KEY}/json/ListPublicReservationSport/${startIndex}/${endIndex}/`;
 
-    try {
-        const res = await fetch(url, { next: { revalidate: 300 } });
-        if (!res.ok) {
-            throw new Error(`Failed to fetch Seoul API: ${res.status}`);
+    let lastError: unknown;
+
+    for (let retryCount = 0; retryCount <= MAX_RETRIES; retryCount++) {
+        const attempt = retryCount + 1;
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+
+        try {
+            const res = await fetch(url, {
+                next: { revalidate: 300 },
+                signal: controller.signal,
+            });
+            if (!res.ok) {
+                throw new Error(`Failed to fetch Seoul API: ${res.status}`);
+            }
+
+            const data: SeoulApiResponse = await res.json();
+
+            if (!data.ListPublicReservationSport) {
+                tennisDataCache = { data: [], timestamp: Date.now() };
+                return [];
+            }
+
+            // Filter client-side for "테니스장" just in case, though usually we might fetch all and filter in logic
+            // The API might allow filtering by name in arguments but the standard path is bulk fetch.
+            const allServices = data.ListPublicReservationSport.row;
+
+            const tennisServices = allServices.filter(svc =>
+                (svc.MINCLASSNM === '테니스장' || svc.SVCNM.includes('테니스')) &&
+                SEOUL_DISTRICTS.includes(svc.AREANM)
+            );
+
+            tennisDataCache = {
+                data: tennisServices,
+                timestamp: Date.now(),
+            };
+
+            return tennisServices;
+        } catch (error) {
+            lastError = error;
+            console.error(`Seoul API attempt ${attempt} failed:`, error);
+
+            if (retryCount < MAX_RETRIES) {
+                await wait(RETRY_DELAYS_MS[retryCount]);
+            }
+        } finally {
+            clearTimeout(timeoutId);
         }
-
-        const data: SeoulApiResponse = await res.json();
-
-        if (!data.ListPublicReservationSport) {
-            // Could be error or no data
-            return [];
-        }
-
-        // Filter client-side for "테니스장" just in case, though usually we might fetch all and filter in logic
-        // The API might allow filtering by name in arguments but the standard path is bulk fetch.
-        const allServices = data.ListPublicReservationSport.row;
-
-        const tennisServices = allServices.filter(svc =>
-            (svc.MINCLASSNM === '테니스장' || svc.SVCNM.includes('테니스')) &&
-            SEOUL_DISTRICTS.includes(svc.AREANM)
-        );
-
-        return tennisServices;
-    } catch (error) {
-        console.error('Error fetching tennis availability:', error);
-        throw error;
     }
+
+    if (tennisDataCache) {
+        console.warn('Serving stale tennis data from in-memory cache after Seoul API failures');
+        return tennisDataCache.data;
+    }
+
+    console.error('Error fetching tennis availability:', lastError);
+    throw lastError;
 }

@@ -1,50 +1,60 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { fetchTennisAvailability } from '@/lib/seoulApi';
+import { fetchTennisAvailability, getCachedTennisData } from '@/lib/seoulApi';
 import { SLUG_TO_KOREAN } from '@/lib/constants/districts';
 import { isCourtAvailable } from '@/lib/utils/courtStatus';
+import type { SeoulService } from '@/lib/seoulApi';
 
 export const revalidate = 300;
 
-export async function GET(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url);
-    const district = searchParams.get('district'); // slug 또는 한글
-
-    const services = await fetchTennisAvailability();
-
-    if (district) {
-      // slug인 경우 한글로 변환
-      const koreanDistrict = SLUG_TO_KOREAN[district] || district;
-
-      const filtered = services.filter(s => s.AREANM === koreanDistrict);
-      return NextResponse.json({
-        district: koreanDistrict,
-        count: filtered.length,
-        courts: filtered,
-      });
-    }
-
-    // 전체 반환 시 구별로 그룹화하여 개수도 포함
-    const byDistrict = services.reduce((acc, svc) => {
-      const area = svc.AREANM;
-      if (!acc[area]) {
-        acc[area] = { count: 0, available: 0 };
-      }
-      acc[area].count++;
-      if (isCourtAvailable(svc.SVCSTATNM)) {
-        acc[area].available++;
-      }
-      return acc;
-    }, {} as Record<string, { count: number; available: number }>);
+function buildTennisResponse(services: SeoulService[], district: string | null, stale = false) {
+  if (district) {
+    const koreanDistrict = SLUG_TO_KOREAN[district] || district;
+    const filtered = services.filter(s => s.AREANM === koreanDistrict);
 
     return NextResponse.json({
-      total: services.length,
-      byDistrict,
-      courts: services,
-      lastUpdated: new Date().toISOString(),
+      district: koreanDistrict,
+      count: filtered.length,
+      courts: filtered,
+      ...(stale ? { stale: true } : {}),
     });
+  }
+
+  const byDistrict = services.reduce((acc, svc) => {
+    const area = svc.AREANM;
+    if (!acc[area]) {
+      acc[area] = { count: 0, available: 0 };
+    }
+    acc[area].count++;
+    if (isCourtAvailable(svc.SVCSTATNM)) {
+      acc[area].available++;
+    }
+    return acc;
+  }, {} as Record<string, { count: number; available: number }>);
+
+  return NextResponse.json({
+    total: services.length,
+    byDistrict,
+    courts: services,
+    lastUpdated: new Date().toISOString(),
+    ...(stale ? { stale: true } : {}),
+  });
+}
+
+export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const district = searchParams.get('district'); // slug 또는 한글
+
+  try {
+    const services = await fetchTennisAvailability();
+    return buildTennisResponse(services, district);
   } catch (error) {
     console.error('Error fetching tennis data:', error);
+
+    const cached = getCachedTennisData();
+    if (cached) {
+      return buildTennisResponse(cached.data, district, true);
+    }
+
     return NextResponse.json(
       { error: 'Failed to fetch tennis data' },
       { status: 500 }
