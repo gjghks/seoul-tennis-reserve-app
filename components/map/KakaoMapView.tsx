@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useCallback, useEffect } from 'react';
+import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import { Map as KakaoMap, MapMarker, CustomOverlayMap, ZoomControl, useKakaoLoader } from 'react-kakao-maps-sdk';
 import { useRouter } from 'next/navigation';
 import { SeoulService } from '@/lib/seoulApi';
@@ -37,6 +37,7 @@ export default function KakaoMapView({ courts, district, focusPlaceName, onPlace
   const router = useRouter();
   const [selectedGroup, setSelectedGroup] = useState<CourtGroup | null>(null);
   const [hoveredGroup, setHoveredGroup] = useState<CourtGroup | null>(null);
+  const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [mapCenter, setMapCenter] = useState<{ lat: number; lng: number } | null>(null);
 
   const [, error] = useKakaoLoader({
@@ -122,6 +123,7 @@ export default function KakaoMapView({ courts, district, focusPlaceName, onPlace
   }, [focusPlaceName, courtGroups]);
 
   const handleMarkerClick = useCallback((group: CourtGroup) => {
+    if (hoverTimerRef.current) { clearTimeout(hoverTimerRef.current); hoverTimerRef.current = null; }
     setHoveredGroup(null);
     setSelectedGroup(group);
     setMapCenter({ lat: group.lat, lng: group.lng });
@@ -160,6 +162,7 @@ export default function KakaoMapView({ courts, district, focusPlaceName, onPlace
         style={{ width: '100%', height: '400px' }}
         level={initialLevel}
         onClick={() => {
+          if (hoverTimerRef.current) { clearTimeout(hoverTimerRef.current); hoverTimerRef.current = null; }
           setSelectedGroup(null);
           setHoveredGroup(null);
         }}
@@ -176,8 +179,14 @@ export default function KakaoMapView({ courts, district, focusPlaceName, onPlace
                size: { width: 24, height: 35 },
              }}
              onClick={() => handleMarkerClick(group)}
-             onMouseOver={() => { if (!selectedGroup) setHoveredGroup(group); }}
-             onMouseOut={() => setHoveredGroup(null)}
+              onMouseOver={() => {
+                if (hoverTimerRef.current) { clearTimeout(hoverTimerRef.current); hoverTimerRef.current = null; }
+                if (!selectedGroup) setHoveredGroup(group);
+              }}
+              onMouseOut={() => {
+                if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+                hoverTimerRef.current = setTimeout(() => { setHoveredGroup(null); hoverTimerRef.current = null; }, 50);
+              }}
            />
          ))}
 
