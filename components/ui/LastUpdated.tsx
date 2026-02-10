@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect, useCallback } from 'react';
 import { useThemeClass } from '@/lib/cn';
 
 interface LastUpdatedProps {
@@ -9,10 +10,15 @@ interface LastUpdatedProps {
 
 export default function LastUpdated({ timestamp, className = '' }: LastUpdatedProps) {
   const themeClass = useThemeClass();
+  const [, setTick] = useState(0);
 
-  if (!timestamp) return null;
+  useEffect(() => {
+    if (!timestamp) return;
+    const interval = setInterval(() => setTick(t => t + 1), 30000);
+    return () => clearInterval(interval);
+  }, [timestamp]);
 
-  const formatRelativeTime = (dateStr: string) => {
+  const formatRelativeTime = useCallback((dateStr: string) => {
     const date = new Date(dateStr);
     const now = new Date();
     const diffMs = now.getTime() - date.getTime();
@@ -28,10 +34,26 @@ export default function LastUpdated({ timestamp, className = '' }: LastUpdatedPr
       hour: '2-digit',
       minute: '2-digit',
     });
-  };
+  }, []);
+
+  const formatExactTime = useCallback((dateStr: string) => {
+    return new Date(dateStr).toLocaleString('ko-KR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    });
+  }, []);
+
+  if (!timestamp) return null;
 
   return (
-    <div className={`flex items-center gap-1.5 text-xs ${themeClass('text-black/50 font-medium', 'text-gray-400')} ${className}`}>
+    <div
+      className={`flex items-center gap-1.5 text-xs ${themeClass('text-black/50 font-medium', 'text-gray-400')} ${className}`}
+      title={formatExactTime(timestamp)}
+    >
       <svg 
         className="w-3.5 h-3.5" 
         fill="none" 

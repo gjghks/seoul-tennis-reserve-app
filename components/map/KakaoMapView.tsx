@@ -29,9 +29,10 @@ interface KakaoMapViewProps {
   courts: SeoulService[];
   district: string;
   focusPlaceName?: string | null;
+  onPlaceSelect?: (placeName: string) => void;
 }
 
-export default function KakaoMapView({ courts, district, focusPlaceName }: KakaoMapViewProps) {
+export default function KakaoMapView({ courts, district, focusPlaceName, onPlaceSelect }: KakaoMapViewProps) {
   const { isNeoBrutalism } = useTheme();
   const router = useRouter();
   const [selectedGroup, setSelectedGroup] = useState<CourtGroup | null>(null);
@@ -192,12 +193,33 @@ export default function KakaoMapView({ courts, district, focusPlaceName }: Kakao
               }
             >
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
-                <div style={{ fontSize: 13, fontWeight: 700, color: isNeoBrutalism ? '#000' : '#111' }}>
-                  {selectedGroup.placeName}
-                  {selectedGroup.courts.length > 1 && (
-                    <span style={{ marginLeft: 4, fontSize: 11, fontWeight: 400, color: isNeoBrutalism ? 'rgba(0,0,0,0.4)' : '#999' }}>
-                      ({selectedGroup.courts.length}개)
-                    </span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: isNeoBrutalism ? '#000' : '#111' }}>
+                    {selectedGroup.placeName}
+                    {selectedGroup.courts.length > 1 && (
+                      <span style={{ marginLeft: 4, fontSize: 11, fontWeight: 400, color: isNeoBrutalism ? 'rgba(0,0,0,0.4)' : '#999' }}>
+                        ({selectedGroup.courts.length}개)
+                      </span>
+                    )}
+                  </span>
+                  {onPlaceSelect && (
+                    <button
+                      type="button"
+                      onClick={() => onPlaceSelect(selectedGroup.placeName)}
+                      style={{
+                        fontSize: 11,
+                        padding: '2px 6px',
+                        cursor: 'pointer',
+                        background: isNeoBrutalism ? '#88aaee' : '#f0fdf4',
+                        border: isNeoBrutalism ? '1px solid #000' : '1px solid #bbf7d0',
+                        borderRadius: 3,
+                        color: isNeoBrutalism ? '#000' : '#15803d',
+                        fontWeight: 600,
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      목록 ↓
+                    </button>
                   )}
                 </div>
                 <button

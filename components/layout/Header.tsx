@@ -3,12 +3,10 @@
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
-import { useTheme } from '@/contexts/ThemeContext';
 import { useThemeClass } from '@/lib/cn';
 
 export default function Header() {
   const { user, loading, signOut } = useAuth();
-  const { toggleTheme, isNeoBrutalism } = useTheme();
   const themeClass = useThemeClass();
   const router = useRouter();
   const pathname = usePathname();
@@ -37,15 +35,6 @@ export default function Header() {
           </Link>
 
           <nav className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={toggleTheme}
-              aria-label={isNeoBrutalism ? '미니멀 테마로 변경' : '네오브루탈 테마로 변경'}
-              className={`px-3 py-1.5 text-xs font-bold transition-all ${themeClass('bg-black text-[#facc15] border-2 border-black rounded-[5px] shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none', 'bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200')}`}
-            >
-              {isNeoBrutalism ? 'MINIMAL' : 'NEO-BRUTAL'}
-            </button>
-            
             {loading ? (
               <div className="w-16 h-8 skeleton rounded" />
             ) : user ? (

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useTheme } from '@/contexts/ThemeContext';
 import { useThemeClass } from '@/lib/cn';
 import FeedbackModal from '@/components/feedback/FeedbackModal';
 
@@ -14,11 +15,12 @@ const NAV_LINKS = [
 
 export default function Footer() {
   const themeClass = useThemeClass();
+  const { toggleTheme, isNeoBrutalism } = useTheme();
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
 
   return (
     <>
-      <footer className={`fixed bottom-0 left-0 right-0 z-40 ${themeClass(
+      <footer className={`${themeClass(
         'py-2.5 text-center text-sm bg-black text-white border-t-[3px] border-black',
         'py-2.5 text-center text-sm text-gray-400 border-t border-gray-100 bg-white'
       )}`}>
@@ -51,6 +53,17 @@ export default function Footer() {
               )}`}
             >
               💬 의견 보내기
+            </button>
+            <button
+              type="button"
+              onClick={toggleTheme}
+              aria-label={isNeoBrutalism ? '미니멀 테마로 변경' : '네오브루탈 테마로 변경'}
+              className={`ml-1 px-2.5 py-0.5 text-[clamp(10px,2.5vw,11px)] font-medium transition-colors ${themeClass(
+                'bg-white/15 text-white/80 rounded-[4px] border border-white/25 hover:bg-white/25 hover:text-white',
+                'bg-gray-100 text-gray-500 rounded-full border border-gray-200 hover:bg-gray-200 hover:text-gray-700'
+              )}`}
+            >
+              {isNeoBrutalism ? '🎨 Minimal' : '🎨 Neo-Brutal'}
             </button>
           </div>
         </div>

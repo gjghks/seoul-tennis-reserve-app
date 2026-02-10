@@ -107,7 +107,7 @@ export default function CourtDetailClient({ court, district, districtSlug }: Cou
   ];
 
   return (
-    <div className={`min-h-screen pb-20 scrollbar-hide ${themeClass('bg-nb-bg', 'bg-gray-50')} `}>
+     <div className={`min-h-screen scrollbar-hide ${themeClass('bg-nb-bg', 'bg-gray-50')} `}>
       <StickyHeader 
         court={court} 
         isAvailable={isAvailable} 

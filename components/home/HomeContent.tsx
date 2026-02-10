@@ -11,6 +11,7 @@ import LastUpdated from '@/components/ui/LastUpdated';
 import { useThemeClass } from '@/lib/cn';
 import { convertToWeatherGrid } from '@/lib/utils/weatherGrid';
 import HomeWeatherCard from '@/components/weather/HomeWeatherCard';
+import CourtSearch from '@/components/home/CourtSearch';
 
 const SEOUL_WEATHER_GRID = convertToWeatherGrid(126.978, 37.5665);
 
@@ -124,34 +125,16 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
           {SEOUL_WEATHER_GRID && (
             <HomeWeatherCard nx={SEOUL_WEATHER_GRID.nx} ny={SEOUL_WEATHER_GRID.ny} />
           )}
+          <CourtSearch />
         </div>
       </section>
 
-      <div className="pt-4 pb-8 lg:pt-3 lg:pb-6">
-        <FavoriteCourtSection />
-      </div>
-
-      <div className="pb-8 lg:pb-6">
-        <PopularCourts />
-      </div>
-
-      <div className="container pb-8 lg:pb-6">
-        <InstallPrompt />
-      </div>
-
-      {AD_SLOTS.HOME_TOP && (
-        <div className="container mb-4">
-          <AdBanner adSlot={AD_SLOTS.HOME_TOP} adFormat="horizontal" className="min-h-[90px]" />
-        </div>
-      )}
-
-      <section className="container flex-1 flex flex-col pb-20">
+      <section className="container pt-4 pb-6 lg:pt-3 lg:pb-4 flex-1 flex flex-col">
         <div className="mb-4 lg:mb-3">
           <div className="flex items-center gap-1.5 mb-2">
             <h2 className={themeClass('text-xl font-black text-black uppercase tracking-tight', 'text-lg font-semibold text-gray-900')}>
               지역 선택
             </h2>
-
           </div>
           <p className={themeClass('text-sm text-black/70 font-medium', 'text-sm text-gray-500')}>
             원하는 지역을 선택하면 해당 지역의 테니스장 목록을 확인할 수 있습니다
@@ -174,13 +157,31 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
         {!error && (
           <DistrictGrid stats={displayStats || undefined} loading={showLoading} />
         )}
-
-        {AD_SLOTS.HOME_BOTTOM && (
-          <div className="mt-6">
-            <AdBanner adSlot={AD_SLOTS.HOME_BOTTOM} adFormat="auto" className="min-h-[250px]" />
-          </div>
-        )}
       </section>
+
+      {AD_SLOTS.HOME_TOP && (
+        <div className="container mb-4">
+          <AdBanner adSlot={AD_SLOTS.HOME_TOP} adFormat="horizontal" className="min-h-[90px]" />
+        </div>
+      )}
+
+      <div className="pt-2 pb-6 lg:pt-1 lg:pb-4">
+        <FavoriteCourtSection />
+      </div>
+
+      <div className="pb-6 lg:pb-4">
+        <PopularCourts />
+      </div>
+
+      <div className="container pb-6 lg:pb-4">
+        <InstallPrompt />
+      </div>
+
+      {AD_SLOTS.HOME_BOTTOM && (
+        <div className="container mb-4">
+          <AdBanner adSlot={AD_SLOTS.HOME_BOTTOM} adFormat="auto" className="min-h-[250px]" />
+        </div>
+      )}
     </PullToRefresh>
   );
 }

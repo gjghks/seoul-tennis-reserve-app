@@ -104,13 +104,13 @@ export default function RootLayout({
         <GoogleAdSense />
         <Providers>
           <NavigationProgress />
-          <div className="min-h-screen flex flex-col">
-            <Header />
-            <main id="main-content" className="flex-1 flex flex-col pb-16">
-              {children}
-            </main>
-            <Footer />
-          </div>
+           <div className="min-h-screen flex flex-col">
+             <Header />
+             <main id="main-content" className="flex-1 flex flex-col">
+               {children}
+             </main>
+             <Footer />
+           </div>
         </Providers>
       </body>
     </html>

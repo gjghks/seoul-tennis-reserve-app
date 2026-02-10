@@ -236,6 +236,22 @@ input:focus, select:focus {
   animation: fadeIn 0.3s ease-out;
 }
 
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Focus visible - keyboard navigation */
+:focus-visible {
+  outline: 2px solid var(--court-green);
+  outline-offset: 2px;
+}
+
 /* Scroll UX - Global */
 html, body {
   overscroll-behavior: none;
