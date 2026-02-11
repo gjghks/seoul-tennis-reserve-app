@@ -30,7 +30,11 @@ interface TrendsData {
   hasHistory: boolean;
 }
 
-const fetcher = (url: string) => fetch(url).then(r => r.json());
+const fetcher = (url: string) =>
+  fetch(url).then(r => r.json()).then(d => {
+    if (d.error) throw new Error(d.error);
+    return d;
+  });
 
 function getBarColor(rate: number, isNeo: boolean): string {
   if (isNeo) {
@@ -128,7 +132,7 @@ export default function TrendsContent() {
 
         {data && !isLoading && (
           <>
-            {data.currentRates.length > 0 && (
+            {(data.currentRates?.length ?? 0) > 0 && (
               <div className="grid grid-cols-3 gap-3 mb-6">
                 {(() => {
                   const totals = data.currentRates.reduce(
