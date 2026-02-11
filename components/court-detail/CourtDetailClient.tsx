@@ -20,6 +20,11 @@ import { extractFacilityTags } from '@/lib/utils/facilityTags';
 import { convertToWeatherGrid } from '@/lib/utils/weatherGrid';
 import WeatherInfoCard from '@/components/weather/WeatherInfoCard';
 import { useRecentCourts } from '@/lib/hooks/useRecentCourts';
+import SimilarCourts from '@/components/court-detail/SimilarCourts';
+
+const KakaoShareButton = dynamic(() => import('@/components/ui/KakaoShareButton'), {
+  ssr: false,
+});
 
 const DetailContent = dynamic(() => import('@/components/court-detail/DetailContent'), {
   loading: () => <div className="skeleton h-64 !rounded-xl" />,
@@ -35,9 +40,10 @@ interface CourtDetailClientProps {
   court: SeoulService;
   district: District;
   districtSlug: string;
+  allCourts?: SeoulService[];
 }
 
-export default function CourtDetailClient({ court, district, districtSlug }: CourtDetailClientProps) {
+export default function CourtDetailClient({ court, district, districtSlug, allCourts }: CourtDetailClientProps) {
   const { isNeoBrutalism } = useTheme();
   const themeClass = useThemeClass();
   const { addRecentCourt } = useRecentCourts();
@@ -144,6 +150,11 @@ export default function CourtDetailClient({ court, district, districtSlug }: Cou
               <ShareButton
                 title={court.SVCNM}
                 text={`${court.AREANM} ${court.PLACENM} 테니스장`}
+              />
+              <KakaoShareButton
+                title={court.SVCNM}
+                description={`${court.AREANM} ${court.PLACENM} - ${court.SVCSTATNM}`}
+                imageUrl={court.IMGURL}
               />
               <FavoriteButton
                 svcId={court.SVCID}
@@ -389,6 +400,15 @@ export default function CourtDetailClient({ court, district, districtSlug }: Cou
             district={court.AREANM}
           />
         </div>
+
+        {allCourts && allCourts.length > 0 && (
+          <SimilarCourts
+            currentCourtId={court.SVCID}
+            district={court.AREANM}
+            allCourts={allCourts}
+            isNeoBrutalism={isNeoBrutalism}
+          />
+        )}
 
         <div className="flex gap-3">
           <Link

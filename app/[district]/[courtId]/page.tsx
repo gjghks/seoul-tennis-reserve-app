@@ -3,6 +3,7 @@ import { getDistrictBySlug, SLUG_TO_KOREAN } from '@/lib/constants/districts';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import CourtDetailClient from '@/components/court-detail/CourtDetailClient';
+import SimilarCourts from '@/components/court-detail/SimilarCourts';
 
 export const revalidate = 300;
 
@@ -65,7 +66,7 @@ async function getCourtData(districtSlug: string, courtId: string) {
       return null;
     }
 
-    return { court, district };
+    return { court, district, allCourts: services };
   } catch (error) {
     console.error('Failed to fetch court data:', error);
     return null;
@@ -106,7 +107,7 @@ export default async function CourtDetailPage({ params }: CourtDetailPageProps) 
     notFound();
   }
 
-  const { court, district } = data;
+  const { court, district, allCourts } = data;
 
   return (
     <>
@@ -116,6 +117,14 @@ export default async function CourtDetailPage({ params }: CourtDetailPageProps) 
         district={district} 
         districtSlug={districtSlug} 
       />
+      <div className="container py-6">
+        <SimilarCourts
+          currentCourtId={court.SVCID}
+          district={court.AREANM}
+          allCourts={allCourts}
+          isNeoBrutalism={false}
+        />
+      </div>
     </>
   );
 }
