@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { SeoulService } from '@/lib/seoulApi';
-import { KOREAN_TO_SLUG } from '@/lib/constants/districts';
+import { KOREAN_TO_SLUG, ADJACENT_DISTRICTS } from '@/lib/constants/districts';
 import { isCourtAvailable } from '@/lib/utils/courtStatus';
 
 interface SimilarCourtsProps {
@@ -11,6 +11,13 @@ interface SimilarCourtsProps {
   isNeoBrutalism: boolean;
 }
 
+function getDistrictPriority(courtDistrict: string, currentDistrict: string): number {
+  if (courtDistrict === currentDistrict) return 0;
+  const adjacent = ADJACENT_DISTRICTS[currentDistrict];
+  if (adjacent?.includes(courtDistrict)) return 1;
+  return 2;
+}
+
 export default function SimilarCourts({
   currentCourtId,
   currentPlaceName,
@@ -18,13 +25,18 @@ export default function SimilarCourts({
   allCourts,
   isNeoBrutalism,
 }: SimilarCourtsProps) {
+  const adjacentSet = new Set(ADJACENT_DISTRICTS[district] ?? []);
+  adjacentSet.add(district);
+
   const differentFacilities = allCourts
-    .filter(court => court.SVCID !== currentCourtId && court.PLACENM !== currentPlaceName)
+    .filter(court =>
+      court.SVCID !== currentCourtId &&
+      court.PLACENM !== currentPlaceName &&
+      adjacentSet.has(court.AREANM)
+    )
     .sort((a, b) => {
-      const aIsSameDistrict = a.AREANM === district;
-      const bIsSameDistrict = b.AREANM === district;
-      if (aIsSameDistrict && !bIsSameDistrict) return -1;
-      if (!aIsSameDistrict && bIsSameDistrict) return 1;
+      const priorityDiff = getDistrictPriority(a.AREANM, district) - getDistrictPriority(b.AREANM, district);
+      if (priorityDiff !== 0) return priorityDiff;
 
       const aIsAvailable = isCourtAvailable(a.SVCSTATNM);
       const bIsAvailable = isCourtAvailable(b.SVCSTATNM);
