@@ -47,6 +47,18 @@ export default function Header() {
             >
               구별 비교
             </Link>
+            <Link
+              href="/trends"
+              className={`hidden sm:block px-3 py-1.5 text-sm transition-colors ${themeClass('text-black font-bold hover:underline underline-offset-4', 'text-gray-600 hover:text-green-600')}`}
+            >
+              경쟁률
+            </Link>
+            <Link
+              href="/calendar"
+              className={`hidden sm:block px-3 py-1.5 text-sm transition-colors ${themeClass('text-black font-bold hover:underline underline-offset-4', 'text-gray-600 hover:text-green-600')}`}
+            >
+              캘린더
+            </Link>
             {loading ? (
               <div className="w-16 h-8 skeleton rounded" />
             ) : user ? (
