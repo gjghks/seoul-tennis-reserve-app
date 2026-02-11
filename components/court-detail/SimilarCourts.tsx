@@ -5,6 +5,7 @@ import { isCourtAvailable } from '@/lib/utils/courtStatus';
 
 interface SimilarCourtsProps {
   currentCourtId: string;
+  currentPlaceName: string;
   district: string;
   allCourts: SeoulService[];
   isNeoBrutalism: boolean;
@@ -12,28 +13,35 @@ interface SimilarCourtsProps {
 
 export default function SimilarCourts({
   currentCourtId,
+  currentPlaceName,
   district,
   allCourts,
   isNeoBrutalism,
 }: SimilarCourtsProps) {
-  const filteredCourts = allCourts
-    .filter(court => court.SVCID !== currentCourtId)
+  const differentFacilities = allCourts
+    .filter(court => court.SVCID !== currentCourtId && court.PLACENM !== currentPlaceName)
     .sort((a, b) => {
       const aIsSameDistrict = a.AREANM === district;
       const bIsSameDistrict = b.AREANM === district;
-
       if (aIsSameDistrict && !bIsSameDistrict) return -1;
       if (!aIsSameDistrict && bIsSameDistrict) return 1;
 
       const aIsAvailable = isCourtAvailable(a.SVCSTATNM);
       const bIsAvailable = isCourtAvailable(b.SVCSTATNM);
-
       if (aIsAvailable && !bIsAvailable) return -1;
       if (!aIsAvailable && bIsAvailable) return 1;
 
       return 0;
-    })
-    .slice(0, 5);
+    });
+
+  const seen = new Set<string>();
+  const uniqueFacilities = differentFacilities.filter(court => {
+    if (seen.has(court.PLACENM)) return false;
+    seen.add(court.PLACENM);
+    return true;
+  });
+
+  const filteredCourts = uniqueFacilities.slice(0, 5);
 
   if (filteredCourts.length === 0) {
     return null;

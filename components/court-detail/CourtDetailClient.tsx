@@ -404,6 +404,7 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
         {allCourts && allCourts.length > 0 && (
           <SimilarCourts
             currentCourtId={court.SVCID}
+            currentPlaceName={court.PLACENM}
             district={court.AREANM}
             allCourts={allCourts}
             isNeoBrutalism={isNeoBrutalism}
