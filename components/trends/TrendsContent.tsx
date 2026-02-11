@@ -211,7 +211,7 @@ export default function TrendsContent() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                       </svg>
                     )}
-                    마감률 변화 추이
+                    일별 마감률 추이
                   </h2>
                 </div>
                 <div className="p-5">
@@ -227,7 +227,7 @@ export default function TrendsContent() {
                   <div>
                     <h3 className={`font-bold mb-1 ${themeClass('text-black', 'text-gray-900')}`}>데이터 수집 중</h3>
                     <p className={`text-sm ${themeClass('text-black/60', 'text-gray-500')}`}>
-                      현재 실시간 데이터만 표시됩니다. 2시간마다 데이터가 수집되며, 약 1~2주 후 트렌드 차트가 활성화됩니다.
+                      현재 실시간 데이터만 표시됩니다. 매일 오전 9시에 데이터가 수집되며, 약 1주일 후 일별 트렌드 차트가 활성화됩니다.
                     </p>
                   </div>
                 </div>
@@ -241,18 +241,18 @@ export default function TrendsContent() {
 }
 
 function TrendTimeline({ snapshots, isNeoBrutalism }: { snapshots: Snapshot[]; isNeoBrutalism: boolean }) {
-  const grouped = new Map<string, { time: string; total: number; booked: number }>();
+  const grouped = new Map<string, { day: string; total: number; booked: number }>();
   for (const s of snapshots) {
-    const timeKey = s.snapshot_at.slice(0, 13);
-    const existing = grouped.get(timeKey) ?? { time: timeKey, total: 0, booked: 0 };
+    const dayKey = s.snapshot_at.slice(0, 10);
+    const existing = grouped.get(dayKey) ?? { day: dayKey, total: 0, booked: 0 };
     existing.total += s.total_courts;
     existing.booked += s.booked_courts;
-    grouped.set(timeKey, existing);
+    grouped.set(dayKey, existing);
   }
 
   const timeline = Array.from(grouped.values())
     .map(g => ({ ...g, rate: g.total > 0 ? Math.round((g.booked / g.total) * 100) : 0 }))
-    .slice(-24);
+    .slice(-30);
 
   if (timeline.length < 2) {
     return <p className={isNeoBrutalism ? 'text-black/40' : 'text-gray-400'}>데이터가 충분하지 않습니다.</p>;
@@ -266,10 +266,10 @@ function TrendTimeline({ snapshots, isNeoBrutalism }: { snapshots: Snapshot[]; i
       <div className="flex items-end gap-1 min-w-[400px]" style={{ height: chartHeight }}>
         {timeline.map((point, i) => {
           const height = (point.rate / maxRate) * chartHeight;
-          const date = new Date(point.time);
-          const label = `${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}시`;
+          const date = new Date(point.day);
+          const label = `${date.getMonth() + 1}/${date.getDate()}`;
           return (
-            <div key={`${point.time}-${i}`} className="flex-1 flex flex-col items-center justify-end gap-1" style={{ height: chartHeight }}>
+            <div key={point.day} className="flex-1 flex flex-col items-center justify-end gap-1" style={{ height: chartHeight }}>
               <span className={`text-[10px] ${isNeoBrutalism ? 'font-bold text-black' : 'text-gray-500'}`}>
                 {point.rate}%
               </span>
@@ -281,7 +281,7 @@ function TrendTimeline({ snapshots, isNeoBrutalism }: { snapshots: Snapshot[]; i
                 }`}
                 style={{ height: Math.max(height, 4) }}
               />
-              {i % Math.max(1, Math.floor(timeline.length / 6)) === 0 && (
+              {i % Math.max(1, Math.floor(timeline.length / 7)) === 0 && (
                 <span className={`text-[9px] leading-none mt-0.5 whitespace-nowrap ${isNeoBrutalism ? 'text-black/40' : 'text-gray-400'}`}>
                   {label}
                 </span>

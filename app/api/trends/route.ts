@@ -58,6 +58,6 @@ export async function GET(request: NextRequest) {
     snapshots,
     currentRates,
     period: { from: since.toISOString(), to: new Date().toISOString(), days },
-    hasHistory: snapshots.length > 25,
+    hasHistory: snapshots.length >= 50,
   });
 }
