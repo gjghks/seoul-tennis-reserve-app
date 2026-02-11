@@ -35,6 +35,12 @@ export default function Header() {
           </Link>
 
           <nav className="flex items-center gap-2">
+            <Link
+              href="/compare"
+              className={`hidden sm:block px-3 py-1.5 text-sm transition-colors ${themeClass('text-black font-bold hover:underline underline-offset-4', 'text-gray-600 hover:text-green-600')}`}
+            >
+              구별 비교
+            </Link>
             {loading ? (
               <div className="w-16 h-8 skeleton rounded" />
             ) : user ? (

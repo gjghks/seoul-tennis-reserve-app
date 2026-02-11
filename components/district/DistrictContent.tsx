@@ -434,6 +434,31 @@ export default function DistrictContent({
             })}
           </div>
         )}
+
+        <div className={`mt-6 p-4 ${themeClass(
+          'bg-[#fef3c7] border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000]',
+          'bg-amber-50 rounded-xl border border-amber-100'
+        )}`}>
+          <div className="flex items-center justify-between flex-wrap gap-3">
+            <div>
+              <h3 className={`font-bold ${themeClass('text-black uppercase', 'text-gray-900')}`}>
+                {districtName} 테니스장 가이드
+              </h3>
+              <p className={`text-sm mt-1 ${themeClass('text-black/70', 'text-gray-600')}`}>
+                시설 비교, 예약 팁, 서울 평균과의 비교를 확인하세요.
+              </p>
+            </div>
+            <Link
+              href={`/guide/${district}`}
+              className={`px-4 py-2 text-sm font-bold transition-all ${themeClass(
+                'bg-black text-[#facc15] border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none',
+                'bg-green-600 text-white rounded-lg hover:bg-green-700'
+              )}`}
+            >
+              가이드 보기
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ import FeedbackModal from '@/components/feedback/FeedbackModal';
 
 const NAV_LINKS = [
   { href: '/about', label: '서비스 소개' },
+  { href: '/compare', label: '구별 비교' },
   { href: '/privacy', label: '개인정보처리방침' },
   { href: '/terms', label: '이용약관' },
   { href: '/contact', label: '문의하기' },
