@@ -4,6 +4,7 @@ import "./globals.css";
 import Providers from "@/components/Providers";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import BottomNav from "@/components/layout/BottomNav";
 import NavigationProgress from "@/components/ui/NavigationProgress";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import GoogleAdSense from "@/components/GoogleAdSense";
@@ -104,12 +105,13 @@ export default function RootLayout({
         <GoogleAdSense />
         <Providers>
           <NavigationProgress />
-           <div className="min-h-screen flex flex-col">
+           <div className="min-h-screen flex flex-col pb-14 sm:pb-0">
              <Header />
              <main id="main-content" className="flex-1 flex flex-col">
                {children}
              </main>
              <Footer />
+             <BottomNav />
            </div>
         </Providers>
       </body>
