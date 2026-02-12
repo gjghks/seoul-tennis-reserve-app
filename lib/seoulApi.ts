@@ -1,8 +1,9 @@
 const API_KEY = process.env.SEOUL_OPEN_DATA_KEY;
 const BASE_URL = 'http://openAPI.seoul.go.kr:8088';
-const REQUEST_TIMEOUT_MS = 10_000;
-const MAX_RETRIES = 3;
-const RETRY_DELAYS_MS = [1_000, 2_000, 4_000] as const;
+const REQUEST_TIMEOUT_MS = 8_000;
+const MAX_RETRIES = 2;
+const RETRY_DELAYS_MS = [1_000, 2_000] as const;
+const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
 
 // 서울시 25개 구
 const SEOUL_DISTRICTS = [
@@ -63,13 +64,20 @@ export function getCachedTennisData(): TennisDataCache | null {
     return tennisDataCache;
 }
 
+function isCacheFresh(): boolean {
+    return !!tennisDataCache && (Date.now() - tennisDataCache.timestamp) < CACHE_TTL_MS;
+}
+
 export async function fetchTennisAvailability(startIndex = 1, endIndex = 1000): Promise<SeoulService[]> {
+    if (isCacheFresh()) {
+        return tennisDataCache!.data;
+    }
+
     if (!API_KEY) {
         console.error('SEOUL_OPEN_DATA_KEY is missing');
         return [];
     }
 
-    // API Format: KEY/TYPE/SERVICE/START_INDEX/END_INDEX/
     const url = `${BASE_URL}/${API_KEY}/json/ListPublicReservationSport/${startIndex}/${endIndex}/`;
 
     let lastError: unknown;
@@ -81,22 +89,26 @@ export async function fetchTennisAvailability(startIndex = 1, endIndex = 1000): 
 
         try {
             const res = await fetch(url, {
-                next: { revalidate: 300 },
+                cache: 'no-store',
                 signal: controller.signal,
             });
             if (!res.ok) {
                 throw new Error(`Failed to fetch Seoul API: ${res.status}`);
             }
 
-            const data: SeoulApiResponse = await res.json();
+            const text = await res.text();
+            let data: SeoulApiResponse;
+            try {
+                data = JSON.parse(text);
+            } catch {
+                throw new Error(`Seoul API returned non-JSON response: ${text.slice(0, 200)}`);
+            }
 
             if (!data.ListPublicReservationSport) {
                 tennisDataCache = { data: [], timestamp: Date.now() };
                 return [];
             }
 
-            // Filter client-side for "테니스장" just in case, though usually we might fetch all and filter in logic
-            // The API might allow filtering by name in arguments but the standard path is bulk fetch.
             const allServices = data.ListPublicReservationSport.row;
 
             const tennisServices = allServices.filter(svc =>

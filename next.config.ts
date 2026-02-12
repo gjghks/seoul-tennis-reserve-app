@@ -43,7 +43,7 @@ const nextConfig: NextConfig = {
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.daumcdn.net",
               `img-src 'self' data: blob: https:${process.env.NODE_ENV === 'development' ? ' http://*.daumcdn.net http://*.kakao.com' : ''}`,
               "font-src 'self' https://fonts.gstatic.com",
-              `connect-src 'self' https://*.supabase.co https://pagead2.googlesyndication.com https://www.google-analytics.com https://openAPI.seoul.go.kr:8088 https://apihub.kma.go.kr https://*.kakao.com https://*.daumcdn.net wss://*.supabase.co${process.env.NODE_ENV === 'development' ? ' http://*.kakao.com http://*.daumcdn.net ws://localhost:*' : ''}`,
+              `connect-src 'self' https://*.supabase.co https://pagead2.googlesyndication.com https://*.adtrafficquality.google https://www.google-analytics.com https://openAPI.seoul.go.kr:8088 https://apihub.kma.go.kr https://*.kakao.com https://*.daumcdn.net wss://*.supabase.co${process.env.NODE_ENV === 'development' ? ' http://*.kakao.com http://*.daumcdn.net ws://localhost:*' : ''}`,
               "frame-src 'self' https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com",
               "object-src 'none'",
               "base-uri 'self'",
