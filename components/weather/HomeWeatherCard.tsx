@@ -140,28 +140,45 @@ export default function HomeWeatherCard({ nx, ny }: HomeWeatherCardProps) {
             </p>
           </div>
         </div>
-        {airData && airData.grade !== '정보없음' && airGradeColor && (
-          <div className={themeClass(
-            'shrink-0 flex items-center gap-1.5 px-2 py-1 rounded-[5px] border border-white/30 bg-black/20',
-            'shrink-0 flex items-center gap-1.5 px-2 py-1 rounded-md bg-white/15 border border-white/20'
-          )}>
-            <span className="text-sm leading-none">{airGradeColor.icon}</span>
-            <div>
-              <span className="text-[10px] text-white/60 block leading-tight">미세먼지</span>
-              <span className={themeClass(
-                'text-xs font-black text-white',
-                'text-xs font-semibold text-white'
-              )}>
-                {airData.grade}
-              </span>
-              {airData.pm25 !== null && (
-                <span className={`text-[10px] ml-1 ${resolvePmColorLight('pm25', airData.pm25)}`}>
-                  PM2.5 {airData.pm25}
+        {airData && airData.grade !== '정보없음' && airGradeColor && (() => {
+          const gradeBg: Record<string, string> = {
+            '좋음': 'bg-blue-500/20 border-blue-400/30',
+            '보통': 'bg-green-500/20 border-green-400/30',
+            '나쁨': 'bg-orange-500/25 border-orange-400/30',
+            '매우나쁨': 'bg-red-500/25 border-red-400/30',
+          };
+          const gradeText: Record<string, string> = {
+            '좋음': 'text-blue-300',
+            '보통': 'text-green-300',
+            '나쁨': 'text-orange-300',
+            '매우나쁨': 'text-red-300',
+          };
+          const bg = gradeBg[airData.grade] ?? 'bg-white/15 border-white/20';
+          const txt = gradeText[airData.grade] ?? 'text-white';
+
+          return (
+            <div className={themeClass(
+              `shrink-0 flex items-center gap-1.5 px-2 py-1 rounded-[5px] border ${bg}`,
+              `shrink-0 flex items-center gap-1.5 px-2 py-1 rounded-md border ${bg}`
+            )}>
+              <span className="text-sm leading-none">{airGradeColor.icon}</span>
+              <div>
+                <span className="text-[10px] text-white/60 block leading-tight">미세먼지</span>
+                <span className={themeClass(
+                  `text-xs font-black ${txt}`,
+                  `text-xs font-semibold ${txt}`
+                )}>
+                  {airData.grade}
                 </span>
-              )}
+                {airData.pm25 !== null && (
+                  <span className={`text-[10px] ml-1 ${resolvePmColorLight('pm25', airData.pm25)}`}>
+                    PM2.5 {airData.pm25}
+                  </span>
+                )}
+              </div>
             </div>
-          </div>
-        )}
+          );
+        })()}
       </div>
     </div>
   );
