@@ -121,73 +121,66 @@ export default function DistrictContent({
           ? 'bg-[#88aaee] border-b-[3px] border-black' 
           : 'bg-white border-b border-gray-200'
       }`}>
-        <div className="container py-4 flex items-center justify-between">
-          <Link href="/" className={`text-sm ${
-            isNeoBrutalism 
-              ? 'text-black font-bold hover:underline underline-offset-4' 
-              : 'text-gray-500 hover:text-green-600'
-          }`}>
-            ← 전체 지역
-          </Link>
-          <div className="text-center">
-            <div className="flex items-center justify-center gap-1.5">
-              <h1 className={`text-lg ${themeClass('font-black text-black uppercase', 'font-bold text-gray-900')} `}>
-                {isNeoBrutalism ? `${districtName}` : `${districtName}`}
+        <div className="container py-3">
+          <div className="flex items-center justify-between">
+            <Link href="/" className={`text-sm shrink-0 ${
+              isNeoBrutalism 
+                ? 'text-black font-bold hover:underline underline-offset-4' 
+                : 'text-gray-500 hover:text-green-600'
+            }`}>
+              ← 전체 지역
+            </Link>
+            <div className="flex items-center gap-1.5">
+              <h1 className={`text-lg ${themeClass('font-black text-black uppercase', 'font-bold text-gray-900')}`}>
+                {districtName}
               </h1>
-              {districtWeatherGrid && (
-                <WeatherBadge nx={districtWeatherGrid.nx} ny={districtWeatherGrid.ny} compact district={koreanDistrict} />
+              {lastUpdated && (
+                <LastUpdated timestamp={lastUpdated} className="mt-0" />
               )}
             </div>
-            {lastUpdated && (
-              <LastUpdated timestamp={lastUpdated} className="justify-center mt-0.5" />
-            )}
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={() => toggleView(viewMode === 'map' ? 'list' : 'map')}
+                className={themeClass(
+                  'p-2 rounded-[5px] border-2 border-black transition-all bg-white hover:bg-[#facc15]/30',
+                  'p-2 rounded-lg border border-gray-300 transition-colors bg-white hover:border-green-300'
+                )}
+                aria-label={viewMode === 'map' ? '목록 보기' : '지도 보기'}
+              >
+                {viewMode === 'map' ? (
+                  <svg className={`w-4.5 h-4.5 ${themeClass('text-black', 'text-gray-600')}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
+                ) : (
+                  <svg className={`w-4.5 h-4.5 ${themeClass('text-black', 'text-gray-600')}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                  </svg>
+                )}
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowAvailableOnly(prev => !prev)}
+                className={showAvailableOnly
+                  ? themeClass(
+                      'h-8 rounded-lg border-2 border-black bg-[#a3e635] px-2.5 text-xs font-black text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none',
+                      'h-8 rounded-lg border border-green-600 bg-green-600 px-2.5 text-xs font-semibold text-white transition-colors hover:bg-green-700'
+                    )
+                  : themeClass(
+                      'h-8 rounded-lg border-2 border-black bg-white px-2.5 text-xs font-black text-black transition-colors hover:bg-[#facc15]/30',
+                      'h-8 rounded-lg border border-gray-300 bg-white px-2.5 text-xs font-medium text-gray-700 transition-colors hover:border-green-300 hover:text-green-700'
+                    )
+                }
+              >
+                {showAvailableOnly ? `접수중만 ✓ (${availableCount})` : `접수중만 (${availableCount})`}
+              </button>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => toggleView('map')}
-              className={`p-2 rounded-md transition-colors ${
-                viewMode === 'map'
-                  ? isNeoBrutalism ? 'bg-black text-white' : 'bg-green-600 text-white'
-                  : isNeoBrutalism ? 'text-black/50 hover:bg-black/10' : 'text-gray-400 hover:bg-gray-100'
-              }`}
-              aria-label="지도 보기"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-              </svg>
-            </button>
-            <button
-              type="button"
-              onClick={() => toggleView('list')}
-              className={`p-2 rounded-md transition-colors ${
-                viewMode === 'list'
-                  ? isNeoBrutalism ? 'bg-black text-white' : 'bg-green-600 text-white'
-                  : isNeoBrutalism ? 'text-black/50 hover:bg-black/10' : 'text-gray-400 hover:bg-gray-100'
-              }`}
-              aria-label="목록 보기"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-            <button
-              type="button"
-              onClick={() => setShowAvailableOnly(prev => !prev)}
-              className={showAvailableOnly
-                ? themeClass(
-                    'h-9 rounded-lg border-2 border-black bg-[#a3e635] px-3 text-xs font-black text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none',
-                    'h-9 rounded-lg border border-green-600 bg-green-600 px-3 text-xs font-semibold text-white transition-colors hover:bg-green-700'
-                  )
-                : themeClass(
-                    'h-9 rounded-lg border-2 border-black bg-white px-3 text-xs font-black text-black transition-colors hover:bg-[#facc15]/30',
-                    'h-9 rounded-lg border border-gray-300 bg-white px-3 text-xs font-medium text-gray-700 transition-colors hover:border-green-300 hover:text-green-700'
-                  )
-              }
-            >
-              {showAvailableOnly ? `접수중만 ✓ (${availableCount})` : `접수중만 (${availableCount})`}
-            </button>
-          </div>
+          {districtWeatherGrid && (
+            <div className="flex justify-center mt-1.5">
+              <WeatherBadge nx={districtWeatherGrid.nx} ny={districtWeatherGrid.ny} compact district={koreanDistrict} />
+            </div>
+          )}
         </div>
       </div>
 
