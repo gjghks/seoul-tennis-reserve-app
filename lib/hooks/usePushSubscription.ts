@@ -22,6 +22,17 @@ function isPushSupported(): boolean {
   );
 }
 
+function urlBase64ToUint8Array(base64String: string): Uint8Array {
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+  for (let i = 0; i < rawData.length; i++) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
+
 async function waitForServiceWorker(timeoutMs = 10000): Promise<ServiceWorkerRegistration> {
   const existing = await navigator.serviceWorker.getRegistration('/');
   if (!existing) {
@@ -89,9 +100,10 @@ export function usePushSubscription(): UsePushSubscriptionReturn {
         return false;
       }
 
+      const applicationServerKey = urlBase64ToUint8Array(vapidKey);
       const subscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: vapidKey,
+        applicationServerKey: applicationServerKey.buffer as ArrayBuffer,
       });
 
       const subJson = subscription.toJSON();
