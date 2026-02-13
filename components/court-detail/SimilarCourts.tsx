@@ -1,3 +1,6 @@
+'use client';
+
+import { useRef, useState, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import { SeoulService } from '@/lib/seoulApi';
 import { KOREAN_TO_SLUG, ADJACENT_DISTRICTS } from '@/lib/constants/districts';
@@ -54,12 +57,42 @@ export default function SimilarCourts({
   });
 
   const filteredCourts = uniqueFacilities.slice(0, 4);
+  const districtSlug = KOREAN_TO_SLUG[district];
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const handleScroll = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const children = Array.from(el.children) as HTMLElement[];
+    if (children.length === 0) return;
+
+    const scrollLeft = el.scrollLeft;
+    const gap = 12;
+    let closest = 0;
+    let minDist = Infinity;
+
+    for (let i = 0; i < children.length; i++) {
+      const offset = i * (children[0].offsetWidth + gap);
+      const dist = Math.abs(scrollLeft - offset);
+      if (dist < minDist) {
+        minDist = dist;
+        closest = i;
+      }
+    }
+    setActiveIndex(closest);
+  }, []);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.addEventListener('scroll', handleScroll, { passive: true });
+    return () => el.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
 
   if (filteredCourts.length === 0) {
     return null;
   }
-
-  const districtSlug = KOREAN_TO_SLUG[district];
 
   return (
     <div className={
@@ -92,7 +125,7 @@ export default function SimilarCourts({
       </div>
 
       <div className="p-5">
-        <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory pb-2 scrollbar-hide sm:grid sm:grid-cols-2 sm:overflow-visible sm:pb-0">
+        <div ref={scrollRef} className="flex gap-3 overflow-x-auto snap-x snap-mandatory pb-2 scrollbar-hide sm:grid sm:grid-cols-2 sm:overflow-visible sm:pb-0">
           {filteredCourts.map((court) => {
             const isAvailable = isCourtAvailable(court.SVCSTATNM);
             const isSameDistrict = court.AREANM === district;
@@ -175,6 +208,31 @@ export default function SimilarCourts({
             );
           })}
         </div>
+
+        {filteredCourts.length > 1 && (
+          <div className="flex justify-center gap-1.5 mt-3 sm:hidden">
+            {filteredCourts.map((court, i) => (
+              <button
+                key={court.SVCID}
+                type="button"
+                aria-label={`${i + 1}번째 테니스장으로 이동`}
+                onClick={() => {
+                  const el = scrollRef.current;
+                  if (!el) return;
+                  const child = el.children[i] as HTMLElement;
+                  if (child) {
+                    el.scrollTo({ left: child.offsetLeft - el.offsetLeft, behavior: 'smooth' });
+                  }
+                }}
+                className={`rounded-full transition-all ${
+                  i === activeIndex
+                    ? `w-5 h-2 ${isNeoBrutalism ? 'bg-black' : 'bg-green-500'}`
+                    : `w-2 h-2 ${isNeoBrutalism ? 'bg-black/25' : 'bg-gray-300'}`
+                }`}
+              />
+            ))}
+          </div>
+        )}
 
         {districtSlug && (
           <div className={`mt-4 pt-4 text-center ${
