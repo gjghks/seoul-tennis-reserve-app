@@ -92,6 +92,7 @@ export default function MyPage() {
         {user && <p className={themeClass('text-black/70 font-medium', 'text-gray-500')}>{user.email}</p>}
       </div>
 
+      <div className="max-w-2xl">
       {isHydrated && recentCourts.length > 0 && (
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
@@ -136,6 +137,7 @@ export default function MyPage() {
           </div>
         </div>
       )}
+      </div>
 
       {isHydrated && recentCourts.length === 0 && !user && (
         <div className={isNeoBrutalism
