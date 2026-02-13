@@ -153,7 +153,7 @@ export default function WeatherBadge({ nx, ny, isOutdoor = false, compact = fals
             `inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold ${airGradeColor.bg} ${airGradeColor.text} rounded-full border border-current/20`
           )}
         >
-          {airGradeColor.icon} 미세먼지 {airData!.grade}
+          {airGradeColor.icon} 미세먼지 {airData!.grade}{airData!.pm25 !== null ? ` · PM2.5 ${airData!.pm25}` : ''}
         </span>
       )}
     </div>

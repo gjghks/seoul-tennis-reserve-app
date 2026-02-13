@@ -257,7 +257,7 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
           </div>
         )}
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-3">
           {infoItems.map((item) => (
             <div key={item.label} className={isNeoBrutalism
               ? 'bg-white border-2 border-black rounded-[5px] p-4 text-center shadow-[3px_3px_0px_0px_#000]'
@@ -273,7 +273,23 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
               <p className={themeClass('font-black text-black text-sm truncate', 'font-semibold text-gray-800 text-sm truncate')}>{item.value}</p>
             </div>
           ))}
-          {weatherGrid ? (
+          <div className={isNeoBrutalism
+            ? 'bg-white border-2 border-black rounded-[5px] p-4 text-center shadow-[3px_3px_0px_0px_#000]'
+            : 'bg-white rounded-xl p-4 border border-gray-100 text-center'
+          }>
+            <div className={isNeoBrutalism
+              ? 'w-10 h-10 bg-[#facc15] border-2 border-black rounded-[5px] flex items-center justify-center mx-auto mb-2 text-lg'
+              : 'w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-2'
+            }>
+              👥
+            </div>
+            <p className={themeClass('text-xs text-black/60 mb-1 font-bold uppercase', 'text-xs text-gray-400 mb-1')}>이용대상</p>
+            <p className={themeClass('font-black text-black text-sm truncate', 'font-semibold text-gray-800 text-sm truncate')}>{court.USETGTINFO || '누구나'}</p>
+          </div>
+        </div>
+
+        {weatherGrid && (
+          <div className="mb-6">
             <WeatherInfoCard
               nx={weatherGrid.nx}
               ny={weatherGrid.ny}
@@ -281,22 +297,8 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
               isNeoBrutalism={isNeoBrutalism}
               district={court.AREANM}
             />
-          ) : (
-            <div className={isNeoBrutalism
-              ? 'bg-white border-2 border-black rounded-[5px] p-4 text-center shadow-[3px_3px_0px_0px_#000]'
-              : 'bg-white rounded-xl p-4 border border-gray-100 text-center'
-            }>
-              <div className={isNeoBrutalism
-                ? 'w-10 h-10 bg-[#facc15] border-2 border-black rounded-[5px] flex items-center justify-center mx-auto mb-2 text-lg'
-                : 'w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-2'
-              }>
-                👥
-              </div>
-              <p className={themeClass('text-xs text-black/60 mb-1 font-bold uppercase', 'text-xs text-gray-400 mb-1')}>이용대상</p>
-              <p className={themeClass('font-black text-black text-sm truncate', 'font-semibold text-gray-800 text-sm truncate')}>{court.USETGTINFO || '누구나'}</p>
-            </div>
-          )}
-        </div>
+          </div>
+        )}
 
         {(court.RCPTBGNDT || court.RCPTENDDT) && (
           <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-5 mb-6 border border-green-100">

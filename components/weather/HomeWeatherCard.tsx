@@ -142,11 +142,11 @@ export default function HomeWeatherCard({ nx, ny }: HomeWeatherCardProps) {
         </div>
         {airData && airData.grade !== '정보없음' && airGradeColor && (
           <div className={themeClass(
-            'shrink-0 flex items-center gap-1 px-2 py-1 rounded-[5px] border border-white/30 bg-black/20',
-            'shrink-0 flex items-center gap-1 px-2 py-1 rounded-md bg-white/15 border border-white/20'
+            'shrink-0 flex items-center gap-1.5 px-2 py-1 rounded-[5px] border border-white/30 bg-black/20',
+            'shrink-0 flex items-center gap-1.5 px-2 py-1 rounded-md bg-white/15 border border-white/20'
           )}>
             <span className="text-sm leading-none">{airGradeColor.icon}</span>
-            <div className="text-center">
+            <div>
               <span className="text-[10px] text-white/60 block leading-tight">미세먼지</span>
               <span className={themeClass(
                 'text-xs font-black text-white',
@@ -154,6 +154,11 @@ export default function HomeWeatherCard({ nx, ny }: HomeWeatherCardProps) {
               )}>
                 {airData.grade}
               </span>
+              {airData.pm25 !== null && (
+                <span className="text-[10px] text-white/50 ml-1">
+                  PM2.5 {airData.pm25}
+                </span>
+              )}
             </div>
           </div>
         )}
