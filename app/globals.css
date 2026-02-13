@@ -258,13 +258,20 @@ html, body {
   scroll-behavior: smooth;
 }
 
+/* PullToRefresh: override library's fixed height/overflow to use document scroll */
+.ptr,
+.ptr .ptr__children {
+  height: auto !important;
+  overflow: visible !important;
+}
+
 /* Mobile touch optimization */
 @media (max-width: 767px) {
   * {
     -webkit-tap-highlight-color: transparent;
   }
   
-  .ptr, [class*="overflow-y-auto"], [class*="overflow-auto"] {
+  [class*="overflow-y-auto"], [class*="overflow-auto"] {
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
   }

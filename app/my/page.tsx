@@ -9,6 +9,7 @@ import { supabase } from '@/lib/supabase';
 import { KOREAN_TO_SLUG } from '@/lib/constants/districts';
 import { useThemeClass } from '@/lib/cn';
 import { useRecentCourts } from '@/lib/hooks/useRecentCourts';
+import AlertSettingsSection from '@/components/alert/AlertSettingsSection';
 
 interface Favorite {
   id: string;
@@ -170,6 +171,8 @@ export default function MyPage() {
 
       {user && (
         <div className="max-w-2xl">
+        <AlertSettingsSection />
+
         <h2 className={`text-lg mb-4 flex items-center gap-2 ${themeClass('font-black text-black uppercase', 'font-semibold text-gray-900')} `}>
           {isNeoBrutalism ? '❤️' : (
             <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">

@@ -4,6 +4,7 @@ import useSWR from 'swr';
 import { useThemeClass } from '@/lib/cn';
 import type { AirQualityData } from '@/lib/airQualityApi';
 import { resolveAirQualityGradeColor, isAirQualityBad, resolvePmColor, resolvePmColorNeo, resolvePmColorLight, getOverallDustAlert, getDustAlertColor } from '@/lib/airQualityApi';
+import type { SeoulDustAlertStatus } from '@/lib/airkoreaApi';
 
 interface WeatherBadgeProps {
   nx: number;
@@ -32,6 +33,12 @@ const weatherFetcher = async (url: string): Promise<WeatherResponse> => {
 const airFetcher = async (url: string): Promise<AirQualityData> => {
   const response = await fetch(url);
   if (!response.ok) throw new Error('Failed to fetch air quality');
+  return response.json();
+};
+
+const dustAlertFetcher = async (url: string): Promise<SeoulDustAlertStatus> => {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error('Failed to fetch dust alert');
   return response.json();
 };
 
@@ -74,6 +81,18 @@ export default function WeatherBadge({ nx, ny, isOutdoor = false, compact = fals
     keepPreviousData: true,
   });
 
+  const { data: officialAlert } = useSWR<SeoulDustAlertStatus>(
+    '/api/dust-alert',
+    dustAlertFetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: true,
+      refreshInterval: 30 * 60 * 1000,
+      dedupingInterval: 30 * 60 * 1000,
+      keepPreviousData: true,
+    }
+  );
+
   if (isLoading) {
     if (compact) return null;
     return (
@@ -97,6 +116,8 @@ export default function WeatherBadge({ nx, ny, isOutdoor = false, compact = fals
   const airGradeColor = airData?.grade ? resolveAirQualityGradeColor(airData.grade) : null;
   const dustAlert = airData ? getOverallDustAlert(airData.pm25, airData.pm10) : { level: null, type: null, value: null };
   const dustAlertColor = dustAlert.level ? getDustAlertColor(dustAlert.level) : null;
+  const isOfficialAlert = officialAlert?.hasAlert === true;
+  const alertSuffix = isOfficialAlert ? ' 발령 중' : '급';
 
   if (compact) {
     const hasAirData = airData && airData.grade !== '정보없음' && airGradeColor;
@@ -146,7 +167,7 @@ export default function WeatherBadge({ nx, ny, isOutdoor = false, compact = fals
             )}
             {dustAlert.level && (
               <span className={themeClass('font-black', 'font-bold')}>
-                {dustAlert.level}급
+                {dustAlert.level}{alertSuffix}
               </span>
             )}
           </>
@@ -192,7 +213,7 @@ export default function WeatherBadge({ nx, ny, isOutdoor = false, compact = fals
             `inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold ${dustAlertColor.bg} ${dustAlertColor.text} rounded-full border ${dustAlertColor.border}`
           )}
         >
-          {dustAlertColor.icon} {dustAlert.type === 'pm25' ? '초미세먼지' : '미세먼지'} {dustAlert.level}급
+          {dustAlertColor.icon} {dustAlert.type === 'pm25' ? '초미세먼지' : '미세먼지'} {dustAlert.level}{alertSuffix}
         </span>
       )}
 

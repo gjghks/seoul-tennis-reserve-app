@@ -130,3 +130,72 @@ create policy "Anyone can read snapshots" on public.reservation_snapshots
 
 create policy "Service role can insert snapshots" on public.reservation_snapshots
   for insert with check (true);
+
+-- Push notification subscriptions
+create table public.push_subscriptions (
+  id uuid default gen_random_uuid() primary key,
+  user_id uuid references auth.users not null,
+  endpoint text not null unique,
+  keys_p256dh text not null,
+  keys_auth text not null,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  updated_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+create index push_subscriptions_user_id_idx on public.push_subscriptions(user_id);
+
+alter table public.push_subscriptions enable row level security;
+
+create policy "Users can view their own subscriptions" on public.push_subscriptions
+  for select using (auth.uid() = user_id);
+
+create policy "Users can insert their own subscriptions" on public.push_subscriptions
+  for insert with check (auth.uid() = user_id);
+
+create policy "Users can update their own subscriptions" on public.push_subscriptions
+  for update using (auth.uid() = user_id);
+
+create policy "Users can delete their own subscriptions" on public.push_subscriptions
+  for delete using (auth.uid() = user_id);
+
+-- Alert settings for court/district notifications
+create table public.alert_settings (
+  id uuid default gen_random_uuid() primary key,
+  user_id uuid references auth.users not null,
+  alert_type text not null check (alert_type in ('favorite_available', 'district_available')),
+  target_id text not null,
+  target_name text not null,
+  enabled boolean default true,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+create unique index alert_settings_unique on public.alert_settings(user_id, alert_type, target_id);
+create index alert_settings_enabled_idx on public.alert_settings(enabled) where enabled = true;
+
+alter table public.alert_settings enable row level security;
+
+create policy "Users can view their own alerts" on public.alert_settings
+  for select using (auth.uid() = user_id);
+
+create policy "Users can insert their own alerts" on public.alert_settings
+  for insert with check (auth.uid() = user_id);
+
+create policy "Users can update their own alerts" on public.alert_settings
+  for update using (auth.uid() = user_id);
+
+create policy "Users can delete their own alerts" on public.alert_settings
+  for delete using (auth.uid() = user_id);
+
+-- Court status cache for change detection (service role only)
+create table public.court_status_cache (
+  svc_id text primary key,
+  status text not null,
+  svc_name text not null,
+  district text not null,
+  updated_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+alter table public.court_status_cache enable row level security;
+
+create policy "Service role manages court status cache" on public.court_status_cache
+  for all using (true);

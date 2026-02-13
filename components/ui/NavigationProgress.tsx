@@ -53,8 +53,15 @@ export default function NavigationProgress() {
     if (pathname !== prevPathname.current) {
       prevPathname.current = pathname;
       complete();
+      window.scrollTo(0, 0);
     }
   }, [pathname, complete]);
+
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+  }, []);
 
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {

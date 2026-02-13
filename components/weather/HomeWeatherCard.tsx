@@ -4,6 +4,7 @@ import useSWR from 'swr';
 import { useThemeClass } from '@/lib/cn';
 import type { AirQualityData } from '@/lib/airQualityApi';
 import { resolveAirQualityGradeColor, isAirQualityBad, resolvePmColorLight, getOverallDustAlert } from '@/lib/airQualityApi';
+import type { SeoulDustAlertStatus } from '@/lib/airkoreaApi';
 
 interface HomeWeatherCardProps {
   nx: number;
@@ -30,6 +31,12 @@ const airFetcher = async (url: string): Promise<AirQualityData> => {
   return response.json();
 };
 
+const dustAlertFetcher = async (url: string): Promise<SeoulDustAlertStatus> => {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error('Failed to fetch dust alert');
+  return response.json();
+};
+
 function resolveIcon(sky: string | null, rainfall: number | null): string {
   if (sky === '눈' || sky === '비/눈') return '❄️';
   if (sky === '비' || sky === '소나기' || (rainfall ?? 0) > 0) return '🌧️';
@@ -42,13 +49,15 @@ function resolveTennisMessage(
   rainfall: number | null,
   temperature: number,
   airGrade?: string,
-  dustAlertLevel?: string | null
+  dustAlertLevel?: string | null,
+  isOfficialAlert?: boolean
 ): string {
   const isRainOrSnow = sky === '비' || sky === '소나기' || sky === '눈' || sky === '비/눈' || (rainfall ?? 0) > 0;
+  const suffix = isOfficialAlert ? ' 발령 중!' : '급!';
 
   if (isRainOrSnow) return '우천 시 실내 코트를 확인해보세요';
-  if (dustAlertLevel === '경보') return '미세먼지 경보급! 야외 활동을 자제하세요';
-  if (dustAlertLevel === '주의보') return '미세먼지 주의보급! 실내 코트를 추천합니다';
+  if (dustAlertLevel === '경보') return `미세먼지 경보${suffix} 야외 활동을 자제하세요`;
+  if (dustAlertLevel === '주의보') return `미세먼지 주의보${suffix} 실내 코트를 추천합니다`;
   if (airGrade && isAirQualityBad(airGrade)) return '미세먼지 주의! 실내 코트를 추천합니다';
   if (temperature < 0) return '체감 온도가 낮아요. 방한 준비를 하세요';
   if (temperature > 33) return '무더위 주의! 충분한 수분을 섭취하세요';
@@ -83,6 +92,18 @@ export default function HomeWeatherCard({ nx, ny }: HomeWeatherCardProps) {
     }
   );
 
+  const { data: officialAlert } = useSWR<SeoulDustAlertStatus>(
+    '/api/dust-alert',
+    dustAlertFetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: true,
+      refreshInterval: 30 * 60 * 1000,
+      dedupingInterval: 30 * 60 * 1000,
+      keepPreviousData: true,
+    }
+  );
+
   if (isLoading && !data) {
     return (
       <div className="mt-3">
@@ -99,7 +120,8 @@ export default function HomeWeatherCard({ nx, ny }: HomeWeatherCardProps) {
   const icon = resolveIcon(data.sky, data.rainfall);
   const temp = Math.round(data.temperature);
   const dustAlert = airData ? getOverallDustAlert(airData.pm25, airData.pm10) : { level: null, type: null, value: null };
-  const message = resolveTennisMessage(data.sky, data.rainfall, data.temperature, airData?.grade, dustAlert.level);
+  const isOfficialAlert = officialAlert?.hasAlert === true;
+  const message = resolveTennisMessage(data.sky, data.rainfall, data.temperature, airData?.grade, dustAlert.level, isOfficialAlert);
   const isRainOrSnow = data.sky === '비' || data.sky === '소나기' || data.sky === '눈' || data.sky === '비/눈' || (data.rainfall ?? 0) > 0;
 
   const details: string[] = [];
@@ -181,7 +203,7 @@ export default function HomeWeatherCard({ nx, ny }: HomeWeatherCardProps) {
                 )}
                 {dustAlert.level && (
                   <span className={`text-[10px] ml-1 font-bold ${dustAlert.level === '경보' ? 'text-red-300' : 'text-orange-300'}`}>
-                    {dustAlert.level}급
+                    {dustAlert.level}{isOfficialAlert ? ' 발령 중' : '급'}
                   </span>
                 )}
               </div>

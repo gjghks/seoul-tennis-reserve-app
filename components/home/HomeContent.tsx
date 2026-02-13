@@ -12,6 +12,7 @@ import { useThemeClass } from '@/lib/cn';
 import { convertToWeatherGrid } from '@/lib/utils/weatherGrid';
 import HomeWeatherCard from '@/components/weather/HomeWeatherCard';
 import CourtSearch from '@/components/home/CourtSearch';
+import DustAlertBanner from '@/components/weather/DustAlertBanner';
 
 const SEOUL_WEATHER_GRID = convertToWeatherGrid(126.978, 37.5665);
 
@@ -74,8 +75,9 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
         </div>
       }
       refreshingContent={RefreshIndicator}
-      className={`h-[var(--main-height)] overflow-y-auto scrollbar-hide flex flex-col ${themeClass('bg-nb-bg', '')}`}
+      className={`min-h-[var(--main-height)] flex flex-col ${themeClass('bg-nb-bg', '')}`}
     >
+      <DustAlertBanner />
       <section className={themeClass('court-pattern-nb text-white py-4 lg:py-3', 'court-pattern text-white py-4 lg:py-3')}>
         <div className="container relative z-10">
           <div className="flex flex-row items-center justify-between gap-2 sm:gap-4">

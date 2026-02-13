@@ -4,6 +4,7 @@ import useSWR from 'swr';
 import { useThemeClass } from '@/lib/cn';
 import type { AirQualityData } from '@/lib/airQualityApi';
 import { resolveAirQualityGradeColor, isAirQualityBad, resolvePmColor, resolvePmColorNeo, getOverallDustAlert, getDustAlertColor } from '@/lib/airQualityApi';
+import type { SeoulDustAlertStatus } from '@/lib/airkoreaApi';
 
 interface WeatherInfoCardProps {
   nx: number;
@@ -33,6 +34,12 @@ const airFetcher = async (url: string): Promise<AirQualityData> => {
   return response.json();
 };
 
+const dustAlertFetcher = async (url: string): Promise<SeoulDustAlertStatus> => {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error('Failed to fetch dust alert');
+  return response.json();
+};
+
 function resolveIcon(sky: string | null, rainfall: number | null): string {
   if (sky === '눈' || sky === '비/눈') return '❄️';
   if (sky === '비' || sky === '소나기' || (rainfall ?? 0) > 0) return '🌧️';
@@ -44,12 +51,15 @@ function resolveWarning(
   sky: string | null,
   rainfall: number | null,
   airGrade?: string,
-  dustAlertLevel?: string | null
+  dustAlertLevel?: string | null,
+  isOfficialAlert?: boolean
 ): string | null {
+  const suffix = isOfficialAlert ? ' 발령 중!' : '급!';
+
   if (sky === '눈' || sky === '비/눈') return '실외 코트 강설 주의';
   if (sky === '비' || sky === '소나기' || (rainfall ?? 0) > 0) return '실외 코트 우천 주의';
-  if (dustAlertLevel === '경보') return '미세먼지 경보급! 야외 활동을 자제하세요';
-  if (dustAlertLevel === '주의보') return '미세먼지 주의보급! 실내 코트를 추천합니다';
+  if (dustAlertLevel === '경보') return `미세먼지 경보${suffix} 야외 활동을 자제하세요`;
+  if (dustAlertLevel === '주의보') return `미세먼지 주의보${suffix} 실내 코트를 추천합니다`;
   if (airGrade && isAirQualityBad(airGrade)) return '미세먼지 주의! 실내 코트를 추천합니다';
   return null;
 }
@@ -74,6 +84,18 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
     keepPreviousData: true,
   });
 
+  const { data: officialAlert } = useSWR<SeoulDustAlertStatus>(
+    '/api/dust-alert',
+    dustAlertFetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: true,
+      refreshInterval: 30 * 60 * 1000,
+      dedupingInterval: 30 * 60 * 1000,
+      keepPreviousData: true,
+    }
+  );
+
   if (isLoading && !data) {
     return (
       <div className={isNeoBrutalism
@@ -88,7 +110,8 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
 
   const icon = resolveIcon(data.sky, data.rainfall);
   const dustAlert = airData ? getOverallDustAlert(airData.pm25, airData.pm10) : { level: null, type: null, value: null };
-  const warning = isOutdoor ? resolveWarning(data.sky, data.rainfall, airData?.grade, dustAlert.level) : null;
+  const isOfficialAlert = officialAlert?.hasAlert === true;
+  const warning = isOutdoor ? resolveWarning(data.sky, data.rainfall, airData?.grade, dustAlert.level, isOfficialAlert) : null;
   const airGradeColor = airData?.grade ? resolveAirQualityGradeColor(airData.grade) : null;
   const dustAlertColor = dustAlert.level ? getDustAlertColor(dustAlert.level) : null;
   const showAirQuality = airData && airData.grade !== '정보없음' && airGradeColor;
@@ -159,7 +182,7 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
                   `mt-1.5 inline-flex items-center gap-1 px-1.5 py-0.5 text-[11px] font-semibold rounded border ${dustAlertColor.border} ${dustAlertColor.bg} ${dustAlertColor.text}`
                 )}>
                   <span className="text-xs leading-none">{dustAlertColor.icon}</span>
-                  <span>{dustAlert.type === 'pm25' ? '초미세먼지' : '미세먼지'} {dustAlert.level}급</span>
+                  <span>{dustAlert.type === 'pm25' ? '초미세먼지' : '미세먼지'} {dustAlert.level}{isOfficialAlert ? ' 발령 중' : '급'}</span>
                 </div>
               )}
             </div>

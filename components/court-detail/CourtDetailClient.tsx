@@ -22,6 +22,7 @@ import WeatherInfoCard from '@/components/weather/WeatherInfoCard';
 import { useRecentCourts } from '@/lib/hooks/useRecentCourts';
 import SimilarCourts from '@/components/court-detail/SimilarCourts';
 import { renderPhoneLinks } from '@/lib/utils/phoneLink';
+import CourtAlertButton from '@/components/alert/CourtAlertButton';
 
 const KakaoShareButton = dynamic(() => import('@/components/ui/KakaoShareButton'), {
   ssr: false,
@@ -157,6 +158,10 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
                 description={`${court.AREANM} ${court.PLACENM} - ${court.SVCSTATNM}`}
                 imageUrl={court.IMGURL}
               />
+              <CourtAlertButton
+                svcId={court.SVCID}
+                svcName={court.SVCNM}
+              />
               <FavoriteButton
                 svcId={court.SVCID}
                 svcName={court.SVCNM}
@@ -274,7 +279,7 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
               <p className={themeClass('font-black text-black text-sm truncate', 'font-semibold text-gray-800 text-sm truncate')}>{item.value}</p>
             </div>
           ))}
-          <div className={isNeoBrutalism
+           <div className={isNeoBrutalism
             ? 'bg-white border-2 border-black rounded-[5px] p-4 text-center shadow-[3px_3px_0px_0px_#000]'
             : 'bg-white rounded-xl p-4 border border-gray-100 text-center'
           }>
@@ -282,10 +287,12 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
               ? 'w-10 h-10 bg-[#facc15] border-2 border-black rounded-[5px] flex items-center justify-center mx-auto mb-2 text-lg'
               : 'w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-2'
             }>
-              👥
+              📅
             </div>
-            <p className={themeClass('text-xs text-black/60 mb-1 font-bold uppercase', 'text-xs text-gray-400 mb-1')}>이용대상</p>
-            <p className={themeClass('font-black text-black text-sm truncate', 'font-semibold text-gray-800 text-sm truncate')}>{court.USETGTINFO || '누구나'}</p>
+            <p className={themeClass('text-xs text-black/60 mb-1 font-bold uppercase', 'text-xs text-gray-400 mb-1')}>예약기준</p>
+            <p className={themeClass('font-black text-black text-sm truncate', 'font-semibold text-gray-800 text-sm truncate')}>
+              {court.REVSTDDAY === '0' ? '이용 당일' : `이용 ${court.REVSTDDAY || '1'}일 전`}
+            </p>
           </div>
         </div>
 
