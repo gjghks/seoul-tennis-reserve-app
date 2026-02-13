@@ -47,7 +47,7 @@ export default function FavoriteButton({
         .select('id')
         .eq('user_id', user.id)
         .eq('svc_id', svcId)
-        .single();
+        .maybeSingle();
 
       setIsFavorite(!!data);
     };

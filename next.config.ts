@@ -39,7 +39,7 @@ const nextConfig: NextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              `script-src 'self' 'unsafe-inline' 'unsafe-eval' https://pagead2.googlesyndication.com https://www.googletagmanager.com https://adservice.google.com https://tpc.googlesyndication.com https://*.adtrafficquality.google https://*.kakao.com https://*.daumcdn.net${process.env.NODE_ENV === 'development' ? ' http://*.kakao.com http://*.daumcdn.net' : ''}`,
+              `script-src 'self' 'unsafe-inline' 'unsafe-eval' https://pagead2.googlesyndication.com https://www.googletagmanager.com https://adservice.google.com https://tpc.googlesyndication.com https://*.adtrafficquality.google https://*.kakao.com https://*.kakaocdn.net https://*.daumcdn.net${process.env.NODE_ENV === 'development' ? ' http://*.kakao.com http://*.daumcdn.net' : ''}`,
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.daumcdn.net",
               `img-src 'self' data: blob: https:${process.env.NODE_ENV === 'development' ? ' http://*.daumcdn.net http://*.kakao.com' : ''}`,
               "font-src 'self' https://fonts.gstatic.com",
