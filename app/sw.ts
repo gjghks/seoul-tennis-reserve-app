@@ -28,7 +28,7 @@ const imageCache = {
 };
 
 const serwist = new Serwist({
-  precacheEntries: [],
+  precacheEntries: self.__SW_MANIFEST,
   precacheOptions: {
     cleanupOutdatedCaches: true,
   },
