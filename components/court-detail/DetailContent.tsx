@@ -3,6 +3,7 @@
 import { useMemo } from 'react';
 import { ContentItem, FeeInfo, InfoCard } from './types';
 import { getSanitizedHtml, isHtmlRenderingReliable, parseContent } from '@/lib/utils/contentParser';
+import { renderSinglePhoneLink } from '@/lib/utils/phoneLink';
 
 const sectionStyles: Record<string, { emoji: string; color: string }> = {
   '개강': { emoji: '📅', color: 'teal' },
@@ -81,7 +82,7 @@ const highlight = (text: string): React.ReactNode => {
       return <span key={key} className="font-medium text-blue-600">{part}</span>;
     }
     if (/0\d{1,2}[-)]\d{3,4}[-)]\d{4}/.test(part)) {
-      return <code key={key} className="px-1.5 py-0.5 bg-pink-100 text-pink-700 rounded font-mono text-xs">{part}</code>;
+      return renderSinglePhoneLink(part, key);
     }
     if (/\d+%/.test(part)) {
       return <span key={key} className="font-semibold text-orange-600">{part}</span>;

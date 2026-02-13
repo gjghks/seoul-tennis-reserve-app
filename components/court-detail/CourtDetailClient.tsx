@@ -21,6 +21,7 @@ import { convertToWeatherGrid } from '@/lib/utils/weatherGrid';
 import WeatherInfoCard from '@/components/weather/WeatherInfoCard';
 import { useRecentCourts } from '@/lib/hooks/useRecentCourts';
 import SimilarCourts from '@/components/court-detail/SimilarCourts';
+import { renderPhoneLinks } from '@/lib/utils/phoneLink';
 
 const KakaoShareButton = dynamic(() => import('@/components/ui/KakaoShareButton'), {
   ssr: false,
@@ -349,9 +350,9 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
             {court.TELNO && (
               <div className="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors">
                 <span className="text-gray-500 text-sm">연락처</span>
-                <a href={`tel:${court.TELNO}`} className="text-green-600 font-medium text-sm hover:underline">
-                  {court.TELNO}
-                </a>
+                <span className="text-sm text-right">
+                  {renderPhoneLinks(court.TELNO)}
+                </span>
               </div>
             )}
             {(court.SVCOPNBGNDT || court.SVCOPNENDDT) && (
