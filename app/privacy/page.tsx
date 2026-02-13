@@ -73,6 +73,8 @@ export default function PrivacyPage() {
               <li><strong>Google Analytics</strong>: 서비스 이용 통계 분석</li>
               <li><strong>Google AdSense</strong>: 광고 제공 (쿠키 기반)</li>
               <li><strong>Vercel</strong>: 웹 서비스 호스팅</li>
+              <li><strong>서울 열린데이터 광장</strong>: 공공서비스예약 현황 및 자치구별 실시간 대기환경(미세먼지) 정보 제공 (개인정보 미포함)</li>
+              <li><strong>기상청</strong>: 단기예보 API를 통한 실시간 날씨 정보 제공 (개인정보 미포함)</li>
             </ul>
           </section>
 
@@ -141,7 +143,7 @@ export default function PrivacyPage() {
               9. 개인정보처리방침의 변경
             </h2>
             <p>
-              이 개인정보처리방침은 2025년 2월 7일부터 적용됩니다.
+              이 개인정보처리방침은 2025년 2월 14일부터 적용됩니다.
             </p>
           </section>
         </div>

@@ -23,7 +23,7 @@ export default function AboutPage() {
             </h2>
             <p className="leading-relaxed">
               서울 테니스는 서울시 25개 자치구의 공공 테니스장 예약 현황을 실시간으로 제공하는 서비스입니다.
-              서울시 공공서비스예약 시스템과 기상청 데이터를 기반으로, 예약 가능한 테니스장을 한눈에 확인하고
+              서울시 공공서비스예약 시스템, 기상청, 서울시 대기질 데이터를 기반으로, 예약 가능한 테니스장을 한눈에 확인하고
               바로 예약할 수 있습니다.
             </p>
           </section>
@@ -59,6 +59,18 @@ export default function AboutPage() {
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-600 font-bold shrink-0">✓</span>
+                <span><strong>실시간 미세먼지</strong> — 자치구별 대기질(PM2.5·PM10) 등급 및 수치를 색상으로 한눈에 확인, 나쁨 시 실내 코트 안내</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-600 font-bold shrink-0">✓</span>
+                <span><strong>비슷한 테니스장 추천</strong> — 현재 보고 있는 코트와 같은 장소·인근 지역의 대안 코트를 자동 추천</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-600 font-bold shrink-0">✓</span>
+                <span><strong>전화번호 바로 연결</strong> — 시설 연락처 및 상세 안내의 모든 전화번호를 탭 한 번으로 전화 연결</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-600 font-bold shrink-0">✓</span>
                 <span><strong>카카오 지도</strong> — 지역 내 테니스장 위치를 지도에서 한눈에 확인</span>
               </li>
               <li className="flex items-start gap-2">
@@ -77,6 +89,7 @@ export default function AboutPage() {
             </p>
             <ul className="list-disc list-inside space-y-1">
               <li>서울 열린데이터 광장 — 공공서비스예약 API (data.seoul.go.kr)</li>
+              <li>서울 열린데이터 광장 — 자치구별 실시간 대기환경 API (대기질·미세먼지)</li>
               <li>기상청 단기예보 API — 실시간 기온·강수 정보</li>
             </ul>
           </section>

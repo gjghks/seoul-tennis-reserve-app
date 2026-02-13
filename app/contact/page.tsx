@@ -106,6 +106,19 @@ export default function ContactPage() {
                   </p>
                 </div>
               </li>
+              <li className="flex items-start gap-3">
+                <span className={`w-8 h-8 flex items-center justify-center rounded-full shrink-0 ${themeClass('bg-amber-300 border-2 border-black', 'bg-amber-100')}`}>
+                  🌤️
+                </span>
+                <div>
+                  <strong className={themeClass('text-black', 'text-gray-900')}>
+                    날씨·미세먼지 정보 문의
+                  </strong>
+                  <p className="text-sm mt-1">
+                    날씨나 미세먼지 정보가 실제와 다르거나 궁금한 점이 있으면 알려주세요.
+                  </p>
+                </div>
+              </li>
             </ul>
           </section>
 

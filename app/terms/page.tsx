@@ -45,6 +45,8 @@ export default function TermsPage() {
               <li>이용자 후기 및 평점 등록·조회</li>
               <li>테니스장 인기 랭킹 정보 제공</li>
               <li>테니스장 위치 기반 날씨 정보 제공</li>
+              <li>자치구별 실시간 대기질(미세먼지) 정보 제공</li>
+              <li>비슷한 테니스장 추천 기능</li>
               <li>익명 의견 보내기(피드백) 기능</li>
               <li>기타 서비스가 정하는 서비스</li>
             </ul>
@@ -120,7 +122,7 @@ export default function TermsPage() {
             <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
               부칙
             </h2>
-            <p>이 약관은 2025년 2월 7일부터 시행합니다.</p>
+            <p>이 약관은 2025년 2월 14일부터 시행합니다.</p>
           </section>
         </div>
       </div>
