@@ -7,6 +7,29 @@ const withSerwist = withSerwistInit({
   disable: process.env.NODE_ENV === "development",
 });
 
+const OLD_DISTRICT_SLUGS = [
+  'gangnam', 'gangdong', 'gangbuk', 'gangseo', 'gwanak', 'gwangjin',
+  'guro', 'geumcheon', 'nowon', 'dobong', 'dongdaemun', 'dongjak',
+  'mapo', 'seodaemun', 'seocho', 'seongdong', 'seongbuk', 'songpa',
+  'yangcheon', 'yeongdeungpo', 'yongsan', 'eunpyeong', 'jongno',
+  'jung', 'jungnang',
+];
+
+function buildDistrictRedirects() {
+  return OLD_DISTRICT_SLUGS.flatMap((slug) => [
+    {
+      source: `/${slug}`,
+      destination: `/${slug}-gu`,
+      permanent: true as const,
+    },
+    {
+      source: `/${slug}/:path*`,
+      destination: `/${slug}-gu/:path*`,
+      permanent: true as const,
+    },
+  ]);
+}
+
 const nextConfig: NextConfig = {
   turbopack: {},
   async redirects() {
@@ -16,6 +39,7 @@ const nextConfig: NextConfig = {
         destination: '/my',
         permanent: true,
       },
+      ...buildDistrictRedirects(),
     ];
   },
   async headers() {
