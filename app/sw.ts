@@ -28,7 +28,10 @@ const imageCache = {
 };
 
 const serwist = new Serwist({
-  precacheEntries: self.__SW_MANIFEST,
+  precacheEntries: [],
+  precacheOptions: {
+    cleanupOutdatedCaches: true,
+  },
   skipWaiting: true,
   clientsClaim: true,
   navigationPreload: true,

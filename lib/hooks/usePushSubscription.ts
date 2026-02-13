@@ -22,7 +22,12 @@ function isPushSupported(): boolean {
   );
 }
 
-async function waitForServiceWorker(timeoutMs = 5000): Promise<ServiceWorkerRegistration> {
+async function waitForServiceWorker(timeoutMs = 10000): Promise<ServiceWorkerRegistration> {
+  const existing = await navigator.serviceWorker.getRegistration('/');
+  if (!existing) {
+    await navigator.serviceWorker.register('/sw.js', { scope: '/' });
+  }
+
   const registration = await Promise.race([
     navigator.serviceWorker.ready,
     new Promise<never>((_, reject) =>
