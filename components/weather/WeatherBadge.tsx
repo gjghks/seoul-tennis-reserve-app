@@ -3,7 +3,7 @@
 import useSWR from 'swr';
 import { useThemeClass } from '@/lib/cn';
 import type { AirQualityData } from '@/lib/airQualityApi';
-import { resolveAirQualityGradeColor, isAirQualityBad, resolvePmColor, resolvePmColorNeo } from '@/lib/airQualityApi';
+import { resolveAirQualityGradeColor, isAirQualityBad, resolvePmColor, resolvePmColorNeo, resolvePmColorLight } from '@/lib/airQualityApi';
 
 interface WeatherBadgeProps {
   nx: number;
@@ -97,19 +97,45 @@ export default function WeatherBadge({ nx, ny, isOutdoor = false, compact = fals
   const airGradeColor = airData?.grade ? resolveAirQualityGradeColor(airData.grade) : null;
 
   if (compact) {
+    const hasAirData = airData && airData.grade !== '정보없음' && airGradeColor;
+
+    let pillStyle: { bg: string; text: string; border: string };
+    let pillStyleNeo: { bg: string; text: string; border: string };
+
+    if (hasPrecipitation) {
+      pillStyle = { bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-200' };
+      pillStyleNeo = { bg: 'bg-[#88aaee]', text: 'text-black', border: 'border-black' };
+    } else if (airBad) {
+      const isVeryBad = airData?.grade === '매우나쁨';
+      pillStyle = isVeryBad
+        ? { bg: 'bg-red-50', text: 'text-red-700', border: 'border-red-200' }
+        : { bg: 'bg-orange-50', text: 'text-orange-700', border: 'border-orange-200' };
+      pillStyleNeo = isVeryBad
+        ? { bg: 'bg-[#fca5a5]', text: 'text-black', border: 'border-black' }
+        : { bg: 'bg-[#facc15]', text: 'text-black', border: 'border-black' };
+    } else {
+      pillStyle = { bg: 'bg-green-50', text: 'text-green-700', border: 'border-green-200' };
+      pillStyleNeo = { bg: 'bg-[#a3e635]', text: 'text-black', border: 'border-black' };
+    }
+
     return (
       <span className={themeClass(
-        'inline-flex items-center gap-1 text-xs font-bold text-black/70',
-        'inline-flex items-center gap-1 text-xs text-gray-500'
+        `inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[5px] border-2 ${pillStyleNeo.border} ${pillStyleNeo.bg} ${pillStyleNeo.text} text-xs font-black`,
+        `inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border ${pillStyle.border} ${pillStyle.bg} ${pillStyle.text} text-xs font-semibold`
       )}>
         <span className="text-sm leading-none">{weatherState.icon}</span>
-        {Math.round(data.temperature)}°C
-        {data.sky && <span className="text-[10px] opacity-70">{data.sky}</span>}
-        {airData && airData.grade !== '정보없음' && airGradeColor && (
+        <span>{Math.round(data.temperature)}°C</span>
+        {data.sky && <span className={themeClass('opacity-70', 'opacity-70')}>{data.sky}</span>}
+        {hasAirData && (
           <>
-            <span className="text-[10px] opacity-40">·</span>
-            <span className="text-sm leading-none">{airGradeColor.icon}</span>
-            <span className="text-[10px] opacity-70">{airData.grade}</span>
+            <span className={themeClass('opacity-40', 'opacity-30')}>·</span>
+            <span className="text-sm leading-none">{airGradeColor!.icon}</span>
+            <span>{airData!.grade}</span>
+            {airData!.pm25 !== null && (
+              <span className={themeClass(resolvePmColorNeo('pm25', airData!.pm25), resolvePmColorLight('pm25', airData!.pm25))}>
+                {airData!.pm25}
+              </span>
+            )}
           </>
         )}
       </span>

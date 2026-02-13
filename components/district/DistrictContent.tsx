@@ -122,7 +122,7 @@ export default function DistrictContent({
           : 'bg-white border-b border-gray-200'
       }`}>
         <div className="container py-3">
-          <div className="flex items-center justify-between">
+          <div className="grid grid-cols-[auto_1fr_auto] items-center gap-2">
             <Link href="/" className={`text-sm shrink-0 ${
               isNeoBrutalism 
                 ? 'text-black font-bold hover:underline underline-offset-4' 
@@ -130,32 +130,32 @@ export default function DistrictContent({
             }`}>
               ← 전체 지역
             </Link>
-            <div className="flex items-center gap-1.5">
-              <h1 className={`text-lg ${themeClass('font-black text-black uppercase', 'font-bold text-gray-900')}`}>
-                {districtName}
-              </h1>
-              {lastUpdated && (
-                <LastUpdated timestamp={lastUpdated} className="mt-0" />
-              )}
-            </div>
+            <h1 className={`text-center text-lg min-w-0 ${themeClass('font-black text-black uppercase', 'font-bold text-gray-900')}`}>
+              {districtName}
+            </h1>
             <div className="flex items-center gap-2 shrink-0">
               <button
                 type="button"
                 onClick={() => toggleView(viewMode === 'map' ? 'list' : 'map')}
                 className={themeClass(
-                  'p-2 rounded-[5px] border-2 border-black transition-all bg-white hover:bg-[#facc15]/30',
-                  'p-2 rounded-lg border border-gray-300 transition-colors bg-white hover:border-green-300'
+                  'inline-flex items-center gap-1.5 h-8 px-2.5 rounded-[5px] border-2 border-black transition-all bg-white text-xs font-black hover:bg-[#facc15]/30',
+                  'inline-flex items-center gap-1.5 h-8 px-2.5 rounded-lg border border-gray-300 transition-colors bg-white text-xs font-medium text-gray-700 hover:border-green-300 hover:text-green-700'
                 )}
-                aria-label={viewMode === 'map' ? '목록 보기' : '지도 보기'}
               >
                 {viewMode === 'map' ? (
-                  <svg className={`w-4.5 h-4.5 ${themeClass('text-black', 'text-gray-600')}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                  </svg>
+                  <>
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                    목록
+                  </>
                 ) : (
-                  <svg className={`w-4.5 h-4.5 ${themeClass('text-black', 'text-gray-600')}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-                  </svg>
+                  <>
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                    </svg>
+                    지도
+                  </>
                 )}
               </button>
               <button
@@ -176,9 +176,17 @@ export default function DistrictContent({
               </button>
             </div>
           </div>
-          {districtWeatherGrid && (
-            <div className="flex justify-center mt-1.5">
-              <WeatherBadge nx={districtWeatherGrid.nx} ny={districtWeatherGrid.ny} compact district={koreanDistrict} />
+          {(lastUpdated || districtWeatherGrid) && (
+            <div className="flex items-center justify-center gap-2 mt-1.5 flex-wrap">
+              {lastUpdated && (
+                <LastUpdated timestamp={lastUpdated} className="mt-0" />
+              )}
+              {lastUpdated && districtWeatherGrid && (
+                <span className={themeClass('text-black/30', 'text-gray-300')}>·</span>
+              )}
+              {districtWeatherGrid && (
+                <WeatherBadge nx={districtWeatherGrid.nx} ny={districtWeatherGrid.ny} compact district={koreanDistrict} />
+              )}
             </div>
           )}
         </div>
