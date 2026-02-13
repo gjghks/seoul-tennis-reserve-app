@@ -128,6 +128,70 @@ export function isAirQualityBad(grade: string): boolean {
   return grade === '나쁨' || grade === '매우나쁨';
 }
 
+// ── 미세먼지 경보 기준 (서울시 공식 기준) ──────────────────────
+// PM10 주의보: 150㎍/㎥ 이상 | 경보: 300㎍/㎥ 이상
+// PM2.5 주의보: 75㎍/㎥ 이상 | 경보: 150㎍/㎥ 이상
+// (실제 경보는 "2시간 이상 지속" 조건이 필요하나, 실시간 수치 기반으로 경보급 판별)
+
+export type DustAlertLevel = null | '주의보' | '경보';
+
+export function getDustAlertLevel(type: 'pm25' | 'pm10', value: number | null): DustAlertLevel {
+  if (value === null) return null;
+  if (type === 'pm25') {
+    if (value >= 150) return '경보';
+    if (value >= 75) return '주의보';
+    return null;
+  }
+  if (value >= 300) return '경보';
+  if (value >= 150) return '주의보';
+  return null;
+}
+
+export function getOverallDustAlert(pm25: number | null, pm10: number | null): {
+  level: DustAlertLevel;
+  type: 'pm25' | 'pm10' | null;
+  value: number | null;
+} {
+  const pm25Alert = getDustAlertLevel('pm25', pm25);
+  const pm10Alert = getDustAlertLevel('pm10', pm10);
+
+  const rank = (l: DustAlertLevel) => l === '경보' ? 2 : l === '주의보' ? 1 : 0;
+
+  if (rank(pm25Alert) >= rank(pm10Alert) && pm25Alert) {
+    return { level: pm25Alert, type: 'pm25', value: pm25 };
+  }
+  if (pm10Alert) {
+    return { level: pm10Alert, type: 'pm10', value: pm10 };
+  }
+  return { level: null, type: null, value: null };
+}
+
+export function getDustAlertColor(level: DustAlertLevel): {
+  bg: string; text: string; border: string;
+  bgNeo: string; textNeo: string; borderNeo: string;
+  icon: string;
+} {
+  if (level === '경보') {
+    return {
+      bg: 'bg-red-50', text: 'text-red-700', border: 'border-red-300',
+      bgNeo: 'bg-[#fca5a5]', textNeo: 'text-black', borderNeo: 'border-black',
+      icon: '🚨',
+    };
+  }
+  if (level === '주의보') {
+    return {
+      bg: 'bg-orange-50', text: 'text-orange-700', border: 'border-orange-300',
+      bgNeo: 'bg-[#facc15]', textNeo: 'text-black', borderNeo: 'border-black',
+      icon: '⚠️',
+    };
+  }
+  return {
+    bg: 'bg-gray-50', text: 'text-gray-500', border: 'border-gray-200',
+    bgNeo: 'bg-gray-200', textNeo: 'text-black/50', borderNeo: 'border-black',
+    icon: '',
+  };
+}
+
 async function fetchAllAirQuality(): Promise<Map<string, AirQualityData>> {
   if (isCacheFresh()) {
     return airQualityCache!.data;

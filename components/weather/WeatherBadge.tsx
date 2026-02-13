@@ -3,7 +3,7 @@
 import useSWR from 'swr';
 import { useThemeClass } from '@/lib/cn';
 import type { AirQualityData } from '@/lib/airQualityApi';
-import { resolveAirQualityGradeColor, isAirQualityBad, resolvePmColor, resolvePmColorNeo, resolvePmColorLight } from '@/lib/airQualityApi';
+import { resolveAirQualityGradeColor, isAirQualityBad, resolvePmColor, resolvePmColorNeo, resolvePmColorLight, getOverallDustAlert, getDustAlertColor } from '@/lib/airQualityApi';
 
 interface WeatherBadgeProps {
   nx: number;
@@ -95,6 +95,8 @@ export default function WeatherBadge({ nx, ny, isOutdoor = false, compact = fals
   const warningLabel = isOutdoor && hasPrecipitation ? weatherState.warning : null;
   const airBad = airData ? isAirQualityBad(airData.grade) : false;
   const airGradeColor = airData?.grade ? resolveAirQualityGradeColor(airData.grade) : null;
+  const dustAlert = airData ? getOverallDustAlert(airData.pm25, airData.pm10) : { level: null, type: null, value: null };
+  const dustAlertColor = dustAlert.level ? getDustAlertColor(dustAlert.level) : null;
 
   if (compact) {
     const hasAirData = airData && airData.grade !== '정보없음' && airGradeColor;
@@ -105,6 +107,12 @@ export default function WeatherBadge({ nx, ny, isOutdoor = false, compact = fals
     if (hasPrecipitation) {
       pillStyle = { bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-200' };
       pillStyleNeo = { bg: 'bg-[#88aaee]', text: 'text-black', border: 'border-black' };
+    } else if (dustAlert.level === '경보') {
+      pillStyle = { bg: 'bg-red-50', text: 'text-red-700', border: 'border-red-300' };
+      pillStyleNeo = { bg: 'bg-[#fca5a5]', text: 'text-black', border: 'border-black' };
+    } else if (dustAlert.level === '주의보') {
+      pillStyle = { bg: 'bg-orange-50', text: 'text-orange-700', border: 'border-orange-300' };
+      pillStyleNeo = { bg: 'bg-[#facc15]', text: 'text-black', border: 'border-black' };
     } else if (airBad) {
       const isVeryBad = airData?.grade === '매우나쁨';
       pillStyle = isVeryBad
@@ -134,6 +142,11 @@ export default function WeatherBadge({ nx, ny, isOutdoor = false, compact = fals
             {airData!.pm25 !== null && (
               <span className={themeClass(resolvePmColorNeo('pm25', airData!.pm25), resolvePmColorLight('pm25', airData!.pm25))}>
                 {airData!.pm25}
+              </span>
+            )}
+            {dustAlert.level && (
+              <span className={themeClass('font-black', 'font-bold')}>
+                {dustAlert.level}급
               </span>
             )}
           </>
@@ -172,7 +185,18 @@ export default function WeatherBadge({ nx, ny, isOutdoor = false, compact = fals
         </span>
       )}
 
-      {airBad && airGradeColor && (
+      {dustAlertColor && dustAlert.level && (
+        <span
+          className={themeClass(
+            `inline-flex items-center gap-1 px-2.5 py-1 text-xs font-black uppercase ${dustAlertColor.bgNeo} ${dustAlertColor.textNeo} border-2 ${dustAlertColor.borderNeo} rounded-[5px]`,
+            `inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold ${dustAlertColor.bg} ${dustAlertColor.text} rounded-full border ${dustAlertColor.border}`
+          )}
+        >
+          {dustAlertColor.icon} {dustAlert.type === 'pm25' ? '초미세먼지' : '미세먼지'} {dustAlert.level}급
+        </span>
+      )}
+
+      {airBad && !dustAlert.level && airGradeColor && (
         <span
           className={themeClass(
             `inline-flex items-center gap-1 px-2.5 py-1 text-xs font-black uppercase ${airGradeColor.bgNeo} ${airGradeColor.textNeo} border-2 border-black rounded-[5px]`,

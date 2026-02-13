@@ -3,7 +3,7 @@
 import useSWR from 'swr';
 import { useThemeClass } from '@/lib/cn';
 import type { AirQualityData } from '@/lib/airQualityApi';
-import { resolveAirQualityGradeColor, isAirQualityBad, resolvePmColorLight } from '@/lib/airQualityApi';
+import { resolveAirQualityGradeColor, isAirQualityBad, resolvePmColorLight, getOverallDustAlert } from '@/lib/airQualityApi';
 
 interface HomeWeatherCardProps {
   nx: number;
@@ -41,11 +41,14 @@ function resolveTennisMessage(
   sky: string | null,
   rainfall: number | null,
   temperature: number,
-  airGrade?: string
+  airGrade?: string,
+  dustAlertLevel?: string | null
 ): string {
   const isRainOrSnow = sky === '비' || sky === '소나기' || sky === '눈' || sky === '비/눈' || (rainfall ?? 0) > 0;
 
   if (isRainOrSnow) return '우천 시 실내 코트를 확인해보세요';
+  if (dustAlertLevel === '경보') return '미세먼지 경보급! 야외 활동을 자제하세요';
+  if (dustAlertLevel === '주의보') return '미세먼지 주의보급! 실내 코트를 추천합니다';
   if (airGrade && isAirQualityBad(airGrade)) return '미세먼지 주의! 실내 코트를 추천합니다';
   if (temperature < 0) return '체감 온도가 낮아요. 방한 준비를 하세요';
   if (temperature > 33) return '무더위 주의! 충분한 수분을 섭취하세요';
@@ -95,7 +98,8 @@ export default function HomeWeatherCard({ nx, ny }: HomeWeatherCardProps) {
 
   const icon = resolveIcon(data.sky, data.rainfall);
   const temp = Math.round(data.temperature);
-  const message = resolveTennisMessage(data.sky, data.rainfall, data.temperature, airData?.grade);
+  const dustAlert = airData ? getOverallDustAlert(airData.pm25, airData.pm10) : { level: null, type: null, value: null };
+  const message = resolveTennisMessage(data.sky, data.rainfall, data.temperature, airData?.grade, dustAlert.level);
   const isRainOrSnow = data.sky === '비' || data.sky === '소나기' || data.sky === '눈' || data.sky === '비/눈' || (data.rainfall ?? 0) > 0;
 
   const details: string[] = [];
@@ -173,6 +177,11 @@ export default function HomeWeatherCard({ nx, ny }: HomeWeatherCardProps) {
                 {airData.pm25 !== null && (
                   <span className={`text-[10px] ml-1 ${resolvePmColorLight('pm25', airData.pm25)}`}>
                     PM2.5 {airData.pm25}
+                  </span>
+                )}
+                {dustAlert.level && (
+                  <span className={`text-[10px] ml-1 font-bold ${dustAlert.level === '경보' ? 'text-red-300' : 'text-orange-300'}`}>
+                    {dustAlert.level}급
                   </span>
                 )}
               </div>

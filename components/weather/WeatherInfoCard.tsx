@@ -3,7 +3,7 @@
 import useSWR from 'swr';
 import { useThemeClass } from '@/lib/cn';
 import type { AirQualityData } from '@/lib/airQualityApi';
-import { resolveAirQualityGradeColor, isAirQualityBad, resolvePmColor, resolvePmColorNeo } from '@/lib/airQualityApi';
+import { resolveAirQualityGradeColor, isAirQualityBad, resolvePmColor, resolvePmColorNeo, getOverallDustAlert, getDustAlertColor } from '@/lib/airQualityApi';
 
 interface WeatherInfoCardProps {
   nx: number;
@@ -40,9 +40,16 @@ function resolveIcon(sky: string | null, rainfall: number | null): string {
   return '☁️';
 }
 
-function resolveWarning(sky: string | null, rainfall: number | null, airGrade?: string): string | null {
+function resolveWarning(
+  sky: string | null,
+  rainfall: number | null,
+  airGrade?: string,
+  dustAlertLevel?: string | null
+): string | null {
   if (sky === '눈' || sky === '비/눈') return '실외 코트 강설 주의';
   if (sky === '비' || sky === '소나기' || (rainfall ?? 0) > 0) return '실외 코트 우천 주의';
+  if (dustAlertLevel === '경보') return '미세먼지 경보급! 야외 활동을 자제하세요';
+  if (dustAlertLevel === '주의보') return '미세먼지 주의보급! 실내 코트를 추천합니다';
   if (airGrade && isAirQualityBad(airGrade)) return '미세먼지 주의! 실내 코트를 추천합니다';
   return null;
 }
@@ -80,8 +87,10 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
   if (!hasData) return null;
 
   const icon = resolveIcon(data.sky, data.rainfall);
-  const warning = isOutdoor ? resolveWarning(data.sky, data.rainfall, airData?.grade) : null;
+  const dustAlert = airData ? getOverallDustAlert(airData.pm25, airData.pm10) : { level: null, type: null, value: null };
+  const warning = isOutdoor ? resolveWarning(data.sky, data.rainfall, airData?.grade, dustAlert.level) : null;
   const airGradeColor = airData?.grade ? resolveAirQualityGradeColor(airData.grade) : null;
+  const dustAlertColor = dustAlert.level ? getDustAlertColor(dustAlert.level) : null;
   const showAirQuality = airData && airData.grade !== '정보없음' && airGradeColor;
 
   return (
@@ -144,6 +153,15 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
                   </span>
                 )}
               </div>
+              {dustAlertColor && dustAlert.level && (
+                <div className={themeClass(
+                  `mt-1.5 inline-flex items-center gap-1 px-1.5 py-0.5 text-[11px] font-black rounded-[3px] border-2 ${dustAlertColor.borderNeo} ${dustAlertColor.bgNeo} ${dustAlertColor.textNeo}`,
+                  `mt-1.5 inline-flex items-center gap-1 px-1.5 py-0.5 text-[11px] font-semibold rounded border ${dustAlertColor.border} ${dustAlertColor.bg} ${dustAlertColor.text}`
+                )}>
+                  <span className="text-xs leading-none">{dustAlertColor.icon}</span>
+                  <span>{dustAlert.type === 'pm25' ? '초미세먼지' : '미세먼지'} {dustAlert.level}급</span>
+                </div>
+              )}
             </div>
           </>
         )}
