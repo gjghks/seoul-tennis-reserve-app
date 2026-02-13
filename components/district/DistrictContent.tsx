@@ -135,7 +135,7 @@ export default function DistrictContent({
                 {isNeoBrutalism ? `${districtName}` : `${districtName}`}
               </h1>
               {districtWeatherGrid && (
-                <WeatherBadge nx={districtWeatherGrid.nx} ny={districtWeatherGrid.ny} compact />
+                <WeatherBadge nx={districtWeatherGrid.nx} ny={districtWeatherGrid.ny} compact district={koreanDistrict} />
               )}
             </div>
             {lastUpdated && (

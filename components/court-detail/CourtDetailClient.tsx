@@ -279,6 +279,7 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
               ny={weatherGrid.ny}
               isOutdoor={isOutdoorCourt}
               isNeoBrutalism={isNeoBrutalism}
+              district={court.AREANM}
             />
           ) : (
             <div className={isNeoBrutalism

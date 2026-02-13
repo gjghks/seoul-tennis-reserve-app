@@ -2,12 +2,15 @@
 
 import useSWR from 'swr';
 import { useThemeClass } from '@/lib/cn';
+import type { AirQualityData } from '@/lib/airQualityApi';
+import { resolveAirQualityGradeColor, isAirQualityBad } from '@/lib/airQualityApi';
 
 interface WeatherBadgeProps {
   nx: number;
   ny: number;
   isOutdoor?: boolean;
   compact?: boolean;
+  district?: string;
 }
 
 interface WeatherResponse {
@@ -18,11 +21,17 @@ interface WeatherResponse {
   sky: string | null;
 }
 
-const fetcher = async (url: string): Promise<WeatherResponse> => {
+const weatherFetcher = async (url: string): Promise<WeatherResponse> => {
   const response = await fetch(url);
   if (!response.ok) {
     throw new Error('Failed to fetch weather');
   }
+  return response.json();
+};
+
+const airFetcher = async (url: string): Promise<AirQualityData> => {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error('Failed to fetch air quality');
   return response.json();
 };
 
@@ -45,10 +54,19 @@ function resolveWeatherState(weather: WeatherResponse) {
   return { icon: '☁️', warning: null };
 }
 
-export default function WeatherBadge({ nx, ny, isOutdoor = false, compact = false }: WeatherBadgeProps) {
+export default function WeatherBadge({ nx, ny, isOutdoor = false, compact = false, district }: WeatherBadgeProps) {
   const themeClass = useThemeClass();
 
-  const { data, isLoading } = useSWR<WeatherResponse>(`/api/weather?nx=${nx}&ny=${ny}`, fetcher, {
+  const { data, isLoading } = useSWR<WeatherResponse>(`/api/weather?nx=${nx}&ny=${ny}`, weatherFetcher, {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: true,
+    refreshInterval: 30 * 60 * 1000,
+    dedupingInterval: 30 * 60 * 1000,
+    keepPreviousData: true,
+  });
+
+  const airQualityUrl = district ? `/api/air-quality?district=${encodeURIComponent(district)}` : null;
+  const { data: airData } = useSWR<AirQualityData>(airQualityUrl, airFetcher, {
     revalidateOnFocus: false,
     revalidateOnReconnect: true,
     refreshInterval: 30 * 60 * 1000,
@@ -75,6 +93,8 @@ export default function WeatherBadge({ nx, ny, isOutdoor = false, compact = fals
   const weatherState = resolveWeatherState(data);
   const hasPrecipitation = weatherState.warning !== null;
   const warningLabel = isOutdoor && hasPrecipitation ? weatherState.warning : null;
+  const airBad = airData ? isAirQualityBad(airData.grade) : false;
+  const airGradeColor = airData?.grade ? resolveAirQualityGradeColor(airData.grade) : null;
 
   if (compact) {
     return (
@@ -85,6 +105,13 @@ export default function WeatherBadge({ nx, ny, isOutdoor = false, compact = fals
         <span className="text-sm leading-none">{weatherState.icon}</span>
         {Math.round(data.temperature)}°C
         {data.sky && <span className="text-[10px] opacity-70">{data.sky}</span>}
+        {airData && airData.grade !== '정보없음' && airGradeColor && (
+          <>
+            <span className="text-[10px] opacity-40">·</span>
+            <span className="text-sm leading-none">{airGradeColor.icon}</span>
+            <span className="text-[10px] opacity-70">{airData.grade}</span>
+          </>
+        )}
       </span>
     );
   }
@@ -116,6 +143,17 @@ export default function WeatherBadge({ nx, ny, isOutdoor = false, compact = fals
           )}
         >
           {warningLabel}
+        </span>
+      )}
+
+      {airBad && airGradeColor && (
+        <span
+          className={themeClass(
+            `inline-flex items-center gap-1 px-2.5 py-1 text-xs font-black uppercase ${airGradeColor.bgNeo} ${airGradeColor.textNeo} border-2 border-black rounded-[5px]`,
+            `inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold ${airGradeColor.bg} ${airGradeColor.text} rounded-full border border-current/20`
+          )}
+        >
+          {airGradeColor.icon} 미세먼지 {airData!.grade}
         </span>
       )}
     </div>

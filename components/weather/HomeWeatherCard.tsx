@@ -2,6 +2,8 @@
 
 import useSWR from 'swr';
 import { useThemeClass } from '@/lib/cn';
+import type { AirQualityData } from '@/lib/airQualityApi';
+import { resolveAirQualityGradeColor, isAirQualityBad } from '@/lib/airQualityApi';
 
 interface HomeWeatherCardProps {
   nx: number;
@@ -16,9 +18,15 @@ interface WeatherResponse {
   sky: string | null;
 }
 
-const fetcher = async (url: string): Promise<WeatherResponse> => {
+const weatherFetcher = async (url: string): Promise<WeatherResponse> => {
   const response = await fetch(url);
   if (!response.ok) throw new Error('Failed to fetch weather');
+  return response.json();
+};
+
+const airFetcher = async (url: string): Promise<AirQualityData> => {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error('Failed to fetch air quality');
   return response.json();
 };
 
@@ -32,11 +40,13 @@ function resolveIcon(sky: string | null, rainfall: number | null): string {
 function resolveTennisMessage(
   sky: string | null,
   rainfall: number | null,
-  temperature: number
+  temperature: number,
+  airGrade?: string
 ): string {
   const isRainOrSnow = sky === '비' || sky === '소나기' || sky === '눈' || sky === '비/눈' || (rainfall ?? 0) > 0;
 
   if (isRainOrSnow) return '우천 시 실내 코트를 확인해보세요';
+  if (airGrade && isAirQualityBad(airGrade)) return '미세먼지 주의! 실내 코트를 추천합니다';
   if (temperature < 0) return '체감 온도가 낮아요. 방한 준비를 하세요';
   if (temperature > 33) return '무더위 주의! 충분한 수분을 섭취하세요';
   if (sky === '맑음' && temperature >= 5 && temperature <= 30) return '테니스 하기 좋은 날씨예요!';
@@ -48,7 +58,19 @@ export default function HomeWeatherCard({ nx, ny }: HomeWeatherCardProps) {
 
   const { data, isLoading } = useSWR<WeatherResponse>(
     `/api/weather?nx=${nx}&ny=${ny}`,
-    fetcher,
+    weatherFetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: true,
+      refreshInterval: 30 * 60 * 1000,
+      dedupingInterval: 30 * 60 * 1000,
+      keepPreviousData: true,
+    }
+  );
+
+  const { data: airData } = useSWR<AirQualityData>(
+    '/api/air-quality',
+    airFetcher,
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: true,
@@ -73,13 +95,15 @@ export default function HomeWeatherCard({ nx, ny }: HomeWeatherCardProps) {
 
   const icon = resolveIcon(data.sky, data.rainfall);
   const temp = Math.round(data.temperature);
-  const message = resolveTennisMessage(data.sky, data.rainfall, data.temperature);
+  const message = resolveTennisMessage(data.sky, data.rainfall, data.temperature, airData?.grade);
   const isRainOrSnow = data.sky === '비' || data.sky === '소나기' || data.sky === '눈' || data.sky === '비/눈' || (data.rainfall ?? 0) > 0;
 
   const details: string[] = [];
   if (data.humidity !== null) details.push(`습도 ${data.humidity}%`);
   if (data.windSpeed !== null) details.push(`바람 ${data.windSpeed}m/s`);
   if (isRainOrSnow && data.rainfall !== null) details.push(`강수 ${data.rainfall}mm`);
+
+  const airGradeColor = airData?.grade ? resolveAirQualityGradeColor(airData.grade) : null;
 
   return (
     <div className={themeClass(
@@ -107,13 +131,32 @@ export default function HomeWeatherCard({ nx, ny }: HomeWeatherCardProps) {
               </span>
             )}
           </div>
-          <p className={themeClass(
-            'text-xs font-bold text-white/70 mt-0.5',
-            'text-xs text-white/70 mt-0.5'
-          )}>
-            {message}
-          </p>
+          <div className="flex items-center gap-2 mt-0.5">
+            <p className={themeClass(
+              'text-xs font-bold text-white/70',
+              'text-xs text-white/70'
+            )}>
+              {message}
+            </p>
+          </div>
         </div>
+        {airData && airData.grade !== '정보없음' && airGradeColor && (
+          <div className={themeClass(
+            'shrink-0 flex items-center gap-1 px-2 py-1 rounded-[5px] border border-white/30 bg-black/20',
+            'shrink-0 flex items-center gap-1 px-2 py-1 rounded-md bg-white/15 border border-white/20'
+          )}>
+            <span className="text-sm leading-none">{airGradeColor.icon}</span>
+            <div className="text-center">
+              <span className="text-[10px] text-white/60 block leading-tight">미세먼지</span>
+              <span className={themeClass(
+                'text-xs font-black text-white',
+                'text-xs font-semibold text-white'
+              )}>
+                {airData.grade}
+              </span>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

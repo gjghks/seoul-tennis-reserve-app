@@ -2,12 +2,15 @@
 
 import useSWR from 'swr';
 import { useThemeClass } from '@/lib/cn';
+import type { AirQualityData } from '@/lib/airQualityApi';
+import { resolveAirQualityGradeColor, isAirQualityBad } from '@/lib/airQualityApi';
 
 interface WeatherInfoCardProps {
   nx: number;
   ny: number;
   isOutdoor: boolean;
   isNeoBrutalism: boolean;
+  district?: string;
 }
 
 interface WeatherResponse {
@@ -18,9 +21,15 @@ interface WeatherResponse {
   sky: string | null;
 }
 
-const fetcher = async (url: string): Promise<WeatherResponse> => {
+const weatherFetcher = async (url: string): Promise<WeatherResponse> => {
   const response = await fetch(url);
   if (!response.ok) throw new Error('Failed to fetch weather');
+  return response.json();
+};
+
+const airFetcher = async (url: string): Promise<AirQualityData> => {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error('Failed to fetch air quality');
   return response.json();
 };
 
@@ -31,16 +40,26 @@ function resolveIcon(sky: string | null, rainfall: number | null): string {
   return '☁️';
 }
 
-function resolveWarning(sky: string | null, rainfall: number | null): string | null {
+function resolveWarning(sky: string | null, rainfall: number | null, airGrade?: string): string | null {
   if (sky === '눈' || sky === '비/눈') return '강설 주의';
   if (sky === '비' || sky === '소나기' || (rainfall ?? 0) > 0) return '우천 주의';
+  if (airGrade && isAirQualityBad(airGrade)) return '미세먼지 주의';
   return null;
 }
 
-export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism }: WeatherInfoCardProps) {
+export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, district }: WeatherInfoCardProps) {
   const themeClass = useThemeClass();
 
-  const { data, isLoading } = useSWR<WeatherResponse>(`/api/weather?nx=${nx}&ny=${ny}`, fetcher, {
+  const { data, isLoading } = useSWR<WeatherResponse>(`/api/weather?nx=${nx}&ny=${ny}`, weatherFetcher, {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: true,
+    refreshInterval: 30 * 60 * 1000,
+    dedupingInterval: 30 * 60 * 1000,
+    keepPreviousData: true,
+  });
+
+  const airQualityUrl = district ? `/api/air-quality?district=${encodeURIComponent(district)}` : null;
+  const { data: airData } = useSWR<AirQualityData>(airQualityUrl, airFetcher, {
     revalidateOnFocus: false,
     revalidateOnReconnect: true,
     refreshInterval: 30 * 60 * 1000,
@@ -84,7 +103,9 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism }: W
   }
 
   const icon = resolveIcon(data.sky, data.rainfall);
-  const warning = isOutdoor ? resolveWarning(data.sky, data.rainfall) : null;
+  const warning = isOutdoor ? resolveWarning(data.sky, data.rainfall, airData?.grade) : null;
+  const airGradeColor = airData?.grade ? resolveAirQualityGradeColor(airData.grade) : null;
+  const showAirQuality = airData && airData.grade !== '정보없음' && airGradeColor;
 
   return (
     <div className={isNeoBrutalism
@@ -106,6 +127,20 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism }: W
         {data.humidity !== null && data.windSpeed !== null && <span>·</span>}
         {data.windSpeed !== null && <span>바람 {data.windSpeed}m/s</span>}
       </div>
+      {showAirQuality && (
+        <div className={themeClass(
+          `inline-flex items-center gap-1 mt-1.5 px-2 py-0.5 rounded-[3px] border border-black/10 ${airGradeColor.bgNeo}`,
+          `inline-flex items-center gap-1 mt-1.5 px-2 py-0.5 rounded-full ${airGradeColor.bg}`
+        )}>
+          <span className="text-[10px] leading-none">{airGradeColor.icon}</span>
+          <span className={themeClass(
+            `text-[10px] font-bold ${airGradeColor.textNeo}`,
+            `text-[10px] font-medium ${airGradeColor.text}`
+          )}>
+            미세먼지 {airData.grade}
+          </span>
+        </div>
+      )}
       {warning && (
         <p className={themeClass(
           'text-[10px] font-bold text-red-600 mt-1',
