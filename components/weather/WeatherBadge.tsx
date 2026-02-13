@@ -3,7 +3,7 @@
 import useSWR from 'swr';
 import { useThemeClass } from '@/lib/cn';
 import type { AirQualityData } from '@/lib/airQualityApi';
-import { resolveAirQualityGradeColor, isAirQualityBad } from '@/lib/airQualityApi';
+import { resolveAirQualityGradeColor, isAirQualityBad, resolvePmColor, resolvePmColorNeo } from '@/lib/airQualityApi';
 
 interface WeatherBadgeProps {
   nx: number;
@@ -153,7 +153,12 @@ export default function WeatherBadge({ nx, ny, isOutdoor = false, compact = fals
             `inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold ${airGradeColor.bg} ${airGradeColor.text} rounded-full border border-current/20`
           )}
         >
-          {airGradeColor.icon} 미세먼지 {airData!.grade}{airData!.pm25 !== null ? ` · PM2.5 ${airData!.pm25}` : ''}
+          {airGradeColor.icon} 미세먼지 {airData!.grade}
+          {airData!.pm25 !== null && (
+            <span className={themeClass(resolvePmColorNeo('pm25', airData!.pm25), resolvePmColor('pm25', airData!.pm25))}>
+              · PM2.5 {airData!.pm25}
+            </span>
+          )}
         </span>
       )}
     </div>

@@ -182,15 +182,17 @@ export default function SimilarCourts({
                       {court.V_MIN} - {court.V_MAX}
                     </span>
                   )}
-                  {!isSameDistrict && (
-                    <span className={`px-2 py-0.5 rounded-full ${
-                      isNeoBrutalism
+                  <span className={`px-2 py-0.5 rounded-full ${
+                    isSameDistrict
+                      ? isNeoBrutalism
+                        ? 'bg-white border border-black/20'
+                        : 'bg-white border border-gray-200'
+                      : isNeoBrutalism
                         ? 'bg-[#facc15]/30 border border-black/20 font-bold'
                         : 'bg-blue-50 text-blue-600 border border-blue-100'
-                    }`}>
-                      📍 {court.AREANM}
-                    </span>
-                  )}
+                  }`}>
+                    {isSameDistrict ? '' : '📍 '}{court.AREANM}
+                  </span>
                 </div>
 
                 <svg

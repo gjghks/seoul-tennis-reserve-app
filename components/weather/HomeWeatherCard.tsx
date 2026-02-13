@@ -3,7 +3,7 @@
 import useSWR from 'swr';
 import { useThemeClass } from '@/lib/cn';
 import type { AirQualityData } from '@/lib/airQualityApi';
-import { resolveAirQualityGradeColor, isAirQualityBad } from '@/lib/airQualityApi';
+import { resolveAirQualityGradeColor, isAirQualityBad, resolvePmColorLight } from '@/lib/airQualityApi';
 
 interface HomeWeatherCardProps {
   nx: number;
@@ -155,7 +155,7 @@ export default function HomeWeatherCard({ nx, ny }: HomeWeatherCardProps) {
                 {airData.grade}
               </span>
               {airData.pm25 !== null && (
-                <span className="text-[10px] text-white/50 ml-1">
+                <span className={`text-[10px] ml-1 ${resolvePmColorLight('pm25', airData.pm25)}`}>
                   PM2.5 {airData.pm25}
                 </span>
               )}

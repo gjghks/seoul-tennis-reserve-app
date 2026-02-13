@@ -3,7 +3,7 @@
 import useSWR from 'swr';
 import { useThemeClass } from '@/lib/cn';
 import type { AirQualityData } from '@/lib/airQualityApi';
-import { resolveAirQualityGradeColor, isAirQualityBad } from '@/lib/airQualityApi';
+import { resolveAirQualityGradeColor, isAirQualityBad, resolvePmColor, resolvePmColorNeo } from '@/lib/airQualityApi';
 
 interface WeatherInfoCardProps {
   nx: number;
@@ -127,12 +127,22 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
                 </div>
               </div>
               <div className={themeClass(
-                'flex items-center gap-1.5 text-[11px] font-bold text-black/40',
-                'flex items-center gap-1.5 text-[11px] text-gray-400'
+                'flex items-center gap-1.5 text-[11px] font-bold',
+                'flex items-center gap-1.5 text-[11px]'
               )}>
-                {airData.pm25 !== null && <span>PM2.5 {airData.pm25}</span>}
-                {airData.pm25 !== null && airData.pm10 !== null && <span>·</span>}
-                {airData.pm10 !== null && <span>PM10 {airData.pm10}</span>}
+                {airData.pm25 !== null && (
+                  <span>
+                    <span className={themeClass('text-black/40', 'text-gray-400')}>PM2.5 </span>
+                    <span className={themeClass(resolvePmColorNeo('pm25', airData.pm25), resolvePmColor('pm25', airData.pm25))}>{airData.pm25}</span>
+                  </span>
+                )}
+                {airData.pm25 !== null && airData.pm10 !== null && <span className={themeClass('text-black/20', 'text-gray-300')}>·</span>}
+                {airData.pm10 !== null && (
+                  <span>
+                    <span className={themeClass('text-black/40', 'text-gray-400')}>PM10 </span>
+                    <span className={themeClass(resolvePmColorNeo('pm10', airData.pm10), resolvePmColor('pm10', airData.pm10))}>{airData.pm10}</span>
+                  </span>
+                )}
               </div>
             </div>
           </>

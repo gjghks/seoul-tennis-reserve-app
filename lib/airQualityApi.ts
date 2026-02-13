@@ -85,6 +85,45 @@ export function resolveAirQualityGradeColor(grade: string): {
   }
 }
 
+export function resolvePmColor(type: 'pm25' | 'pm10', value: number): string {
+  if (type === 'pm25') {
+    if (value <= 15) return 'text-blue-500';
+    if (value <= 35) return 'text-green-500';
+    if (value <= 75) return 'text-orange-500';
+    return 'text-red-500';
+  }
+  if (value <= 30) return 'text-blue-500';
+  if (value <= 80) return 'text-green-500';
+  if (value <= 150) return 'text-orange-500';
+  return 'text-red-500';
+}
+
+export function resolvePmColorLight(type: 'pm25' | 'pm10', value: number): string {
+  if (type === 'pm25') {
+    if (value <= 15) return 'text-blue-300';
+    if (value <= 35) return 'text-green-300';
+    if (value <= 75) return 'text-orange-300';
+    return 'text-red-300';
+  }
+  if (value <= 30) return 'text-blue-300';
+  if (value <= 80) return 'text-green-300';
+  if (value <= 150) return 'text-orange-300';
+  return 'text-red-300';
+}
+
+export function resolvePmColorNeo(type: 'pm25' | 'pm10', value: number): string {
+  if (type === 'pm25') {
+    if (value <= 15) return 'text-[#3b82f6]';
+    if (value <= 35) return 'text-[#16a34a]';
+    if (value <= 75) return 'text-[#ea580c]';
+    return 'text-[#dc2626]';
+  }
+  if (value <= 30) return 'text-[#3b82f6]';
+  if (value <= 80) return 'text-[#16a34a]';
+  if (value <= 150) return 'text-[#ea580c]';
+  return 'text-[#dc2626]';
+}
+
 export function isAirQualityBad(grade: string): boolean {
   return grade === '나쁨' || grade === '매우나쁨';
 }
