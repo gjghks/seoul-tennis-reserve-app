@@ -64,17 +64,30 @@ export function usePushSubscription(): UsePushSubscriptionReturn {
   }, []);
 
   const subscribe = useCallback(async (): Promise<boolean> => {
-    if (!isPushSupported() || !user) return false;
+    if (!isPushSupported()) {
+      console.warn('[Push] Browser does not support push notifications');
+      return false;
+    }
+    if (!user) {
+      console.warn('[Push] No authenticated user');
+      return false;
+    }
 
     setIsLoading(true);
     try {
       const perm = await Notification.requestPermission();
       setPermission(perm as PushPermissionState);
-      if (perm !== 'granted') return false;
+      if (perm !== 'granted') {
+        console.warn('[Push] Permission denied or dismissed:', perm);
+        return false;
+      }
 
       const registration = await waitForServiceWorker();
       const vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
-      if (!vapidKey) return false;
+      if (!vapidKey) {
+        console.error('[Push] NEXT_PUBLIC_VAPID_PUBLIC_KEY is not set');
+        return false;
+      }
 
       const subscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
@@ -96,13 +109,16 @@ export function usePushSubscription(): UsePushSubscriptionReturn {
       });
 
       if (!res.ok) {
+        const errorText = await res.text().catch(() => 'unknown');
+        console.error('[Push] Server subscribe failed:', res.status, errorText);
         await subscription.unsubscribe();
         return false;
       }
 
       setIsSubscribed(true);
       return true;
-    } catch {
+    } catch (error) {
+      console.error('[Push] Subscribe error:', error);
       return false;
     } finally {
       setIsLoading(false);

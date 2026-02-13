@@ -26,8 +26,10 @@ export default function AlertSettingsSection() {
       const success = await subscribe();
       if (success) {
         showToast('푸시 알림이 활성화되었습니다', 'success');
+      } else if (permission === 'denied') {
+        showToast('알림이 차단되어 있습니다. 브라우저 설정에서 허용해주세요', 'error');
       } else {
-        showToast('알림 권한을 허용해주세요', 'error');
+        showToast('알림 설정에 실패했습니다. 잠시 후 다시 시도해주세요', 'error');
       }
     }
   };
