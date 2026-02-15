@@ -5,6 +5,33 @@ import Link from 'next/link';
 import { useThemeClass } from '@/lib/cn';
 import FeedbackModal from '@/components/feedback/FeedbackModal';
 
+const CORE_FEATURES = [
+  { emoji: '🏠', title: '홈', desc: '자치구별 테니스장 목록·지도 뷰, 인기 랭킹, 즐겨찾기 현황을 한 화면에서' },
+  { emoji: '📅', title: '오늘 예약', desc: '오늘 바로 예약할 수 있는 테니스장만 모아 빠르게 탐색' },
+  { emoji: '📊', title: '구별 비교', desc: '자치구별 코트 수·예약률·평점을 한눈에 비교' },
+  { emoji: '📈', title: '경쟁률', desc: '시간대·요일별 예약 경쟁률 추이로 빈 시간대 공략' },
+  { emoji: '🗓️', title: '캘린더', desc: '날짜별 예약 현황을 캘린더에서 직관적으로 확인' },
+] as const;
+
+const COURT_DETAIL_FEATURES = [
+  { title: '실시간 예약 상태', desc: '접수중·마감 등 예약 상태를 즉시 확인하고 바로 예약 페이지로 이동' },
+  { title: '이용 후기 & 별점', desc: '실제 이용자들의 리뷰와 사진으로 코트 선택에 참고' },
+  { title: '실시간 날씨', desc: '코트 위치 기반 기온·강수 정보 제공, 실외 코트는 우천 주의 안내' },
+  { title: '실시간 미세먼지', desc: '자치구별 대기질(PM2.5·PM10) 등급 및 수치, 나쁨 시 실내 코트 안내' },
+  { title: '비슷한 테니스장 추천', desc: '같은 장소·인근 지역의 대안 코트를 자동 추천' },
+  { title: '전화번호 바로 연결', desc: '시설 연락처를 탭 한 번으로 전화 연결' },
+  { title: '카카오 지도', desc: '테니스장 위치를 지도에서 한눈에 확인' },
+] as const;
+
+const CONVENIENCE_FEATURES = [
+  { title: '즐겨찾기', desc: '자주 이용하는 테니스장을 저장하고 홈에서 바로 확인' },
+  { title: '푸시 알림', desc: '즐겨찾기한 코트의 예약이 시작되면 알림으로 안내' },
+  { title: '자치구 가이드', desc: '지역별 테니스장 특징·접근성·주차 등 상세 가이드' },
+  { title: '인기 랭킹 TOP 5', desc: '평점·즐겨찾기·경쟁률을 종합한 인기 테니스장 랭킹' },
+  { title: '앱 설치 (PWA)', desc: '홈 화면에 추가하여 앱처럼 사용' },
+  { title: '테마 전환', desc: '미니멀·네오브루탈리즘 두 가지 디자인 테마 지원' },
+] as const;
+
 export default function AboutPage() {
   const themeClass = useThemeClass();
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
@@ -17,6 +44,7 @@ export default function AboutPage() {
         </h1>
 
         <div className={`space-y-8 ${themeClass('text-black/80', 'text-gray-600')}`}>
+          {/* 서울 테니스란? */}
           <section>
             <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black', 'text-gray-900')}`}>
               서울 테니스란?
@@ -28,58 +56,60 @@ export default function AboutPage() {
             </p>
           </section>
 
+          {/* 핵심 기능 */}
+          <section>
+            <h2 className={`text-lg font-bold mb-4 ${themeClass('text-black', 'text-gray-900')}`}>
+              핵심 기능
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {CORE_FEATURES.map((feature) => (
+                <div
+                  key={feature.title}
+                  className={`p-4 ${themeClass(
+                    'bg-white border-2 border-black rounded-[6px] shadow-[2px_2px_0px_0px_#000]',
+                    'bg-gray-50 border border-gray-200 rounded-lg'
+                  )}`}
+                >
+                  <div className={`text-base font-bold mb-1 ${themeClass('text-black', 'text-gray-900')}`}>
+                    <span className="mr-1.5">{feature.emoji}</span>{feature.title}
+                  </div>
+                  <p className="text-sm leading-relaxed">{feature.desc}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* 코트 상세 정보 */}
           <section>
             <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black', 'text-gray-900')}`}>
-              주요 기능
+              코트 상세 정보
             </h2>
             <ul className="space-y-2.5">
-              <li className="flex items-start gap-2">
-                <span className="text-green-600 font-bold shrink-0">✓</span>
-                <span><strong>지역별 테니스장 검색</strong> — 서울시 25개 자치구별 테니스장을 목록·지도 뷰로 조회</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-green-600 font-bold shrink-0">✓</span>
-                <span><strong>실시간 예약 현황</strong> — 접수중·마감 등 예약 상태를 즉시 확인하고 바로 예약 페이지로 이동</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-green-600 font-bold shrink-0">✓</span>
-                <span><strong>인기 랭킹 TOP 5</strong> — 평점, 즐겨찾기, 예약 경쟁률을 종합한 실시간 인기 테니스장 랭킹</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-green-600 font-bold shrink-0">✓</span>
-                <span><strong>이용 후기 &amp; 평점</strong> — 실제 이용자들의 후기와 사진으로 코트 선택에 참고</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-green-600 font-bold shrink-0">✓</span>
-                <span><strong>즐겨찾기</strong> — 자주 이용하는 테니스장을 저장하고 예약 현황을 홈에서 바로 확인</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-green-600 font-bold shrink-0">✓</span>
-                <span><strong>실시간 날씨</strong> — 코트 위치 기반 현재 기온·날씨를 제공, 실외 코트는 우천 주의 안내</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-green-600 font-bold shrink-0">✓</span>
-                <span><strong>실시간 미세먼지</strong> — 자치구별 대기질(PM2.5·PM10) 등급 및 수치를 색상으로 한눈에 확인, 나쁨 시 실내 코트 안내</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-green-600 font-bold shrink-0">✓</span>
-                <span><strong>비슷한 테니스장 추천</strong> — 현재 보고 있는 코트와 같은 장소·인근 지역의 대안 코트를 자동 추천</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-green-600 font-bold shrink-0">✓</span>
-                <span><strong>전화번호 바로 연결</strong> — 시설 연락처 및 상세 안내의 모든 전화번호를 탭 한 번으로 전화 연결</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-green-600 font-bold shrink-0">✓</span>
-                <span><strong>카카오 지도</strong> — 지역 내 테니스장 위치를 지도에서 한눈에 확인</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-green-600 font-bold shrink-0">✓</span>
-                <span><strong>테마 전환</strong> — 미니멀·네오브루탈리즘 두 가지 디자인 테마 지원</span>
-              </li>
+              {COURT_DETAIL_FEATURES.map((feature) => (
+                <li key={feature.title} className="flex items-start gap-2">
+                  <span className="text-green-600 font-bold shrink-0">✓</span>
+                  <span><strong>{feature.title}</strong> — {feature.desc}</span>
+                </li>
+              ))}
             </ul>
           </section>
 
+          {/* 편의 기능 */}
+          <section>
+            <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black', 'text-gray-900')}`}>
+              편의 기능
+            </h2>
+            <ul className="space-y-2.5">
+              {CONVENIENCE_FEATURES.map((feature) => (
+                <li key={feature.title} className="flex items-start gap-2">
+                  <span className="text-green-600 font-bold shrink-0">✓</span>
+                  <span><strong>{feature.title}</strong> — {feature.desc}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          {/* 데이터 출처 */}
           <section>
             <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black', 'text-gray-900')}`}>
               데이터 출처
@@ -94,6 +124,7 @@ export default function AboutPage() {
             </ul>
           </section>
 
+          {/* 만든 이유 */}
           <section>
             <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black', 'text-gray-900')}`}>
               만든 이유
@@ -106,6 +137,7 @@ export default function AboutPage() {
             </p>
           </section>
 
+          {/* 이용 안내 */}
           <section>
             <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black', 'text-gray-900')}`}>
               이용 안내
@@ -118,6 +150,7 @@ export default function AboutPage() {
             </ul>
           </section>
 
+          {/* 의견을 들려주세요 */}
           <section className={`p-5 rounded-lg ${themeClass('bg-yellow-100 border-2 border-black', 'bg-gray-50')}`}>
             <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
               의견을 들려주세요

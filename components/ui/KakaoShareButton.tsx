@@ -69,7 +69,7 @@ export default function KakaoShareButton({
 
     try {
       const shareUrl = url || window.location.href;
-      window.Kakao.Share.sendDefault({
+      await window.Kakao.Share.sendDefault({
         objectType: 'feed',
         content: {
           title: title,
@@ -91,6 +91,7 @@ export default function KakaoShareButton({
         ],
       });
     } catch (error) {
+      console.error('Kakao share failed:', error);
       await copyToClipboard(url || window.location.href);
     }
   };

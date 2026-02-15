@@ -71,7 +71,7 @@ const nextConfig: NextConfig = {
               "frame-src 'self' https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com https://*.adtrafficquality.google",
               "object-src 'none'",
               "base-uri 'self'",
-              "form-action 'self'",
+              "form-action 'self' https://*.kakao.com",
               "frame-ancestors 'none'",
             ].join('; '),
           },
