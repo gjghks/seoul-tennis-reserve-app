@@ -451,7 +451,7 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
       </div>
 
       {court.SVCURL && isAvailable && (
-        <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/80 backdrop-blur-lg border-t border-gray-100 sm:hidden">
+        <div className="fixed bottom-0 left-0 right-0 z-50 p-4 bg-white/80 backdrop-blur-lg border-t border-gray-100 sm:hidden">
           <a
             href={court.SVCURL}
             target="_blank"
