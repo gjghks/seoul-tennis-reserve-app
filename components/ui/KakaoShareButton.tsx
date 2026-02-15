@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import Script from 'next/script';
-import { useTheme } from '@/contexts/ThemeContext';
 import { useToast } from '@/contexts/ToastContext';
 import { useThemeClass } from '@/lib/cn';
 
@@ -29,7 +28,6 @@ export default function KakaoShareButton({
   imageUrl,
   className = '',
 }: KakaoShareButtonProps) {
-  useTheme();
   const themeClass = useThemeClass();
   const { showToast } = useToast();
   const [isKakaoReady, setIsKakaoReady] = useState(false);
@@ -49,39 +47,43 @@ export default function KakaoShareButton({
     }
   }, [initializeKakao]);
 
+  const isMobile = typeof navigator !== 'undefined' &&
+    /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
   const handleKakaoShare = async () => {
-    if (!isKakaoReady || !window.Kakao) {
-      await copyToClipboard(url || window.location.href);
-      return;
+    const shareUrl = url || window.location.href;
+
+    if (isMobile && navigator.share) {
+      try {
+        await navigator.share({ title, text: description, url: shareUrl });
+        return;
+      } catch (error) {
+        if ((error as DOMException).name === 'AbortError') return;
+      }
     }
 
-    try {
-      const shareUrl = url || window.location.href;
-      window.Kakao.Share.sendDefault({
-        objectType: 'feed',
-        content: {
-          title: title,
-          description: description,
-          imageUrl: imageUrl || 'https://seoul-tennis.com/opengraph-image',
-          link: {
-            mobileWebUrl: shareUrl,
-            webUrl: shareUrl,
+    if (isKakaoReady && window.Kakao?.Share) {
+      try {
+        window.Kakao.Share.sendDefault({
+          objectType: 'feed',
+          content: {
+            title,
+            description,
+            imageUrl: imageUrl || 'https://seoul-tennis.com/opengraph-image',
+            link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
           },
-        },
-        buttons: [
-          {
+          buttons: [{
             title: '예약 현황 보기',
-            link: {
-              mobileWebUrl: shareUrl,
-              webUrl: shareUrl,
-            },
-          },
-        ],
-      });
-    } catch (error) {
-      console.error('Kakao share failed:', error);
-      await copyToClipboard(url || window.location.href);
+            link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
+          }],
+        });
+        return;
+      } catch (error) {
+        console.error('Kakao share failed:', error);
+      }
     }
+
+    await copyToClipboard(shareUrl);
   };
 
   const copyToClipboard = async (text: string) => {
