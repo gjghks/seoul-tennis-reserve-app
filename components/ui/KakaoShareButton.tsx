@@ -63,13 +63,14 @@ export default function KakaoShareButton({
 
   const handleKakaoShare = async () => {
     if (!isKakaoReady || !window.Kakao) {
+      showToast(`[debug] SDK not ready: isKakaoReady=${isKakaoReady}, Kakao=${!!window.Kakao}`, 'error');
       await copyToClipboard(url || window.location.href);
       return;
     }
 
     try {
       const shareUrl = url || window.location.href;
-      await window.Kakao.Share.sendDefault({
+      window.Kakao.Share.sendDefault({
         objectType: 'feed',
         content: {
           title: title,
@@ -92,6 +93,7 @@ export default function KakaoShareButton({
       });
     } catch (error) {
       console.error('Kakao share failed:', error);
+      showToast(`[debug] share error: ${error instanceof Error ? error.message : String(error)}`, 'error');
       await copyToClipboard(url || window.location.href);
     }
   };
