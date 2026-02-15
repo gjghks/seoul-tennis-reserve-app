@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import Script from 'next/script';
 import { useToast } from '@/contexts/ToastContext';
 import { useThemeClass } from '@/lib/cn';
@@ -20,6 +20,7 @@ interface KakaoShareButtonProps {
 }
 
 const KAKAO_SDK_URL = 'https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js';
+const KAKAO_SDK_FALLBACK_URL = 'https://developers.kakao.com/sdk/js/kakao.min.js';
 
 export default function KakaoShareButton({
   title,
@@ -31,6 +32,8 @@ export default function KakaoShareButton({
   const themeClass = useThemeClass();
   const { showToast } = useToast();
   const [isKakaoReady, setIsKakaoReady] = useState(false);
+  const [sdkLoadFailed, setSdkLoadFailed] = useState(false);
+  const fallbackAttempted = useRef(false);
 
   const initializeKakao = useCallback(() => {
     if (window.Kakao && !window.Kakao.isInitialized()) {
@@ -38,8 +41,24 @@ export default function KakaoShareButton({
     }
     if (window.Kakao?.isInitialized()) {
       setIsKakaoReady(true);
+      setSdkLoadFailed(false);
     }
   }, []);
+
+  const loadFallbackSDK = useCallback(() => {
+    if (fallbackAttempted.current) {
+      setSdkLoadFailed(true);
+      return;
+    }
+    fallbackAttempted.current = true;
+
+    const script = document.createElement('script');
+    script.src = KAKAO_SDK_FALLBACK_URL;
+    script.async = true;
+    script.onload = () => initializeKakao();
+    script.onerror = () => setSdkLoadFailed(true);
+    document.head.appendChild(script);
+  }, [initializeKakao]);
 
   useEffect(() => {
     if (window.Kakao) {
@@ -47,21 +66,10 @@ export default function KakaoShareButton({
     }
   }, [initializeKakao]);
 
-  const isMobile = typeof navigator !== 'undefined' &&
-    /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
   const handleKakaoShare = async () => {
     const shareUrl = url || window.location.href;
 
-    if (isMobile && navigator.share) {
-      try {
-        await navigator.share({ title, text: description, url: shareUrl });
-        return;
-      } catch (error) {
-        if ((error as DOMException).name === 'AbortError') return;
-      }
-    }
-
+    // 1. Primary: Kakao SDK (desktop & mobile)
     if (isKakaoReady && window.Kakao?.Share) {
       try {
         window.Kakao.Share.sendDefault({
@@ -83,6 +91,17 @@ export default function KakaoShareButton({
       }
     }
 
+    // 2. Fallback: Web Share API (mobile native share sheet)
+    if (navigator.share) {
+      try {
+        await navigator.share({ title, text: description, url: shareUrl });
+        return;
+      } catch (error) {
+        if ((error as DOMException).name === 'AbortError') return;
+      }
+    }
+
+    // 3. Last resort: clipboard copy
     await copyToClipboard(shareUrl);
   };
 
@@ -99,8 +118,9 @@ export default function KakaoShareButton({
     <>
       <Script
         src={KAKAO_SDK_URL}
-        strategy="lazyOnload"
+        strategy="afterInteractive"
         onLoad={initializeKakao}
+        onError={loadFallbackSDK}
       />
       <button
         type="button"
