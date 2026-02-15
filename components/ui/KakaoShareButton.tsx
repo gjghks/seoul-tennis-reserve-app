@@ -38,6 +38,13 @@ export default function KakaoShareButton({
   const handleKakaoShare = async () => {
     const shareUrl = url || window.location.href;
 
+    // DEBUG: diagnose which path runs on mobile
+    const hasKakao = !!window.Kakao;
+    const isInit = hasKakao && window.Kakao.isInitialized();
+    const ensured = ensureKakaoInit();
+    const hasShare = ensured && !!window.Kakao.Share;
+    showToast(`[DEBUG] Kakao=${hasKakao} init=${isInit} ensured=${ensured} Share=${hasShare}`, 'info');
+
     // 1. Primary: Kakao SDK (desktop & mobile)
     if (ensureKakaoInit() && window.Kakao.Share) {
       try {
@@ -54,14 +61,17 @@ export default function KakaoShareButton({
             link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
           }],
         });
+        showToast('[DEBUG] SDK sendDefault called', 'info');
         return;
       } catch (error) {
+        showToast(`[DEBUG] SDK error: ${error}`, 'error');
         console.error('Kakao share failed:', error);
       }
     }
 
     // 2. Fallback: Web Share API (mobile native share sheet)
     if (navigator.share) {
+      showToast('[DEBUG] Falling back to navigator.share', 'info');
       try {
         await navigator.share({ title, text: description, url: shareUrl });
         return;
@@ -71,6 +81,7 @@ export default function KakaoShareButton({
     }
 
     // 3. Last resort: clipboard copy
+    showToast('[DEBUG] Falling back to clipboard', 'info');
     await copyToClipboard(shareUrl);
   };
 
