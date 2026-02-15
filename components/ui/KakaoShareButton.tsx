@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect, useState, useCallback, useRef } from 'react';
 import { useToast } from '@/contexts/ToastContext';
 import { useThemeClass } from '@/lib/cn';
 
@@ -18,8 +17,13 @@ interface KakaoShareButtonProps {
   className?: string;
 }
 
-const KAKAO_POLL_INTERVAL = 200;
-const KAKAO_POLL_MAX_ATTEMPTS = 25;
+function ensureKakaoInit(): boolean {
+  if (!window.Kakao) return false;
+  if (!window.Kakao.isInitialized()) {
+    window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_MAP_KEY);
+  }
+  return window.Kakao.isInitialized();
+}
 
 export default function KakaoShareButton({
   title,
@@ -30,39 +34,12 @@ export default function KakaoShareButton({
 }: KakaoShareButtonProps) {
   const themeClass = useThemeClass();
   const { showToast } = useToast();
-  const [isKakaoReady, setIsKakaoReady] = useState(false);
-  const pollCount = useRef(0);
-
-  const initializeKakao = useCallback(() => {
-    if (!window.Kakao) return false;
-    if (!window.Kakao.isInitialized()) {
-      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_MAP_KEY);
-    }
-    if (window.Kakao.isInitialized()) {
-      setIsKakaoReady(true);
-      return true;
-    }
-    return false;
-  }, []);
-
-  useEffect(() => {
-    if (initializeKakao()) return;
-
-    const timer = setInterval(() => {
-      pollCount.current += 1;
-      if (initializeKakao() || pollCount.current >= KAKAO_POLL_MAX_ATTEMPTS) {
-        clearInterval(timer);
-      }
-    }, KAKAO_POLL_INTERVAL);
-
-    return () => clearInterval(timer);
-  }, [initializeKakao]);
 
   const handleKakaoShare = async () => {
     const shareUrl = url || window.location.href;
 
     // 1. Primary: Kakao SDK (desktop & mobile)
-    if (isKakaoReady && window.Kakao?.Share) {
+    if (ensureKakaoInit() && window.Kakao.Share) {
       try {
         window.Kakao.Share.sendDefault({
           objectType: 'feed',
