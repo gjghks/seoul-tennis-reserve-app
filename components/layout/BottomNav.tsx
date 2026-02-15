@@ -68,6 +68,10 @@ export default function BottomNav() {
   const pathname = usePathname();
   const themeClass = useThemeClass();
 
+  // Hide on court detail pages where fixed reservation CTA is shown
+  const isCourtDetail = /^\/[^/]+-gu\/S/.test(pathname);
+  if (isCourtDetail) return null;
+
   const isActive = (href: string) =>
     href === '/' ? pathname === '/' : pathname.startsWith(href);
 
