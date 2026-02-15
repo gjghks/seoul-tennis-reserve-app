@@ -1,7 +1,7 @@
 /// <reference lib="webworker" />
 import { defaultCache } from "@serwist/next/worker";
 import type { PrecacheEntry, SerwistGlobalConfig } from "serwist";
-import { Serwist, CacheFirst, ExpirationPlugin } from "serwist";
+import { Serwist, CacheFirst, NetworkOnly, ExpirationPlugin } from "serwist";
 
 declare global {
   interface WorkerGlobalScope extends SerwistGlobalConfig {
@@ -27,6 +27,12 @@ const imageCache = {
   }),
 };
 
+const kakaoSdkBypass = {
+  matcher: ({ url }: { url: URL }) =>
+    url.hostname === 't1.kakaocdn.net' || url.hostname === 'developers.kakao.com',
+  handler: new NetworkOnly(),
+};
+
 const serwist = new Serwist({
   precacheEntries: self.__SW_MANIFEST,
   precacheOptions: {
@@ -35,7 +41,7 @@ const serwist = new Serwist({
   skipWaiting: true,
   clientsClaim: true,
   navigationPreload: true,
-  runtimeCaching: [imageCache, ...defaultCache],
+  runtimeCaching: [kakaoSdkBypass, imageCache, ...defaultCache],
 });
 
 serwist.addEventListeners();

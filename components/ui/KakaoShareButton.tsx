@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState, useCallback, useRef } from 'react';
-import Script from 'next/script';
 import { useToast } from '@/contexts/ToastContext';
 import { useThemeClass } from '@/lib/cn';
 
@@ -19,8 +18,8 @@ interface KakaoShareButtonProps {
   className?: string;
 }
 
-const KAKAO_SDK_URL = 'https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js';
-const KAKAO_SDK_FALLBACK_URL = 'https://developers.kakao.com/sdk/js/kakao.min.js';
+const KAKAO_POLL_INTERVAL = 200;
+const KAKAO_POLL_MAX_ATTEMPTS = 25;
 
 export default function KakaoShareButton({
   title,
@@ -32,38 +31,31 @@ export default function KakaoShareButton({
   const themeClass = useThemeClass();
   const { showToast } = useToast();
   const [isKakaoReady, setIsKakaoReady] = useState(false);
-  const [sdkLoadFailed, setSdkLoadFailed] = useState(false);
-  const fallbackAttempted = useRef(false);
+  const pollCount = useRef(0);
 
   const initializeKakao = useCallback(() => {
-    if (window.Kakao && !window.Kakao.isInitialized()) {
+    if (!window.Kakao) return false;
+    if (!window.Kakao.isInitialized()) {
       window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_MAP_KEY);
     }
-    if (window.Kakao?.isInitialized()) {
+    if (window.Kakao.isInitialized()) {
       setIsKakaoReady(true);
-      setSdkLoadFailed(false);
+      return true;
     }
+    return false;
   }, []);
 
-  const loadFallbackSDK = useCallback(() => {
-    if (fallbackAttempted.current) {
-      setSdkLoadFailed(true);
-      return;
-    }
-    fallbackAttempted.current = true;
-
-    const script = document.createElement('script');
-    script.src = KAKAO_SDK_FALLBACK_URL;
-    script.async = true;
-    script.onload = () => initializeKakao();
-    script.onerror = () => setSdkLoadFailed(true);
-    document.head.appendChild(script);
-  }, [initializeKakao]);
-
   useEffect(() => {
-    if (window.Kakao) {
-      initializeKakao();
-    }
+    if (initializeKakao()) return;
+
+    const timer = setInterval(() => {
+      pollCount.current += 1;
+      if (initializeKakao() || pollCount.current >= KAKAO_POLL_MAX_ATTEMPTS) {
+        clearInterval(timer);
+      }
+    }, KAKAO_POLL_INTERVAL);
+
+    return () => clearInterval(timer);
   }, [initializeKakao]);
 
   const handleKakaoShare = async () => {
@@ -115,31 +107,23 @@ export default function KakaoShareButton({
   };
 
   return (
-    <>
-      <Script
-        src={KAKAO_SDK_URL}
-        strategy="afterInteractive"
-        onLoad={initializeKakao}
-        onError={loadFallbackSDK}
-      />
-      <button
-        type="button"
-        onClick={handleKakaoShare}
-        aria-label="카카오톡 공유"
-        className={themeClass(
-          `flex items-center gap-2 px-3 py-2 border-2 border-black rounded-[5px] bg-[#FFE812] text-black font-bold shadow-[3px_3px_0px_0px_#000] transition-all hover:bg-[#FFD700] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none ${className}`,
-          `flex items-center gap-2 px-3 py-2 rounded-lg bg-yellow-100 text-yellow-700 transition-all hover:bg-yellow-200 hover:text-yellow-800 ${className}`
-        )}
+    <button
+      type="button"
+      onClick={handleKakaoShare}
+      aria-label="카카오톡 공유"
+      className={themeClass(
+        `flex items-center gap-2 px-3 py-2 border-2 border-black rounded-[5px] bg-[#FFE812] text-black font-bold shadow-[3px_3px_0px_0px_#000] transition-all hover:bg-[#FFD700] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none ${className}`,
+        `flex items-center gap-2 px-3 py-2 rounded-lg bg-yellow-100 text-yellow-700 transition-all hover:bg-yellow-200 hover:text-yellow-800 ${className}`
+      )}
+    >
+      <svg
+        className="w-5 h-5"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        aria-hidden="true"
       >
-        <svg
-          className="w-5 h-5"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          aria-hidden="true"
-        >
-          <path d="M12 2C6.48 2 2 5.58 2 10c0 2.54 1.19 4.85 3.15 6.37.08 2.85-1.18 4.4-1.18 4.4s2.85-.56 4.81-2.04c.52.1 1.08.16 1.66.16 5.52 0 10-3.58 10-8 0-4.42-4.48-8-10-8z" />
-        </svg>
-      </button>
-    </>
+        <path d="M12 2C6.48 2 2 5.58 2 10c0 2.54 1.19 4.85 3.15 6.37.08 2.85-1.18 4.4-1.18 4.4s2.85-.56 4.81-2.04c.52.1 1.08.16 1.66.16 5.52 0 10-3.58 10-8 0-4.42-4.48-8-10-8z" />
+      </svg>
+    </button>
   );
 }

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import Providers from "@/components/Providers";
 import Header from "@/components/layout/Header";
@@ -98,6 +99,12 @@ export default function RootLayout({
         />
       </head>
       <body className={geist.className}>
+        <Script
+          src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.9/kakao.min.js"
+          integrity="sha384-JpLApTkB8lPskhVMhT+m5Ln8aHlnS0bsIexhaak0jOhAkMYedQoVghPfSpjNi9K1"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
         <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-green-600 focus:text-white focus:rounded-lg">
           메인 콘텐츠로 이동
         </a>
