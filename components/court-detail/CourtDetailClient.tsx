@@ -368,7 +368,9 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
                 <div className={`flex flex-col items-center justify-center p-4 ${themeClass('bg-white', 'bg-white')}`}>
                   <span className="text-lg mb-1">🏢</span>
                   <p className={themeClass('text-xs text-black/60 font-bold', 'text-xs text-gray-400')}>관리</p>
-                  <p className={`${themeClass('font-black text-black text-sm', 'font-semibold text-gray-800 text-sm')} truncate max-w-[140px]`}>{enrichment.manager}</p>
+                  <p className={`${themeClass('font-black text-black text-sm', 'font-semibold text-gray-800 text-sm')} text-center break-keep`}>
+                    {enrichment.manager.replace(/^\(?\s*위탁\s*\)?\s*[\s()]*/, '').replace(/\(?\s*위탁\s*\)?\s*$/, '').trim() || enrichment.manager}
+                  </p>
                 </div>
               )}
             </div>
