@@ -39,8 +39,8 @@ export default function KakaoShareButton({
     const shareUrl = url || window.location.href;
 
     if (ensureKakaoInit() && window.Kakao.Share) {
+      try { window.Kakao.Share.cleanup(); } catch {}
       try {
-        window.Kakao.Share.cleanup();
         window.Kakao.Share.sendDefault({
           objectType: 'feed',
           content: {
