@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useThemeClass } from '@/lib/cn';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useToast } from '@/contexts/ToastContext';
@@ -9,6 +10,16 @@ import { usePushSubscription } from '@/lib/hooks/usePushSubscription';
 function AlertTypeLabel({ type }: { type: AlertSetting['alert_type'] }) {
   if (type === 'favorite_available') return <span>접수 시작</span>;
   return <span>코트 오픈</span>;
+}
+
+function getAlertHref(alert: AlertSetting): string | null {
+  if (alert.alert_type === 'favorite_available' && alert.district_slug) {
+    return `/${alert.district_slug}/${encodeURIComponent(alert.target_id)}`;
+  }
+  if (alert.alert_type === 'district_available') {
+    return `/${alert.target_id}`;
+  }
+  return null;
 }
 
 export default function AlertSettingsSection() {
@@ -118,37 +129,59 @@ export default function AlertSettingsSection() {
         </div>
       ) : (
         <div className="space-y-3">
-          {alerts.map((alert) => (
-            <div
-              key={alert.id}
-              className={`flex items-center justify-between p-4 ${
-                isNeoBrutalism
-                  ? 'bg-white border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000]'
-                  : 'bg-white rounded-xl border border-gray-200'
-              }`}
-            >
-              <div className="flex-1 min-w-0">
-                <p className={`truncate ${themeClass('font-bold text-black', 'font-medium text-gray-900')}`}>
-                  {alert.target_name}
-                </p>
-                <p className={`text-sm ${themeClass('text-black/60', 'text-gray-500')}`}>
-                  <AlertTypeLabel type={alert.alert_type} />
-                  {' · '}
-                  {alert.enabled ? '활성' : '비활성'}
-                </p>
+          {alerts.map((alert) => {
+            const href = getAlertHref(alert);
+            const cardClass = `flex items-center justify-between p-4 ${
+              isNeoBrutalism
+                ? 'bg-white border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000]'
+                : 'bg-white rounded-xl border border-gray-200'
+            }`;
+            const content = (
+              <>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-1">
+                    <p className={`truncate ${themeClass('font-bold text-black', 'font-medium text-gray-900')}`}>
+                      {alert.target_name}
+                    </p>
+                    {href && (
+                      <svg className={`w-4 h-4 shrink-0 ${themeClass('text-black/40', 'text-gray-300')}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    )}
+                  </div>
+                  <p className={`text-sm ${themeClass('text-black/60', 'text-gray-500')}`}>
+                    <AlertTypeLabel type={alert.alert_type} />
+                    {' · '}
+                    {alert.enabled ? '활성' : '비활성'}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleRemoveAlert(alert);
+                  }}
+                  className={`shrink-0 p-2 transition-colors ${themeClass('text-black/50 hover:text-red-600', 'text-gray-400 hover:text-red-500')}`}
+                  aria-label={`${alert.target_name} 알림 삭제`}
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                </button>
+              </>
+            );
+
+            return href ? (
+              <Link key={alert.id} href={href} className={cardClass}>
+                {content}
+              </Link>
+            ) : (
+              <div key={alert.id} className={cardClass}>
+                {content}
               </div>
-              <button
-                type="button"
-                onClick={() => handleRemoveAlert(alert)}
-                className={`shrink-0 p-2 transition-colors ${themeClass('text-black/50 hover:text-red-600', 'text-gray-400 hover:text-red-500')}`}
-                aria-label={`${alert.target_name} 알림 삭제`}
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                </svg>
-              </button>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

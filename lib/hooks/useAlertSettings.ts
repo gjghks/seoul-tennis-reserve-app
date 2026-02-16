@@ -8,6 +8,7 @@ export interface AlertSetting {
   alert_type: 'favorite_available' | 'district_available';
   target_id: string;
   target_name: string;
+  district_slug: string | null;
   enabled: boolean;
   created_at: string;
 }
@@ -31,14 +32,15 @@ export function useAlertSettings() {
   const toggleAlert = async (
     alertType: AlertSetting['alert_type'],
     targetId: string,
-    targetName: string
+    targetName: string,
+    districtSlug?: string
   ): Promise<boolean> => {
     if (!user) return false;
 
     const res = await fetch('/api/alerts', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ alertType, targetId, targetName }),
+      body: JSON.stringify({ alertType, targetId, targetName, districtSlug }),
     });
 
     if (!res.ok) return false;

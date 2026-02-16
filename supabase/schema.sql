@@ -169,6 +169,9 @@ create table public.alert_settings (
   created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 
+-- Optional district slug for linking to court detail page
+alter table public.alert_settings add column if not exists district_slug text;
+
 create unique index alert_settings_unique on public.alert_settings(user_id, alert_type, target_id);
 create index alert_settings_enabled_idx on public.alert_settings(enabled) where enabled = true;
 

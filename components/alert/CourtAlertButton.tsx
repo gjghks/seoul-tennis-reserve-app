@@ -12,10 +12,11 @@ import Spinner from '@/components/ui/Spinner';
 interface CourtAlertButtonProps {
   svcId: string;
   svcName: string;
+  districtSlug?: string;
   className?: string;
 }
 
-export default function CourtAlertButton({ svcId, svcName, className = '' }: CourtAlertButtonProps) {
+export default function CourtAlertButton({ svcId, svcName, districtSlug, className = '' }: CourtAlertButtonProps) {
   const { user, loading: authLoading } = useAuth();
   const themeClass = useThemeClass();
   const { showToast } = useToast();
@@ -55,7 +56,7 @@ export default function CourtAlertButton({ svcId, svcName, className = '' }: Cou
         }
       }
 
-      const success = await toggleAlert('favorite_available', svcId, svcName);
+      const success = await toggleAlert('favorite_available', svcId, svcName, districtSlug);
       if (success) {
         showToast(
           alertOn ? '접수 알림이 해제되었습니다' : '접수 시작 시 알림을 보내드립니다',

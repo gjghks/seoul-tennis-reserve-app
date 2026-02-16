@@ -11,6 +11,7 @@ type AlertBody = {
   alertType: AlertType;
   targetId: string;
   targetName: string;
+  districtSlug?: string;
 };
 
 function parseAlertBody(value: unknown): AlertBody | null {
@@ -33,6 +34,7 @@ function parseAlertBody(value: unknown): AlertBody | null {
     alertType: body.alertType as AlertType,
     targetId: body.targetId,
     targetName: body.targetName,
+    districtSlug: typeof body.districtSlug === 'string' ? body.districtSlug : undefined,
   };
 }
 
@@ -110,12 +112,17 @@ export async function POST(request: NextRequest) {
   }
 
   if (existing) {
+    const updatePayload: Record<string, unknown> = {
+      enabled: !existing.enabled,
+      target_name: parsed.targetName,
+    };
+    if (parsed.districtSlug) {
+      updatePayload.district_slug = parsed.districtSlug;
+    }
+
     const { data, error } = await supabase
       .from('alert_settings')
-      .update({
-        enabled: !existing.enabled,
-        target_name: parsed.targetName,
-      })
+      .update(updatePayload)
       .eq('id', existing.id)
       .eq('user_id', user.id)
       .select()
@@ -136,6 +143,7 @@ export async function POST(request: NextRequest) {
       alert_type: parsed.alertType,
       target_id: parsed.targetId,
       target_name: parsed.targetName,
+      district_slug: parsed.districtSlug ?? null,
       enabled: true,
     })
     .select()

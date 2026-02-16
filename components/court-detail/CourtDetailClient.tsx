@@ -169,6 +169,7 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
               <CourtAlertButton
                 svcId={court.SVCID}
                 svcName={court.SVCNM}
+                districtSlug={districtSlug}
               />
               <FavoriteButton
                 svcId={court.SVCID}
