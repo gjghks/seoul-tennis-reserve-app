@@ -2,8 +2,10 @@
 
 import dynamic from 'next/dynamic';
 import PullToRefresh from 'react-simple-pull-to-refresh';
+import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useTennisData, DistrictStats } from '@/contexts/TennisDataContext';
+import { useFavorites } from '@/hooks/useFavorites';
 import DistrictGrid from '@/components/district/DistrictGrid';
 import AdBanner from '@/components/ads/AdBanner';
 import { AD_SLOTS } from '@/lib/adConfig';
@@ -39,6 +41,11 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
   const { isNeoBrutalism } = useTheme();
   const themeClass = useThemeClass();
   const { stats, isLoading, error, mutate, lastUpdated } = useTennisData();
+  const { user, loading: authLoading } = useAuth();
+  const { favorites, loading: favLoading } = useFavorites();
+
+  const showFavoritesAbove = !!user && !authLoading && !favLoading && favorites.length > 0;
+  const favoritesLoading = !!user && !authLoading && favLoading;
 
   const displayStats = stats || initialStats;
 
@@ -131,6 +138,23 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
         </div>
       </section>
 
+      {showFavoritesAbove && (
+        <div className="pt-4 pb-2 lg:pt-3 lg:pb-1">
+          <FavoriteCourtSection />
+        </div>
+      )}
+
+      {favoritesLoading && (
+        <div className="container pt-4 pb-2 lg:pt-3 lg:pb-1">
+          <div className={`h-5 w-28 mb-3 ${themeClass('skeleton-neo', 'skeleton')} rounded`} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[1, 2].map(i => (
+              <div key={`fav-above-skeleton-${i}`} className={`h-24 ${themeClass('skeleton-neo !rounded-[10px] !border-[3px]', 'skeleton !rounded-xl')}`} />
+            ))}
+          </div>
+        </div>
+      )}
+
       <section className="container pt-4 pb-6 lg:pt-3 lg:pb-4 flex-1 flex flex-col">
         <div className="mb-4 lg:mb-3">
           <div className="flex items-center gap-1.5 mb-2">
@@ -167,9 +191,11 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
         </div>
       )}
 
-      <div className="pt-2 pb-6 lg:pt-1 lg:pb-4">
-        <FavoriteCourtSection />
-      </div>
+      {!showFavoritesAbove && (
+        <div className="pt-2 pb-6 lg:pt-1 lg:pb-4">
+          <FavoriteCourtSection />
+        </div>
+      )}
 
       <div className="pb-6 lg:pb-4">
         <PopularCourts />
