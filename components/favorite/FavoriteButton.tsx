@@ -119,16 +119,16 @@ export default function FavoriteButton({
         aria-label={isFavorite ? '즐겨찾기 해제' : '즐겨찾기 추가'}
         aria-pressed={isFavorite}
         className={themeClass(
-          `flex items-center gap-2 px-3 py-2 border-2 border-black rounded-[5px] transition-all font-bold ${
+          `flex items-center gap-2 px-3 py-2 border-2 border-black rounded-[5px] transition-all active:duration-0 font-bold ${
             isFavorite
               ? 'bg-[#f472b6] text-black shadow-[3px_3px_0px_0px_#000]'
-              : 'bg-white text-black shadow-[3px_3px_0px_0px_#000] hover:bg-[#f472b6]'
-          } ${loading ? 'cursor-not-allowed' : 'hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none'} ${className}`,
-          `flex items-center gap-2 px-3 py-2 rounded-lg transition-all ${
+              : 'bg-white text-black shadow-[3px_3px_0px_0px_#000] active:bg-[#f472b6]'
+          } ${loading ? 'cursor-not-allowed' : 'active:translate-x-[3px] active:translate-y-[3px] active:shadow-none'} ${className}`,
+          `flex items-center gap-2 px-3 py-2 rounded-lg transition-all active:duration-0 ${
             isFavorite
               ? 'bg-pink-50 text-pink-600'
-              : 'bg-gray-100 text-gray-500 hover:text-pink-600'
-          } ${loading ? 'cursor-not-allowed' : 'hover:bg-pink-50'} ${className}`
+              : 'bg-gray-100 text-gray-500 active:text-pink-600'
+          } ${loading ? 'cursor-not-allowed' : 'active:bg-pink-50'} ${className}`
         )}
       >
         {loading ? (

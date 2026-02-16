@@ -82,16 +82,16 @@ export default function CourtAlertButton({ svcId, svcName, className = '' }: Cou
         aria-label={alertOn ? '접수 알림 해제' : '접수 시작 알림 받기'}
         aria-pressed={alertOn}
         className={themeClass(
-          `flex items-center gap-2 px-3 py-2 border-2 border-black rounded-[5px] transition-all font-bold ${
+          `flex items-center gap-2 px-3 py-2 border-2 border-black rounded-[5px] transition-all active:duration-0 font-bold ${
             alertOn
               ? 'bg-[#facc15] text-black shadow-[3px_3px_0px_0px_#000]'
-              : 'bg-white text-black shadow-[3px_3px_0px_0px_#000] hover:bg-[#facc15]'
-          } ${loading ? 'cursor-not-allowed' : 'hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none'} ${className}`,
-          `flex items-center gap-2 px-3 py-2 rounded-lg transition-all ${
+              : 'bg-white text-black shadow-[3px_3px_0px_0px_#000] active:bg-[#facc15]'
+          } ${loading ? 'cursor-not-allowed' : 'active:translate-x-[3px] active:translate-y-[3px] active:shadow-none'} ${className}`,
+          `flex items-center gap-2 px-3 py-2 rounded-lg transition-all active:duration-0 ${
             alertOn
               ? 'bg-amber-50 text-amber-600'
-              : 'bg-gray-100 text-gray-500 hover:text-amber-600'
-          } ${loading ? 'cursor-not-allowed' : 'hover:bg-amber-50'} ${className}`
+              : 'bg-gray-100 text-gray-500 active:text-amber-600'
+          } ${loading ? 'cursor-not-allowed' : 'active:bg-amber-50'} ${className}`
         )}
       >
         {loading ? (
