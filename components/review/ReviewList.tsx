@@ -224,7 +224,7 @@ export default function ReviewList({ reviews, onReviewDeleted }: ReviewListProps
             src={currentImage}
             alt={`후기 이미지 ${currentIndex + 1}`}
             fill
-            sizes="(max-width: 1024px) 100vw, 1024px"
+            unoptimized
             className="object-contain"
             priority
           />

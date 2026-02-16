@@ -255,7 +255,7 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
               src={court.IMGURL}
               alt={court.SVCNM}
               fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+              unoptimized
               className="object-cover"
               onError={() => setImageError(true)}
               priority

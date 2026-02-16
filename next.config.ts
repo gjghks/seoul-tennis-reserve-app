@@ -80,6 +80,10 @@ const nextConfig: NextConfig = {
     ];
   },
   images: {
+    minimumCacheTTL: 2678400, // 31 days
+    deviceSizes: [640, 828, 1200],
+    imageSizes: [80, 256],
+    formats: ['image/webp'],
     remotePatterns: [
       {
         protocol: 'https',
