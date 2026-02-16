@@ -103,8 +103,8 @@ export default function KakaoShareButton({
       onClick={handleKakaoShare}
       aria-label="카카오톡 공유"
       className={themeClass(
-        `flex items-center gap-2 px-3 py-2 border-2 border-black rounded-[5px] bg-[#FFE812] text-black font-bold shadow-[3px_3px_0px_0px_#000] transition-all hover:bg-[#FFD700] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none ${className}`,
-        `flex items-center gap-2 px-3 py-2 rounded-lg bg-yellow-100 text-yellow-700 transition-all hover:bg-yellow-200 hover:text-yellow-800 ${className}`
+        `flex items-center gap-2 px-3 py-2 border-2 border-black rounded-[5px] bg-[#FFE812] text-black font-bold shadow-[3px_3px_0px_0px_#000] transition-all active:bg-[#FFD700] active:translate-x-[3px] active:translate-y-[3px] active:shadow-none ${className}`,
+        `flex items-center gap-2 px-3 py-2 rounded-lg bg-yellow-100 text-yellow-700 transition-all active:bg-yellow-200 active:text-yellow-800 ${className}`
       )}
     >
       <svg
