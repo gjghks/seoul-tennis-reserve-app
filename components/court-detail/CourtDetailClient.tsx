@@ -369,7 +369,7 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
                   <span className="text-lg mb-1">🏢</span>
                   <p className={themeClass('text-xs text-black/60 font-bold', 'text-xs text-gray-400')}>관리</p>
                   <p className={`${themeClass('font-black text-black text-sm', 'font-semibold text-gray-800 text-sm')} text-center break-keep`}>
-                    {enrichment.manager.replace(/^\(?\s*위탁\s*\)?\s*[\s()]*/, '').replace(/\(?\s*위탁\s*\)?\s*$/, '').trim() || enrichment.manager}
+                    {enrichment.manager}
                   </p>
                 </div>
               )}
