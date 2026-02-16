@@ -1,8 +1,9 @@
 'use client';
 
 import { useCallback } from 'react';
-import { Map as KakaoMap, MapMarker, CustomOverlayMap, ZoomControl, useKakaoLoader } from 'react-kakao-maps-sdk';
+import { Map as KakaoMap, MapMarker, CustomOverlayMap, ZoomControl } from 'react-kakao-maps-sdk';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useKakaoLoaderWithHttps } from '@/lib/hooks/useKakaoLoaderWithHttps';
 
 interface CourtDetailMapProps {
   lat: number;
@@ -13,9 +14,7 @@ interface CourtDetailMapProps {
 export default function CourtDetailMap({ lat, lng, placeName }: CourtDetailMapProps) {
   const { isNeoBrutalism } = useTheme();
 
-  const [, error] = useKakaoLoader({
-    appkey: process.env.NEXT_PUBLIC_KAKAO_MAP_KEY!,
-  });
+  const [, error] = useKakaoLoaderWithHttps();
 
   const shortPlaceName = placeName.includes('>') ? placeName.split('>').pop()!.trim() : placeName;
   const destParam = `${encodeURIComponent(shortPlaceName)},${lat},${lng}`;

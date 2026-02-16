@@ -1,10 +1,11 @@
 'use client';
 
 import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
-import { Map as KakaoMap, MapMarker, CustomOverlayMap, ZoomControl, useKakaoLoader } from 'react-kakao-maps-sdk';
+import { Map as KakaoMap, MapMarker, CustomOverlayMap, ZoomControl } from 'react-kakao-maps-sdk';
 import { useRouter } from 'next/navigation';
 import { SeoulService } from '@/lib/seoulApi';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useKakaoLoaderWithHttps } from '@/lib/hooks/useKakaoLoaderWithHttps';
 
 interface CourtGroup {
   key: string;
@@ -40,9 +41,7 @@ export default function KakaoMapView({ courts, district, focusPlaceName, onPlace
   const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [mapCenter, setMapCenter] = useState<{ lat: number; lng: number } | null>(null);
 
-  const [, error] = useKakaoLoader({
-    appkey: process.env.NEXT_PUBLIC_KAKAO_MAP_KEY!,
-  });
+  const [, error] = useKakaoLoaderWithHttps();
 
   const validCourts = useMemo(
     () => courts.filter(c => c.X && c.Y && parseFloat(c.X) !== 0 && parseFloat(c.Y) !== 0),
