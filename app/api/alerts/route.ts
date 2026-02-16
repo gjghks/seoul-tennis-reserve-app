@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerSupabaseClient } from '@/lib/supabaseServer';
 import { createRateLimiter } from '@/lib/rateLimit';
+import { KOREAN_TO_SLUG } from '@/lib/constants/districts';
 
 const limiter = createRateLimiter({ windowMs: 60_000, maxRequests: 30 });
 
@@ -59,7 +60,45 @@ export async function GET() {
     return NextResponse.json({ error: 'Failed to fetch alerts' }, { status: 500 });
   }
 
-  return NextResponse.json({ alerts: data ?? [] });
+  const alerts = data ?? [];
+  const missingSlugAlerts = alerts.filter(
+    (a) => a.alert_type === 'favorite_available' && !a.district_slug
+  );
+
+  if (missingSlugAlerts.length > 0) {
+    const targetIds = missingSlugAlerts.map((a) => a.target_id);
+    const { data: cacheRows } = await supabase
+      .from('court_status_cache')
+      .select('svc_id, district')
+      .in('svc_id', targetIds);
+
+    if (cacheRows && cacheRows.length > 0) {
+      const slugMap = new Map(
+        cacheRows.map((r) => [r.svc_id, KOREAN_TO_SLUG[r.district] ?? null])
+      );
+
+      for (const alert of alerts) {
+        if (alert.alert_type === 'favorite_available' && !alert.district_slug) {
+          const slug = slugMap.get(alert.target_id);
+          if (slug) alert.district_slug = slug;
+        }
+      }
+
+      const updates = cacheRows
+        .filter((r) => KOREAN_TO_SLUG[r.district])
+        .map((r) =>
+          supabase
+            .from('alert_settings')
+            .update({ district_slug: KOREAN_TO_SLUG[r.district] })
+            .eq('alert_type', 'favorite_available')
+            .is('district_slug', null)
+            .eq('target_id', r.svc_id)
+        );
+      Promise.allSettled(updates).catch(() => {});
+    }
+  }
+
+  return NextResponse.json({ alerts });
 }
 
 export async function POST(request: NextRequest) {
