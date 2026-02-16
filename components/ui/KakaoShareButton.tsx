@@ -25,6 +25,17 @@ function ensureKakaoInit(): boolean {
   return window.Kakao.isInitialized();
 }
 
+// Fallback: dynamically load SDK with cache-busting when SW serves stale response
+function loadKakaoSdkFallback(): Promise<boolean> {
+  return new Promise((resolve) => {
+    const script = document.createElement('script');
+    script.src = `https://t1.kakaocdn.net/kakao_js_sdk/2.7.9/kakao.min.js?_=${Date.now()}`;
+    script.onload = () => resolve(ensureKakaoInit());
+    script.onerror = () => resolve(false);
+    document.head.appendChild(script);
+  });
+}
+
 export default function KakaoShareButton({
   title,
   description,
@@ -35,37 +46,42 @@ export default function KakaoShareButton({
   const themeClass = useThemeClass();
   const { showToast } = useToast();
 
+  const sendKakaoShare = (shareUrl: string) => {
+    try { window.Kakao.Share.cleanup(); } catch {}
+    window.Kakao.Share.sendDefault({
+      objectType: 'feed',
+      content: {
+        title,
+        description,
+        imageUrl: imageUrl || 'https://seoul-tennis.com/opengraph-image',
+        link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
+      },
+      buttons: [{
+        title: '예약 현황 보기',
+        link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
+      }],
+    });
+  };
+
   const handleKakaoShare = async () => {
     const shareUrl = url || window.location.href;
 
     if (ensureKakaoInit() && window.Kakao.Share) {
-      try { window.Kakao.Share.cleanup(); } catch {}
       try {
-        window.Kakao.Share.sendDefault({
-          objectType: 'feed',
-          content: {
-            title,
-            description,
-            imageUrl: imageUrl || 'https://seoul-tennis.com/opengraph-image',
-            link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
-          },
-          buttons: [{
-            title: '예약 현황 보기',
-            link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
-          }],
-        });
+        sendKakaoShare(shareUrl);
         return;
       } catch (error) {
         console.error('Kakao share failed:', error);
       }
     }
 
-    if (navigator.share) {
+    const fallbackLoaded = await loadKakaoSdkFallback();
+    if (fallbackLoaded && window.Kakao.Share) {
       try {
-        await navigator.share({ title, text: description, url: shareUrl });
+        sendKakaoShare(shareUrl);
         return;
       } catch (error) {
-        if ((error as DOMException).name === 'AbortError') return;
+        console.error('Kakao share fallback failed:', error);
       }
     }
 

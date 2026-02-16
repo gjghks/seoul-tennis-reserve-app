@@ -30,7 +30,7 @@ const imageCache = {
 const kakaoSdkBypass = {
   matcher: ({ url }: { url: URL }) =>
     url.hostname === 't1.kakaocdn.net' || url.hostname === 'developers.kakao.com',
-  handler: new NetworkOnly(),
+  handler: new NetworkOnly({ fetchOptions: { cache: 'no-store' } }),
 };
 
 const serwist = new Serwist({
