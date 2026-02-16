@@ -1,7 +1,7 @@
 /// <reference lib="webworker" />
 import { defaultCache } from "@serwist/next/worker";
 import type { PrecacheEntry, SerwistGlobalConfig } from "serwist";
-import { Serwist, CacheFirst, NetworkOnly, ExpirationPlugin } from "serwist";
+import { Serwist, CacheFirst, NetworkFirst, NetworkOnly, ExpirationPlugin } from "serwist";
 
 declare global {
   interface WorkerGlobalScope extends SerwistGlobalConfig {
@@ -13,10 +13,27 @@ declare const self: ServiceWorkerGlobalScope & WorkerGlobalScope & typeof global
 
 const THIRTY_DAYS_IN_SECONDS = 60 * 60 * 24 * 30;
 
-const imageCache = {
-  matcher: ({ request }: { request: Request }) => request.destination === "image",
+const externalImageCache = {
+  matcher: ({ request, url }: { request: Request; url: URL }) =>
+    request.destination === "image" && url.hostname !== self.location.hostname,
+  handler: new NetworkFirst({
+    cacheName: "external-images",
+    networkTimeoutSeconds: 5,
+    plugins: [
+      new ExpirationPlugin({
+        maxEntries: 100,
+        maxAgeSeconds: THIRTY_DAYS_IN_SECONDS,
+        purgeOnQuotaError: true,
+      }),
+    ],
+  }),
+};
+
+const localImageCache = {
+  matcher: ({ request, url }: { request: Request; url: URL }) =>
+    request.destination === "image" && url.hostname === self.location.hostname,
   handler: new CacheFirst({
-    cacheName: "tennis-court-images",
+    cacheName: "local-images",
     plugins: [
       new ExpirationPlugin({
         maxEntries: 100,
@@ -41,7 +58,7 @@ const serwist = new Serwist({
   skipWaiting: true,
   clientsClaim: true,
   navigationPreload: true,
-  runtimeCaching: [kakaoSdkBypass, imageCache, ...defaultCache],
+  runtimeCaching: [kakaoSdkBypass, externalImageCache, localImageCache, ...defaultCache],
 });
 
 serwist.addEventListeners();
