@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import useSWR from 'swr';
 import { useThemeClass } from '@/lib/cn';
+import { useScrollFade } from '@/lib/hooks/useScrollFade';
 
 interface CongestionBadgeProps {
   lat: number;
@@ -88,6 +89,7 @@ function formatUpdatedTime(time: string): string {
 export default function CongestionBadge({ lat, lng, isNeoBrutalism, variant = 'compact' }: CongestionBadgeProps) {
   const themeClass = useThemeClass();
   const [expanded, setExpanded] = useState(false);
+  const { scrollRef: forecastScrollRef, showFade: showForecastFade } = useScrollFade();
 
   const { data, isLoading } = useSWR<CongestionResponse>(
     `/api/city-data?lat=${lat}&lng=${lng}&fields=congestion`,
@@ -197,35 +199,40 @@ export default function CongestionBadge({ lat, lng, isNeoBrutalism, variant = 'c
           </button>
 
           {expanded && (
-            <div className="mt-2 overflow-x-auto scrollbar-hide -mx-1 px-1">
-              <div className="flex gap-2 min-w-max pb-1">
-                {congestion.forecast.map((f) => {
-                  const fColor = resolveCongestionColor(f.level);
-                  return (
-                    <div
-                      key={f.time}
-                      className={themeClass(
-                        'flex flex-col items-center gap-1 px-2.5 py-2 rounded-[5px] border-2 border-black/15 min-w-[60px]',
-                        'flex flex-col items-center gap-1 px-2.5 py-2 rounded-lg border border-gray-100 min-w-[60px]'
-                      )}
-                    >
-                      <span className={themeClass(
-                        'text-[10px] font-black text-black/40',
-                        'text-[10px] text-gray-400'
-                      )}>
-                        {formatForecastTime(f.time)}
-                      </span>
-                      <span className={`w-2.5 h-2.5 rounded-full ${fColor.dot}`} />
-                      <span className={themeClass(
-                        `text-[10px] font-black ${fColor.textNeo}`,
-                        `text-[10px] font-semibold ${fColor.text}`
-                      )}>
-                        {f.level}
-                      </span>
-                    </div>
-                  );
-                })}
+            <div className="relative mt-2">
+              <div ref={forecastScrollRef} className="overflow-x-auto scrollbar-hide -mx-1 px-1">
+                <div className="flex gap-2 min-w-max pb-1">
+                  {congestion.forecast.map((f) => {
+                    const fColor = resolveCongestionColor(f.level);
+                    return (
+                      <div
+                        key={f.time}
+                        className={themeClass(
+                          'flex flex-col items-center gap-1 px-2.5 py-2 rounded-[5px] border-2 border-black/15 min-w-[60px]',
+                          'flex flex-col items-center gap-1 px-2.5 py-2 rounded-lg border border-gray-100 min-w-[60px]'
+                        )}
+                      >
+                        <span className={themeClass(
+                          'text-[10px] font-black text-black/40',
+                          'text-[10px] text-gray-400'
+                        )}>
+                          {formatForecastTime(f.time)}
+                        </span>
+                        <span className={`w-2.5 h-2.5 rounded-full ${fColor.dot}`} />
+                        <span className={themeClass(
+                          `text-[10px] font-black ${fColor.textNeo}`,
+                          `text-[10px] font-semibold ${fColor.text}`
+                        )}>
+                          {f.level}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
+              {showForecastFade && (
+                <div className="pointer-events-none absolute top-0 right-0 bottom-0 w-8 bg-gradient-to-l from-white to-transparent" />
+              )}
             </div>
           )}
         </>

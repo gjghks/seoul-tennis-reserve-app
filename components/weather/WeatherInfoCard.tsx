@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import useSWR from 'swr';
 import { useThemeClass } from '@/lib/cn';
+import { useScrollFade } from '@/lib/hooks/useScrollFade';
 import type { AirQualityData } from '@/lib/airQualityApi';
 import { resolveAirQualityGradeColor, isAirQualityBad, resolvePmColor, resolvePmColorNeo, getOverallDustAlert, getDustAlertColor } from '@/lib/airQualityApi';
 import type { SeoulDustAlertStatus } from '@/lib/airkoreaApi';
@@ -114,6 +115,7 @@ function formatForecastHour(fcstDt: string): string {
 export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, district, courtLat, courtLng }: WeatherInfoCardProps) {
   const themeClass = useThemeClass();
   const [forecastExpanded, setForecastExpanded] = useState(false);
+  const { scrollRef: forecastScrollRef, showFade: showForecastFade } = useScrollFade();
 
   const { data, isLoading } = useSWR<WeatherResponse>(`/api/weather?nx=${nx}&ny=${ny}`, weatherFetcher, {
     revalidateOnFocus: false,
@@ -348,33 +350,38 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
           </button>
 
           {forecastExpanded && (
-            <div className="mt-2 overflow-x-auto scrollbar-hide -mx-1 px-1">
-              <div className="flex gap-1.5 min-w-max pb-1">
-                {forecast.slice(0, 12).map((f) => (
-                  <div
-                    key={f.time}
-                    className={themeClass(
-                      'flex flex-col items-center gap-1 px-2.5 py-2 rounded-[5px] border-2 border-black/15 min-w-[52px]',
-                      'flex flex-col items-center gap-1 px-2.5 py-2 rounded-lg border border-gray-100 min-w-[52px]'
-                    )}
-                  >
-                    <span className={themeClass('text-[10px] font-black text-black/40', 'text-[10px] text-gray-400')}>
-                      {formatForecastHour(f.time)}
-                    </span>
-                    <span className="text-sm leading-none">
-                      {resolveForecastIcon(f.sky, f.precipitation)}
-                    </span>
-                    <span className={themeClass('text-[11px] font-black text-black', 'text-[11px] font-semibold text-gray-700')}>
-                      {f.temp}°
-                    </span>
-                    {f.rainChance > 0 && (
-                      <span className={themeClass('text-[9px] font-bold text-[#3b82f6]', 'text-[9px] text-blue-500')}>
-                        {f.rainChance}%
+            <div className="relative mt-2">
+              <div ref={forecastScrollRef} className="overflow-x-auto scrollbar-hide -mx-1 px-1">
+                <div className="flex gap-1.5 min-w-max pb-1">
+                  {forecast.slice(0, 12).map((f) => (
+                    <div
+                      key={f.time}
+                      className={themeClass(
+                        'flex flex-col items-center gap-1 px-2.5 py-2 rounded-[5px] border-2 border-black/15 min-w-[52px]',
+                        'flex flex-col items-center gap-1 px-2.5 py-2 rounded-lg border border-gray-100 min-w-[52px]'
+                      )}
+                    >
+                      <span className={themeClass('text-[10px] font-black text-black/40', 'text-[10px] text-gray-400')}>
+                        {formatForecastHour(f.time)}
                       </span>
-                    )}
-                  </div>
-                ))}
+                      <span className="text-sm leading-none">
+                        {resolveForecastIcon(f.sky, f.precipitation)}
+                      </span>
+                      <span className={themeClass('text-[11px] font-black text-black', 'text-[11px] font-semibold text-gray-700')}>
+                        {f.temp}°
+                      </span>
+                      {f.rainChance > 0 && (
+                        <span className={themeClass('text-[9px] font-bold text-[#3b82f6]', 'text-[9px] text-blue-500')}>
+                          {f.rainChance}%
+                        </span>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
+              {showForecastFade && (
+                <div className="pointer-events-none absolute top-0 right-0 bottom-0 w-8 bg-gradient-to-l from-white to-transparent" />
+              )}
             </div>
           )}
         </>
