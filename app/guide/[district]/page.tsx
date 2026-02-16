@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { fetchTennisAvailability } from '@/lib/seoulApi';
 import { SLUG_TO_KOREAN, getDistrictBySlug, DISTRICTS } from '@/lib/constants/districts';
 import { computeAllDistrictStats, getDistrictRank } from '@/lib/utils/districtStats';
@@ -47,6 +48,59 @@ export async function generateStaticParams() {
   return DISTRICTS.map((d) => ({ district: d.slug }));
 }
 
+function GuideUnavailable({ nameKo, district }: { nameKo: string; district: string }) {
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <section className="court-pattern text-white py-6">
+        <div className="container relative z-10">
+          <nav className="mb-3">
+            <ol className="flex items-center gap-1.5 text-sm text-white/70 flex-wrap">
+              <li>
+                <Link href="/" className="hover:text-white transition-colors">홈</Link>
+              </li>
+              <li>/</li>
+              <li>
+                <Link href="/compare" className="hover:text-white transition-colors">구별 비교</Link>
+              </li>
+              <li>/</li>
+              <li className="text-white font-bold">{nameKo} 가이드</li>
+            </ol>
+          </nav>
+          <h1 className="text-2xl sm:text-3xl font-bold">
+            {nameKo} 테니스장 가이드
+          </h1>
+        </div>
+      </section>
+      <section className="container py-16">
+        <div className="max-w-md mx-auto text-center">
+          <div className="text-5xl mb-4">🔄</div>
+          <h2 className="text-xl font-bold text-gray-900 mb-2">
+            데이터를 불러오는 중입니다
+          </h2>
+          <p className="text-gray-600 mb-6">
+            서울시 공공데이터 API에서 {nameKo} 테니스장 정보를 가져오지 못했습니다.
+            잠시 후 다시 방문해 주세요.
+          </p>
+          <div className="flex gap-3 justify-center">
+            <Link
+              href={`/guide/${district}`}
+              className="px-5 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
+            >
+              새로고침
+            </Link>
+            <Link
+              href="/compare"
+              className="px-5 py-2.5 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors font-medium"
+            >
+              구별 비교 보기
+            </Link>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
 export default async function GuidePage({ params }: GuidePageProps) {
   const { district } = await params;
   const koreanName = SLUG_TO_KOREAN[district];
@@ -60,7 +114,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
   const districtStat = allStats.districts.find((d) => d.nameKo === koreanName);
 
   if (!districtStat) {
-    notFound();
+    return <GuideUnavailable nameKo={koreanName} district={district} />;
   }
 
   const facilityRank = getDistrictRank(allStats, koreanName, 'totalCourts');

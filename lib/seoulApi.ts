@@ -139,6 +139,6 @@ export async function fetchTennisAvailability(startIndex = 1, endIndex = 1000): 
         return tennisDataCache.data;
     }
 
-    console.error('Error fetching tennis availability:', lastError);
-    throw lastError;
+    console.error('Seoul API failed with no cache fallback. Returning empty array:', lastError);
+    return [];
 }
