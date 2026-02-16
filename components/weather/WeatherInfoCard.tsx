@@ -7,6 +7,7 @@ import { useScrollFade } from '@/lib/hooks/useScrollFade';
 import type { AirQualityData } from '@/lib/airQualityApi';
 import { resolveAirQualityGradeColor, isAirQualityBad, resolvePmColor, resolvePmColorNeo, getOverallDustAlert, getDustAlertColor } from '@/lib/airQualityApi';
 import type { SeoulDustAlertStatus } from '@/lib/airkoreaApi';
+import type { LivingWeatherData } from '@/lib/livingWeatherApi';
 
 interface WeatherInfoCardProps {
   nx: number;
@@ -65,6 +66,12 @@ const cityDataFetcher = async (url: string): Promise<CityDataWeatherResponse> =>
   return response.json();
 };
 
+const livingWeatherFetcher = async (url: string): Promise<LivingWeatherData> => {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error('Failed to fetch living weather');
+  return response.json();
+};
+
 function resolveIcon(sky: string | null, rainfall: number | null): string {
   if (sky === '눈' || sky === '비/눈') return '❄️';
   if (sky === '비' || sky === '소나기' || (rainfall ?? 0) > 0) return '🌧️';
@@ -95,6 +102,19 @@ function resolveWarning(
   if (dustAlertLevel === '주의보') return `미세먼지 주의보${suffix} 실내 코트를 추천합니다`;
   if (airGrade && isAirQualityBad(airGrade)) return '미세먼지 주의! 실내 코트를 추천합니다';
   return null;
+}
+
+function resolveUvLabel(value: number): string {
+  if (value >= 11) return '위험';
+  if (value >= 8) return '매우높음';
+  if (value >= 6) return '높음';
+  if (value >= 3) return '보통';
+  return '낮음';
+}
+
+function resolveAirDiffusionColor(level: number) {
+  if (level >= 100) return { bg: 'bg-red-50', text: 'text-red-700', bgNeo: 'bg-[#fca5a5]', textNeo: 'text-black', borderNeo: 'border-black', border: 'border-red-200' };
+  return { bg: 'bg-orange-50', text: 'text-orange-700', bgNeo: 'bg-[#fed7aa]', textNeo: 'text-black', borderNeo: 'border-black', border: 'border-orange-200' };
 }
 
 function resolveUvColor(levelStr: string): { bg: string; text: string; bgNeo: string; textNeo: string } {
@@ -152,6 +172,15 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
     revalidateOnReconnect: true,
     refreshInterval: 10 * 60 * 1000,
     dedupingInterval: 10 * 60 * 1000,
+    keepPreviousData: true,
+  });
+
+  const livingWeatherUrl = district ? `/api/living-weather?district=${encodeURIComponent(district)}` : null;
+  const { data: livingWeather } = useSWR<LivingWeatherData>(livingWeatherUrl, livingWeatherFetcher, {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: true,
+    refreshInterval: 3 * 60 * 60 * 1000,
+    dedupingInterval: 3 * 60 * 60 * 1000,
     keepPreviousData: true,
   });
 
@@ -259,6 +288,18 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
                   <span>{dustAlert.type === 'pm25' ? '초미세먼지' : '미세먼지'} {dustAlert.level}{isOfficialAlert ? ' 발령 중' : '급'}</span>
                 </div>
               )}
+              {livingWeather?.airDiffusion && livingWeather.airDiffusion.currentLevel !== null && livingWeather.airDiffusion.currentLevel >= 75 && (() => {
+                const adColor = resolveAirDiffusionColor(livingWeather.airDiffusion.currentLevel);
+                return (
+                  <div className={themeClass(
+                    `mt-1.5 inline-flex items-center gap-1 px-1.5 py-0.5 text-[11px] font-black rounded-[3px] border-2 ${adColor.borderNeo} ${adColor.bgNeo} ${adColor.textNeo}`,
+                    `mt-1.5 inline-flex items-center gap-1 px-1.5 py-0.5 text-[11px] font-semibold rounded border ${adColor.border} ${adColor.bg} ${adColor.text}`
+                  )}>
+                    <span className="text-xs leading-none">🌬️</span>
+                    <span>대기정체 {livingWeather.airDiffusion.currentLabel}</span>
+                  </div>
+                );
+              })()}
             </div>
           </>
         )}
@@ -284,6 +325,34 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
               {uvData.uvMsg.split('.')[0]}
             </p>
           )}
+        </div>
+      )}
+
+      {isOutdoor && livingWeather?.uv && (livingWeather.uv.todayMax > 0 || livingWeather.uv.tomorrowMax > 0) && (
+        <div className={themeClass(
+          'mt-3 pt-3 border-t-2 border-black/10 flex items-center gap-2 flex-wrap',
+          'mt-3 pt-3 border-t border-gray-100 flex items-center gap-2 flex-wrap'
+        )}>
+          <span className="text-sm leading-none">☀️</span>
+          <span className={themeClass('text-[11px] font-black text-black/50', 'text-[11px] text-gray-400')}>자외선 예보</span>
+          {[
+            { label: '오늘', value: livingWeather.uv.todayMax },
+            { label: '내일', value: livingWeather.uv.tomorrowMax },
+            { label: '모레', value: livingWeather.uv.dayAfterMax },
+          ].filter(d => d.value > 0).map(d => {
+            const color = resolveUvColor(String(d.value));
+            return (
+              <span
+                key={d.label}
+                className={themeClass(
+                  `inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-black rounded-[3px] border-2 border-black ${color.bgNeo} ${color.textNeo}`,
+                  `inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-semibold rounded border ${color.bg} ${color.text}`
+                )}
+              >
+                {d.label} {resolveUvLabel(d.value)}
+              </span>
+            );
+          })}
         </div>
       )}
 

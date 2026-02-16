@@ -120,9 +120,8 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
 
   const isOutdoorCourt = useMemo(() => {
     const source = `${court.SVCNM || ''} ${court.PLACENM || ''} ${court.DTLCONT || ''}`;
-    const includesOutdoor = /(실외|야외|옥외|노천|outdoor)/i.test(source);
     const includesIndoor = /(실내|indoor)/i.test(source);
-    return includesOutdoor && !includesIndoor;
+    return !includesIndoor;
   }, [court.DTLCONT, court.PLACENM, court.SVCNM]);
 
   const formatDate = (dateStr: string) => {
