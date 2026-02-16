@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import useSWR from 'swr';
 import { useThemeClass } from '@/lib/cn';
 import type { AirQualityData } from '@/lib/airQualityApi';
@@ -12,6 +13,8 @@ interface WeatherInfoCardProps {
   isOutdoor: boolean;
   isNeoBrutalism: boolean;
   district?: string;
+  courtLat?: number;
+  courtLng?: number;
 }
 
 interface WeatherResponse {
@@ -20,6 +23,21 @@ interface WeatherResponse {
   rainfall: number | null;
   windSpeed: number | null;
   sky: string | null;
+}
+
+interface CityDataWeatherResponse {
+  area: string;
+  weather: {
+    temp: number;
+    sensibleTemp: number;
+    uvIndex: string;
+    uvIndexLevel: string;
+    uvMsg: string;
+    sunrise: string;
+    sunset: string;
+    pcpMsg: string;
+    forecast24h: { time: string; temp: number; rainChance: number; sky: string; precipitation: string }[];
+  } | null;
 }
 
 const weatherFetcher = async (url: string): Promise<WeatherResponse> => {
@@ -40,10 +58,24 @@ const dustAlertFetcher = async (url: string): Promise<SeoulDustAlertStatus> => {
   return response.json();
 };
 
+const cityDataFetcher = async (url: string): Promise<CityDataWeatherResponse> => {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error('Failed to fetch city data');
+  return response.json();
+};
+
 function resolveIcon(sky: string | null, rainfall: number | null): string {
   if (sky === '눈' || sky === '비/눈') return '❄️';
   if (sky === '비' || sky === '소나기' || (rainfall ?? 0) > 0) return '🌧️';
   if (sky === '맑음') return '☀️';
+  return '☁️';
+}
+
+function resolveForecastIcon(sky: string, precipType: string): string {
+  if (precipType === '눈' || precipType === '비/눈') return '❄️';
+  if (precipType === '비' || precipType === '소나기') return '🌧️';
+  if (sky === '맑음') return '☀️';
+  if (sky === '구름많음') return '⛅';
   return '☁️';
 }
 
@@ -64,8 +96,24 @@ function resolveWarning(
   return null;
 }
 
-export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, district }: WeatherInfoCardProps) {
+function resolveUvColor(levelStr: string): { bg: string; text: string; bgNeo: string; textNeo: string } {
+  const level = Number.parseInt(levelStr, 10);
+  if (level >= 5) return { bg: 'bg-red-100', text: 'text-red-700', bgNeo: 'bg-[#fca5a5]', textNeo: 'text-black' };
+  if (level >= 4) return { bg: 'bg-orange-100', text: 'text-orange-700', bgNeo: 'bg-[#facc15]', textNeo: 'text-black' };
+  if (level >= 3) return { bg: 'bg-yellow-100', text: 'text-yellow-700', bgNeo: 'bg-[#facc15]', textNeo: 'text-black' };
+  return { bg: 'bg-green-100', text: 'text-green-700', bgNeo: 'bg-[#a3e635]', textNeo: 'text-black' };
+}
+
+function formatForecastHour(fcstDt: string): string {
+  if (fcstDt.length >= 10) {
+    return `${fcstDt.slice(8, 10)}시`;
+  }
+  return fcstDt;
+}
+
+export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, district, courtLat, courtLng }: WeatherInfoCardProps) {
   const themeClass = useThemeClass();
+  const [forecastExpanded, setForecastExpanded] = useState(false);
 
   const { data, isLoading } = useSWR<WeatherResponse>(`/api/weather?nx=${nx}&ny=${ny}`, weatherFetcher, {
     revalidateOnFocus: false,
@@ -96,6 +144,15 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
     }
   );
 
+  const cityDataUrl = (courtLat && courtLng) ? `/api/city-data?lat=${courtLat}&lng=${courtLng}&fields=weather` : null;
+  const { data: cityWeather } = useSWR<CityDataWeatherResponse>(cityDataUrl, cityDataFetcher, {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: true,
+    refreshInterval: 10 * 60 * 1000,
+    dedupingInterval: 10 * 60 * 1000,
+    keepPreviousData: true,
+  });
+
   if (isLoading && !data) {
     return (
       <div className={isNeoBrutalism
@@ -115,6 +172,15 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
   const airGradeColor = airData?.grade ? resolveAirQualityGradeColor(airData.grade) : null;
   const dustAlertColor = dustAlert.level ? getDustAlertColor(dustAlert.level) : null;
   const showAirQuality = airData && airData.grade !== '정보없음' && airGradeColor;
+
+  const uvData = cityWeather?.weather;
+  const showUv = isOutdoor && uvData && uvData.uvIndexLevel && uvData.uvIndex;
+  const uvLevel = Number.parseInt(uvData?.uvIndexLevel ?? '0', 10);
+  const showUvWarning = showUv && uvLevel >= 3;
+  const uvColor = showUv ? resolveUvColor(uvData.uvIndexLevel) : null;
+
+  const forecast = uvData?.forecast24h ?? [];
+  const hasForecast = forecast.length > 0;
 
   return (
     <div className={isNeoBrutalism
@@ -139,6 +205,12 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
             {data.humidity !== null && <span>습도 {data.humidity}%</span>}
             {data.humidity !== null && data.windSpeed !== null && <span>·</span>}
             {data.windSpeed !== null && <span>바람 {data.windSpeed}m/s</span>}
+            {uvData?.sensibleTemp !== undefined && (
+              <>
+                <span>·</span>
+                <span>체감 {Math.round(uvData.sensibleTemp)}°C</span>
+              </>
+            )}
           </div>
         </div>
 
@@ -190,6 +262,57 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
         )}
       </div>
 
+      {showUv && uvColor && (
+        <div className={themeClass(
+          'mt-3 pt-3 border-t-2 border-black/10 flex items-center gap-2',
+          'mt-3 pt-3 border-t border-gray-100 flex items-center gap-2'
+        )}>
+          <span className="text-sm leading-none">☀️</span>
+          <span className={themeClass(
+            `inline-flex items-center gap-1 px-1.5 py-0.5 text-[11px] font-black rounded-[3px] border-2 border-black ${uvColor.bgNeo} ${uvColor.textNeo}`,
+            `inline-flex items-center gap-1 px-1.5 py-0.5 text-[11px] font-semibold rounded border ${uvColor.bg} ${uvColor.text}`
+          )}>
+            자외선 {uvData.uvIndex}
+          </span>
+          {showUvWarning && (
+            <p className={themeClass(
+              'text-[11px] font-bold text-black/50 flex-1 min-w-0 truncate',
+              'text-[11px] text-gray-400 flex-1 min-w-0 truncate'
+            )}>
+              {uvData.uvMsg.split('.')[0]}
+            </p>
+          )}
+        </div>
+      )}
+
+      {uvData?.sunrise && uvData?.sunset && (
+        <div className={themeClass(
+          'mt-3 pt-3 border-t-2 border-black/10 flex items-center gap-3',
+          'mt-3 pt-3 border-t border-gray-100 flex items-center gap-3'
+        )}>
+          <div className="flex items-center gap-1.5">
+            <span className="text-sm leading-none">🌅</span>
+            <span className={themeClass('text-[11px] font-black text-black/50', 'text-[11px] text-gray-400')}>
+              {uvData.sunrise}
+            </span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="text-sm leading-none">🌇</span>
+            <span className={themeClass('text-[11px] font-black text-black/50', 'text-[11px] text-gray-400')}>
+              {uvData.sunset}
+            </span>
+          </div>
+          {!warning && uvData.pcpMsg && (
+            <p className={themeClass(
+              'text-[11px] font-bold text-black/40 flex-1 min-w-0 truncate',
+              'text-[11px] text-gray-400 flex-1 min-w-0 truncate'
+            )}>
+              {uvData.pcpMsg}
+            </p>
+          )}
+        </div>
+      )}
+
       {warning && (
         <div className={themeClass(
           'mt-3 pt-3 border-t-2 border-black/10 flex items-center gap-1.5',
@@ -203,6 +326,58 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
             {warning}
           </p>
         </div>
+      )}
+
+      {hasForecast && (
+        <>
+          <button
+            type="button"
+            onClick={() => setForecastExpanded(prev => !prev)}
+            className={themeClass(
+              'mt-3 pt-3 border-t-2 border-black/10 w-full flex items-center justify-between text-xs font-black text-black/50',
+              'mt-3 pt-3 border-t border-gray-100 w-full flex items-center justify-between text-xs text-gray-400'
+            )}
+          >
+            <span>24시간 예보</span>
+            <svg
+              className={`w-3.5 h-3.5 transition-transform ${forecastExpanded ? 'rotate-180' : ''}`}
+              fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" aria-hidden="true"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            </svg>
+          </button>
+
+          {forecastExpanded && (
+            <div className="mt-2 overflow-x-auto scrollbar-hide -mx-1 px-1">
+              <div className="flex gap-1.5 min-w-max pb-1">
+                {forecast.slice(0, 12).map((f) => (
+                  <div
+                    key={f.time}
+                    className={themeClass(
+                      'flex flex-col items-center gap-1 px-2.5 py-2 rounded-[5px] border-2 border-black/15 min-w-[52px]',
+                      'flex flex-col items-center gap-1 px-2.5 py-2 rounded-lg border border-gray-100 min-w-[52px]'
+                    )}
+                  >
+                    <span className={themeClass('text-[10px] font-black text-black/40', 'text-[10px] text-gray-400')}>
+                      {formatForecastHour(f.time)}
+                    </span>
+                    <span className="text-sm leading-none">
+                      {resolveForecastIcon(f.sky, f.precipitation)}
+                    </span>
+                    <span className={themeClass('text-[11px] font-black text-black', 'text-[11px] font-semibold text-gray-700')}>
+                      {f.temp}°
+                    </span>
+                    {f.rainChance > 0 && (
+                      <span className={themeClass('text-[9px] font-bold text-[#3b82f6]', 'text-[9px] text-blue-500')}>
+                        {f.rainChance}%
+                      </span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

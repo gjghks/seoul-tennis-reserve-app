@@ -37,6 +37,24 @@ const dustAlertFetcher = async (url: string): Promise<SeoulDustAlertStatus> => {
   return response.json();
 };
 
+interface CityWeatherData {
+  area: string;
+  weather: {
+    sensibleTemp: number;
+    uvIndex: string;
+    uvIndexLevel: string;
+    sunrise: string;
+    sunset: string;
+    pcpMsg: string;
+  } | null;
+}
+
+const cityDataFetcher = async (url: string): Promise<CityWeatherData> => {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error('Failed to fetch city data');
+  return response.json();
+};
+
 function resolveIcon(sky: string | null, rainfall: number | null): string {
   if (sky === '눈' || sky === '비/눈') return '❄️';
   if (sky === '비' || sky === '소나기' || (rainfall ?? 0) > 0) return '🌧️';
@@ -104,6 +122,18 @@ export default function HomeWeatherCard({ nx, ny }: HomeWeatherCardProps) {
     }
   );
 
+  const { data: cityWeather } = useSWR<CityWeatherData>(
+    '/api/city-data?area=%EA%B4%91%ED%99%94%EB%AC%B8%C2%B7%EB%8D%95%EC%88%98%EA%B6%81&fields=weather',
+    cityDataFetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: true,
+      refreshInterval: 10 * 60 * 1000,
+      dedupingInterval: 10 * 60 * 1000,
+      keepPreviousData: true,
+    }
+  );
+
   if (isLoading && !data) {
     return (
       <div className="mt-3">
@@ -124,7 +154,12 @@ export default function HomeWeatherCard({ nx, ny }: HomeWeatherCardProps) {
   const message = resolveTennisMessage(data.sky, data.rainfall, data.temperature, airData?.grade, dustAlert.level, isOfficialAlert);
   const isRainOrSnow = data.sky === '비' || data.sky === '소나기' || data.sky === '눈' || data.sky === '비/눈' || (data.rainfall ?? 0) > 0;
 
+  const cw = cityWeather?.weather;
+  const sensibleTemp = cw?.sensibleTemp;
+  const showSensible = sensibleTemp !== undefined && Math.abs(sensibleTemp - data.temperature) >= 2;
+
   const details: string[] = [];
+  if (showSensible) details.push(`체감 ${Math.round(sensibleTemp)}°C`);
   if (data.humidity !== null) details.push(`습도 ${data.humidity}%`);
   if (data.windSpeed !== null) details.push(`바람 ${data.windSpeed}m/s`);
   if (isRainOrSnow && data.rainfall !== null) details.push(`강수 ${data.rainfall}mm`);
@@ -211,6 +246,25 @@ export default function HomeWeatherCard({ nx, ny }: HomeWeatherCardProps) {
           );
         })()}
       </div>
+      {cw && (cw.sunrise || cw.uvIndex) && (
+        <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+          {cw.sunrise && cw.sunset && (
+            <span className="text-[11px] text-white/50">
+              🌅 {cw.sunrise} · 🌇 {cw.sunset}
+            </span>
+          )}
+          {cw.uvIndex && Number.parseInt(cw.uvIndexLevel, 10) >= 3 && (
+            <span className="text-[11px] text-white/50">
+              ☀️ 자외선 {cw.uvIndex}
+            </span>
+          )}
+          {!isRainOrSnow && cw.pcpMsg && (
+            <span className="text-[11px] text-white/40">
+              {cw.pcpMsg}
+            </span>
+          )}
+        </div>
+      )}
     </div>
   );
 }
