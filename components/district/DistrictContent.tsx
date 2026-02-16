@@ -16,6 +16,15 @@ import { extractFacilityTags } from '@/lib/utils/facilityTags';
 import { convertToWeatherGrid } from '@/lib/utils/weatherGrid';
 import WeatherBadge from '@/components/weather/WeatherBadge';
 import { isCourtAvailable } from '@/lib/utils/courtStatus';
+import { findEnrichment } from '@/lib/data/facilityEnrichment';
+import type { SurfaceCategory } from '@/lib/data/facilityEnrichment';
+
+const SURFACE_FILTER_OPTIONS: Array<{ value: SurfaceCategory | 'all'; label: string }> = [
+  { value: 'all', label: '전체' },
+  { value: 'clay', label: '클레이' },
+  { value: 'artificial_grass', label: '인조잔디' },
+  { value: 'hard', label: '하드코트' },
+];
 
 const KakaoMapView = dynamic(
   () => import('@/components/map/KakaoMapView'),
@@ -38,6 +47,7 @@ export default function DistrictContent({
   const { courts: allCourts, isLoading, lastUpdated } = useTennisData();
   const [viewMode, setViewMode] = useState<'list' | 'map'>('map');
   const [showAvailableOnly, setShowAvailableOnly] = useState(false);
+  const [surfaceFilter, setSurfaceFilter] = useState<SurfaceCategory | 'all'>('all');
   const [focusPlaceName, setFocusPlaceName] = useState<string | null>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
 
@@ -82,9 +92,21 @@ export default function DistrictContent({
   });
 
   const availableCount = courts.filter(court => court.SVCSTATNM === '접수중').length;
-  const filteredCourts = showAvailableOnly
-    ? courts.filter(court => court.SVCSTATNM === '접수중')
-    : courts;
+  const filteredCourts = useMemo(() => {
+    let result = courts;
+    if (showAvailableOnly) {
+      result = result.filter(court => court.SVCSTATNM === '접수중');
+    }
+    if (surfaceFilter !== 'all') {
+      result = result.filter(court => {
+        const e = findEnrichment(court.SVCNM, court.AREANM, court.PLACENM);
+        if (!e) return false;
+        if (surfaceFilter === 'clay') return e.surfaceCategory === 'clay' || e.surfaceCategory === 'mixed';
+        return e.surfaceCategory === surfaceFilter;
+      });
+    }
+    return result;
+  }, [courts, showAvailableOnly, surfaceFilter]);
 
   const groupedCourts = useMemo(() => {
     const groups: Record<string, SeoulService[]> = {};
@@ -175,6 +197,30 @@ export default function DistrictContent({
                 {showAvailableOnly ? `접수중만 ✓ (${availableCount})` : `접수중만 (${availableCount})`}
               </button>
             </div>
+          </div>
+          <div className="flex items-center gap-1.5 mt-2 overflow-x-auto scrollbar-hide">
+            {SURFACE_FILTER_OPTIONS.map(opt => {
+              const isActive = surfaceFilter === opt.value;
+              return (
+                <button
+                  key={opt.value}
+                  type="button"
+                  onClick={() => setSurfaceFilter(opt.value)}
+                  className={isActive
+                    ? themeClass(
+                        'h-7 rounded-full border-2 border-black bg-[#facc15] px-3 text-xs font-black text-black shadow-[2px_2px_0px_0px_#000] transition-all whitespace-nowrap',
+                        'h-7 rounded-full border border-green-600 bg-green-600 px-3 text-xs font-semibold text-white transition-colors whitespace-nowrap'
+                      )
+                    : themeClass(
+                        'h-7 rounded-full border-2 border-black bg-white px-3 text-xs font-black text-black transition-colors hover:bg-[#facc15]/30 whitespace-nowrap',
+                        'h-7 rounded-full border border-gray-300 bg-white px-3 text-xs font-medium text-gray-700 transition-colors hover:border-green-300 hover:text-green-700 whitespace-nowrap'
+                      )
+                  }
+                >
+                  {opt.label}
+                </button>
+              );
+            })}
           </div>
           {(lastUpdated || districtWeatherGrid) && (
             <div className="flex items-center justify-center gap-2 mt-1.5 flex-wrap">

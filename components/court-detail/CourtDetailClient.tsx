@@ -17,6 +17,7 @@ import { AD_SLOTS } from '@/lib/adConfig';
 import { useThemeClass } from '@/lib/cn';
 import FacilityTags from '@/components/ui/FacilityTags';
 import { extractFacilityTags } from '@/lib/utils/facilityTags';
+import { findEnrichment } from '@/lib/data/facilityEnrichment';
 import { convertToWeatherGrid } from '@/lib/utils/weatherGrid';
 import WeatherInfoCard from '@/components/weather/WeatherInfoCard';
 import { useRecentCourts } from '@/lib/hooks/useRecentCourts';
@@ -94,6 +95,7 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
 
   const isAvailable = isCourtAvailable(court.SVCSTATNM);
   const facilityTags = extractFacilityTags(court);
+  const enrichment = useMemo(() => findEnrichment(court.SVCNM, court.AREANM, court.PLACENM), [court.SVCNM, court.AREANM, court.PLACENM]);
   const weatherGrid = useMemo(() => {
     const longitude = Number.parseFloat(court.X);
     const latitude = Number.parseFloat(court.Y);
@@ -313,6 +315,65 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
             </p>
           </div>
         </div>
+
+        {enrichment && (
+          <div className={`mb-3 overflow-hidden ${isNeoBrutalism ? 'bg-white border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000]' : 'bg-white rounded-2xl border border-gray-100'}`}>
+            <div className="p-5 border-b border-gray-100">
+              <h2 className={`font-bold ${themeClass('text-black uppercase', 'text-gray-900')} flex items-center gap-2`}>
+                <span className={`inline-flex items-center justify-center w-5 h-5 text-sm ${themeClass('', 'text-green-600')}`}>🏟️</span>
+                코트 시설 정보
+              </h2>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-px bg-gray-100">
+              {enrichment.courtCount > 0 && (
+                <div className={`flex flex-col items-center justify-center p-4 ${themeClass('bg-white', 'bg-white')}`}>
+                  <span className="text-lg mb-1">🎾</span>
+                  <p className={themeClass('text-xs text-black/60 font-bold', 'text-xs text-gray-400')}>코트</p>
+                  <p className={themeClass('font-black text-black text-sm', 'font-semibold text-gray-800 text-sm')}>{enrichment.courtCount}면</p>
+                </div>
+              )}
+              {enrichment.surfaceDisplay && (
+                <div className={`flex flex-col items-center justify-center p-4 ${themeClass('bg-white', 'bg-white')}`}>
+                  <span className="text-lg mb-1">🏗️</span>
+                  <p className={themeClass('text-xs text-black/60 font-bold', 'text-xs text-gray-400')}>바닥재</p>
+                  <p className={themeClass('font-black text-black text-sm', 'font-semibold text-gray-800 text-sm')}>{enrichment.surfaceDisplay}</p>
+                </div>
+              )}
+              {enrichment.area > 0 && (
+                <div className={`flex flex-col items-center justify-center p-4 ${themeClass('bg-white', 'bg-white')}`}>
+                  <span className="text-lg mb-1">📐</span>
+                  <p className={themeClass('text-xs text-black/60 font-bold', 'text-xs text-gray-400')}>코트 면적</p>
+                  <p className={themeClass('font-black text-black text-sm', 'font-semibold text-gray-800 text-sm')}>{enrichment.area.toLocaleString()}㎡</p>
+                </div>
+              )}
+              {enrichment.builtYear && (
+                <div className={`flex flex-col items-center justify-center p-4 ${themeClass('bg-white', 'bg-white')}`}>
+                  <span className="text-lg mb-1">🏛️</span>
+                  <p className={themeClass('text-xs text-black/60 font-bold', 'text-xs text-gray-400')}>준공</p>
+                  <p className={themeClass('font-black text-black text-sm', 'font-semibold text-gray-800 text-sm')}>
+                    {enrichment.builtYear}년 ({new Date().getFullYear() - enrichment.builtYear}년차)
+                  </p>
+                </div>
+              )}
+              {enrichment.lighting && (
+                <div className={`flex flex-col items-center justify-center p-4 ${themeClass('bg-white', 'bg-white')}`}>
+                  <span className="text-lg mb-1">💡</span>
+                  <p className={themeClass('text-xs text-black/60 font-bold', 'text-xs text-gray-400')}>조명탑</p>
+                  <p className={themeClass('font-black text-black text-sm', 'font-semibold text-gray-800 text-sm')}>
+                    {enrichment.lighting.count}기{enrichment.lighting.lux ? ` (${enrichment.lighting.lux}lux)` : ''}
+                  </p>
+                </div>
+              )}
+              {enrichment.manager && (
+                <div className={`flex flex-col items-center justify-center p-4 ${themeClass('bg-white', 'bg-white')}`}>
+                  <span className="text-lg mb-1">🏢</span>
+                  <p className={themeClass('text-xs text-black/60 font-bold', 'text-xs text-gray-400')}>관리</p>
+                  <p className={`${themeClass('font-black text-black text-sm', 'font-semibold text-gray-800 text-sm')} truncate max-w-[140px]`}>{enrichment.manager}</p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         {weatherGrid && (
           <div className="mb-6">

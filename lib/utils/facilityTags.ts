@@ -1,4 +1,6 @@
 import { SeoulService } from '@/lib/seoulApi';
+import { findEnrichment } from '@/lib/data/facilityEnrichment';
+import type { SurfaceCategory } from '@/lib/data/facilityEnrichment';
 
 export interface FacilityTag {
   key: string;
@@ -6,6 +8,12 @@ export interface FacilityTag {
   icon: string;
   color: string;
 }
+
+const SURFACE_TAG_MAP: Record<string, { key: string; label: string; color: string }> = {
+  clay: { key: 'surface-clay', label: '클레이', color: 'bg-orange-200' },
+  artificial_grass: { key: 'surface-turf', label: '인조잔디', color: 'bg-lime-200' },
+  hard: { key: 'surface-hard', label: '하드코트', color: 'bg-zinc-200' },
+};
 
 const TAG_LIMIT = 5;
 
@@ -84,8 +92,37 @@ export function extractFacilityTags(court: SeoulService): FacilityTag[] {
     pushTag({ key: 'paid', label: '유료', icon: '💳', color: 'bg-rose-200' });
   }
 
+  const enrichment = findEnrichment(court.SVCNM, court.AREANM, court.PLACENM);
+
+  if (enrichment && enrichment.courtCount > 0) {
+    pushTag({ key: 'court-count', label: `${enrichment.courtCount}면`, icon: '🏟️', color: 'bg-violet-200' });
+  }
+
+  let surfaceHandled = false;
+  if (enrichment) {
+    const cat = enrichment.surfaceCategory as SurfaceCategory;
+    const mapped = SURFACE_TAG_MAP[cat];
+    if (mapped) {
+      pushTag({ ...mapped, icon: '🎾' });
+      surfaceHandled = true;
+    } else if (cat === 'mixed' && enrichment.surfaces.length > 0) {
+      const first = enrichment.surfaces[0].type;
+      const matchedDef = TAG_DEFINITIONS.find(d =>
+        d.key.startsWith('surface-') && d.keywords.some(kw => first.includes(kw))
+      );
+      if (matchedDef) {
+        pushTag({ key: matchedDef.key, label: first, icon: '🎾', color: matchedDef.color });
+        surfaceHandled = true;
+      }
+    }
+  }
+
   const detailText = normalizeText(stripHtml(court.DTLCONT || ''));
-  for (const definition of TAG_DEFINITIONS) {
+  const nonSurfaceDefinitions = surfaceHandled
+    ? TAG_DEFINITIONS.filter(d => !d.key.startsWith('surface-'))
+    : TAG_DEFINITIONS;
+
+  for (const definition of nonSurfaceDefinitions) {
     if (definition.keywords.some(keyword => detailText.includes(keyword))) {
       pushTag({
         key: definition.key,

@@ -171,13 +171,13 @@ export default function ParkingSection({ lat, lng, isNeoBrutalism }: ParkingSect
       {expanded && (
         <div>
           <div className="divide-y divide-gray-50">
-            {visibleParking.map((p) => {
+            {visibleParking.map((p, idx) => {
               const typeInfo = formatParkingType(p.type);
               const rateText = formatRates(p.payYn, p.rates, p.timeRates, p.addRates, p.addTimeRates);
               const isFree = !p.payYn || (p.rates === 0 && p.addRates === 0);
 
               return (
-                <div key={`${p.name}-${p.lat}-${p.lng}`} className="p-4 hover:bg-gray-50/50 transition-colors">
+                <div key={`${p.name}-${p.lat}-${p.lng}-${idx}`} className="p-4 hover:bg-gray-50/50 transition-colors">
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
