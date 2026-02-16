@@ -40,6 +40,7 @@ export default function KakaoShareButton({
 
     if (ensureKakaoInit() && window.Kakao.Share) {
       try {
+        window.Kakao.Share.cleanup();
         window.Kakao.Share.sendDefault({
           objectType: 'feed',
           content: {
