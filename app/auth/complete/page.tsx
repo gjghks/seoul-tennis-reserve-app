@@ -10,7 +10,16 @@ export default function AuthComplete() {
   useEffect(() => {
     const redirectPath = sanitizeRedirectPath(localStorage.getItem('auth_redirect'));
     localStorage.removeItem('auth_redirect');
+
+    // router.replace can silently fail during auth state transitions;
+    // fall back to window.location if it doesn't navigate within 2s
     router.replace(redirectPath);
+
+    const fallbackTimer = setTimeout(() => {
+      window.location.href = redirectPath;
+    }, 2000);
+
+    return () => clearTimeout(fallbackTimer);
   }, [router]);
 
   return (
