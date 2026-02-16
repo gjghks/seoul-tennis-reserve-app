@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useThemeClass } from '@/lib/cn';
 import FeedbackModal from '@/components/feedback/FeedbackModal';
+import VisitorCounter from '@/components/layout/VisitorCounter';
 
 const NAV_LINKS = [
   { href: '/about', label: '서비스 소개' },
@@ -25,6 +26,7 @@ export default function Footer() {
         'py-2.5 text-center text-sm text-gray-400 border-t border-gray-100 bg-white'
       )}`}>
         <div className="container space-y-1.5">
+          <VisitorCounter />
           <div className={`flex items-center justify-center gap-2 text-[clamp(10px,2.8vw,13px)] ${themeClass('text-white/50', 'text-gray-300')}`}>
             <span>{themeClass('© 서울 테니스', '© 서울 테니스')}</span>
             <span>·</span>
