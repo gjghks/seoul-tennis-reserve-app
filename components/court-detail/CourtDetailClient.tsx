@@ -38,6 +38,14 @@ const CourtDetailMap = dynamic(() => import('@/components/court-detail/CourtDeta
   ssr: false,
 });
 
+const ParkingSection = dynamic(() => import('@/components/court-detail/ParkingSection'), {
+  ssr: false,
+});
+
+const CongestionBadge = dynamic(() => import('@/components/city-data/CongestionBadge'), {
+  ssr: false,
+});
+
 interface CourtDetailClientProps {
   court: SeoulService;
   district: District;
@@ -249,17 +257,26 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
           </a>
         )}
 
-        {court.IMGURL && !imageError && (
+        {court.IMGURL && (
           <div className="relative aspect-video rounded-2xl overflow-hidden bg-gray-100 mb-6 shadow-sm">
-            <Image
-              src={court.IMGURL}
-              alt={court.SVCNM}
-              fill
-              unoptimized
-              className="object-cover"
-              onError={() => setImageError(true)}
-              priority
-            />
+            {!imageError ? (
+              <Image
+                src={court.IMGURL}
+                alt={court.SVCNM}
+                fill
+                unoptimized
+                className="object-cover"
+                onError={() => setImageError(true)}
+                priority
+              />
+            ) : (
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-400">
+                <svg className="w-12 h-12 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z" />
+                </svg>
+                <span className="text-sm">이미지를 불러올 수 없습니다</span>
+              </div>
+            )}
           </div>
         )}
 
@@ -304,6 +321,19 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
               isOutdoor={isOutdoorCourt}
               isNeoBrutalism={isNeoBrutalism}
               district={court.AREANM}
+              courtLat={courtCoords?.lat}
+              courtLng={courtCoords?.lng}
+            />
+          </div>
+        )}
+
+        {courtCoords && (
+          <div className="mb-6">
+            <CongestionBadge
+              lat={courtCoords.lat}
+              lng={courtCoords.lng}
+              isNeoBrutalism={isNeoBrutalism}
+              variant="full"
             />
           </div>
         )}
@@ -394,6 +424,14 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
               />
             </div>
           </div>
+        )}
+
+        {courtCoords && (
+          <ParkingSection
+            lat={courtCoords.lat}
+            lng={courtCoords.lng}
+            isNeoBrutalism={isNeoBrutalism}
+          />
         )}
 
         {court.DTLCONT && <DetailContent content={court.DTLCONT} />}
