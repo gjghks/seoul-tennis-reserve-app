@@ -10,6 +10,7 @@ import { KOREAN_TO_SLUG } from '@/lib/constants/districts';
 import { useThemeClass } from '@/lib/cn';
 import { useRecentCourts } from '@/lib/hooks/useRecentCourts';
 import AlertSettingsSection from '@/components/alert/AlertSettingsSection';
+import { ProviderBadge } from '@/components/auth/ProviderBadge';
 
 interface Favorite {
   id: string;
@@ -89,7 +90,12 @@ export default function MyPage() {
         <h1 className={`text-2xl mb-2 ${themeClass('font-black text-black uppercase', 'font-bold text-gray-900')} `}>
           {isNeoBrutalism ? '👤 마이페이지' : '마이페이지'}
         </h1>
-        {user && <p className={themeClass('text-black/70 font-medium', 'text-gray-500')}>{user.email}</p>}
+        {user && (
+          <div className="flex items-center gap-2 flex-wrap">
+            <p className={themeClass('text-black/70 font-medium', 'text-gray-500')}>{user.email}</p>
+            <ProviderBadge />
+          </div>
+        )}
       </div>
 
       <div className="max-w-2xl">

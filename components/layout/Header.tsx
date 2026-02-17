@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useThemeClass } from '@/lib/cn';
+import { ProviderIcon } from '@/components/auth/ProviderBadge';
 
 export default function Header() {
   const { user, loading, signOut } = useAuth();
@@ -65,8 +66,9 @@ export default function Header() {
               <>
                 <Link
                   href="/my"
-                  className={`px-3 py-1.5 text-sm transition-colors ${themeClass('text-black font-bold hover:underline underline-offset-4', 'text-gray-600 hover:text-green-600')}`}
+                  className={`px-3 py-1.5 text-sm transition-colors inline-flex items-center gap-1.5 ${themeClass('text-black font-bold hover:underline underline-offset-4', 'text-gray-600 hover:text-green-600')}`}
                 >
+                  <ProviderIcon />
                   마이페이지
                 </Link>
                 <button
