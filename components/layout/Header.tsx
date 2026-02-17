@@ -60,7 +60,7 @@ export default function Header() {
               캘린더
             </Link>
             {loading ? (
-              <div className="w-16 h-8 skeleton rounded" aria-busy="true" />
+              <div className="w-16 h-8 skeleton rounded" />
             ) : user ? (
               <>
                 <Link
