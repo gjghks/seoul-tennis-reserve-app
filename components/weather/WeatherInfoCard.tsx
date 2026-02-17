@@ -215,10 +215,10 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
 
   return (
     <div className={isNeoBrutalism
-      ? 'bg-white border-2 border-black rounded-[5px] p-4 shadow-[3px_3px_0px_0px_#000]'
-      : 'bg-white rounded-xl p-4 border border-gray-100'
+      ? 'bg-white border-2 border-black rounded-[5px] p-4 shadow-[3px_3px_0px_0px_#000] overflow-hidden'
+      : 'bg-white rounded-xl p-4 border border-gray-100 overflow-hidden'
     }>
-      <div className="flex items-stretch gap-4">
+      <div className="flex flex-col sm:flex-row items-stretch gap-3 sm:gap-4">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1.5">
             <span className="text-xl leading-none">{icon}</span>
@@ -247,7 +247,7 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
 
         {showAirQuality && (
           <>
-            <div className={themeClass('w-[2px] bg-black/10 self-stretch', 'w-px bg-gray-100 self-stretch')} />
+            <div className={themeClass('h-[2px] sm:h-auto sm:w-[2px] bg-black/10 self-stretch', 'h-px sm:h-auto sm:w-px bg-gray-100 self-stretch')} />
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1.5">
                 <span className="text-xl leading-none">{airGradeColor.icon}</span>
@@ -281,22 +281,22 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
               </div>
               {dustAlertColor && dustAlert.level && (
                 <div className={themeClass(
-                  `mt-1.5 inline-flex items-center gap-1 px-1.5 py-0.5 text-[11px] font-black rounded-[3px] border-2 ${dustAlertColor.borderNeo} ${dustAlertColor.bgNeo} ${dustAlertColor.textNeo}`,
-                  `mt-1.5 inline-flex items-center gap-1 px-1.5 py-0.5 text-[11px] font-semibold rounded border ${dustAlertColor.border} ${dustAlertColor.bg} ${dustAlertColor.text}`
+                  `mt-1.5 inline-flex items-center gap-1 px-1.5 py-0.5 text-[11px] font-black rounded-[3px] border-2 max-w-full ${dustAlertColor.borderNeo} ${dustAlertColor.bgNeo} ${dustAlertColor.textNeo}`,
+                  `mt-1.5 inline-flex items-center gap-1 px-1.5 py-0.5 text-[11px] font-semibold rounded border max-w-full ${dustAlertColor.border} ${dustAlertColor.bg} ${dustAlertColor.text}`
                 )}>
-                  <span className="text-xs leading-none">{dustAlertColor.icon}</span>
-                  <span>{dustAlert.type === 'pm25' ? '초미세먼지' : '미세먼지'} {dustAlert.level}{isOfficialAlert ? ' 발령 중' : '급'}</span>
+                  <span className="text-xs leading-none shrink-0">{dustAlertColor.icon}</span>
+                  <span className="truncate">{dustAlert.type === 'pm25' ? '초미세먼지' : '미세먼지'} {dustAlert.level}{isOfficialAlert ? ' 발령 중' : '급'}</span>
                 </div>
               )}
               {livingWeather?.airDiffusion && livingWeather.airDiffusion.currentLevel !== null && livingWeather.airDiffusion.currentLevel >= 75 && (() => {
                 const adColor = resolveAirDiffusionColor(livingWeather.airDiffusion.currentLevel);
                 return (
                   <div className={themeClass(
-                    `mt-1.5 inline-flex items-center gap-1 px-1.5 py-0.5 text-[11px] font-black rounded-[3px] border-2 ${adColor.borderNeo} ${adColor.bgNeo} ${adColor.textNeo}`,
-                    `mt-1.5 inline-flex items-center gap-1 px-1.5 py-0.5 text-[11px] font-semibold rounded border ${adColor.border} ${adColor.bg} ${adColor.text}`
+                    `mt-1.5 inline-flex items-center gap-1 px-1.5 py-0.5 text-[11px] font-black rounded-[3px] border-2 max-w-full ${adColor.borderNeo} ${adColor.bgNeo} ${adColor.textNeo}`,
+                    `mt-1.5 inline-flex items-center gap-1 px-1.5 py-0.5 text-[11px] font-semibold rounded border max-w-full ${adColor.border} ${adColor.bg} ${adColor.text}`
                   )}>
-                    <span className="text-xs leading-none">🌬️</span>
-                    <span>대기정체 {livingWeather.airDiffusion.currentLabel}</span>
+                    <span className="text-xs leading-none shrink-0">🌬️</span>
+                    <span className="truncate">대기정체 {livingWeather.airDiffusion.currentLabel}</span>
                   </div>
                 );
               })()}

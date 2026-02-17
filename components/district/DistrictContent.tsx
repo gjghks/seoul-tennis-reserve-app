@@ -195,7 +195,7 @@ export default function DistrictContent({
             </div>
           </div>
           <div className="flex items-center gap-1.5 mt-2">
-            <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-hide shrink-0">
+            <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-hide min-w-0">
               {SURFACE_FILTER_OPTIONS.map(opt => {
                 const isActive = surfaceFilter === opt.value;
                 return (
@@ -220,7 +220,7 @@ export default function DistrictContent({
               })}
             </div>
             {(lastUpdated || districtWeatherGrid) && (
-              <div className="flex items-center gap-1.5 ml-auto shrink-0">
+              <div className="flex items-center gap-1.5 ml-auto min-w-0 overflow-hidden">
                 {lastUpdated && (
                   <LastUpdated timestamp={lastUpdated} className="mt-0" />
                 )}
