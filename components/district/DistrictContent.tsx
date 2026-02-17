@@ -18,6 +18,7 @@ import WeatherBadge from '@/components/weather/WeatherBadge';
 import { isCourtAvailable, isCourtAccepting, sortByAvailability } from '@/lib/utils/courtStatus';
 import { findEnrichment } from '@/lib/data/facilityEnrichment';
 import type { SurfaceCategory } from '@/lib/data/facilityEnrichment';
+import { useReservationTip } from '@/lib/hooks/useReservationTip';
 
 const SURFACE_FILTER_OPTIONS: Array<{ value: SurfaceCategory | 'all'; label: string }> = [
   { value: 'all', label: '전체' },
@@ -45,6 +46,7 @@ export default function DistrictContent({
   const { isNeoBrutalism } = useTheme();
   const themeClass = useThemeClass();
   const { courts: allCourts, isLoading, lastUpdated } = useTennisData();
+  const { handleReservationClick } = useReservationTip();
   const [viewMode, setViewMode] = useState<'list' | 'map'>('map');
   const [showAvailableOnly, setShowAvailableOnly] = useState(false);
   const [surfaceFilter, setSurfaceFilter] = useState<SurfaceCategory | 'all'>('all');
@@ -416,7 +418,7 @@ export default function DistrictContent({
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   className="bg-[#22c55e] text-black font-black text-sm py-2 px-4 border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all uppercase"
-                                  onClick={(e) => e.stopPropagation()}
+                                  onClick={(e) => { e.stopPropagation(); handleReservationClick(); }}
                                 >
                                   예약하기
                                 </a>
@@ -463,7 +465,7 @@ export default function DistrictContent({
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="btn btn-primary text-sm py-2 px-4"
-                                onClick={(e) => e.stopPropagation()}
+                                onClick={(e) => { e.stopPropagation(); handleReservationClick(); }}
                               >
                                 바로 예약
                               </a>

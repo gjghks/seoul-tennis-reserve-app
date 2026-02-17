@@ -24,6 +24,8 @@ import { useRecentCourts } from '@/lib/hooks/useRecentCourts';
 import SimilarCourts from '@/components/court-detail/SimilarCourts';
 import { renderPhoneLinks } from '@/lib/utils/phoneLink';
 import CourtAlertButton from '@/components/alert/CourtAlertButton';
+import KakaoReserveTip from '@/components/reservation/KakaoReserveTip';
+import { useReservationTip } from '@/lib/hooks/useReservationTip';
 
 const KakaoShareButton = dynamic(() => import('@/components/ui/KakaoShareButton'), {
   ssr: false,
@@ -58,6 +60,7 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
   const { isNeoBrutalism } = useTheme();
   const themeClass = useThemeClass();
   const { addRecentCourt } = useRecentCourts();
+  const { handleReservationClick } = useReservationTip();
   const [imageError, setImageError] = useState(false);
   const [showStickyHeader, setShowStickyHeader] = useState(false);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -143,6 +146,7 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
         isAvailable={isAvailable} 
         isVisible={showStickyHeader}
         isNeoBrutalism={isNeoBrutalism}
+        onReservationClick={handleReservationClick}
       />
       
       <div ref={headerRef} className={themeClass('bg-white border-b-[3px] border-black', 'bg-white border-b border-gray-100')}>
@@ -224,39 +228,43 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
 
       <div className="container py-6">
         {court.SVCURL && (
-          <a
-            href={court.SVCURL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={isNeoBrutalism
-              ? `w-full flex items-center justify-center gap-3 py-4 px-6 rounded-[5px] font-black text-lg uppercase tracking-wide mb-8 border-[3px] border-black transition-all ${
-                  isAvailable
-                    ? 'bg-[#22c55e] text-black shadow-[6px_6px_0px_0px_#000] hover:translate-x-[6px] hover:translate-y-[6px] hover:shadow-none'
-                    : 'bg-gray-300 text-black/40 cursor-not-allowed'
-                }`
-              : `w-full flex items-center justify-center gap-3 py-4 px-6 rounded-2xl font-bold text-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg mb-8 ${
-                  isAvailable
-                    ? 'bg-gradient-to-r from-green-600 to-green-500 text-white hover:from-green-700 hover:to-green-600 shadow-green-200'
-                    : 'bg-gray-200 text-gray-400 cursor-not-allowed shadow-none'
-                }`
-            }
-          >
-            {isAvailable ? (
-              <>
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-                {isNeoBrutalism ? '지금 예약!' : '지금 예약하기'}
-              </>
-            ) : (
-              <>
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                예약 마감
-              </>
-            )}
-          </a>
+          <div className="mb-8">
+            <a
+              href={court.SVCURL}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={handleReservationClick}
+              className={isNeoBrutalism
+                ? `w-full flex items-center justify-center gap-3 py-4 px-6 rounded-[5px] font-black text-lg uppercase tracking-wide border-[3px] border-black transition-all ${
+                    isAvailable
+                      ? 'bg-[#22c55e] text-black shadow-[6px_6px_0px_0px_#000] hover:translate-x-[6px] hover:translate-y-[6px] hover:shadow-none'
+                      : 'bg-gray-300 text-black/40 cursor-not-allowed'
+                  }`
+                : `w-full flex items-center justify-center gap-3 py-4 px-6 rounded-2xl font-bold text-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg ${
+                    isAvailable
+                      ? 'bg-gradient-to-r from-green-600 to-green-500 text-white hover:from-green-700 hover:to-green-600 shadow-green-200'
+                      : 'bg-gray-200 text-gray-400 cursor-not-allowed shadow-none'
+                  }`
+              }
+            >
+              {isAvailable ? (
+                <>
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  {isNeoBrutalism ? '지금 예약!' : '지금 예약하기'}
+                </>
+              ) : (
+                <>
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  예약 마감
+                </>
+              )}
+            </a>
+            {isAvailable && <KakaoReserveTip />}
+          </div>
         )}
 
         {court.IMGURL && (
@@ -557,6 +565,7 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
             href={court.SVCURL}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={handleReservationClick}
             className="w-full flex items-center justify-center gap-2 py-4 rounded-xl bg-green-600 text-white font-bold shadow-lg"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

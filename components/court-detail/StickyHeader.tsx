@@ -7,12 +7,14 @@ function StickyHeader({
   court, 
   isAvailable, 
   isVisible,
-  isNeoBrutalism 
+  isNeoBrutalism,
+  onReservationClick,
 }: { 
   court: SeoulService; 
   isAvailable: boolean;
   isVisible: boolean;
   isNeoBrutalism: boolean;
+  onReservationClick?: () => void;
 }) {
   if (!isVisible) return null;
 
@@ -45,6 +47,7 @@ function StickyHeader({
                 href={court.SVCURL}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={onReservationClick}
                 className={`shrink-0 flex items-center gap-1.5 px-4 py-2 text-sm font-bold transition-all ${
                   isNeoBrutalism
                     ? 'bg-[#22c55e] text-black border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none'
