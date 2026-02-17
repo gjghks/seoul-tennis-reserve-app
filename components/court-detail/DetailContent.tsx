@@ -1,9 +1,12 @@
 'use client';
 
 import { useMemo } from 'react';
-import { ContentItem, FeeInfo, InfoCard } from './types';
+import { InfoCard } from './types';
 import { getSanitizedHtml, isHtmlRenderingReliable, parseContent } from '@/lib/utils/contentParser';
-import { renderSinglePhoneLink } from '@/lib/utils/phoneLink';
+import { highlight } from './highlight';
+import ContentItemComponent from './ContentItem';
+import TableRenderer from './TableRenderer';
+import FeeTable from './FeeTable';
 
 const sectionStyles: Record<string, { emoji: string; color: string }> = {
   '개강': { emoji: '📅', color: 'teal' },
@@ -64,244 +67,6 @@ const getStyle = (title: string) => {
   return { emoji: '📋', color: 'gray' };
 };
 
-const highlight = (text: string): React.ReactNode => {
-  const splitPattern = /(\d{1,2}:\d{2}\s*[~∼－-]\s*\d{1,2}:\d{2}|[0-9,]+원|\d{1,2}월|0\d{1,2}[-)]\d{3,4}[-)]\d{4}|\d+%|\d+시간|\d+일\s*전)/g;
-  
-  const parts = text.split(splitPattern);
-  
-  return parts.map((part, i) => {
-    if (!part) return null;
-    const key = `${part}-${i}`;
-    if (/\d{1,2}:\d{2}\s*[~∼－-]\s*\d{1,2}:\d{2}/.test(part)) {
-      return <code key={key} className="px-1.5 py-0.5 bg-indigo-100 text-indigo-700 rounded font-mono text-xs">{part}</code>;
-    }
-    if (/[0-9,]+원/.test(part)) {
-      return <code key={key} className="px-1.5 py-0.5 bg-emerald-100 text-emerald-700 rounded font-mono text-xs">{part}</code>;
-    }
-    if (/\d{1,2}월/.test(part)) {
-      return <span key={key} className="font-medium text-blue-600">{part}</span>;
-    }
-    if (/0\d{1,2}[-)]\d{3,4}[-)]\d{4}/.test(part)) {
-      return renderSinglePhoneLink(part, key);
-    }
-    if (/\d+%/.test(part)) {
-      return <span key={key} className="font-semibold text-orange-600">{part}</span>;
-    }
-    if (/\d+시간/.test(part)) {
-      return <span key={key} className="font-medium text-indigo-600">{part}</span>;
-    }
-    if (/\d+일\s*전/.test(part)) {
-      return <span key={key} className="font-medium text-rose-600">{part}</span>;
-    }
-    return part;
-  });
-};
-
-const formatPenaltyText = (text: string): React.ReactNode => {
-  const hasPenaltyPattern = /\d차\s*위반시\s*:/.test(text) && text.length > 200;
-  if (!hasPenaltyPattern) return null;
-
-  const CATEGORY_START = '@@CATEGORY@@';
-  const CATEGORY_END = '@@/CATEGORY@@';
-  const BULLET_START = '@@BULLET@@';
-  const BULLET_END = '@@/BULLET@@';
-  
-  const normalizedText = text.replace(/\s+/g, ' ').trim();
-  const categoryPattern = /(예약\s*후?\s*미방문\s*시|공공질서\s*위반\s*시[^)]*\)?|예약\s*질서\s*위반\s*시[^)]*\)?)/g;
-  const violationPattern = /(\d차\s*위반시\s*:\s*[^0-9]*?(?:\d+개월\s*이용\s*제한|경고|영구\s*(?:이용\s*)?제한|영구정지))/g;
-
-  const markedText = normalizedText
-    .replace(categoryPattern, `\n\n${CATEGORY_START}$1${CATEGORY_END}`)
-    .replace(violationPattern, `\n  ${BULLET_START}$1${BULLET_END}\n`)
-    .replace(/영구정지\s+(?=[가-힣])/g, '영구정지\n')
-    .replace(/(주의해\s*주시기\s*바랍니다\.)\s*/g, '$1\n')
-    .replace(/^\s*\n+/, '');
-
-  const lines = markedText.split('\n').filter(line => line.trim());
-
-  const renderCategoryLine = (content: string, key: number) => (
-    <div key={key} className="font-bold text-gray-800 mt-3 first:mt-0 border-l-2 border-amber-400 pl-2 py-0.5 bg-amber-50/50">
-      {content}
-    </div>
-  );
-
-  const renderBulletLine = (content: string, key: number) => (
-    <div key={key} className="flex items-start gap-2 ml-4 text-sm text-gray-700">
-      <span className="text-amber-500 shrink-0">•</span>
-      <span>{highlight(content)}</span>
-    </div>
-  );
-
-  const renderDefaultLine = (content: string, key: number) => {
-    const isExample = content.startsWith('예시)');
-    return (
-      <div key={key} className={`text-sm text-gray-700 ${isExample ? 'ml-6' : ''}`}>
-        {highlight(content)}
-      </div>
-    );
-  };
-
-  return (
-    <div className="space-y-2">
-      {lines.map((line, i) => {
-        const trimmed = line.trim();
-        
-        const categoryMatch = trimmed.match(new RegExp(`^${CATEGORY_START}(.+?)${CATEGORY_END}$`));
-        if (categoryMatch) return renderCategoryLine(categoryMatch[1], i);
-        
-        const bulletMatch = trimmed.match(new RegExp(`^${BULLET_START}(.+?)${BULLET_END}$`));
-        if (bulletMatch) return renderBulletLine(bulletMatch[1], i);
-        
-        return renderDefaultLine(trimmed, i);
-      })}
-    </div>
-  );
-};
-
-const renderItem = (item: ContentItem, idx: number) => {
-  const indentClass = item.indent === 2 ? 'ml-6' : item.indent === 1 ? 'ml-3' : '';
-  const itemKey = `${item.type}-${item.text}-${item.indent}-${idx}`;
-  
-  if (item.type === 'heading') {
-    return (
-      <li key={itemKey} className="mt-4 mb-2 first:mt-0 list-none" role="presentation">
-        <h4 className="font-bold text-gray-800 text-base border-l-4 border-blue-500 pl-3 py-1 bg-blue-50 rounded-r m-0">
-          {item.text}
-        </h4>
-      </li>
-    );
-  }
-  
-  if (item.type === 'warning') {
-    return (
-      <li key={itemKey} className={`flex items-start gap-2 py-1 ${indentClass} list-none`}>
-        <span className="shrink-0 text-amber-500 font-bold">※</span>
-        <span className="text-amber-800 text-sm">{highlight(item.text)}</span>
-      </li>
-    );
-  }
-
-  if (item.type === 'keyvalue' && item.key) {
-    return (
-      <li key={itemKey} className={`flex items-start gap-2 py-1 ${indentClass} list-none`}>
-        <span className="shrink-0 text-blue-500 font-bold">•</span>
-        <span className="text-gray-700 text-sm">
-          <span className="font-semibold">{item.key}:</span> {highlight(item.text)}
-        </span>
-      </li>
-    );
-  }
-
-  if (item.type === 'subtext') {
-    return (
-      <li key={itemKey} className={`flex items-start gap-2 py-0.5 ${indentClass} list-none text-gray-500 text-sm`}>
-        <span className="shrink-0">◦</span>
-        <span>{highlight(item.text)}</span>
-      </li>
-    );
-  }
-
-  if (item.indent >= 1) {
-    return (
-      <li key={itemKey} className={`flex items-start gap-2 py-1 ${indentClass} list-none`}>
-        <span className="shrink-0 text-blue-500 font-bold">•</span>
-        <span className="text-gray-700 text-sm leading-relaxed">{highlight(item.text)}</span>
-      </li>
-    );
-  }
-
-  const penaltyFormatted = formatPenaltyText(item.text);
-  if (penaltyFormatted) {
-    return (
-      <li key={itemKey} className="py-1 list-none">
-        {penaltyFormatted}
-      </li>
-    );
-  }
-
-  return (
-    <li key={itemKey} className="py-1 text-gray-700 text-sm list-none">{highlight(item.text)}</li>
-  );
-};
-
-const renderTable = (rows: string[][]) => {
-  if (rows.length === 0) return null;
-  const header = rows[0];
-  const body = rows.slice(1);
-  
-  const isWideTable = header.length > 6;
-  const isMonthlyTable = header.some(h => /^\d{1,2}월$/.test(h));
-  const currentMonth = new Date().getMonth() + 1;
-
-  return (
-    <div className="overflow-x-auto mt-4 rounded-lg border border-gray-200 shadow-sm">
-      <table className={`text-sm border-collapse ${isWideTable ? 'w-max min-w-full' : 'w-full'}`}>
-        <thead>
-          <tr className="bg-gray-100">
-            {header.map((cell, i) => {
-              const monthMatch = cell.match(/^(\d{1,2})월$/);
-              const isCurrentMonth = monthMatch && parseInt(monthMatch[1]) === currentMonth;
-              const headerKey = `${cell}-${i}`;
-              return (
-                <th 
-                  key={headerKey} 
-                  className={`${isWideTable ? 'px-2 py-2' : 'px-3 py-2.5'} text-center font-bold border border-gray-200 whitespace-nowrap ${
-                    i === 0 
-                      ? 'bg-gray-200 sticky left-0 z-10' 
-                      : isCurrentMonth 
-                        ? 'bg-blue-100 text-blue-800' 
-                        : 'bg-gray-100 text-gray-800'
-                  }`}
-                >
-                  {cell}
-                </th>
-              );
-            })}
-          </tr>
-        </thead>
-        <tbody>
-          {body.map((row, rowIdx) => {
-            const rowKey = `${row.join('|')}-${rowIdx}`;
-            return (
-              <tr key={rowKey} className={rowIdx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                {row.map((cell, cellIdx) => {
-                  const monthMatch = header[cellIdx]?.match(/^(\d{1,2})월$/);
-                  const isCurrentMonth = monthMatch && parseInt(monthMatch[1]) === currentMonth;
-                  const isEmpty = cell === '-' || cell === '' || cell === '~';
-                  const cellKey = `${cell}-${cellIdx}`;
-                  
-                  return (
-                    <td 
-                      key={cellKey} 
-                    className={`${isWideTable ? 'px-2 py-1.5' : 'px-3 py-2'} border border-gray-200 text-center whitespace-nowrap ${
-                      cellIdx === 0 
-                        ? 'font-semibold text-gray-700 bg-gray-100 sticky left-0 z-10' 
-                        : isCurrentMonth
-                          ? isEmpty 
-                            ? 'bg-blue-50/50 text-gray-400'
-                            : 'bg-blue-50 text-blue-700 font-medium'
-                          : isEmpty 
-                            ? 'text-gray-300' 
-                            : 'text-gray-600'
-                    }`}
-                  >
-                    {isMonthlyTable && isEmpty ? (
-                      <span className="text-gray-300">-</span>
-                    ) : (
-                      highlight(cell)
-                    )}
-                  </td>
-                  );
-                })}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
-  );
-};
-
 const renderInfoCards = (cards: InfoCard[]) => {
   const iconMap: Record<string, string> = {
     '시설현황': '🏟️',
@@ -334,62 +99,6 @@ const renderInfoCards = (cards: InfoCard[]) => {
           </div>
         );
       })}
-    </div>
-  );
-};
-
-const renderFeeTable = (fees: FeeInfo[]) => {
-  return (
-    <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
-      <table className="w-full text-sm border-collapse">
-        <thead>
-          <tr className="bg-gradient-to-r from-emerald-100 to-teal-100">
-            <th className="px-4 py-3 text-left font-bold text-gray-800 border-b border-gray-200">구분</th>
-            <th className="px-4 py-3 text-center font-bold text-gray-800 border-b border-gray-200">단위</th>
-            <th className="px-4 py-3 text-center font-bold text-gray-800 border-b border-gray-200">
-              <span className="inline-flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-blue-400"></span>
-                평일
-              </span>
-            </th>
-            <th className="px-4 py-3 text-center font-bold text-gray-800 border-b border-gray-200">
-              <span className="inline-flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-orange-400"></span>
-                야간/주말/공휴일
-              </span>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {fees.map((fee, idx) => {
-            const feeKey = `${fee.type}-${fee.unit || 'unit'}-${idx}`;
-            return (
-              <tr key={feeKey} className={idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                <td className="px-4 py-3 font-semibold text-gray-700 border-b border-gray-100">
-                  {fee.type.replace('실내 대관료', '🏠 실내').replace('실외 대관료', '🌳 실외').replace('조명료', '💡 조명')}
-                </td>
-                <td className="px-4 py-3 text-center text-gray-500 text-xs border-b border-gray-100">
-                  {fee.unit || '-'}
-                </td>
-                <td className="px-4 py-3 text-center border-b border-gray-100">
-                  {fee.weekday ? (
-                    <span className="inline-flex items-center px-2 py-1 rounded-full bg-blue-50 text-blue-700 font-semibold text-xs">
-                      {fee.weekday.replace(/평일\s*:\s*/, '')}
-                    </span>
-                  ) : '-'}
-                </td>
-                <td className="px-4 py-3 text-center border-b border-gray-100">
-                  {fee.weekend ? (
-                    <span className="inline-flex items-center px-2 py-1 rounded-full bg-orange-50 text-orange-700 font-semibold text-xs">
-                      {fee.weekend.replace(/야간,?\s*주말,?\s*공휴일\s*:\s*/, '')}
-                    </span>
-                  ) : '-'}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
     </div>
   );
 };
@@ -464,13 +173,13 @@ function DetailContent({ content }: { content: string }) {
 
                   <div className="px-4 py-3 bg-white/80">
                     {section.infoCards && section.infoCards.length > 0 && renderInfoCards(section.infoCards)}
-                    {section.feeTable && section.feeTable.length > 0 && renderFeeTable(section.feeTable)}
+                    {section.feeTable && section.feeTable.length > 0 && <FeeTable fees={section.feeTable} />}
                     {section.items.length > 0 && (
                       <ul className="space-y-0.5 list-none m-0 p-0">
-                        {section.items.map((item, itemIdx) => renderItem(item, itemIdx))}
+                        {section.items.map((item, itemIdx) => <ContentItemComponent key={`${item.type}-${item.text}-${item.indent}-${itemIdx}`} item={item} idx={itemIdx} />)}
                       </ul>
                     )}
-                    {section.table && section.table.length > 0 && renderTable(section.table)}
+                    {section.table && section.table.length > 0 && <TableRenderer rows={section.table} />}
                   </div>
                 </div>
               );
@@ -490,7 +199,7 @@ function DetailContent({ content }: { content: string }) {
                       </h3>
                     </div>
                     <div className="px-4 py-3 bg-white/80">
-                      {renderTable(table)}
+                      <TableRenderer rows={table} />
                     </div>
                   </div>
                 );
