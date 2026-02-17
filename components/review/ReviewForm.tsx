@@ -347,7 +347,7 @@ export default function ReviewForm({ courtId, courtName, district, onReviewAdded
       )}
 
       {error && (
-        <div className={`mb-4 p-3 text-sm ${themeClass('bg-red-100 border-2 border-black rounded-[5px] text-red-700 font-medium', 'bg-red-50 rounded-lg text-red-600')} `}>
+        <div role="alert" className={`mb-4 p-3 text-sm ${themeClass('bg-red-100 border-2 border-black rounded-[5px] text-red-700 font-medium', 'bg-red-50 rounded-lg text-red-600')} `}>
           {error}
         </div>
       )}
