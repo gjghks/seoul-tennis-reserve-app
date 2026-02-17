@@ -220,7 +220,7 @@ export default function DistrictContent({
               })}
             </div>
             {(lastUpdated || districtWeatherGrid) && (
-              <div className="flex items-center gap-1.5 ml-auto shrink-0">
+              <div className="flex items-center gap-x-1.5 gap-y-1 ml-auto flex-wrap justify-end">
                 {lastUpdated && (
                   <LastUpdated timestamp={lastUpdated} className="mt-0" />
                 )}
