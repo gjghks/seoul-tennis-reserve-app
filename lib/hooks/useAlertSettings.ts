@@ -2,6 +2,7 @@
 
 import useSWR from 'swr';
 import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/lib/supabase';
 
 export interface AlertSetting {
   id: string;
@@ -14,6 +15,9 @@ export interface AlertSetting {
 }
 
 const fetcher = async (url: string): Promise<AlertSetting[]> => {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) return [];
+
   const res = await fetch(url);
   if (!res.ok) return [];
   const data = await res.json();
