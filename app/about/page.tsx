@@ -6,7 +6,7 @@ import { useThemeClass } from '@/lib/cn';
 import FeedbackModal from '@/components/feedback/FeedbackModal';
 
 const CORE_FEATURES = [
-  { emoji: '🏠', title: '홈', desc: '자치구별 테니스장 목록·지도 뷰, 인기 랭킹, 즐겨찾기 현황을 한 화면에서' },
+  { emoji: '🏠', title: '홈', desc: '자치구별 테니스장 목록, 인기 랭킹, 즐겨찾기 현황, 날씨·미세먼지를 한 화면에서' },
   { emoji: '📅', title: '오늘 예약', desc: '오늘 바로 예약할 수 있는 테니스장만 모아 빠르게 탐색' },
   { emoji: '📊', title: '구별 비교', desc: '자치구별 코트 수·예약률·평점을 한눈에 비교' },
   { emoji: '📈', title: '경쟁률', desc: '시간대·요일별 예약 경쟁률 추이로 빈 시간대 공략' },
@@ -29,6 +29,8 @@ const CONVENIENCE_FEATURES = [
   { title: '자치구 가이드', desc: '지역별 테니스장 특징·접근성·주차 등 상세 가이드' },
   { title: '인기 랭킹 TOP 5', desc: '평점·즐겨찾기·경쟁률을 종합한 인기 테니스장 랭킹' },
   { title: '앱 설치 (PWA)', desc: '홈 화면에 추가하여 앱처럼 사용' },
+  { title: '테니스장 검색', desc: '이름이나 장소로 원하는 테니스장을 빠르게 검색' },
+  { title: '카카오 공유', desc: '코트 정보를 카카오톡으로 간편하게 공유' },
   { title: '테마 전환', desc: '미니멀·네오브루탈리즘 두 가지 디자인 테마 지원' },
 ] as const;
 
