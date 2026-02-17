@@ -97,7 +97,8 @@ export default function FavoriteButton({
           showToast('즐겨찾기에 추가되었습니다', 'success');
         }
       }
-     } catch {
+     } catch (error) {
+       console.error('Failed to toggle favorite:', error);
        showToast('오류가 발생했습니다. 다시 시도해주세요.', 'error');
     } finally {
       setLoading(false);

@@ -89,7 +89,8 @@ export default function ReviewList({ reviews, onReviewDeleted }: ReviewListProps
       }
 
       onReviewDeleted();
-    } catch {
+    } catch (error) {
+      console.error('Failed to delete review:', error);
       showToast('후기 삭제에 실패했습니다.', 'error');
     }
   };
