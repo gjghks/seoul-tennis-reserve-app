@@ -15,7 +15,7 @@ import FacilityTags from '@/components/ui/FacilityTags';
 import { extractFacilityTags } from '@/lib/utils/facilityTags';
 import { convertToWeatherGrid } from '@/lib/utils/weatherGrid';
 import WeatherBadge from '@/components/weather/WeatherBadge';
-import { isCourtAvailable } from '@/lib/utils/courtStatus';
+import { isCourtAvailable, isCourtAccepting, sortByAvailability } from '@/lib/utils/courtStatus';
 import { findEnrichment } from '@/lib/data/facilityEnrichment';
 import type { SurfaceCategory } from '@/lib/data/facilityEnrichment';
 
@@ -83,19 +83,13 @@ export default function DistrictContent({
     ? allCourts.filter(c => c.AREANM === koreanDistrict)
     : initialCourts;
 
-  const courts = [...liveCourts].sort((a, b) => {
-    const isAAvailable = a.SVCSTATNM === '접수중';
-    const isBAvailable = b.SVCSTATNM === '접수중';
-    if (isAAvailable && !isBAvailable) return -1;
-    if (!isAAvailable && isBAvailable) return 1;
-    return 0;
-  });
+  const courts = sortByAvailability(liveCourts);
 
-  const availableCount = courts.filter(court => court.SVCSTATNM === '접수중').length;
+  const availableCount = courts.filter(court => isCourtAccepting(court.SVCSTATNM)).length;
   const filteredCourts = useMemo(() => {
     let result = courts;
     if (showAvailableOnly) {
-      result = result.filter(court => court.SVCSTATNM === '접수중');
+      result = result.filter(court => isCourtAccepting(court.SVCSTATNM));
     }
     if (surfaceFilter !== 'all') {
       result = result.filter(court => {
@@ -116,8 +110,8 @@ export default function DistrictContent({
       groups[place].push(court);
     }
     return Object.entries(groups).sort(([, a], [, b]) => {
-      const aHasAvailable = a.some(c => c.SVCSTATNM === '접수중');
-      const bHasAvailable = b.some(c => c.SVCSTATNM === '접수중');
+      const aHasAvailable = a.some(c => isCourtAccepting(c.SVCSTATNM));
+      const bHasAvailable = b.some(c => isCourtAccepting(c.SVCSTATNM));
       if (aHasAvailable && !bHasAvailable) return -1;
       if (!aHasAvailable && bHasAvailable) return 1;
       return b.length - a.length;
@@ -257,7 +251,7 @@ export default function DistrictContent({
 
       <div className="container pb-6">
         {loading ? (
-          <div className="space-y-4">
+          <div className="space-y-4" aria-busy="true">
             {[1, 2, 3].map(i => (
               <div key={`skeleton-${i}`} className={`h-32 ${
                 isNeoBrutalism 
@@ -317,7 +311,7 @@ export default function DistrictContent({
                 {(() => {
                   const otherDistricts = Object.entries(
                     allCourts
-                      .filter(c => c.AREANM !== koreanDistrict && c.SVCSTATNM === '접수중')
+                      .filter(c => c.AREANM !== koreanDistrict && isCourtAccepting(c.SVCSTATNM))
                       .reduce<Record<string, number>>((acc, c) => {
                         acc[c.AREANM] = (acc[c.AREANM] || 0) + 1;
                         return acc;
@@ -356,7 +350,7 @@ export default function DistrictContent({
         ) : (
           <div className="space-y-6">
             {groupedCourts.map(([placeName, placeCourts]) => {
-              const placeAvailable = placeCourts.filter(c => c.SVCSTATNM === '접수중').length;
+              const placeAvailable = placeCourts.filter(c => isCourtAccepting(c.SVCSTATNM)).length;
               return (
                 <div key={placeName} id={`place-group-${placeName}`}>
                   <button

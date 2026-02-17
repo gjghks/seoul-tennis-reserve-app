@@ -5,6 +5,7 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { useThemeClass } from '@/lib/cn';
 import { DISTRICTS, KOREAN_TO_SLUG } from '@/lib/constants/districts';
 import type { SeoulService } from '@/lib/seoulApi';
+import { isCourtAccepting } from '@/lib/utils/courtStatus';
 import Link from 'next/link';
 
 const DAY_LABELS = ['일', '월', '화', '수', '목', '금', '토'] as const;
@@ -380,7 +381,7 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
                             </p>
                           </div>
                           <span className={`shrink-0 px-2 py-0.5 text-xs rounded ${
-                            court.SVCSTATNM === '접수중'
+                            isCourtAccepting(court.SVCSTATNM)
                               ? isNeoBrutalism
                                 ? 'bg-[#a3e635] border border-black font-bold'
                                 : 'bg-green-100 text-green-700'

@@ -3,6 +3,7 @@
 import { createContext, useContext, ReactNode } from 'react';
 import useSWR, { SWRConfig } from 'swr';
 import { SeoulService } from '@/lib/seoulApi';
+import { sortByAvailability } from '@/lib/utils/courtStatus';
 
 export interface DistrictStats {
   count: number;
@@ -46,13 +47,7 @@ export function useDistrictCourts(district: string) {
   const { courts, isLoading, error } = useTennisData();
   
   const filteredCourts = courts.filter(c => c.AREANM === district);
-  const sortedCourts = [...filteredCourts].sort((a, b) => {
-    const isAAvailable = a.SVCSTATNM === '접수중';
-    const isBAvailable = b.SVCSTATNM === '접수중';
-    if (isAAvailable && !isBAvailable) return -1;
-    if (!isAAvailable && isBAvailable) return 1;
-    return 0;
-  });
+  const sortedCourts = sortByAvailability(filteredCourts);
 
   return {
     courts: sortedCourts,

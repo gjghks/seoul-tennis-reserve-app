@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { SeoulService } from '@/lib/seoulApi';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useKakaoLoaderWithHttps } from '@/lib/hooks/useKakaoLoaderWithHttps';
+import { isCourtAccepting } from '@/lib/utils/courtStatus';
 
 interface CourtGroup {
   key: string;
@@ -57,7 +58,7 @@ export default function KakaoMapView({ courts, district, focusPlaceName, onPlace
       const existing = map.get(key);
       if (existing) {
         existing.courts.push(court);
-        if (court.SVCSTATNM === '접수중') existing.hasAvailable = true;
+        if (isCourtAccepting(court.SVCSTATNM)) existing.hasAvailable = true;
       } else {
         map.set(key, {
           key,
@@ -65,7 +66,7 @@ export default function KakaoMapView({ courts, district, focusPlaceName, onPlace
           lng,
           placeName: court.PLACENM,
           courts: [court],
-          hasAvailable: court.SVCSTATNM === '접수중',
+          hasAvailable: isCourtAccepting(court.SVCSTATNM),
         });
       }
     }
@@ -221,7 +222,7 @@ export default function KakaoMapView({ courts, district, focusPlaceName, onPlace
                  fontWeight: 500,
                  color: isNeoBrutalism ? 'rgba(0,0,0,0.5)' : '#6b7280',
                }}>
-                 · 접수중 {hoveredGroup.courts.filter(c => c.SVCSTATNM === '접수중').length}/{hoveredGroup.courts.length}개
+                 · 접수중 {hoveredGroup.courts.filter(c => isCourtAccepting(c.SVCSTATNM)).length}/{hoveredGroup.courts.length}개
                </span>
              </div>
            </CustomOverlayMap>
@@ -286,7 +287,7 @@ export default function KakaoMapView({ courts, district, focusPlaceName, onPlace
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: 5, maxHeight: selectedGroup.courts.length > 8 ? 300 : undefined, overflowY: selectedGroup.courts.length > 8 ? 'auto' : undefined }}>
                 {selectedGroup.courts.map(court => {
-                  const isAvailable = court.SVCSTATNM === '접수중';
+                  const isAvailable = isCourtAccepting(court.SVCSTATNM);
                   const shortName = getShortName(court.SVCNM, selectedGroup.placeName);
                   return (
                     <button

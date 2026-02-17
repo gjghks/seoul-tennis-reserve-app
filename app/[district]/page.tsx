@@ -3,6 +3,7 @@ import { SLUG_TO_KOREAN, getDistrictBySlug } from '@/lib/constants/districts';
 import DistrictContent from '@/components/district/DistrictContent';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
+import { sortByAvailability } from '@/lib/utils/courtStatus';
 
 export const revalidate = 300;
 
@@ -55,13 +56,7 @@ async function getDistrictCourts(district: string): Promise<{ courts: SeoulServi
     const services = await fetchTennisAvailability();
     const filtered = services.filter(s => s.AREANM === koreanDistrict);
     
-    const sorted = [...filtered].sort((a, b) => {
-      const isAAvailable = a.SVCSTATNM === '접수중';
-      const isBAvailable = b.SVCSTATNM === '접수중';
-      if (isAAvailable && !isBAvailable) return -1;
-      if (!isAAvailable && isBAvailable) return 1;
-      return 0;
-    });
+    const sorted = sortByAvailability(filtered);
 
     return {
       courts: sorted,
