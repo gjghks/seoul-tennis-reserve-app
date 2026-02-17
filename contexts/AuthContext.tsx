@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { supabase } from '@/lib/supabase';
 import { User } from '@supabase/supabase-js';
+import { LOGIN_PROVIDER_KEY } from '@/lib/hooks/useReservationTip';
 
 interface AuthContextType {
   user: User | null;
@@ -32,6 +33,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signOut = async () => {
+    try { localStorage.removeItem(LOGIN_PROVIDER_KEY); } catch { /* noop */ }
     await supabase.auth.signOut({ scope: 'local' });
   };
 

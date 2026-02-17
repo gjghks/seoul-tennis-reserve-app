@@ -63,6 +63,8 @@ function LoginContent() {
     setLoadingProvider(displayProvider);
     setError(null);
 
+    localStorage.setItem('current_login_provider', displayProvider);
+
     if (redirectTo && redirectTo !== '/') {
       localStorage.setItem('auth_redirect', redirectTo);
     }
@@ -176,7 +178,17 @@ function LoginContent() {
 
         </div>
 
-        <p className={`text-center text-xs mt-6 ${themeClass('text-black/50 font-medium', 'text-gray-400')}`}>
+        <div className={themeClass(
+          'bg-[#FEE500]/20 border-2 border-black/10 rounded-[5px] p-3 mt-6',
+          'bg-amber-50 border border-amber-100 rounded-lg p-3 mt-6'
+        )}>
+          <p className={`text-xs text-center ${themeClass('text-black/60 font-medium', 'text-amber-700')}`}>
+            서울시 예약 사이트(yeyak.seoul.go.kr)도 카카오 로그인을 지원합니다.
+            동일한 카카오 계정으로 로그인하면 예약 시 더 편리합니다.
+          </p>
+        </div>
+
+        <p className={`text-center text-xs mt-4 ${themeClass('text-black/50 font-medium', 'text-gray-400')}`}>
           로그인 시 <a href="/terms" className="underline">이용약관</a> 및 <a href="/privacy" className="underline">개인정보처리방침</a>에 동의하게 됩니다.
         </p>
       </div>
