@@ -754,7 +754,7 @@ Wave FINAL (Verification — after ALL tasks):
   - Files: `components/court-detail/CourtDetailClient.tsx`, `components/records/RecordForm.tsx`
   - Pre-commit: `npm run build`
 
-- [ ] 7. /guide/records 튜토리얼 가이드 페이지
+- [x] 7. /guide/records 튜토리얼 가이드 페이지
 
   **What to do**:
   - **신규 페이지** `app/guide/records/page.tsx` 생성:
@@ -858,7 +858,7 @@ Wave FINAL (Verification — after ALL tasks):
   - Files: `app/guide/records/page.tsx`, `components/guide/RecordsGuideContent.tsx`
   - Pre-commit: `npm run build`
 
-- [ ] 8. About 페이지 경기 기록 기능 추가
+- [x] 8. About 페이지 경기 기록 기능 추가
 
   **What to do**:
   - `app/about/page.tsx` 수정
@@ -935,7 +935,7 @@ Wave FINAL (Verification — after ALL tasks):
   - Files: `app/about/page.tsx`
   - Pre-commit: `npm run build`
 
-- [ ] 9. CLAUDE.md 문서 업데이트
+- [x] 9. CLAUDE.md 문서 업데이트
 
   **What to do**:
   - `CLAUDE.md` 파일에 Phase 2 변경사항 반영:

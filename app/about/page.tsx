@@ -11,6 +11,7 @@ const CORE_FEATURES = [
   { emoji: '📊', title: '구별 비교', desc: '자치구별 코트 수·예약률·평점을 한눈에 비교' },
   { emoji: '📈', title: '경쟁률', desc: '시간대·요일별 예약 경쟁률 추이로 빈 시간대 공략' },
   { emoji: '🗓️', title: '캘린더', desc: '날짜별 예약 현황을 캘린더에서 직관적으로 확인' },
+  { emoji: '🎾', title: '경기 기록', desc: '나의 테니스 경기를 기록하고 통계로 실력 변화를 추적' },
 ] as const;
 
 const COURT_DETAIL_FEATURES = [
@@ -32,6 +33,7 @@ const CONVENIENCE_FEATURES = [
   { title: '테니스장 검색', desc: '이름이나 장소로 원하는 테니스장을 빠르게 검색' },
   { title: '카카오 공유', desc: '코트 정보를 카카오톡으로 간편하게 공유' },
   { title: '테마 전환', desc: '미니멀·네오브루탈리즘 두 가지 디자인 테마 지원' },
+  { title: '경기 통계', desc: '승률, 세트 스코어, 코트별 전적 등 자동 분석' },
 ] as const;
 
 export default function AboutPage() {
@@ -139,18 +141,19 @@ export default function AboutPage() {
             </p>
           </section>
 
-          {/* 이용 안내 */}
-          <section>
-            <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black', 'text-gray-900')}`}>
-              이용 안내
-            </h2>
-            <ul className="list-disc list-inside space-y-1">
-              <li>본 서비스는 무료로 제공됩니다.</li>
-              <li>실제 예약은 서울시 공공서비스예약 시스템에서 진행됩니다.</li>
-              <li>데이터는 실시간으로 업데이트되지만, 실제 예약 가능 여부와 차이가 있을 수 있습니다.</li>
-              <li>카카오 또는 구글 계정으로 로그인하면 즐겨찾기·후기 기능을 이용할 수 있습니다.</li>
-            </ul>
-          </section>
+           {/* 이용 안내 */}
+           <section>
+             <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black', 'text-gray-900')}`}>
+               이용 안내
+             </h2>
+             <ul className="list-disc list-inside space-y-1">
+               <li>본 서비스는 무료로 제공됩니다.</li>
+               <li>실제 예약은 서울시 공공서비스예약 시스템에서 진행됩니다.</li>
+               <li>데이터는 실시간으로 업데이트되지만, 실제 예약 가능 여부와 차이가 있을 수 있습니다.</li>
+               <li>카카오 또는 구글 계정으로 로그인하면 즐겨찾기·후기 기능을 이용할 수 있습니다.</li>
+               <li>로그인하면 경기 기록 및 통계 기능을 이용할 수 있습니다.</li>
+             </ul>
+           </section>
 
           {/* 의견을 들려주세요 */}
           <section className={`p-5 rounded-lg ${themeClass('bg-yellow-100 border-2 border-black', 'bg-gray-50')}`}>

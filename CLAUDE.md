@@ -48,6 +48,7 @@ npm run test:coverage  # Coverage report
 | `/[district]/[courtId]` | `app/[district]/[courtId]/page.tsx` | Court detail (reviews, weather, map, similar courts) |
 | `/my` | `app/my/page.tsx` | User dashboard (favorites, recent courts, alert settings) |
 | `/guide/[district]` | `app/guide/[district]/page.tsx` | District guide (tips, parking, accessibility) |
+| `/guide/records` | `app/guide/records/page.tsx` | Match records usage guide |
 | `/login` | `app/login/page.tsx` | OAuth login (Kakao, Google) |
 | `/about` | `app/about/page.tsx` | Service introduction |
 | `/contact` | `app/contact/page.tsx` | Contact info and feedback |
@@ -87,7 +88,7 @@ npm run test:coverage  # Coverage report
 ```
 components/
   layout/          # Header, Footer, BottomNav, VisitorCounter
-  home/            # HomeContent, CourtSearch, PopularCourts
+  home/            # HomeContent, CourtSearch, PopularCourts, RecordsPromoCard
   district/        # DistrictContent, DistrictGrid
   court-detail/    # CourtDetailClient, StickyHeader, DetailContent, FeeTable,
                    #   ParkingSection, CourtDetailMap, SimilarCourts
@@ -99,7 +100,7 @@ components/
   compare/         # CompareContent
   trends/          # TrendsContent
   calendar/        # CalendarContent
-  guide/           # GuideContent
+  guide/           # GuideContent, RecordsGuideContent
   auth/            # LoginPrompt, ProviderBadge
   map/             # KakaoMapView
   reservation/     # KakaoReserveTip
@@ -117,7 +118,7 @@ components/
 ### Key Directories
 - `app/` - Next.js App Router pages and API routes
 - `lib/` - Core utilities (Supabase client, Seoul API client, theme utils)
-- `components/` - React components (53 total, organized by feature domain)
+- `components/` - React components (organized by feature domain)
 - `contexts/` - React context providers (auth, theme)
 - `hooks/` - Custom React hooks
 - `supabase/` - Database schema (`schema.sql`)
