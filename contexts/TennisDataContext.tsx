@@ -71,6 +71,7 @@ function TennisDataProviderInner({
       fallbackData: initialData,
       revalidateOnFocus: false,
       revalidateOnReconnect: true,
+      keepPreviousData: true,
       refreshInterval: 15 * 60 * 1000,
       dedupingInterval: 60 * 1000, // 1분 내 중복 요청 방지
     }

@@ -105,8 +105,7 @@ export async function fetchTennisAvailability(startIndex = 1, endIndex = 1000): 
             }
 
             if (!data.ListPublicReservationSport) {
-                tennisDataCache = { data: [], timestamp: Date.now() };
-                return [];
+                throw new Error('Seoul API response missing ListPublicReservationSport (possible error code or maintenance)');
             }
 
             const allServices = data.ListPublicReservationSport.row;

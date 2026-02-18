@@ -52,7 +52,8 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
   const showFavoritesAbove = !!user && !authLoading && !favLoading && favorites.length > 0;
   const favoritesLoading = !!user && !authLoading && favLoading;
 
-  const displayStats = stats || initialStats;
+  const hasStats = stats && Object.keys(stats).length > 0;
+  const displayStats = hasStats ? stats : initialStats;
 
   const handleRefresh = async () => {
     await mutate();
