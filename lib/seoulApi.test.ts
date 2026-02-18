@@ -1,12 +1,65 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { EventEmitter } from 'node:events';
 
-const mockFetch = vi.fn();
-global.fetch = mockFetch;
+const mockGet = vi.fn();
+vi.mock('node:http', () => ({
+  default: { get: mockGet },
+}));
+
+function createReq(): EventEmitter & { destroy: ReturnType<typeof vi.fn> } {
+  const req = new EventEmitter() as EventEmitter & { destroy: ReturnType<typeof vi.fn> };
+  req.destroy = vi.fn();
+  return req;
+}
+
+function mockSuccess(body: object): void {
+  mockGet.mockImplementationOnce((_url: string, _opts: unknown, callback: Function) => {
+    const req = createReq();
+    const res = Object.assign(new EventEmitter(), { statusCode: 200, resume: vi.fn() });
+
+    Promise.resolve()
+      .then(() => callback(res))
+      .then(() => {
+        res.emit('data', Buffer.from(JSON.stringify(body)));
+        res.emit('end');
+      });
+
+    return req;
+  });
+}
+
+function mockError(error: Error): void {
+  mockGet.mockImplementationOnce(() => {
+    const req = createReq();
+    Promise.resolve().then(() => req.emit('error', error));
+    return req;
+  });
+}
+
+function mockTimeout(): void {
+  mockGet.mockImplementationOnce((_url: string, opts: { timeout: number }) => {
+    const req = createReq();
+    setTimeout(() => req.emit('timeout'), opts.timeout);
+    return req;
+  });
+}
+
+const TENNIS_RESPONSE = {
+  ListPublicReservationSport: {
+    list_total_count: 3,
+    RESULT: { CODE: 'INFO-000', MESSAGE: '정상 처리되었습니다.' },
+    row: [
+      { SVCID: '1', MINCLASSNM: '테니스장', SVCNM: '강남 테니스장', AREANM: '강남구' },
+      { SVCID: '2', MINCLASSNM: '축구장', SVCNM: '강남 축구장', AREANM: '강남구' },
+      { SVCID: '3', MINCLASSNM: '테니스장', SVCNM: '부산 테니스장', AREANM: '해운대구' },
+    ],
+  },
+};
 
 describe('seoulApi', () => {
   beforeEach(() => {
     vi.resetModules();
-    mockFetch.mockReset();
+    mockGet.mockReset();
   });
 
   afterEach(() => {
@@ -22,30 +75,12 @@ describe('seoulApi', () => {
       const result = await fetchTennisAvailability();
 
       expect(result).toEqual([]);
-      expect(mockFetch).not.toHaveBeenCalled();
+      expect(mockGet).not.toHaveBeenCalled();
     });
 
-    // TODO: seoulApi.ts가 fetch에서 node:http로 변경되어 global.fetch mock이 동작하지 않음.
-    //       node:http를 mock하도록 테스트 리팩토링 필요.
-    it.skip('should fetch and filter tennis courts', async () => {
+    it('should fetch and filter tennis courts', async () => {
       vi.stubEnv('SEOUL_OPEN_DATA_KEY', 'test-api-key');
-
-      const mockResponse = {
-        ListPublicReservationSport: {
-          list_total_count: 3,
-          RESULT: { CODE: 'INFO-000', MESSAGE: '정상 처리되었습니다.' },
-          row: [
-            { SVCID: '1', MINCLASSNM: '테니스장', SVCNM: '강남 테니스장', AREANM: '강남구' },
-            { SVCID: '2', MINCLASSNM: '축구장', SVCNM: '강남 축구장', AREANM: '강남구' },
-            { SVCID: '3', MINCLASSNM: '테니스장', SVCNM: '부산 테니스장', AREANM: '해운대구' },
-          ],
-        },
-      };
-
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => mockResponse,
-      });
+      mockSuccess(TENNIS_RESPONSE);
 
       const { fetchTennisAvailability } = await import('./seoulApi');
       const result = await fetchTennisAvailability();
@@ -54,16 +89,12 @@ describe('seoulApi', () => {
       expect(result[0].SVCID).toBe('1');
       expect(result[0].MINCLASSNM).toBe('테니스장');
       expect(result[0].AREANM).toBe('강남구');
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.objectContaining({ signal: expect.any(AbortSignal) })
-      );
+      expect(mockGet).toHaveBeenCalledTimes(1);
     });
 
-    it.skip('should include courts with 테니스 in name', async () => {
+    it('should include courts with 테니스 in name', async () => {
       vi.stubEnv('SEOUL_OPEN_DATA_KEY', 'test-api-key');
-
-      const mockResponse = {
+      mockSuccess({
         ListPublicReservationSport: {
           list_total_count: 2,
           RESULT: { CODE: 'INFO-000', MESSAGE: '정상 처리되었습니다.' },
@@ -72,11 +103,6 @@ describe('seoulApi', () => {
             { SVCID: '2', MINCLASSNM: '기타', SVCNM: '배드민턴장', AREANM: '송파구' },
           ],
         },
-      };
-
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => mockResponse,
       });
 
       const { fetchTennisAvailability } = await import('./seoulApi');
@@ -86,12 +112,14 @@ describe('seoulApi', () => {
       expect(result[0].SVCNM).toContain('테니스');
     });
 
-    it.skip('should return empty array when API returns no data', async () => {
+    it('should cache empty result when API returns no tennis data', async () => {
       vi.stubEnv('SEOUL_OPEN_DATA_KEY', 'test-api-key');
-
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({}),
+      mockSuccess({
+        ListPublicReservationSport: {
+          list_total_count: 0,
+          RESULT: { CODE: 'INFO-000', MESSAGE: '정상 처리되었습니다.' },
+          row: [],
+        },
       });
 
       const { fetchTennisAvailability, getCachedTennisData } = await import('./seoulApi');
@@ -101,100 +129,67 @@ describe('seoulApi', () => {
       expect(getCachedTennisData()).toEqual({ data: [], timestamp: expect.any(Number) });
     });
 
-    it.skip('should retry failures and succeed on a later attempt', async () => {
+    it('should retry failures and succeed on a later attempt', async () => {
       vi.useFakeTimers();
       vi.stubEnv('SEOUL_OPEN_DATA_KEY', 'test-api-key');
 
-      const mockResponse = {
-        ListPublicReservationSport: {
-          list_total_count: 1,
-          RESULT: { CODE: 'INFO-000', MESSAGE: '정상 처리되었습니다.' },
-          row: [
-            { SVCID: '1', MINCLASSNM: '테니스장', SVCNM: '강남 테니스장', AREANM: '강남구' },
-          ],
-        },
-      };
-
-      mockFetch
-        .mockRejectedValueOnce(new Error('Network error 1'))
-        .mockRejectedValueOnce(new Error('Network error 2'))
-        .mockResolvedValueOnce({
-          ok: true,
-          json: async () => mockResponse,
-        });
+      mockError(new Error('Network error'));
+      mockError(new Error('Network error'));
+      mockSuccess(TENNIS_RESPONSE);
 
       const { fetchTennisAvailability } = await import('./seoulApi');
       const resultPromise = fetchTennisAvailability();
 
-      await vi.advanceTimersByTimeAsync(3_000);
+      await vi.advanceTimersByTimeAsync(5_000);
       const result = await resultPromise;
 
-      expect(mockFetch).toHaveBeenCalledTimes(3);
+      expect(mockGet).toHaveBeenCalledTimes(3);
       expect(result).toHaveLength(1);
       expect(result[0].SVCID).toBe('1');
     });
 
-    it.skip('should timeout each attempt after 10 seconds and throw after retries when no cache exists', async () => {
+    it('should return empty array after all retries timeout when no cache exists', async () => {
       vi.useFakeTimers();
       vi.stubEnv('SEOUL_OPEN_DATA_KEY', 'test-api-key');
 
-      mockFetch.mockImplementation((_url: string, init?: RequestInit) => {
-        return new Promise((_resolve, reject) => {
-          const signal = init?.signal;
-          if (!signal) {
-            reject(new Error('Missing AbortSignal'));
-            return;
-          }
-
-          signal.addEventListener('abort', () => {
-            reject(new DOMException('The operation was aborted.', 'AbortError'));
-          });
-        });
-      });
+      mockTimeout();
+      mockTimeout();
+      mockTimeout();
 
       const { fetchTennisAvailability } = await import('./seoulApi');
       const resultPromise = fetchTennisAvailability();
-      const rejectionExpectation = expect(resultPromise).rejects.toThrow('The operation was aborted.');
 
-      await vi.advanceTimersByTimeAsync(47_000);
+      await vi.advanceTimersByTimeAsync(30_000);
+      const result = await resultPromise;
 
-      await rejectionExpectation;
-      expect(mockFetch).toHaveBeenCalledTimes(4);
+      expect(result).toEqual([]);
+      expect(mockGet).toHaveBeenCalledTimes(3);
     });
 
-    it.skip('should return cached data when all retries fail after a previous success', async () => {
+    it('should return stale cached data when all retries fail', async () => {
       vi.useFakeTimers();
       vi.stubEnv('SEOUL_OPEN_DATA_KEY', 'test-api-key');
 
-      const mockResponse = {
-        ListPublicReservationSport: {
-          list_total_count: 1,
-          RESULT: { CODE: 'INFO-000', MESSAGE: '정상 처리되었습니다.' },
-          row: [
-            { SVCID: 'cached-1', MINCLASSNM: '테니스장', SVCNM: '캐시 테니스장', AREANM: '강남구' },
-          ],
-        },
-      };
+      mockSuccess(TENNIS_RESPONSE);
 
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => mockResponse,
-      });
+      const { fetchTennisAvailability } = await import('./seoulApi');
 
-      const { fetchTennisAvailability, getCachedTennisData } = await import('./seoulApi');
       const freshResult = await fetchTennisAvailability();
       expect(freshResult).toHaveLength(1);
-      expect(getCachedTennisData()?.data).toEqual(freshResult);
 
-      mockFetch.mockReset();
-      mockFetch.mockRejectedValue(new Error('Network down'));
+      await vi.advanceTimersByTimeAsync(6 * 60 * 1000);
+
+      mockGet.mockReset();
+      mockError(new Error('Network down'));
+      mockError(new Error('Network down'));
+      mockError(new Error('Network down'));
 
       const stalePromise = fetchTennisAvailability();
-      await vi.advanceTimersByTimeAsync(7_000);
+      await vi.advanceTimersByTimeAsync(10_000);
       const staleResult = await stalePromise;
 
-      expect(mockFetch).toHaveBeenCalledTimes(4);
       expect(staleResult).toEqual(freshResult);
+      expect(mockGet).toHaveBeenCalledTimes(3);
     });
   });
 });
