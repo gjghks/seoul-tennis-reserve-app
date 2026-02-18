@@ -12,6 +12,12 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Non-app files:
+    "skills/**",
+    ".claude/**",
+    ".sisyphus/**",
+    "public/sw.js",
+    "public/sw.js.map",
   ]),
 ]);
 
