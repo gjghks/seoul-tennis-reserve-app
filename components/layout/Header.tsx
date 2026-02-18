@@ -60,6 +60,12 @@ export default function Header() {
             >
               캘린더
             </Link>
+            <Link
+              href="/records"
+              className={`hidden sm:block px-3 py-1.5 text-sm transition-colors ${themeClass('text-black font-bold hover:underline underline-offset-4', 'text-gray-600 hover:text-green-600')}`}
+            >
+              경기 기록
+            </Link>
             {loading ? (
               <div className="w-16 h-8 skeleton rounded" />
             ) : user ? (

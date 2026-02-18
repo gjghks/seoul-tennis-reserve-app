@@ -89,7 +89,7 @@ export async function fetchTennisAvailability(startIndex = 1, endIndex = 1000): 
 
         try {
             const res = await fetch(url, {
-                cache: 'no-store',
+                next: { revalidate: 60 },
                 signal: controller.signal,
             });
             if (!res.ok) {

@@ -10,6 +10,7 @@ import { KOREAN_TO_SLUG } from '@/lib/constants/districts';
 import { useThemeClass } from '@/lib/cn';
 import { useRecentCourts } from '@/lib/hooks/useRecentCourts';
 import AlertSettingsSection from '@/components/alert/AlertSettingsSection';
+import TennisProfileSection from '@/components/profile/TennisProfileSection';
 import { ProviderBadge } from '@/components/auth/ProviderBadge';
 
 interface Favorite {
@@ -179,6 +180,7 @@ export default function MyPage() {
 
       {user && (
         <div className="max-w-2xl">
+        <TennisProfileSection />
         <AlertSettingsSection />
 
         <h2 className={`text-lg mb-4 flex items-center gap-2 ${themeClass('font-black text-black uppercase', 'font-semibold text-gray-900')} `}>
