@@ -20,6 +20,26 @@ npm run test:run   # Vitest (single run)
 npm run test:coverage  # Coverage report
 ```
 
+## Development & Deployment Workflow
+
+### Branch Strategy
+- **`develop`**: Default working branch. Push triggers Vercel Preview deployment.
+- **`master`**: Production branch. Push triggers Vercel Production deployment (seoul-tennis.com).
+
+### Workflow
+1. Work on `develop` branch
+2. Commit and push → pre-push hook runs lint/test/build → Vercel creates Preview URL
+3. Verify on Preview URL
+4. Merge `develop` → `master` → Production deployment
+
+### Pre-push Hook (Husky)
+Every `git push` automatically runs:
+1. **Lint** (informational, non-blocking)
+2. **Test** (`npm run test:run`) — blocks push on failure
+3. **Build** (`npm run build`) — blocks push on failure
+
+To skip in emergencies: `git push --no-verify` (use with caution)
+
 ## Architecture
 
 ### Tech Stack
