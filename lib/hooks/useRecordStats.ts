@@ -13,13 +13,14 @@ const fetcher = (url: string) => fetch(url).then(r => {
   return r.json();
 });
 
-export function useRecordStats(params: UseRecordStatsParams = {}) {
+export function useRecordStats(params: UseRecordStatsParams & { enabled?: boolean } = {}) {
+  const { enabled = true, from, to } = params;
   const searchParams = new URLSearchParams();
-  if (params.from) searchParams.set('from', params.from);
-  if (params.to) searchParams.set('to', params.to);
+  if (from) searchParams.set('from', from);
+  if (to) searchParams.set('to', to);
 
   const qs = searchParams.toString();
-  const url = `/api/records/stats${qs ? `?${qs}` : ''}`;
+  const url = enabled ? `/api/records/stats${qs ? `?${qs}` : ''}` : null;
 
   const { data, error, isLoading, mutate } = useSWR<{ stats: RecordStats }>(
     url,
@@ -29,7 +30,7 @@ export function useRecordStats(params: UseRecordStatsParams = {}) {
 
   return {
     stats: data?.stats ?? null,
-    isLoading,
+    isLoading: enabled ? isLoading : false,
     error,
     mutate,
   };

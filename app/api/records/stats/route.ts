@@ -9,10 +9,13 @@ export async function GET(request: NextRequest) {
   const { data: { user }, error: authError } = await supabase.auth.getUser();
 
   if (authError || !user) {
-    return NextResponse.json(
-      { error: '로그인이 필요합니다.' },
-      { status: 401 }
-    );
+    return NextResponse.json({
+      stats: {
+        total_matches: 0, wins: 0, losses: 0, draws: 0,
+        win_rate: 0, by_match_type: {}, monthly_activity: [],
+        recent_form: [], avg_cost: null, most_played_court: null,
+      }
+    });
   }
 
   const { searchParams } = new URL(request.url);
