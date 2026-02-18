@@ -1,3 +1,5 @@
+import { getKSTComponents } from '@/lib/date';
+
 const API_KEY = process.env.LIVING_WEATHER_API_KEY;
 const BASE_URL = 'https://apis.data.go.kr/1360000/LivingWthrIdxServiceV4';
 const REQUEST_TIMEOUT_MS = 8_000;
@@ -145,21 +147,21 @@ function resolveAirDiffusionLabel(value: number | null): string {
 }
 
 function buildApiTimeParam(): string {
-  const now = new Date();
-  // 발표 시각: 06시, 18시 기준. 가장 최근 발표 시각 사용
-  const hour = now.getHours();
-  const baseHour = hour >= 18 ? 18 : hour >= 6 ? 6 : 18;
+  const kst = getKSTComponents();
+  const baseHour = kst.hours >= 18 ? 18 : kst.hours >= 6 ? 6 : 18;
 
-  const baseDate = new Date(now);
-  if (hour < 6) {
-    baseDate.setDate(baseDate.getDate() - 1);
+  let { year, month, day } = kst;
+  if (kst.hours < 6) {
+    const yesterday = new Date(year, month - 1, day - 1);
+    year = yesterday.getFullYear();
+    month = yesterday.getMonth() + 1;
+    day = yesterday.getDate();
   }
 
-  const yyyy = baseDate.getFullYear();
-  const mm = String(baseDate.getMonth() + 1).padStart(2, '0');
-  const dd = String(baseDate.getDate()).padStart(2, '0');
+  const mm = String(month).padStart(2, '0');
+  const dd = String(day).padStart(2, '0');
   const hh = String(baseHour).padStart(2, '0');
-  return `${yyyy}${mm}${dd}${hh}`;
+  return `${year}${mm}${dd}${hh}`;
 }
 
 async function fetchApi<T>(endpoint: string, areaNo: string, time: string): Promise<T[] | null> {

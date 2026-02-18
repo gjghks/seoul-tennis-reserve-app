@@ -205,7 +205,7 @@ create policy "Service role manages court status cache" on public.court_status_c
 
 -- Site visit counter (daily aggregation)
 create table public.site_visits (
-  visit_date date primary key default current_date,
+  visit_date date primary key default (now() at time zone 'Asia/Seoul')::date,
   visit_count integer not null default 1,
   updated_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
@@ -222,19 +222,22 @@ language plpgsql
 security definer
 as $$
 declare
+  kst_today date;
   today_count integer;
   total_count bigint;
 begin
+  kst_today := (now() at time zone 'Asia/Seoul')::date;
+
   insert into public.site_visits (visit_date, visit_count)
-  values (current_date, 1)
+  values (kst_today, 1)
   on conflict (visit_date)
   do update set
     visit_count = site_visits.visit_count + 1,
-    updated_at = timezone('utc'::text, now());
+    updated_at = now();
 
   select visit_count into today_count
   from public.site_visits
-  where visit_date = current_date;
+  where visit_date = kst_today;
 
   select coalesce(sum(visit_count), 0) into total_count
   from public.site_visits;

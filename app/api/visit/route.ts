@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createAnonSupabaseClient } from '@/lib/supabaseServer';
 import { createRateLimiter } from '@/lib/rateLimit';
+import { getKSTDateString } from '@/lib/date';
 
 const limiter = createRateLimiter({ windowMs: 60_000, maxRequests: 10 });
 
@@ -12,7 +13,7 @@ interface VisitCounts {
 export async function GET() {
   try {
     const supabase = createAnonSupabaseClient();
-    const todayStr = new Date().toISOString().split('T')[0];
+    const todayStr = getKSTDateString();
 
     const [todayResult, totalResult] = await Promise.all([
       supabase

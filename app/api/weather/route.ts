@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { unstable_cache } from 'next/cache';
 import { createRateLimiter } from '@/lib/rateLimit';
+import { getKSTNow } from '@/lib/date';
 
 type WeatherPayload = {
   temperature: number | null;
@@ -37,7 +38,7 @@ const EMPTY_WEATHER: WeatherPayload = {
 };
 
 function toKstBaseDateTime() {
-  const kstNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
+  const kstNow = getKSTNow();
   kstNow.setMinutes(0, 0, 0);
   kstNow.setHours(kstNow.getHours() - 1);
 
