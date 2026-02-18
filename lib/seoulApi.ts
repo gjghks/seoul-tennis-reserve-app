@@ -1,3 +1,5 @@
+import http from 'node:http';
+
 const API_KEY = process.env.SEOUL_OPEN_DATA_KEY;
 const BASE_URL = 'http://openAPI.seoul.go.kr:8088';
 const REQUEST_TIMEOUT_MS = 8_000;
@@ -68,6 +70,28 @@ function isCacheFresh(): boolean {
     return !!tennisDataCache && (Date.now() - tennisDataCache.timestamp) < CACHE_TTL_MS;
 }
 
+/**
+ * Raw HTTP GET using node:http — bypasses Next.js fetch patching
+ * to avoid DYNAMIC_SERVER_USAGE errors during static generation.
+ */
+function httpGet(url: string, timeoutMs: number): Promise<string> {
+    return new Promise((resolve, reject) => {
+        const req = http.get(url, { timeout: timeoutMs }, (res) => {
+            if (res.statusCode && (res.statusCode < 200 || res.statusCode >= 300)) {
+                res.resume();
+                reject(new Error(`Seoul API HTTP ${res.statusCode}`));
+                return;
+            }
+            const chunks: Buffer[] = [];
+            res.on('data', (chunk: Buffer) => chunks.push(chunk));
+            res.on('end', () => resolve(Buffer.concat(chunks).toString('utf-8')));
+            res.on('error', reject);
+        });
+        req.on('timeout', () => { req.destroy(); reject(new Error('Seoul API request timed out')); });
+        req.on('error', reject);
+    });
+}
+
 export async function fetchTennisAvailability(startIndex = 1, endIndex = 1000): Promise<SeoulService[]> {
     if (isCacheFresh()) {
         return tennisDataCache!.data;
@@ -84,19 +108,10 @@ export async function fetchTennisAvailability(startIndex = 1, endIndex = 1000): 
 
     for (let retryCount = 0; retryCount <= MAX_RETRIES; retryCount++) {
         const attempt = retryCount + 1;
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
         try {
-            const res = await fetch(url, {
-                next: { revalidate: 60 },
-                signal: controller.signal,
-            });
-            if (!res.ok) {
-                throw new Error(`Failed to fetch Seoul API: ${res.status}`);
-            }
+            const text = await httpGet(url, REQUEST_TIMEOUT_MS);
 
-            const text = await res.text();
             let data: SeoulApiResponse;
             try {
                 data = JSON.parse(text);
@@ -128,8 +143,6 @@ export async function fetchTennisAvailability(startIndex = 1, endIndex = 1000): 
             if (retryCount < MAX_RETRIES) {
                 await wait(RETRY_DELAYS_MS[retryCount]);
             }
-        } finally {
-            clearTimeout(timeoutId);
         }
     }
 
