@@ -67,7 +67,7 @@ const nextConfig: NextConfig = {
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.daumcdn.net",
               `img-src 'self' data: blob: https:${!process.env.VERCEL ? ' http://*.daumcdn.net http://*.kakao.com' : ''}`,
               "font-src 'self' https://fonts.gstatic.com",
-              `connect-src 'self' https://*.supabase.co https://pagead2.googlesyndication.com https://*.adtrafficquality.google https://csi.gstatic.com https://www.googletagmanager.com https://www.google-analytics.com https://openAPI.seoul.go.kr:8088 https://*.seoul.go.kr https://apihub.kma.go.kr https://*.kakao.com https://*.kakaocdn.net https://*.daumcdn.net wss://*.supabase.co${!process.env.VERCEL ? ' http://*.kakao.com http://*.kakaocdn.net http://*.daumcdn.net ws://localhost:*' : ''}`,
+              `connect-src 'self' https://*.supabase.co https://pagead2.googlesyndication.com https://*.adtrafficquality.google https://csi.gstatic.com https://www.googletagmanager.com https://www.google-analytics.com https://fundingchoicesmessages.google.com https://openAPI.seoul.go.kr:8088 https://*.seoul.go.kr https://apihub.kma.go.kr https://*.kakao.com https://*.kakaocdn.net https://*.daumcdn.net wss://*.supabase.co${!process.env.VERCEL ? ' http://*.kakao.com http://*.kakaocdn.net http://*.daumcdn.net ws://localhost:*' : ''}`,
               "frame-src 'self' https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com https://*.adtrafficquality.google https://fundingchoicesmessages.google.com",
               "object-src 'none'",
               "base-uri 'self'",
