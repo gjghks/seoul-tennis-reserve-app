@@ -13,11 +13,11 @@ interface RecordsPromoCardProps {
 export default function RecordsPromoCard({ user, authLoading }: RecordsPromoCardProps) {
   const themeClass = useThemeClass();
   
-  const { stats, isLoading: statsLoading } = useRecordStats();
+  const { stats, isLoading: statsLoading } = useRecordStats({ enabled: !!user });
 
   if (authLoading || (user && statsLoading)) {
     return (
-      <div className="container mb-6 lg:mb-4">
+      <div className="container my-6 lg:my-4">
         <div className={`w-full h-32 ${themeClass('skeleton-neo', 'skeleton')} rounded-xl`} />
       </div>
     );
@@ -25,7 +25,7 @@ export default function RecordsPromoCard({ user, authLoading }: RecordsPromoCard
 
   if (!user) {
     return (
-      <div className="container mb-6 lg:mb-4">
+      <div className="container my-6 lg:my-4">
         <div className={`relative overflow-hidden rounded-xl p-5 ${themeClass('bg-white border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]', 'bg-white border border-gray-200 shadow-sm')}`}>
           <div className="flex items-center justify-between relative z-10">
             <div>
@@ -59,7 +59,7 @@ export default function RecordsPromoCard({ user, authLoading }: RecordsPromoCard
 
   if (!stats || stats.total_matches === 0) {
     return (
-      <div className="container mb-6 lg:mb-4">
+      <div className="container my-6 lg:my-4">
         <div className={`relative overflow-hidden rounded-xl p-5 ${themeClass('bg-yellow-50 border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]', 'bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-100')}`}>
           <div className="flex items-center justify-between relative z-10">
             <div>
@@ -91,7 +91,7 @@ export default function RecordsPromoCard({ user, authLoading }: RecordsPromoCard
   }
 
   return (
-    <div className="container mb-6 lg:mb-4">
+    <div className="container my-6 lg:my-4">
       <div className={`relative overflow-hidden rounded-xl p-5 ${themeClass('bg-white border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]', 'bg-white border border-gray-200 shadow-sm')}`}>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
           <div>
