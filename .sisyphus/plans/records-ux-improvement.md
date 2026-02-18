@@ -544,7 +544,7 @@ Wave FINAL (Verification — after ALL tasks):
   - Files: `components/records/EmptyRecords.tsx`
   - Pre-commit: `npm run build`
 
-- [ ] 5. RecordsPromoCard 3-state 컴포넌트 + HomeContent 삽입
+- [x] 5. RecordsPromoCard 3-state 컴포넌트 + HomeContent 삽입
 
   **What to do**:
   - **신규 컴포넌트** `components/home/RecordsPromoCard.tsx` 생성:
@@ -650,7 +650,7 @@ Wave FINAL (Verification — after ALL tasks):
   - Files: `components/home/RecordsPromoCard.tsx`, `components/home/HomeContent.tsx`
   - Pre-commit: `npm run build`
 
-- [ ] 6. 코트 상세 인라인 CTA + RecordForm 쿼리 파라미터 프리필
+- [x] 6. 코트 상세 인라인 CTA + RecordForm 쿼리 파라미터 프리필
 
   **What to do**:
   - **CourtDetailClient.tsx 수정**:

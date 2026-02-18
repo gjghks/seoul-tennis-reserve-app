@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useCallback, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useThemeClass } from '@/lib/cn';
 import { cn } from '@/lib/cn';
@@ -51,6 +52,7 @@ export default function RecordForm({
 }: RecordFormProps) {
   const { user } = useAuth();
   const themeClass = useThemeClass();
+  const searchParams = useSearchParams();
   
   // Form State
   const [playedAt, setPlayedAt] = useState(
@@ -66,6 +68,22 @@ export default function RecordForm({
   const [courtId, setCourtId] = useState<string | null>(initialData?.court_id || null);
   const [courtName, setCourtName] = useState<string>(initialData?.court_name || '');
   const [district, setDistrict] = useState<string | null>(initialData?.district || null);
+
+  useEffect(() => {
+    if (mode === 'create' && !initialData) {
+      const courtNameParam = searchParams.get('courtName');
+      const districtParam = searchParams.get('district');
+      
+      if (courtNameParam) {
+        setCourtName(courtNameParam);
+        setLocationType('custom');
+      }
+      
+      if (districtParam) {
+        setDistrict(districtParam);
+      }
+    }
+  }, [mode, initialData, searchParams]);
 
   const [score, setScore] = useState<MatchScore>(initialData?.score || { sets: [{ my: 0, opp: 0 }] });
   const [result, setResult] = useState<MatchResult | null>(initialData?.result || null);

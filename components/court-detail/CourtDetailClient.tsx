@@ -552,6 +552,21 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
           </Link>
         </div>
 
+        <div className="mt-4">
+          <Link
+            href={`/records/new?courtName=${encodeURIComponent(court.SVCNM)}&district=${encodeURIComponent(court.AREANM)}&placeName=${encodeURIComponent(court.PLACENM || '')}`}
+            className={themeClass(
+              "w-full flex items-center justify-center gap-2 py-3 rounded-xl border-2 border-black bg-[#88aaee] text-black font-bold shadow-[4px_4px_0px_0px_#000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[3px_3px_0px_0px_#000] transition-all",
+              "w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-blue-50 text-blue-600 font-medium hover:bg-blue-100 transition-colors"
+            )}
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+            이 코트에서 게임 기록하기
+          </Link>
+        </div>
+
         {AD_SLOTS.COURT_DETAIL_BOTTOM && (
           <div className="mt-6">
             <AdBanner adSlot={AD_SLOTS.COURT_DETAIL_BOTTOM} adFormat="auto" className="min-h-[250px]" />

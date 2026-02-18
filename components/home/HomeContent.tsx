@@ -23,6 +23,11 @@ const FavoriteCourtSection = dynamic(
   { ssr: false }
 );
 
+const RecordsPromoCard = dynamic(
+  () => import('@/components/home/RecordsPromoCard'),
+  { ssr: false }
+);
+
 const PopularCourts = dynamic(
   () => import('@/components/home/PopularCourts'),
   { ssr: false }
@@ -137,6 +142,8 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
           <CourtSearch />
         </div>
       </section>
+
+      <RecordsPromoCard user={user} authLoading={authLoading} />
 
       {showFavoritesAbove && (
         <div className="pt-4 pb-2 lg:pt-3 lg:pb-1">
