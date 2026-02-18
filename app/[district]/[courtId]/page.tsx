@@ -1,8 +1,9 @@
 import { fetchTennisAvailability, SeoulService } from '@/lib/seoulApi';
-import { getDistrictBySlug, SLUG_TO_KOREAN } from '@/lib/constants/districts';
+import { getDistrictBySlug, SLUG_TO_KOREAN, District } from '@/lib/constants/districts';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import CourtDetailClient from '@/components/court-detail/CourtDetailClient';
+import CourtDetailFallback from '@/components/court-detail/CourtDetailFallback';
 
 export const revalidate = 300;
 
@@ -49,11 +50,16 @@ export async function generateMetadata({ params }: CourtDetailPageProps): Promis
   }
 }
 
-async function getCourtData(districtSlug: string, courtId: string) {
+type CourtDataResult =
+  | { type: 'success'; court: SeoulService; district: District; allCourts: SeoulService[] }
+  | { type: 'not-found' }
+  | { type: 'api-error'; district: District };
+
+async function getCourtData(districtSlug: string, courtId: string): Promise<CourtDataResult> {
   const district = getDistrictBySlug(districtSlug);
   
   if (!district) {
-    return null;
+    return { type: 'not-found' };
   }
 
   try {
@@ -62,13 +68,18 @@ async function getCourtData(districtSlug: string, courtId: string) {
     const court = services.find(s => s.SVCID === decodedCourtId);
     
     if (!court) {
-      return null;
+      // API returned data but court not in results → genuinely not found
+      if (services.length > 0) {
+        return { type: 'not-found' };
+      }
+      // Empty results → likely API failure
+      return { type: 'api-error', district };
     }
 
-    return { court, district, allCourts: services };
+    return { type: 'success', court, district, allCourts: services };
   } catch (error) {
     console.error('Failed to fetch court data:', error);
-    return null;
+    return { type: 'api-error', district };
   }
 }
 
@@ -100,13 +111,23 @@ function CourtJsonLd({ court, districtSlug }: { court: SeoulService; districtSlu
 
 export default async function CourtDetailPage({ params }: CourtDetailPageProps) {
   const { district: districtSlug, courtId } = await params;
-  const data = await getCourtData(districtSlug, courtId);
+  const result = await getCourtData(districtSlug, courtId);
 
-  if (!data) {
+  if (result.type === 'not-found') {
     notFound();
   }
 
-  const { court, district, allCourts } = data;
+  if (result.type === 'api-error') {
+    return (
+      <CourtDetailFallback
+        districtSlug={districtSlug}
+        courtId={decodeURIComponent(courtId)}
+        district={result.district}
+      />
+    );
+  }
+
+  const { court, district, allCourts } = result;
 
   return (
     <>
