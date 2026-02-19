@@ -37,6 +37,12 @@ export default function Header() {
               오늘 예약
             </Link>
             <Link
+              href="/map"
+              className={`hidden sm:block px-3 py-1.5 text-sm transition-colors ${themeClass('text-black font-bold hover:underline underline-offset-4', 'text-gray-600 hover:text-green-600')}`}
+            >
+              지도
+            </Link>
+            <Link
               href="/compare"
               className={`hidden sm:block px-3 py-1.5 text-sm transition-colors ${themeClass('text-black font-bold hover:underline underline-offset-4', 'text-gray-600 hover:text-green-600')}`}
             >

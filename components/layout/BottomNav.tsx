@@ -41,13 +41,12 @@ const NAV_ITEMS = [
     ),
   },
   {
-    href: '/compare',
-    label: '비교',
+    href: '/map',
+    label: '지도',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5" aria-hidden="true">
-        <rect x="3" y="12" width="4" height="9" />
-        <rect x="10" y="7" width="4" height="14" />
-        <rect x="17" y="3" width="4" height="18" />
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+        <circle cx="12" cy="10" r="3" />
       </svg>
     ),
   },
