@@ -21,6 +21,7 @@
 | **구별 비교** | 자치구별 코트 수/예약률/무료 코트/경쟁률/평점 비교 |
 | **경쟁률** | 시간대/요일별 예약 경쟁률 추이 분석 |
 | **캘린더** | 날짜별 예약 현황을 달력 뷰로 확인 |
+| **경기 기록** | 테니스 경기 기록 관리 (승패, 스코어, 상대, 코트, 비용, 사진) |
 
 ### 코트 상세 정보
 
@@ -31,6 +32,13 @@
 - **비슷한 테니스장 추천** -- 같은 장소/인근 지역의 대안 코트 자동 추천
 - **카카오 지도** -- 테니스장 위치를 지도에서 확인
 - **전화번호 바로 연결** -- 시설 연락처 탭 한 번으로 전화
+
+### 경기 기록
+
+- **매치 기록** -- 단식/복식 경기 결과, 스코어, 상대 정보 기록
+- **통계 분석** -- 승률, 매치 수, 코트별/매치 타입별 통계
+- **테니스 프로필** -- NTRP 레이팅, 구력, 실력 레벨, 선호 손 등 프로필 관리
+- **이미지 첨부** -- 경기 사진 업로드 (최대 3장)
 
 ### 편의 기능
 
@@ -63,6 +71,7 @@
 |--------|------|
 | 테니스장 예약 현황 | [서울 열린데이터광장](https://data.seoul.go.kr) -- 공공서비스예약 API |
 | 실시간 대기질 | 서울 열린데이터광장 -- 자치구별 대기환경 API |
+| 전국 대기질 | [에어코리아](https://www.airkorea.or.kr) -- 대기오염 정보 API |
 | 실시간 날씨 | [기상청](https://www.weather.go.kr) -- 단기예보 API |
 
 ## 시작하기
@@ -97,13 +106,20 @@ npm run dev
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase 익명 키 (클라이언트) | O |
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase 서비스 키 (서버) | O |
 | `SEOUL_OPEN_DATA_KEY` | 서울 열린데이터 API 키 | O |
+| `SEOUL_AIR_QUALITY_KEY` | 서울 대기질 API 키 | O |
+| `WEATHER_API_KEY` | 기상청 단기예보 API 키 | O |
+| `AIRKOREA_API_KEY` | 에어코리아 대기질 API 키 | O |
+| `LIVING_WEATHER_API_KEY` | 생활기상지수 API 키 | O |
+| `NEXT_PUBLIC_KAKAO_MAP_KEY` | 카카오 지도 SDK 키 | O |
+| `NEXT_PUBLIC_VAPID_PUBLIC_KEY` | Web Push VAPID 공개 키 | O |
+| `VAPID_PRIVATE_KEY` | Web Push VAPID 비밀 키 | O |
 | `NEXT_PUBLIC_GA_ID` | Google Analytics ID | - |
 
 ### 주요 명령어
 
 ```bash
-npm run dev        # 개발 서버
-npm run build      # 프로덕션 빌드
+npm run dev        # 개발 서버 (webpack)
+npm run build      # 프로덕션 빌드 (webpack)
 npm run lint       # ESLint
 npm run test       # Vitest 테스트 (watch 모드)
 npm run test:run   # 테스트 1회 실행
@@ -118,9 +134,10 @@ app/
   compare/                  # 자치구별 비교
   trends/                   # 경쟁률 추이
   calendar/                 # 캘린더 뷰
+  records/                  # 경기 기록 (목록, 작성, 상세, 수정)
   [district]/               # 자치구별 코트 목록
     [courtId]/              # 코트 상세 (리뷰, 날씨, 지도)
-  my/                       # 마이페이지 (즐겨찾기, 알림 설정)
+  my/                       # 마이페이지 (즐겨찾기, 알림, 테니스 프로필)
   guide/[district]/         # 자치구 가이드
   login/                    # 로그인 (Kakao, Google)
   about/                    # 서비스 소개
@@ -128,6 +145,8 @@ app/
     tennis/                 # 테니스장 데이터 (서울 API 프록시)
     weather/                # 실시간 날씨
     air-quality/            # 실시간 대기질
+    records/                # 경기 기록 CRUD + 통계
+    profile/tennis/         # 테니스 프로필
     reviews/                # 리뷰 CRUD
     favorites/              # 즐겨찾기 CRUD
     trends/                 # 경쟁률 데이터
@@ -145,6 +164,8 @@ components/                 # React 컴포넌트
   review/                   # 리뷰 폼, 목록
   favorite/                 # 즐겨찾기 버튼, 섹션
   alert/                    # 알림 설정
+  records/                  # 경기 기록 (폼, 카드, 상세, 통계)
+  profile/                  # 테니스 프로필
   ui/                       # 공통 UI (Toast, Spinner, ShareButton 등)
   pwa/                      # PWA 설치 프롬프트
 
@@ -152,9 +173,15 @@ lib/                        # 유틸리티
   seoulApi.ts               # 서울 API 클라이언트
   supabase.ts               # Supabase 브라우저 클라이언트
   supabaseServer.ts         # Supabase 서버 클라이언트
+  hooks/                    # 커스텀 훅 (즐겨찾기, 기록, 프로필 등)
+  constants/                # 상수 (자치구, 테니스)
+  utils/                    # 유틸리티 (상태, 통계, 날씨 등)
+
+contexts/                   # React Context (Auth, Theme, TennisData, Toast)
 
 supabase/
   schema.sql                # DB 스키마
+  migrations/               # 마이그레이션
 ```
 
 ## 배포

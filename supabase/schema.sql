@@ -262,3 +262,144 @@ create policy "Service role can manage popular courts cache" on public.popular_c
   for all using (true);
 
 insert into public.popular_courts_cache (id, data) values (1, '[]'::jsonb);
+
+-- Favorites table (user favorite courts)
+create table if not exists public.favorites (
+  id uuid default uuid_generate_v4() primary key,
+  user_id uuid references public.users not null,
+  svc_id text not null,
+  svc_name text not null,
+  district text not null,
+  place_name text,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+
+  unique(user_id, svc_id)
+);
+
+create index if not exists idx_favorites_user_id on public.favorites(user_id);
+create index if not exists idx_favorites_svc_id on public.favorites(svc_id);
+
+alter table public.favorites enable row level security;
+
+create policy "Users can view their own favorites" on public.favorites
+  for select using (auth.uid() = user_id);
+
+create policy "Users can insert their own favorites" on public.favorites
+  for insert with check (auth.uid() = user_id);
+
+create policy "Users can delete their own favorites" on public.favorites
+  for delete using (auth.uid() = user_id);
+
+-- Tennis player profiles
+create table if not exists public.player_profiles (
+  user_id uuid references auth.users not null primary key,
+  career_years integer check (career_years >= 0 and career_years <= 50),
+  ntrp_rating numeric(2,1) check (ntrp_rating >= 1.0 and ntrp_rating <= 7.0),
+  skill_level text check (skill_level in ('beginner', 'intermediate', 'advanced', 'pro')),
+  preferred_hand text check (preferred_hand in ('right', 'left', 'both')),
+  age_group text check (age_group in ('10s', '20s', '30s', '40s', '50s', '60s_plus')),
+  created_at timestamptz default now() not null,
+  updated_at timestamptz default now() not null
+);
+
+alter table public.player_profiles enable row level security;
+
+create policy "Users can view their own profile" on public.player_profiles
+  for select using (auth.uid() = user_id);
+
+create policy "Users can insert their own profile" on public.player_profiles
+  for insert with check (auth.uid() = user_id);
+
+create policy "Users can update their own profile" on public.player_profiles
+  for update using (auth.uid() = user_id);
+
+-- Game records (match history)
+create table if not exists public.game_records (
+  id uuid default gen_random_uuid() primary key,
+  user_id uuid references auth.users not null,
+
+  -- Date and location
+  played_at timestamptz not null,
+  duration_minutes integer check (duration_minutes > 0 and duration_minutes <= 600),
+  location_type text not null check (location_type in ('seoul_court', 'custom')),
+  court_id text,
+  court_name text not null,
+  district text,
+
+  -- Match info
+  match_type text not null check (match_type in (
+    'singles', 'mens_doubles', 'womens_doubles', 'mixed_doubles'
+  )),
+  match_format text not null check (match_format in (
+    '4game_nodeuce', '6game_1set', '3set_match', '8game_proset', 'tiebreak', 'custom'
+  )),
+  score jsonb not null default '{"sets":[]}',
+  result text not null check (result in ('win', 'loss', 'draw', 'retired')),
+  court_surface text check (court_surface in (
+    'hard', 'clay', 'artificial_grass', 'grass', 'indoor', 'other'
+  )),
+
+  -- Opponent info
+  opponent_name text,
+  opponent_level text,
+
+  -- Misc
+  cost integer check (cost >= 0),
+  notes text check (char_length(notes) <= 1000),
+  images text[] default '{}',
+
+  -- Sharing
+  is_public boolean default false,
+  share_token text unique,
+
+  -- Timestamps
+  created_at timestamptz default now() not null,
+  updated_at timestamptz default now() not null
+);
+
+create index if not exists game_records_user_id_idx
+  on public.game_records(user_id);
+create index if not exists game_records_played_at_idx
+  on public.game_records(user_id, played_at desc);
+create index if not exists game_records_share_token_idx
+  on public.game_records(share_token) where share_token is not null;
+create index if not exists game_records_match_type_idx
+  on public.game_records(user_id, match_type);
+
+alter table public.game_records enable row level security;
+
+create policy "Users can view their own records" on public.game_records
+  for select using (auth.uid() = user_id);
+
+create policy "Users can insert their own records" on public.game_records
+  for insert with check (auth.uid() = user_id);
+
+create policy "Users can update their own records" on public.game_records
+  for update using (auth.uid() = user_id);
+
+create policy "Users can delete their own records" on public.game_records
+  for delete using (auth.uid() = user_id);
+
+-- Storage bucket for game record images
+insert into storage.buckets (id, name, public)
+values ('record-images', 'record-images', true)
+on conflict (id) do nothing;
+
+create policy "Anyone can view record images"
+  on storage.objects for select
+  using (bucket_id = 'record-images');
+
+create policy "Authenticated users can upload record images"
+  on storage.objects for insert
+  with check (
+    bucket_id = 'record-images'
+    and auth.role() = 'authenticated'
+    and (storage.foldername(name))[1] = auth.uid()::text
+  );
+
+create policy "Users can delete their own record images"
+  on storage.objects for delete
+  using (
+    bucket_id = 'record-images'
+    and (storage.foldername(name))[1] = auth.uid()::text
+  );

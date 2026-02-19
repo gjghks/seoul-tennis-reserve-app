@@ -4,21 +4,23 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Seoul Tennis Reserve is a Next.js application that displays real-time availability of Seoul's public tennis courts across all 25 districts. It integrates Seoul Open Data API for court data, weather/air quality APIs for outdoor condition info, and Supabase for auth + user data (reviews, favorites, push alerts). Deployed on Vercel (ICN region) with PWA support.
+Seoul Tennis Reserve is a Next.js application that displays real-time availability of Seoul's public tennis courts across all 25 districts. It integrates Seoul Open Data API for court data, weather/air quality APIs for outdoor condition info, and Supabase for auth + user data (reviews, favorites, push alerts, game records). Deployed on Vercel (ICN region) with PWA support.
 
 **Live**: [seoul-tennis.com](https://seoul-tennis.com)
 
 ## Commands
 
 ```bash
-npm run dev        # Dev server (http://localhost:3000)
-npm run build      # Production build
+npm run dev        # Dev server with webpack (http://localhost:3000)
+npm run build      # Production build with webpack
 npm run lint       # ESLint
 npm run start      # Production server
 npm run test       # Vitest (watch mode)
 npm run test:run   # Vitest (single run)
 npm run test:coverage  # Coverage report
 ```
+
+> Note: `dev` and `build` scripts use `--webpack` flag (Next.js 16 with webpack bundler).
 
 ## Development & Deployment Workflow
 
@@ -43,7 +45,7 @@ To skip in emergencies: `git push --no-verify` (use with caution)
 ## Architecture
 
 ### Tech Stack
-- **Framework**: Next.js 16 with App Router
+- **Framework**: Next.js 16 with App Router (webpack bundler)
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
 - **Database/Auth**: Supabase (OAuth via Kakao, Google)
@@ -54,6 +56,16 @@ To skip in emergencies: `git push --no-verify` (use with caution)
 - **Testing**: Vitest + @testing-library/react + jsdom
 - **Deployment**: Vercel (ICN region, `vercel.json`)
 - **Analytics**: Google Analytics, Google AdSense
+- **Formatting**: Biome (`@biomejs/biome`)
+- **Sanitization**: DOMPurify (XSS prevention)
+- **UI Libraries**: canvas-confetti (animations), react-simple-pull-to-refresh (mobile UX), classnames
+
+### Middleware
+
+`middleware.ts` at project root handles auth protection:
+- Protected paths: `/my` (user dashboard)
+- Redirects unauthenticated users to `/login` with redirect param
+- Uses `@supabase/ssr` for server-side auth check
 
 ### Page Routes
 
@@ -64,9 +76,13 @@ To skip in emergencies: `git push --no-verify` (use with caution)
 | `/compare` | `app/compare/page.tsx` | District comparison (court count, availability, free courts, competition) |
 | `/trends` | `app/trends/page.tsx` | Reservation competition rate trends |
 | `/calendar` | `app/calendar/page.tsx` | Monthly calendar view of availability |
+| `/records` | `app/records/page.tsx` | Game records list (match history, stats) |
+| `/records/new` | `app/records/new/page.tsx` | Create new game record |
+| `/records/[id]` | `app/records/[id]/page.tsx` | Game record detail view |
+| `/records/[id]/edit` | `app/records/[id]/edit/page.tsx` | Edit game record |
 | `/[district]` | `app/[district]/page.tsx` | District court listing with real-time status |
 | `/[district]/[courtId]` | `app/[district]/[courtId]/page.tsx` | Court detail (reviews, weather, map, similar courts) |
-| `/my` | `app/my/page.tsx` | User dashboard (favorites, recent courts, alert settings) |
+| `/my` | `app/my/page.tsx` | User dashboard (favorites, recent courts, alert settings, tennis profile) |
 | `/guide/[district]` | `app/guide/[district]/page.tsx` | District guide (tips, parking, accessibility) |
 | `/guide/records` | `app/guide/records/page.tsx` | Match records usage guide |
 | `/login` | `app/login/page.tsx` | OAuth login (Kakao, Google) |
@@ -89,6 +105,10 @@ To skip in emergencies: `git push --no-verify` (use with caution)
 | `/api/city-data` | GET | Aggregated city data (congestion, weather, air quality) |
 | `/api/trends` | GET | Competition rate historical data |
 | `/api/popular-courts` | GET | Pre-computed TOP 5 popular courts |
+| `/api/records` | GET, POST | Game records CRUD (list, create) |
+| `/api/records/[id]` | GET, PUT, DELETE | Individual game record operations |
+| `/api/records/stats` | GET | Game record statistics (win rate, match count, etc.) |
+| `/api/profile/tennis` | GET, POST, PUT | Tennis player profile (NTRP, career years, skill level) |
 | `/api/reviews` | GET, POST, DELETE | User reviews with ratings and images |
 | `/api/favorites` | GET, POST, DELETE | User favorite courts |
 | `/api/visit` | GET, POST | Recent court visit tracking |
@@ -116,6 +136,10 @@ components/
   review/          # ReviewSection, ReviewList, ReviewForm
   favorite/        # FavoriteCourtSection, FavoriteButton
   alert/           # AlertSettingsSection, CourtAlertButton
+  records/         # RecordsContent, RecordCard, RecordDetail, RecordForm,
+                   #   RecordStats, ScoreInput, MatchTypeSelect,
+                   #   CourtLocationInput, EmptyRecords
+  profile/         # TennisProfileSection
   today/           # TodayContent
   compare/         # CompareContent
   trends/          # TrendsContent
@@ -137,13 +161,20 @@ components/
 
 ### Key Directories
 - `app/` - Next.js App Router pages and API routes
-- `lib/` - Core utilities (Supabase client, Seoul API client, theme utils)
+- `lib/` - Core utilities, API clients, hooks, constants, data, utils
+  - `lib/constants/` - District data (`districts.ts`), tennis constants (`tennis.ts`)
+  - `lib/data/` - Facility enrichment data and types
+  - `lib/hooks/` - Custom hooks (useAlertSettings, useGameRecords, useKakaoLoaderWithHttps, usePushSubscription, useRecentCourts, useRecordStats, useReservationTip, useScrollFade, useTennisProfile)
+  - `lib/utils/` - Utilities (courtStatus, districtStats, facilityTags, inAppBrowser, phoneLink, sanitizeRedirect, tennis, weatherGrid, contentParser/)
 - `components/` - React components (organized by feature domain)
-- `contexts/` - React context providers (auth, theme)
-- `hooks/` - Custom React hooks
-- `supabase/` - Database schema (`schema.sql`)
+- `contexts/` - React context providers (AuthContext, ThemeContext, TennisDataContext, ToastContext)
+- `hooks/` - Legacy hooks directory (useFavorites)
+- `supabase/` - Database schema and migrations
+  - `schema.sql` - Base schema
+  - `migrations/` - Incremental schema changes
 - `scripts/` - Utility scripts
 - `public/` - Static assets, PWA manifest
+- `docs/` - Additional documentation (social login setup guide)
 
 ### Data Flow
 1. **Seoul API** (`lib/seoulApi.ts`): Fetches ListPublicReservationSport, filters for tennis courts
@@ -154,6 +185,7 @@ components/
 ### External API Integrations
 - **Seoul Open Data** (`data.seoul.go.kr`): Court reservation data, air quality data
 - **Korea Meteorological Administration**: Short-term weather forecasts
+- **AirKorea**: National air quality data
 - **Kakao Maps SDK**: Map rendering and court location display
 - **Kakao Share SDK**: Social sharing to KakaoTalk
 
@@ -162,7 +194,10 @@ components/
 | Table | Purpose |
 |-------|---------|
 | `users` | Extends auth.users (email, name, avatar) |
+| `favorites` | User favorite courts (svc_id, svc_name, district, place_name) |
 | `reviews` | Court reviews with 1-5 ratings, text, images (max 3) |
+| `player_profiles` | Tennis player profile (NTRP rating, career years, skill level, preferred hand, age group) |
+| `game_records` | Match records (date, location, match type/format, score, result, opponent, cost, notes, images) |
 | `feedback` | Anonymous user feedback (feature/bug/other) |
 | `reservation_snapshots` | Historical court availability per district (for trends) |
 | `push_subscriptions` | Web push endpoint + keys per user |
@@ -171,9 +206,11 @@ components/
 | `site_visits` | Daily visit counter with atomic increment function |
 | `popular_courts_cache` | Pre-computed TOP 5 ranking (single-row, cron-updated) |
 
-All tables use Row Level Security (RLS). Storage bucket `review-images` for photo uploads.
+All tables use Row Level Security (RLS). Storage buckets: `review-images` for review photos, `record-images` for game record photos.
 
-Favorites are managed via Supabase client directly (not a separate table listed in schema.sql - check for additional migrations).
+Schema is maintained in two places:
+- `supabase/schema.sql` — Base schema (may lag behind migrations)
+- `supabase/migrations/` — Incremental changes (source of truth for recent additions)
 
 ### Theme System
 
@@ -186,11 +223,29 @@ const themeClass = useThemeClass();
 
 ### Environment Variables
 ```
+# Supabase
 NEXT_PUBLIC_SUPABASE_URL       # Supabase project URL
 NEXT_PUBLIC_SUPABASE_ANON_KEY  # Supabase anon key (client-side)
 SUPABASE_SERVICE_ROLE_KEY      # Supabase service role (server-side only)
-SEOUL_OPEN_DATA_KEY            # Seoul Open Data API key
-NEXT_PUBLIC_GA_ID              # Google Analytics ID (optional)
+
+# Seoul Open Data
+SEOUL_OPEN_DATA_KEY            # Seoul Open Data API key (court reservations)
+SEOUL_AIR_QUALITY_KEY          # Seoul air quality API key
+
+# Weather
+WEATHER_API_KEY                # Korea Meteorological Administration API key
+AIRKOREA_API_KEY               # AirKorea national air quality API key
+LIVING_WEATHER_API_KEY         # Living weather index API key
+
+# Kakao
+NEXT_PUBLIC_KAKAO_MAP_KEY      # Kakao Maps SDK key (client-side)
+
+# Web Push (VAPID)
+NEXT_PUBLIC_VAPID_PUBLIC_KEY   # VAPID public key (client-side)
+VAPID_PRIVATE_KEY              # VAPID private key (server-side only)
+
+# Analytics (optional)
+NEXT_PUBLIC_GA_ID              # Google Analytics ID
 ```
 
 ### Path Alias

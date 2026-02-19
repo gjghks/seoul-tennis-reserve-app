@@ -49,3 +49,6 @@ next-env.d.ts
 # playwright screenshots and debug snapshots
 *.png
 *-snapshot.md
+
+# AI agent work state
+/.sisyphus/
