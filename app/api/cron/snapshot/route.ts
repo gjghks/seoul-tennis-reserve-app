@@ -5,6 +5,14 @@ import { createServiceRoleClient } from '@/lib/supabaseServer';
 export const dynamic = 'force-dynamic';
 export const maxDuration = 30;
 
+function getTimeSlot(date: Date): string {
+  const hour = date.getHours();
+  if (hour >= 6 && hour < 12) return 'morning';
+  if (hour >= 12 && hour < 18) return 'afternoon';
+  if (hour >= 18 && hour < 22) return 'evening';
+  return 'night';
+}
+
 export async function GET(request: Request) {
   const authHeader = request.headers.get('authorization');
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
@@ -40,7 +48,9 @@ export async function GET(request: Request) {
       districtMap.set(svc.AREANM, stats);
     }
 
-    const snapshotAt = new Date().toISOString();
+    const now = new Date();
+    const snapshotAt = now.toISOString();
+    const timeSlot = getTimeSlot(now);
     const rows = Array.from(districtMap.entries()).map(([district, stats]) => ({
       snapshot_at: snapshotAt,
       district,
@@ -49,6 +59,7 @@ export async function GET(request: Request) {
       booked_courts: stats.booked,
       free_courts: stats.free,
       paid_courts: stats.paid,
+      time_slot: timeSlot,
     }));
 
     const supabase = createServiceRoleClient();

@@ -6,6 +6,7 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { useThemeClass } from '@/lib/cn';
 import { KOREAN_TO_SLUG } from '@/lib/constants/districts';
 import Link from 'next/link';
+import HeatmapChart from './HeatmapChart';
 
 interface DistrictRate {
   district: string;
@@ -29,6 +30,29 @@ interface TrendsData {
   period: { from: string; to: string; days: number };
   hasHistory: boolean;
 }
+
+interface HeatmapCell {
+  avgBookingRate: number;
+  sampleCount: number;
+}
+
+interface HeatmapData {
+  heatmap: Record<number, Record<string, HeatmapCell>>;
+  insights: {
+    bestTimeToBook: { day: string; timeSlot: string; avgRate: number };
+    worstTimeToBook: { day: string; timeSlot: string; avgRate: number };
+    weekdayAvg: number;
+    weekendAvg: number;
+  } | null;
+  hasData: boolean;
+}
+
+const TIME_SLOT_KOREAN: Record<string, string> = {
+  morning: '아침',
+  afternoon: '오후',
+  evening: '저녁',
+  night: '밤',
+};
 
 const fetcher = (url: string) =>
   fetch(url).then(r => r.json()).then(d => {
@@ -62,6 +86,12 @@ export default function TrendsContent() {
 
   const { data, error, isLoading } = useSWR<TrendsData>(
     `/api/trends?days=${days}`,
+    fetcher,
+    { revalidateOnFocus: false }
+  );
+
+  const { data: heatmapData } = useSWR<HeatmapData>(
+    `/api/trends?analysis=heatmap&days=${days}`,
     fetcher,
     { revalidateOnFocus: false }
   );
@@ -182,7 +212,7 @@ export default function TrendsContent() {
                         className="group flex items-center gap-3"
                       >
                         <span className={`w-16 text-xs text-right shrink-0 ${themeClass('font-bold text-black', 'font-medium text-gray-700')}`}>
-                          {rate.district.replace('구', '')}
+                          {rate.district.replace(/구$/, '')}
                         </span>
                         <div className={`flex-1 h-7 rounded-full overflow-hidden ${themeClass('border border-black/10 bg-white', 'bg-gray-100')}`}>
                           <div
@@ -199,6 +229,74 @@ export default function TrendsContent() {
                 )}
               </div>
             </div>
+
+            {heatmapData?.hasData && heatmapData.insights ? (
+              <div className={`${cardClass} overflow-hidden mb-6`}>
+                <div className={isNeoBrutalism ? 'p-5 border-b-2 border-black' : 'p-5 border-b border-gray-100'}>
+                  <h2 className={`font-bold flex items-center gap-2 ${themeClass('text-black font-black', 'text-gray-900')}`}>
+                    {isNeoBrutalism ? (
+                      <span className="w-6 h-6 bg-[#facc15] border-2 border-black rounded-[3px] flex items-center justify-center text-xs">📊</span>
+                    ) : (
+                      <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                      </svg>
+                    )}
+                    요일별 예약 패턴
+                  </h2>
+                </div>
+                <div className="p-5">
+                  <HeatmapChart data={heatmapData.heatmap} />
+                </div>
+
+                <div className={`px-5 pb-5 space-y-2 ${themeClass('border-t-2 border-black pt-4', 'border-t border-gray-100 pt-4')}`}>
+                  <div className={`flex items-start gap-2 text-sm ${themeClass('text-black', 'text-gray-700')}`}>
+                    <span className={`shrink-0 w-5 h-5 flex items-center justify-center rounded-full text-xs ${themeClass('bg-[#a3e635] border border-black font-bold', 'bg-green-100 text-green-700')}`}>
+                      {isNeoBrutalism ? '✓' : '✓'}
+                    </span>
+                    <span>
+                      예약하기 가장 좋은 시간:{' '}
+                      <strong className={themeClass('font-black', 'font-semibold text-green-700')}>
+                        {heatmapData.insights.bestTimeToBook.day}요일 {TIME_SLOT_KOREAN[heatmapData.insights.bestTimeToBook.timeSlot]}
+                      </strong>
+                      {' '}(평균 마감률 {heatmapData.insights.bestTimeToBook.avgRate}%)
+                    </span>
+                  </div>
+
+                  <div className={`flex items-start gap-2 text-sm ${themeClass('text-black', 'text-gray-700')}`}>
+                    <span className={`shrink-0 w-5 h-5 flex items-center justify-center rounded-full text-xs ${themeClass('bg-[#fca5a5] border border-black font-bold', 'bg-red-100 text-red-700')}`}>
+                      !
+                    </span>
+                    <span>
+                      가장 경쟁이 치열한 시간:{' '}
+                      <strong className={themeClass('font-black', 'font-semibold text-red-600')}>
+                        {heatmapData.insights.worstTimeToBook.day}요일 {TIME_SLOT_KOREAN[heatmapData.insights.worstTimeToBook.timeSlot]}
+                      </strong>
+                      {' '}(평균 마감률 {heatmapData.insights.worstTimeToBook.avgRate}%)
+                    </span>
+                  </div>
+
+                  <div className={`flex items-center gap-3 text-sm pt-1 ${themeClass('text-black/70', 'text-gray-500')}`}>
+                    <span>주중 평균 <strong className={themeClass('font-black text-black', 'font-semibold text-gray-700')}>{heatmapData.insights.weekdayAvg}%</strong></span>
+                    <span className={themeClass('text-black/30', 'text-gray-300')}>|</span>
+                    <span>주말 평균 <strong className={themeClass('font-black text-black', 'font-semibold text-gray-700')}>{heatmapData.insights.weekendAvg}%</strong></span>
+                  </div>
+                </div>
+              </div>
+            ) : !heatmapData?.hasData && heatmapData !== undefined ? (
+              <div className={`${cardClass} p-6 mb-6`}>
+                <div className="flex items-start gap-3">
+                  <div className={`w-10 h-10 shrink-0 flex items-center justify-center rounded-full ${themeClass('bg-[#facc15] border-2 border-black', 'bg-blue-50')}`}>
+                    <span className="text-lg">📊</span>
+                  </div>
+                  <div>
+                    <h3 className={`font-bold mb-1 ${themeClass('text-black', 'text-gray-900')}`}>요일별 패턴 데이터 수집 중</h3>
+                    <p className={`text-sm ${themeClass('text-black/60', 'text-gray-500')}`}>
+                      하루 4회 데이터가 수집되면 요일·시간대별 예약 패턴 분석이 활성화됩니다.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ) : null}
 
             {data.hasHistory ? (
               <div className={`${cardClass} overflow-hidden mb-6`}>
