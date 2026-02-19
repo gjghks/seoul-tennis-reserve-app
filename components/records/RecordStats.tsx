@@ -2,13 +2,13 @@
 
 import { useThemeClass, cn } from '@/lib/cn';
 import { useRecordStats } from '@/lib/hooks/useRecordStats';
-import { type RecordStats as RecordStatsType, MATCH_TYPE_LABELS, MatchResult } from '@/lib/constants/tennis';
+import { MATCH_TYPE_LABELS, MatchResult } from '@/lib/constants/tennis';
 import { calculateWinRate } from '@/lib/utils/tennis';
-import { useTheme } from '@/contexts/ThemeContext';
+import OpponentHistory from '@/components/records/OpponentHistory';
+import SkillProgressChart from '@/components/records/SkillProgressChart';
 
 export default function RecordStats() {
   const themeClass = useThemeClass();
-  const { isNeoBrutalism } = useTheme();
   const { stats, isLoading } = useRecordStats();
 
   if (isLoading) {
@@ -41,8 +41,34 @@ export default function RecordStats() {
     }
   };
 
+  const recentResultCounts: Partial<Record<MatchResult, number>> = {};
+  const recentFormItems = stats.recent_form.map((result) => {
+    recentResultCounts[result] = (recentResultCounts[result] || 0) + 1;
+    return {
+      result,
+      key: `recent-${result}-${recentResultCounts[result]}`,
+    };
+  });
+
   return (
     <div className="space-y-8">
+      {stats.current_streak && (
+        <div
+          className={themeClass(
+            'rounded-[5px] border-2 border-black bg-white p-3 shadow-[4px_4px_0px_0px_#000]',
+            'rounded-xl border border-gray-200 bg-white p-3 shadow-sm'
+          )}
+        >
+          {stats.current_streak.type === 'win' ? (
+            <div className="inline-flex items-center rounded-full bg-green-100 px-3 py-1.5 text-sm font-bold text-green-700">
+              🔥 {stats.current_streak.count}연승 중!
+            </div>
+          ) : (
+            <p className="text-sm font-medium text-gray-600">{stats.current_streak.count}연패 중</p>
+          )}
+        </div>
+      )}
+
       {/* Summary Bar */}
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
         <StatBox label="전체 경기" value={`${stats.total_matches}전`} />
@@ -70,9 +96,9 @@ export default function RecordStats() {
       <div className={themeClass('space-y-2', 'space-y-2')}>
         <h3 className="text-sm font-bold text-gray-500">최근 전적</h3>
         <div className="flex gap-2">
-          {stats.recent_form.map((result, i) => (
+          {recentFormItems.map(({ result, key }) => (
             <div
-              key={`recent-${i}`}
+              key={key}
               className={cn(
                 'h-8 w-8 rounded-full border-2 border-white shadow-sm',
                 getResultColor(result)
@@ -167,6 +193,9 @@ export default function RecordStats() {
           </div>
         </div>
       )}
+
+      <OpponentHistory opponents={stats.opponents} />
+      <SkillProgressChart trend={stats.win_rate_trend} />
     </div>
   );
 }
@@ -197,12 +226,13 @@ function StatBox({
 
 function StatsSkeleton() {
   const themeClass = useThemeClass();
+  const skeletonKeys = ['a', 'b', 'c', 'd'];
   
   return (
     <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-      {[...Array(4)].map((_, i) => (
+      {skeletonKeys.map((key) => (
         <div
-          key={`skeleton-${i}`}
+          key={`skeleton-${key}`}
           className={themeClass(
             'h-24 rounded-[5px] border-2 border-black bg-gray-100 shadow-[4px_4px_0px_0px_#000] animate-pulse',
             'h-24 rounded-xl border border-gray-200 bg-gray-50 animate-pulse'

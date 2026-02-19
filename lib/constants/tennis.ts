@@ -54,6 +54,17 @@ export interface PlayerProfile {
   updated_at: string;
 }
 
+export interface OpponentStats {
+  name: string;
+  displayName: string;
+  total: number;
+  wins: number;
+  losses: number;
+  draws: number;
+  winRate: number;
+  lastPlayed: string;
+}
+
 export interface RecordStats {
   total_matches: number;
   wins: number;
@@ -65,6 +76,9 @@ export interface RecordStats {
   recent_form: MatchResult[];
   avg_cost: number | null;
   most_played_court: { name: string; count: number } | null;
+  opponents: OpponentStats[];
+  current_streak: { type: 'win' | 'loss'; count: number } | null;
+  win_rate_trend: { month: string; winRate: number; total: number }[];
 }
 
 export const MATCH_TYPE_LABELS: Record<MatchType, string> = {

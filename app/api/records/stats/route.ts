@@ -14,6 +14,7 @@ export async function GET(request: NextRequest) {
         total_matches: 0, wins: 0, losses: 0, draws: 0,
         win_rate: 0, by_match_type: {}, monthly_activity: [],
         recent_form: [], avg_cost: null, most_played_court: null,
+        opponents: [], current_streak: null, win_rate_trend: [],
       }
     });
   }
@@ -114,6 +115,87 @@ export async function GET(request: NextRequest) {
     }
   }
 
+  const opponentStats = new Map<string, {
+    total: number;
+    wins: number;
+    losses: number;
+    draws: number;
+    lastPlayed: string;
+    displayName: string;
+  }>();
+
+  for (const record of records) {
+    const name = record.opponent_name?.trim();
+    if (!name) continue;
+
+    const normalized = name.toLowerCase();
+    const existing = opponentStats.get(normalized) || {
+      total: 0,
+      wins: 0,
+      losses: 0,
+      draws: 0,
+      lastPlayed: record.played_at,
+      displayName: name,
+    };
+
+    existing.total++;
+    if (record.result === 'win') existing.wins++;
+    else if (record.result === 'loss') existing.losses++;
+    else if (record.result === 'draw') existing.draws++;
+
+    if (record.played_at > existing.lastPlayed) {
+      existing.lastPlayed = record.played_at;
+      existing.displayName = name;
+    }
+
+    opponentStats.set(normalized, existing);
+  }
+
+  const opponents = Array.from(opponentStats.entries())
+    .map(([, data]) => ({
+      name: data.displayName,
+      displayName: data.displayName,
+      total: data.total,
+      wins: data.wins,
+      losses: data.losses,
+      draws: data.draws,
+      winRate: calculateWinRate(data.wins, data.total),
+      lastPlayed: data.lastPlayed,
+    }))
+    .sort((a, b) => b.total - a.total)
+    .slice(0, 10);
+
+  let currentStreak = 0;
+  let streakType: 'win' | 'loss' | null = null;
+
+  for (const record of records) {
+    if (record.result === 'win') {
+      if (streakType === null || streakType === 'win') {
+        streakType = 'win';
+        currentStreak++;
+      } else {
+        break;
+      }
+    } else if (record.result === 'loss') {
+      if (streakType === null || streakType === 'loss') {
+        streakType = 'loss';
+        currentStreak++;
+      } else {
+        break;
+      }
+    } else {
+      break;
+    }
+  }
+
+  const winRateTrend = monthlyActivity
+    .filter((m) => m.total > 0)
+    .map((m) => ({
+      month: m.month,
+      winRate: calculateWinRate(m.wins, m.total),
+      total: m.total,
+    }));
+
   const stats: RecordStats = {
     total_matches: totalMatches,
     wins,
@@ -125,6 +207,11 @@ export async function GET(request: NextRequest) {
     recent_form: recentForm,
     avg_cost: avgCost,
     most_played_court: mostPlayedCourt,
+    opponents,
+    current_streak: currentStreak > 1 && streakType
+      ? { type: streakType, count: currentStreak }
+      : null,
+    win_rate_trend: winRateTrend,
   };
 
   return NextResponse.json({ stats });
