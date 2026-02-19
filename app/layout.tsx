@@ -91,17 +91,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" data-scroll-behavior="smooth">
-      <head>
+      <body className={geist.className}>
         <script
           type="application/ld+json"
+          suppressHydrationWarning
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <script
           src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.9/kakao.min.js"
           async
         />
-      </head>
-      <body className={geist.className}>
         {process.env.NODE_ENV !== 'production' && (
           <script
             dangerouslySetInnerHTML={{ __html: `if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(function(r){if(r.length>0){r.forEach(function(w){w.unregister()});if(navigator.serviceWorker.controller)location.reload()}})}` }}
