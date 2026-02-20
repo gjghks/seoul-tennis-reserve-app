@@ -6,6 +6,7 @@ import { ThemeProvider } from '@/contexts/ThemeContext';
 import { TennisDataProvider } from '@/contexts/TennisDataContext';
 import { ToastProvider } from '@/contexts/ToastContext';
 import Toast from '@/components/ui/Toast';
+import ScrollToTop from '@/components/ui/ScrollToTop';
 
 function useServiceWorkerRegistration() {
   useEffect(() => {
@@ -38,6 +39,7 @@ export default function Providers({ children }: ProvidersProps) {
             {children}
           </TennisDataProvider>
           <Toast />
+          <ScrollToTop />
         </ToastProvider>
       </ThemeProvider>
     </AuthProvider>

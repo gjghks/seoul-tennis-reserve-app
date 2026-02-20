@@ -1,9 +1,12 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import PullToRefresh from 'react-simple-pull-to-refresh';
 import { useThemeClass } from '@/lib/cn';
 import { KOREAN_TO_SLUG } from '@/lib/constants/districts';
 import type { SeoulService } from '@/lib/seoulApi';
+import Spinner from '@/components/ui/Spinner';
 import { useState } from 'react';
 
 interface TodayContentProps {
@@ -18,9 +21,15 @@ export default function TodayContent({
   totalDistricts,
 }: TodayContentProps) {
   const themeClass = useThemeClass();
+  const router = useRouter();
   const [expandedDistricts, setExpandedDistricts] = useState<Set<string>>(
     new Set(Object.keys(courts).slice(0, 3))
   );
+
+  const handleRefresh = async () => {
+    router.refresh();
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  };
 
   const toggleDistrict = (district: string) => {
     const newExpanded = new Set(expandedDistricts);
@@ -39,6 +48,20 @@ export default function TodayContent({
   const sortedDistricts = Object.keys(courts).sort();
 
   return (
+    <PullToRefresh
+      onRefresh={handleRefresh}
+      pullingContent={
+        <div className={`flex items-center justify-center py-4 ${themeClass('text-black font-bold', 'text-green-600')}`}>
+          <span>↓ 당겨서 새로고침</span>
+        </div>
+      }
+      refreshingContent={
+        <div className={`flex items-center justify-center py-4 ${themeClass('text-black font-bold', 'text-green-600')}`}>
+          <Spinner size="md" className="mr-2" />
+          <span>새로고침 중...</span>
+        </div>
+      }
+    >
     <div className={`min-h-screen scrollbar-hide ${themeClass('bg-nb-bg', 'bg-gray-50')}`}>
       <section className={themeClass('court-pattern-nb text-white py-6', 'court-pattern text-white py-6')}>
         <div className="container relative z-10">
@@ -232,5 +255,6 @@ export default function TodayContent({
         )}
       </section>
     </div>
+    </PullToRefresh>
   );
 }
