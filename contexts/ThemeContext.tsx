@@ -14,18 +14,21 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>('neo-brutalism');
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('tennis-theme') as Theme | null;
     if (savedTheme && (savedTheme === 'default' || savedTheme === 'neo-brutalism')) {
       setTheme(savedTheme);
     }
+    setMounted(true);
   }, []);
 
   useEffect(() => {
+    if (!mounted) return;
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('tennis-theme', theme);
-  }, [theme]);
+  }, [theme, mounted]);
 
   const toggleTheme = () => {
     setTheme(prev => prev === 'default' ? 'neo-brutalism' : 'default');

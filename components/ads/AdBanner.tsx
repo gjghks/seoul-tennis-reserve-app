@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 
 interface AdBannerProps {
   adSlot: string;
@@ -19,28 +19,52 @@ export default function AdBanner({
   adFormat = 'auto',
   className = ''
 }: AdBannerProps) {
-  const adRef = useRef<HTMLModElement>(null);
+  const adRef = useRef<HTMLDivElement>(null);
   const isLoaded = useRef(false);
 
-  useEffect(() => {
-    if (!process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID) return;
+  const pushAd = useCallback(() => {
     if (isLoaded.current) return;
-    
+    if (!adRef.current?.querySelector('.adsbygoogle')) return;
+
     try {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
+      if (!window.adsbygoogle) window.adsbygoogle = [];
+      window.adsbygoogle.push({});
       isLoaded.current = true;
     } catch {
     }
   }, []);
+
+  useEffect(() => {
+    if (!process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID) return;
+    if (isLoaded.current) return;
+
+    const script = document.querySelector<HTMLScriptElement>(
+      'script[src*="adsbygoogle"]'
+    );
+
+    if (script?.dataset.loaded === 'true') {
+      pushAd();
+      return;
+    }
+
+    const handleLoad = () => {
+      script?.setAttribute('data-loaded', 'true');
+      pushAd();
+    };
+
+    if (script) {
+      script.addEventListener('load', handleLoad);
+      return () => script.removeEventListener('load', handleLoad);
+    }
+  }, [pushAd]);
 
   if (!process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID) {
     return null;
   }
 
   return (
-    <div className={className}>
+    <div ref={adRef} className={className}>
       <ins
-        ref={adRef}
         className="adsbygoogle"
         style={{ display: 'block' }}
         data-ad-client={process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}

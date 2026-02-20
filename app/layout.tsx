@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import Providers from "@/components/Providers";
 import Header from "@/components/layout/Header";
@@ -7,7 +8,6 @@ import Footer from "@/components/layout/Footer";
 import BottomNav from "@/components/layout/BottomNav";
 import NavigationProgress from "@/components/ui/NavigationProgress";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
-import GoogleAdSense from "@/components/GoogleAdSense";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -97,20 +97,21 @@ export default function RootLayout({
           suppressHydrationWarning
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <script
+        <Script
           src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.9/kakao.min.js"
-          async
+          strategy="afterInteractive"
         />
-        {process.env.NODE_ENV !== 'production' && (
-          <script
-            dangerouslySetInnerHTML={{ __html: `if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(function(r){if(r.length>0){r.forEach(function(w){w.unregister()});if(navigator.serviceWorker.controller)location.reload()}})}` }}
+        {process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID && (
+          <Script
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`}
+            strategy="afterInteractive"
+            crossOrigin="anonymous"
           />
         )}
         <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-green-600 focus:text-white focus:rounded-lg">
           메인 콘텐츠로 이동
         </a>
         <GoogleAnalytics />
-        <GoogleAdSense />
         <Providers>
           <NavigationProgress />
            <div className="min-h-screen flex flex-col pb-14 sm:pb-0">
