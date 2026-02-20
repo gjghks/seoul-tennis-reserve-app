@@ -2,11 +2,11 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
-import { useTheme } from '@/contexts/ThemeContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/contexts/ToastContext';
 import { supabase } from '@/lib/supabase';
 import { useThemeClass } from '@/lib/cn';
+import ReviewForm from './ReviewForm';
 
 export interface Review {
   id: string;
@@ -32,11 +32,11 @@ interface LightboxState {
 }
 
 export default function ReviewList({ reviews, onReviewDeleted }: ReviewListProps) {
-  const { isNeoBrutalism } = useTheme();
   const themeClass = useThemeClass();
   const { user } = useAuth();
   const { showToast } = useToast();
   const [lightbox, setLightbox] = useState<LightboxState | null>(null);
+  const [editingReview, setEditingReview] = useState<Review | null>(null);
 
   const openLightbox = useCallback((images: string[], index: number) => {
     setLightbox({ images, currentIndex: index });
@@ -69,6 +69,12 @@ export default function ReviewList({ reviews, onReviewDeleted }: ReviewListProps
       month: 'long',
       day: 'numeric',
     });
+  };
+
+  const isEditedReview = (review: Review) => {
+    const createdTime = new Date(review.created_at).getTime();
+    const updatedTime = new Date(review.updated_at).getTime();
+    return updatedTime - createdTime > 60_000;
   };
 
   const handleDelete = async (reviewId: string) => {
@@ -258,39 +264,68 @@ export default function ReviewList({ reviews, onReviewDeleted }: ReviewListProps
       <Lightbox />
       <div className="space-y-4">
         {reviews.map((review) => (
-        <article
-          key={review.id}
-          className={`p-4 ${themeClass('bg-white border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000]', 'bg-white rounded-xl border border-gray-100')}`}
-        >
-          <div className="flex items-start justify-between gap-3">
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-3 mb-2">
-                <StarRating rating={review.rating} />
-                <span className={`text-sm ${themeClass('text-black/50 font-medium', 'text-gray-400')} `}>
-                  {formatDate(review.created_at)}
-                </span>
+          <article
+            key={review.id}
+            className={`p-4 ${themeClass('bg-white border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000]', 'bg-white rounded-xl border border-gray-100')}`}
+          >
+            {editingReview?.id === review.id ? (
+              <ReviewForm
+                courtId={review.court_id}
+                courtName={review.court_name}
+                district={review.district}
+                editingReview={review}
+                onReviewAdded={onReviewDeleted}
+                onCancelEdit={() => setEditingReview(null)}
+              />
+            ) : (
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-3 mb-2">
+                    <StarRating rating={review.rating} />
+                    <span className={`text-sm ${themeClass('text-black/50 font-medium', 'text-gray-400')} `}>
+                      {formatDate(review.created_at)}
+                      {isEditedReview(review) && (
+                        <span className={themeClass('ml-1 text-black/60 font-bold', 'ml-1 text-green-600 font-medium')}>
+                          (수정됨)
+                        </span>
+                      )}
+                    </span>
+                  </div>
+                  <p className={`whitespace-pre-wrap break-words ${themeClass('text-black/80', 'text-gray-700')} `}>
+                    {review.content}
+                  </p>
+                  {review.images && review.images.length > 0 && (
+                    <ImageGallery images={review.images} />
+                  )}
+                </div>
+                {user?.id === review.user_id && (
+                  <div className="flex items-center gap-1 shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => setEditingReview(review)}
+                      className={`p-2 ${themeClass('text-black hover:bg-yellow-100 rounded-[5px] border border-transparent hover:border-black', 'text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg')} transition-colors`}
+                      aria-label="수정"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(review.id)}
+                      className={`p-2 ${themeClass('text-red-500 hover:bg-red-100 rounded-[5px] border border-transparent hover:border-black', 'text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg')} transition-colors`}
+                      aria-label="삭제"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    </button>
+                  </div>
+                )}
               </div>
-              <p className={`whitespace-pre-wrap break-words ${themeClass('text-black/80', 'text-gray-700')} `}>
-                {review.content}
-              </p>
-              {review.images && review.images.length > 0 && (
-                <ImageGallery images={review.images} />
-              )}
-            </div>
-            {user?.id === review.user_id && (
-              <button
-                type="button"
-                onClick={() => handleDelete(review.id)}
-                className={`shrink-0 p-2 ${themeClass('text-red-500 hover:bg-red-100 rounded-[5px] border border-transparent hover:border-black', 'text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg')} transition-colors`}
-                aria-label="삭제"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                </svg>
-              </button>
             )}
-          </div>
-        </article>
+          </article>
         ))}
       </div>
     </>

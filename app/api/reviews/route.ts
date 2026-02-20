@@ -186,3 +186,85 @@ export async function DELETE(request: NextRequest) {
 
   return NextResponse.json({ success: true });
 }
+
+export async function PUT(request: NextRequest) {
+  const rateLimitResult = await limiter(request);
+  if (!rateLimitResult.success) {
+    return NextResponse.json(
+      { error: '요청이 너무 많습니다. 잠시 후 다시 시도해주세요.' },
+      {
+        status: 429,
+        headers: {
+          'Retry-After': String(Math.ceil((rateLimitResult.resetTime - Date.now()) / 1000)),
+        },
+      }
+    );
+  }
+
+  const supabase = await createServerSupabaseClient();
+
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+  if (authError || !user) {
+    return NextResponse.json(
+      { error: '로그인이 필요합니다.' },
+      { status: 401 }
+    );
+  }
+
+  try {
+    const body = await request.json();
+    const { id, rating, content, images } = body;
+
+    if (!id || !rating || !content) {
+      return NextResponse.json(
+        { error: '필수 정보가 누락되었습니다.' },
+        { status: 400 }
+      );
+    }
+
+    if (rating < 1 || rating > 5) {
+      return NextResponse.json(
+        { error: '평점은 1~5 사이여야 합니다.' },
+        { status: 400 }
+      );
+    }
+
+    if (content.length < 10 || content.length > 500) {
+      return NextResponse.json(
+        { error: '후기는 10자 이상 500자 이하로 작성해주세요.' },
+        { status: 400 }
+      );
+    }
+
+    const imageUrls = Array.isArray(images) ? images.slice(0, 3) : [];
+
+    const { data, error } = await supabase
+      .from('reviews')
+      .update({
+        rating,
+        content,
+        images: imageUrls,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', id)
+      .eq('user_id', user.id)
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Error updating review:', error);
+      return NextResponse.json(
+        { error: '후기 수정에 실패했습니다.' },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({ review: data });
+  } catch {
+    return NextResponse.json(
+      { error: '잘못된 요청입니다.' },
+      { status: 400 }
+    );
+  }
+}

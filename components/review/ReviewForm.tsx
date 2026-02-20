@@ -1,21 +1,23 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { useTheme } from '@/contexts/ThemeContext';
 import { supabase } from '@/lib/supabase';
 import LoginPrompt from '@/components/auth/LoginPrompt';
 import { compressImage, generateImagePath, getPublicUrl } from '@/lib/imageUtils';
 import { useThemeClass } from '@/lib/cn';
 import Spinner from '@/components/ui/Spinner';
+import type { Review } from './ReviewList';
 
 const MAX_IMAGES = 3;
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
 interface ImagePreview {
   id: string;
-  file: File;
+  file?: File;
   preview: string;
+  existingUrl?: string;
+  isLocal?: boolean;
   uploading?: boolean;
   error?: string;
 }
@@ -25,20 +27,55 @@ interface ReviewFormProps {
   courtName: string;
   district: string;
   onReviewAdded: () => void;
+  editingReview?: Review;
+  onCancelEdit?: () => void;
 }
 
-export default function ReviewForm({ courtId, courtName, district, onReviewAdded }: ReviewFormProps) {
+function toExistingImagePreviews(review?: Review): ImagePreview[] {
+  return (review?.images || []).map((url, index) => ({
+    id: `existing-${review?.id || 'new'}-${index}`,
+    preview: url,
+    existingUrl: url,
+    isLocal: false,
+  }));
+}
+
+function revokeLocalPreviews(list: ImagePreview[]) {
+  for (const image of list) {
+    if (image.isLocal) {
+      URL.revokeObjectURL(image.preview);
+    }
+  }
+}
+
+export default function ReviewForm({
+  courtId,
+  courtName,
+  district,
+  onReviewAdded,
+  editingReview,
+  onCancelEdit,
+}: ReviewFormProps) {
   const { user } = useAuth();
-  const { isNeoBrutalism } = useTheme();
   const themeClass = useThemeClass();
-  const [rating, setRating] = useState(5);
-  const [content, setContent] = useState('');
+  const [rating, setRating] = useState(editingReview?.rating ?? 5);
+  const [content, setContent] = useState(editingReview?.content ?? '');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
-  const [images, setImages] = useState<ImagePreview[]>([]);
+  const [images, setImages] = useState<ImagePreview[]>(toExistingImagePreviews(editingReview));
   const [uploadProgress, setUploadProgress] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setRating(editingReview?.rating ?? 5);
+    setContent(editingReview?.content ?? '');
+    setImages((previous) => {
+      revokeLocalPreviews(previous);
+      return toExistingImagePreviews(editingReview);
+    });
+    setError(null);
+  }, [editingReview]);
 
   const handleFileSelect = useCallback(async (files: FileList | null) => {
     if (!files || files.length === 0) return;
@@ -65,14 +102,15 @@ export default function ReviewForm({ courtId, courtName, district, onReviewAdded
 
       const preview = URL.createObjectURL(file);
       newImages.push({
-        id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        id: `${Date.now()}-${Math.random().toString(36).substring(2, 11)}`,
         file,
         preview,
+        isLocal: true,
       });
     }
 
     if (newImages.length > 0) {
-      setImages(prev => [...prev, ...newImages]);
+      setImages((prev) => [...prev, ...newImages]);
       setError(null);
     }
 
@@ -82,12 +120,12 @@ export default function ReviewForm({ courtId, courtName, district, onReviewAdded
   }, [images.length]);
 
   const handleRemoveImage = useCallback((id: string) => {
-    setImages(prev => {
-      const imageToRemove = prev.find(img => img.id === id);
-      if (imageToRemove) {
+    setImages((prev) => {
+      const imageToRemove = prev.find((img) => img.id === id);
+      if (imageToRemove?.isLocal) {
         URL.revokeObjectURL(imageToRemove.preview);
       }
-      return prev.filter(img => img.id !== id);
+      return prev.filter((img) => img.id !== id);
     });
   }, []);
 
@@ -110,34 +148,40 @@ export default function ReviewForm({ courtId, courtName, district, onReviewAdded
 
     for (let i = 0; i < images.length; i++) {
       const img = images[i];
+
+      if (!img.file && img.existingUrl) {
+        uploadedUrls.push(img.existingUrl);
+        continue;
+      }
+
+      if (!img.file) {
+        continue;
+      }
+
       setUploadProgress(`이미지 압축 중... (${i + 1}/${images.length})`);
 
-      try {
-        const compressed = await compressImage(img.file);
-        const path = generateImagePath(user.id, img.file.name.replace(/\.[^.]+$/, '.webp'));
+      const compressed = await compressImage(img.file);
+      const path = generateImagePath(user.id, img.file.name.replace(/\.[^.]+$/, '.webp'));
 
-        setUploadProgress(`업로드 중... (${i + 1}/${images.length})`);
+      setUploadProgress(`업로드 중... (${i + 1}/${images.length})`);
 
-        const { error: uploadError } = await supabase.storage
-          .from('review-images')
-          .upload(path, compressed.blob, {
-            contentType: 'image/webp',
-            upsert: false,
-          });
+      const { error: uploadError } = await supabase.storage
+        .from('review-images')
+        .upload(path, compressed.blob, {
+          contentType: 'image/webp',
+          upsert: false,
+        });
 
-         if (uploadError) {
-           throw new Error(`이미지 업로드 실패: ${img.file.name}`);
-        }
-
-        const publicUrl = getPublicUrl(
-          'review-images',
-          path,
-          process.env.NEXT_PUBLIC_SUPABASE_URL!
-        );
-        uploadedUrls.push(publicUrl);
-       } catch (err) {
-         throw err;
+      if (uploadError) {
+        throw new Error(`이미지 업로드 실패: ${img.file.name}`);
       }
+
+      const publicUrl = getPublicUrl(
+        'review-images',
+        path,
+        process.env.NEXT_PUBLIC_SUPABASE_URL!
+      );
+      uploadedUrls.push(publicUrl);
     }
 
     setUploadProgress(null);
@@ -165,37 +209,50 @@ export default function ReviewForm({ courtId, courtName, district, onReviewAdded
 
       const { data: { session } } = await supabase.auth.getSession();
 
-      const res = await fetch('/api/reviews', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session?.access_token}`,
-        },
-        body: JSON.stringify({
+      const requestBody = editingReview
+        ? {
+          id: editingReview.id,
+          rating,
+          content,
+          images: imageUrls,
+        }
+        : {
           court_id: courtId,
           court_name: courtName,
           district,
           rating,
           content,
           images: imageUrls,
-        }),
+        };
+
+      const res = await fetch('/api/reviews', {
+        method: editingReview ? 'PUT' : 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session?.access_token}`,
+        },
+        body: JSON.stringify(requestBody),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || '후기 작성에 실패했습니다.');
+        throw new Error(data.error || `후기 ${editingReview ? '수정' : '작성'}에 실패했습니다.`);
       }
 
-      setContent('');
-      setRating(5);
-      for (const img of images) {
-        URL.revokeObjectURL(img.preview);
+      if (!editingReview) {
+        setContent('');
+        setRating(5);
+        revokeLocalPreviews(images);
+        setImages([]);
+      } else {
+        revokeLocalPreviews(images);
       }
-      setImages([]);
+
       onReviewAdded();
+      onCancelEdit?.();
     } catch (err) {
-      setError(err instanceof Error ? err.message : '후기 작성에 실패했습니다.');
+      setError(err instanceof Error ? err.message : `후기 ${editingReview ? '수정' : '작성'}에 실패했습니다.`);
     } finally {
       setIsSubmitting(false);
       setUploadProgress(null);
@@ -234,7 +291,7 @@ export default function ReviewForm({ courtId, courtName, district, onReviewAdded
         <LoginPrompt
           isOpen={showLoginPrompt}
           onClose={() => setShowLoginPrompt(false)}
-          message="후기를 작성하려면 로그인해주세요."
+          message={editingReview ? '후기를 수정하려면 로그인해주세요.' : '후기를 작성하려면 로그인해주세요.'}
         />
       </>
     );
@@ -352,24 +409,44 @@ export default function ReviewForm({ courtId, courtName, district, onReviewAdded
         </div>
       )}
 
-      <button
-        type="submit"
-        disabled={isSubmitting || content.length < 10}
-        className={`w-full py-3 font-bold transition-all ${themeClass(
-          `border-2 border-black rounded-[5px] ${
-            isSubmitting || content.length < 10
-              ? 'bg-gray-200 text-black/40 cursor-not-allowed'
-              : 'bg-[#22c55e] text-black shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none'
-          }`,
-          `rounded-lg ${
-            isSubmitting || content.length < 10
-              ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-              : 'bg-green-600 text-white hover:bg-green-700'
-          }`
-        )}`}
-      >
-        {isSubmitting ? <><Spinner className="inline" /> 등록 중...</> : '후기 등록'}
-      </button>
+      <div className="flex gap-2">
+        {editingReview && (
+          <button
+            type="button"
+            onClick={onCancelEdit}
+            className={themeClass(
+              'py-3 px-4 font-bold border-2 border-black rounded-[5px] bg-white text-black hover:bg-gray-100 transition-colors',
+              'py-3 px-4 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors'
+            )}
+          >
+            취소
+          </button>
+        )}
+
+        <button
+          type="submit"
+          disabled={isSubmitting || content.length < 10}
+          className={themeClass(
+            `py-3 font-bold transition-all ${editingReview ? 'flex-1' : 'w-full'} border-2 border-black rounded-[5px] ${
+              isSubmitting || content.length < 10
+                ? 'bg-gray-200 text-black/40 cursor-not-allowed'
+                : 'bg-[#22c55e] text-black shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none'
+            }`,
+            `py-3 font-bold transition-all ${editingReview ? 'flex-1' : 'w-full'} rounded-lg ${
+              isSubmitting || content.length < 10
+                ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                : 'bg-green-600 text-white hover:bg-green-700'
+            }`
+          )}
+        >
+          {isSubmitting ? (
+            <span>
+              <Spinner className="inline mr-1" />
+              {editingReview ? '수정 중...' : '등록 중...'}
+            </span>
+          ) : (editingReview ? '후기 수정' : '후기 등록')}
+        </button>
+      </div>
     </form>
   );
 }

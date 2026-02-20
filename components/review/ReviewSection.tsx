@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useThemeClass } from '@/lib/cn';
 import ReviewForm from './ReviewForm';
 import ReviewList, { Review } from './ReviewList';
+import RatingDistribution from './RatingDistribution';
 
 interface ReviewSectionProps {
   courtId: string;
@@ -18,6 +19,7 @@ export default function ReviewSection({ courtId, courtName, district }: ReviewSe
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState(false);
+  const [sortBy, setSortBy] = useState<'latest' | 'highest' | 'lowest'>('latest');
 
   const fetchReviews = useCallback(async () => {
     setFetchError(false);
@@ -44,6 +46,22 @@ export default function ReviewSection({ courtId, courtName, district }: ReviewSe
     ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
     : null;
 
+  const sortedReviews = useMemo(() => {
+    return [...reviews].sort((a, b) => {
+      if (sortBy === 'highest') {
+        if (b.rating !== a.rating) return b.rating - a.rating;
+        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+      }
+
+      if (sortBy === 'lowest') {
+        if (a.rating !== b.rating) return a.rating - b.rating;
+        return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+      }
+
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+    });
+  }, [reviews, sortBy]);
+
   return (
     <section className={`${themeClass('bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] overflow-hidden', 'bg-white rounded-2xl border border-gray-100 overflow-hidden')} `}>
       <div className={`p-5 ${themeClass('border-b-2 border-black', 'border-b border-gray-100')} `}>
@@ -54,21 +72,39 @@ export default function ReviewSection({ courtId, courtName, district }: ReviewSe
             </svg>
             이용 후기
           </h2>
-          {averageRating && (
-            <div className="flex items-center gap-2">
-              <span className="text-yellow-400 text-lg">★</span>
-              <span className={themeClass('font-black text-black', 'font-bold text-gray-900')}>
-                {averageRating}
-              </span>
-              <span className={`text-sm ${themeClass('text-black/50', 'text-gray-400')} `}>
-                ({reviews.length}개)
-              </span>
-            </div>
-          )}
+          <div className="flex items-center gap-2">
+            {averageRating && (
+              <div className="flex items-center gap-2">
+                <span className="text-yellow-400 text-lg">★</span>
+                <span className={themeClass('font-black text-black', 'font-bold text-gray-900')}>
+                  {averageRating}
+                </span>
+                <span className={`text-sm ${themeClass('text-black/50', 'text-gray-400')} `}>
+                  ({reviews.length}개)
+                </span>
+              </div>
+            )}
+
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as 'latest' | 'highest' | 'lowest')}
+              aria-label="후기 정렬"
+              className={themeClass(
+                'border-2 border-black rounded-[5px] font-bold text-xs px-2 py-1 bg-white text-black focus:outline-none focus:ring-2 focus:ring-[#22c55e]',
+                'border border-gray-200 rounded-lg text-sm text-gray-600 px-2.5 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-green-500'
+              )}
+            >
+              <option value="latest">최신순</option>
+              <option value="highest">높은평점순</option>
+              <option value="lowest">낮은평점순</option>
+            </select>
+          </div>
         </div>
       </div>
 
       <div className="p-5 space-y-6">
+        <RatingDistribution reviews={reviews} />
+
         <ReviewForm
           courtId={courtId}
           courtName={courtName}
@@ -104,7 +140,7 @@ export default function ReviewSection({ courtId, courtName, district }: ReviewSe
             </button>
           </div>
         ) : (
-          <ReviewList reviews={reviews} onReviewDeleted={fetchReviews} />
+          <ReviewList reviews={sortedReviews} onReviewDeleted={fetchReviews} />
         )}
       </div>
     </section>
