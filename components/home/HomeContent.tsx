@@ -34,6 +34,11 @@ const PopularCourts = dynamic(
   { ssr: false }
 );
 
+const DiscoveryCards = dynamic(
+  () => import('@/components/home/DiscoveryCards'),
+  { ssr: false }
+);
+
 const InstallPrompt = dynamic(
   () => import('@/components/pwa/InstallPrompt'),
   { ssr: false }
@@ -212,6 +217,10 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
 
       <div className="pb-6 lg:pb-4">
         <PopularCourts />
+      </div>
+
+      <div className="pb-4 lg:pb-3 sm:hidden">
+        <DiscoveryCards />
       </div>
 
       <div className="container pb-6 lg:pb-4">
