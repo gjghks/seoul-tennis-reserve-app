@@ -4,6 +4,8 @@ import { useState, useMemo } from 'react';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useThemeClass } from '@/lib/cn';
 import { DISTRICTS, KOREAN_TO_SLUG } from '@/lib/constants/districts';
+import { useInView } from '@/lib/hooks/useInView';
+import { useCountUp } from '@/lib/hooks/useCountUp';
 import type { SeoulService } from '@/lib/seoulApi';
 import { isCourtAccepting } from '@/lib/utils/courtStatus';
 import Link from 'next/link';
@@ -132,6 +134,20 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
     const set = new Set(courts.map(c => c.AREANM));
     return DISTRICTS.filter(d => set.has(d.nameKo));
   }, [courts]);
+
+  const todayKey = toDateKey(now);
+  const todayCount = dateCourtMap.get(todayKey) ?? 0;
+  const totalThisMonth = Array.from(dateCourtMap.values()).reduce((a, b) => a + b, 0);
+  const peakDay = Array.from(dateCourtMap.entries()).reduce(
+    (max, [key, val]) => (val > max.val ? { key, val } : max),
+    { key: '', val: 0 }
+  );
+  const peakDayNum = peakDay.key ? Number.parseInt(peakDay.key.split('-')[2]) : 0;
+
+  const { ref: summaryRef, inView: summaryInView } = useInView();
+  const animTodayCount = useCountUp(todayCount, summaryInView);
+  const animTotalMonth = useCountUp(totalThisMonth, summaryInView);
+  const animPeakDay = useCountUp(peakDayNum, summaryInView);
 
   return (
     <div className={`min-h-screen ${themeClass('bg-nb-bg', 'bg-gray-50')}`}>
@@ -284,11 +300,13 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
                     </span>
                     {count > 0 && (
                       <span
-                        className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${
+                        className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full anim-pop-in ${
                           isSelected
                             ? 'bg-white/70'
                             : getDotClass(count, isNeoBrutalism)
                         }`}
+                        key={`dot-${viewYear}-${viewMonth}-${day}`}
+                        style={{ animationDelay: `${day * 15}ms` }}
                         title={`${count}개 접수 가능`}
                       />
                     )}
@@ -313,28 +331,17 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
           </div>
         </div>
 
-        {/* Summary cards */}
-        <div className="grid grid-cols-3 gap-3 mb-6">
-          {(() => {
-            const todayKey = toDateKey(now);
-            const todayCount = dateCourtMap.get(todayKey) ?? 0;
-            const totalThisMonth = Array.from(dateCourtMap.values()).reduce((a, b) => a + b, 0);
-            const peakDay = Array.from(dateCourtMap.entries()).reduce(
-              (max, [key, val]) => (val > max.val ? { key, val } : max),
-              { key: '', val: 0 }
-            );
-            const peakLabel = peakDay.key ? `${Number.parseInt(peakDay.key.split('-')[2])}일` : '-';
-            return [
-              { label: '오늘 접수', value: `${todayCount}개` },
-              { label: '이번 달 총', value: `${totalThisMonth}건` },
-              { label: '최다 접수일', value: peakLabel },
-            ].map(item => (
-              <div key={item.label} className={`${cardClass} p-4 text-center`}>
-                <p className={`text-xs mb-1 ${themeClass('text-black/50 font-bold uppercase', 'text-gray-400')}`}>{item.label}</p>
-                <p className={`text-xl ${themeClass('font-black text-black', 'font-bold text-gray-900')}`}>{item.value}</p>
-              </div>
-            ));
-          })()}
+        <div ref={summaryRef} className="grid grid-cols-3 gap-3 mb-6">
+          {[
+            { label: '오늘 접수', value: `${animTodayCount}개` },
+            { label: '이번 달 총', value: `${animTotalMonth}건` },
+            { label: '최다 접수일', value: peakDayNum > 0 ? `${animPeakDay}일` : '-' },
+          ].map(item => (
+            <div key={item.label} className={`${cardClass} p-4 text-center`}>
+              <p className={`text-xs mb-1 ${themeClass('text-black/50 font-bold uppercase', 'text-gray-400')}`}>{item.label}</p>
+              <p className={`text-xl ${themeClass('font-black text-black', 'font-bold text-gray-900')}`}>{item.value}</p>
+            </div>
+          ))}
         </div>
 
         {/* Selected date detail */}

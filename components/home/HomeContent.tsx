@@ -11,6 +11,7 @@ import AdBanner from '@/components/ads/AdBanner';
 import { AD_SLOTS } from '@/lib/adConfig';
 import LastUpdated from '@/components/ui/LastUpdated';
 import { useThemeClass } from '@/lib/cn';
+import { useCountUp } from '@/lib/hooks/useCountUp';
 import { convertToWeatherGrid } from '@/lib/utils/weatherGrid';
 import HomeWeatherCard from '@/components/weather/HomeWeatherCard';
 import CourtSearch from '@/components/home/CourtSearch';
@@ -59,6 +60,8 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
     await mutate();
   };
 
+  const showLoading = isLoading && !displayStats;
+
   const totalAvailable = displayStats
     ? Object.values(displayStats).reduce((sum, s) => sum + s.available, 0)
     : 0;
@@ -66,6 +69,10 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
   const totalCourts = displayStats
     ? Object.values(displayStats).reduce((sum, s) => sum + s.count, 0)
     : 0;
+
+  const dataReady = !showLoading && !error;
+  const animAvailable = useCountUp(totalAvailable, dataReady);
+  const animTotal = useCountUp(totalCourts, dataReady);
 
   const RefreshIndicator = (
     <div className={`flex items-center justify-center py-4 ${themeClass('text-black font-bold', 'text-green-600')}`}>
@@ -76,8 +83,6 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
       <span>새로고침 중...</span>
     </div>
   );
-
-  const showLoading = isLoading && !displayStats;
 
   return (
     <PullToRefresh
@@ -112,12 +117,12 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
             {!showLoading && !error && (
               <div className={`flex gap-3 sm:gap-6 md:gap-8 shrink-0 ${themeClass('bg-black/20 backdrop-blur-sm px-3 sm:px-5 py-2 sm:py-3 rounded-[5px] border-2 border-white/30', '')}`}>
                 <div className="text-center">
-                  <div className={`font-bold ${themeClass('text-2xl sm:text-3xl md:text-4xl text-[#facc15]', 'text-2xl sm:text-3xl md:text-4xl')}`}>{totalAvailable}</div>
+                  <div className={`font-bold ${themeClass('text-2xl sm:text-3xl md:text-4xl text-[#facc15]', 'text-2xl sm:text-3xl md:text-4xl')}`}>{animAvailable}</div>
                   <div className={`text-[10px] sm:text-xs mt-0.5 sm:mt-1 ${themeClass('text-white/70 font-semibold uppercase', 'text-green-200')}`}>예약 가능</div>
                 </div>
                 <div className={themeClass('w-[2px] bg-white/30', 'w-px bg-green-400/30')} />
                 <div className="text-center">
-                  <div className={`font-bold ${themeClass('text-2xl sm:text-3xl md:text-4xl', 'text-2xl sm:text-3xl md:text-4xl')}`}>{totalCourts}</div>
+                  <div className={`font-bold ${themeClass('text-2xl sm:text-3xl md:text-4xl', 'text-2xl sm:text-3xl md:text-4xl')}`}>{animTotal}</div>
                   <div className={`text-[10px] sm:text-xs mt-0.5 sm:mt-1 ${themeClass('text-white/70 font-semibold uppercase', 'text-green-200')}`}>전체 시설</div>
                 </div>
               </div>
