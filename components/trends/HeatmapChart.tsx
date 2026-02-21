@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useThemeClass } from '@/lib/cn';
+import { useInView } from '@/lib/hooks/useInView';
 
 const DAY_LABELS = ['월', '화', '수', '목', '금', '토', '일'];
 const DAY_INDEX_ORDER = [1, 2, 3, 4, 5, 6, 0];
@@ -53,6 +54,7 @@ export default function HeatmapChart({ data }: HeatmapChartProps) {
   const { isNeoBrutalism } = useTheme();
   const themeClass = useThemeClass();
   const [selected, setSelected] = useState<{ day: number; slot: string } | null>(null);
+  const { ref: gridRef, inView } = useInView();
 
   const selectedCell = selected
     ? data[selected.day]?.[selected.slot]
@@ -64,7 +66,7 @@ export default function HeatmapChart({ data }: HeatmapChartProps) {
 
   return (
     <div className="space-y-4">
-      <div className="overflow-x-auto">
+      <div ref={gridRef} className="overflow-x-auto">
         <div className="min-w-[320px]">
           <div className="grid grid-cols-[auto_repeat(7,1fr)] gap-1">
             <div />
@@ -96,6 +98,8 @@ export default function HeatmapChart({ data }: HeatmapChartProps) {
                   const rate = cell?.avgBookingRate ?? 0;
                   const hasSample = (cell?.sampleCount ?? 0) > 0;
                   const isSelected = selected?.day === dayIdx && selected?.slot === slot;
+                  const rowIndex = TIME_SLOT_ORDER.indexOf(slot);
+                  const staggerDelay = (rowIndex * 7 + colIdx) * 30;
 
                   return (
                     <button
@@ -113,7 +117,9 @@ export default function HeatmapChart({ data }: HeatmapChartProps) {
                           : `${isSelected ? 'ring-2 ring-green-500 scale-110 z-10' : ''} ${getCellColorMinimal(hasSample ? rate : 0)}`
                         }
                         ${hasSample ? 'cursor-pointer' : 'cursor-default opacity-50'}
+                        ${inView ? 'anim-cell-fade' : 'opacity-0'}
                       `}
+                      style={{ animationDelay: `${staggerDelay}ms` }}
                       aria-label={`${DAY_LABELS[colIdx]} ${getTimeSlotKorean(slot)}: ${hasSample ? `${rate}%` : '데이터 없음'}`}
                     >
                       {hasSample && rate > 0 && (
