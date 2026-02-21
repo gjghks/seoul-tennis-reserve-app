@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import { useThemeClass } from '@/lib/cn';
 import { AllDistrictStats, DistrictGuideStats, getCompetitionStars } from '@/lib/utils/districtStats';
+import { useInView } from '@/lib/hooks/useInView';
+import { useCountUp } from '@/lib/hooks/useCountUp';
 
 interface CompareContentProps {
   stats: AllDistrictStats;
@@ -10,6 +12,18 @@ interface CompareContentProps {
 
 export default function CompareContent({ stats }: CompareContentProps) {
   const themeClass = useThemeClass();
+  const { ref: heroRef, inView: heroInView } = useInView();
+  const { ref: avgRef, inView: avgInView } = useInView();
+  const { ref: topRef, inView: topInView } = useInView();
+
+  const animTotalCourts = useCountUp(stats.totalCourtsSeoul, heroInView);
+  const animTotalAvailable = useCountUp(stats.totalAvailableSeoul, heroInView);
+  const animDistrictCount = useCountUp(stats.districts.length, heroInView);
+
+  const animAvgCourts = useCountUp(stats.seoulAverage.totalCourts, avgInView);
+  const animAvgAvailableRate = useCountUp(stats.seoulAverage.availableRate, avgInView);
+  const animAvgFreeRate = useCountUp(stats.seoulAverage.freeRate, avgInView);
+  const animAvgCompetition = useCountUp(stats.seoulAverage.competitionRate, avgInView);
 
   return (
     <div className={`min-h-screen scrollbar-hide ${themeClass('bg-nb-bg', 'bg-gray-50')}`}>
@@ -34,22 +48,22 @@ export default function CompareContent({ stats }: CompareContentProps) {
             어느 구에서 테니스 치기 가장 좋을까? 데이터로 비교해 보세요.
           </p>
 
-          <div className={`mt-4 flex flex-wrap gap-3 ${themeClass('', '')}`}>
+          <div ref={heroRef} className={`mt-4 flex flex-wrap gap-3 ${themeClass('', '')}`}>
             <div className={`px-4 py-2 rounded-lg ${themeClass('bg-black/20 border-2 border-white/30', 'bg-white/10 backdrop-blur-sm')}`}>
               <div className={`text-2xl font-bold ${themeClass('text-[#facc15]', 'text-white')}`}>
-                {stats.totalCourtsSeoul}
+                {animTotalCourts}
               </div>
               <div className="text-xs text-white/70">전체 시설</div>
             </div>
             <div className={`px-4 py-2 rounded-lg ${themeClass('bg-black/20 border-2 border-white/30', 'bg-white/10 backdrop-blur-sm')}`}>
               <div className={`text-2xl font-bold ${themeClass('text-[#facc15]', 'text-white')}`}>
-                {stats.totalAvailableSeoul}
+                {animTotalAvailable}
               </div>
               <div className="text-xs text-white/70">예약 가능</div>
             </div>
             <div className={`px-4 py-2 rounded-lg ${themeClass('bg-black/20 border-2 border-white/30', 'bg-white/10 backdrop-blur-sm')}`}>
               <div className={`text-2xl font-bold ${themeClass('text-[#facc15]', 'text-white')}`}>
-                {stats.districts.length}
+                {animDistrictCount}
               </div>
               <div className="text-xs text-white/70">운영 지역</div>
             </div>
@@ -58,7 +72,7 @@ export default function CompareContent({ stats }: CompareContentProps) {
       </section>
 
       <section className="container py-6">
-        <div className={`mb-6 p-4 ${themeClass(
+        <div ref={avgRef} className={`mb-6 p-4 ${themeClass(
           'bg-[#fef3c7] border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000]',
           'bg-amber-50 rounded-xl border border-amber-100'
         )}`}>
@@ -69,25 +83,25 @@ export default function CompareContent({ stats }: CompareContentProps) {
             <div>
               <span className={themeClass('text-black/60 font-bold', 'text-gray-500')}>구당 평균 시설</span>
               <p className={`text-lg font-bold ${themeClass('text-black', 'text-gray-900')}`}>
-                {stats.seoulAverage.totalCourts}개
+                {animAvgCourts}개
               </p>
             </div>
             <div>
               <span className={themeClass('text-black/60 font-bold', 'text-gray-500')}>평균 예약가능률</span>
               <p className={`text-lg font-bold ${themeClass('text-black', 'text-gray-900')}`}>
-                {stats.seoulAverage.availableRate}%
+                {animAvgAvailableRate}%
               </p>
             </div>
             <div>
               <span className={themeClass('text-black/60 font-bold', 'text-gray-500')}>평균 무료 비율</span>
               <p className={`text-lg font-bold ${themeClass('text-black', 'text-gray-900')}`}>
-                {stats.seoulAverage.freeRate}%
+                {animAvgFreeRate}%
               </p>
             </div>
             <div>
               <span className={themeClass('text-black/60 font-bold', 'text-gray-500')}>평균 경쟁률</span>
               <p className={`text-lg font-bold ${themeClass('text-black', 'text-gray-900')}`}>
-                {stats.seoulAverage.competitionRate}%
+                {animAvgCompetition}%
               </p>
             </div>
           </div>
@@ -181,31 +195,27 @@ export default function CompareContent({ stats }: CompareContentProps) {
           </table>
         </div>
 
-        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <TopCard
-            themeClass={themeClass}
-            title="시설이 가장 많은 구"
-            emoji="🏆"
-            districts={[...stats.districts].sort((a, b) => b.totalCourts - a.totalCourts).slice(0, 3)}
-            getValue={(d) => d.totalCourts}
-            unit="개"
-          />
-          <TopCard
-            themeClass={themeClass}
-            title="예약 가능률 높은 구"
-            emoji="✅"
-            districts={[...stats.districts].sort((a, b) => b.availableRate - a.availableRate).slice(0, 3)}
-            getValue={(d) => d.availableRate}
-            unit="%"
-          />
-          <TopCard
-            themeClass={themeClass}
-            title="무료 코트 많은 구"
-            emoji="🆓"
-            districts={[...stats.districts].sort((a, b) => b.freeCourts - a.freeCourts).slice(0, 3)}
-            getValue={(d) => d.freeCourts}
-            unit="개"
-          />
+        <div ref={topRef} className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[
+            { title: '시설이 가장 많은 구', emoji: '🏆', districts: [...stats.districts].sort((a, b) => b.totalCourts - a.totalCourts).slice(0, 3), getValue: (d: DistrictGuideStats) => d.totalCourts, unit: '개' },
+            { title: '예약 가능률 높은 구', emoji: '✅', districts: [...stats.districts].sort((a, b) => b.availableRate - a.availableRate).slice(0, 3), getValue: (d: DistrictGuideStats) => d.availableRate, unit: '%' },
+            { title: '무료 코트 많은 구', emoji: '🆓', districts: [...stats.districts].sort((a, b) => b.freeCourts - a.freeCourts).slice(0, 3), getValue: (d: DistrictGuideStats) => d.freeCourts, unit: '개' },
+          ].map((card, i) => (
+            <div
+              key={card.title}
+              className={topInView ? 'anim-fade-up' : 'opacity-0'}
+              style={{ animationDelay: `${i * 120}ms` }}
+            >
+              <TopCard
+                themeClass={themeClass}
+                title={card.title}
+                emoji={card.emoji}
+                districts={card.districts}
+                getValue={card.getValue}
+                unit={card.unit}
+              />
+            </div>
+          ))}
         </div>
 
         <div className={`mt-8 p-5 ${themeClass(
