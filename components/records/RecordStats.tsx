@@ -4,12 +4,23 @@ import { useThemeClass, cn } from '@/lib/cn';
 import { useRecordStats } from '@/lib/hooks/useRecordStats';
 import { MATCH_TYPE_LABELS, MatchResult } from '@/lib/constants/tennis';
 import { calculateWinRate } from '@/lib/utils/tennis';
+import { useInView } from '@/lib/hooks/useInView';
+import { useCountUp } from '@/lib/hooks/useCountUp';
 import OpponentHistory from '@/components/records/OpponentHistory';
 import SkillProgressChart from '@/components/records/SkillProgressChart';
 
 export default function RecordStats() {
   const themeClass = useThemeClass();
   const { stats, isLoading } = useRecordStats();
+  const { ref: summaryRef, inView: summaryInView } = useInView();
+  const { ref: formRef, inView: formInView } = useInView();
+  const { ref: matchTypeRef, inView: matchTypeInView } = useInView();
+  const { ref: monthlyRef, inView: monthlyInView } = useInView();
+
+  const totalMatches = stats?.total_matches ?? 0;
+  const winRate = stats?.win_rate ?? 0;
+  const animTotal = useCountUp(totalMatches, summaryInView);
+  const animWinRate = useCountUp(winRate, summaryInView);
 
   if (isLoading) {
     return <StatsSkeleton />;
@@ -69,53 +80,47 @@ export default function RecordStats() {
         </div>
       )}
 
-      {/* Summary Bar */}
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-        <StatBox label="전체 경기" value={`${stats.total_matches}전`} />
-        <StatBox
-          label="승률"
-          value={`${stats.win_rate}%`}
-          valueClassName={winRateColor}
-        />
-        <StatBox
-          label="승/패"
-          value={`${stats.wins}승 ${stats.losses}패 ${stats.draws}무`}
-          valueClassName="text-sm"
-        />
-        <StatBox
-          label="평균 비용"
-          value={
-            stats.avg_cost
-              ? `${stats.avg_cost.toLocaleString('ko-KR')}원`
-              : '-'
-          }
-        />
+      <div ref={summaryRef} className="grid grid-cols-2 gap-4 md:grid-cols-4">
+        {[
+          { label: '전체 경기', value: `${animTotal}전`, className: undefined },
+          { label: '승률', value: `${animWinRate}%`, className: winRateColor },
+          { label: '승/패', value: `${stats.wins}승 ${stats.losses}패 ${stats.draws}무`, className: 'text-sm' },
+          { label: '평균 비용', value: stats.avg_cost ? `${stats.avg_cost.toLocaleString('ko-KR')}원` : '-', className: undefined },
+        ].map((item, i) => (
+          <div
+            key={item.label}
+            className={summaryInView ? 'anim-fade-up' : 'opacity-0'}
+            style={{ animationDelay: `${i * 80}ms` }}
+          >
+            <StatBox label={item.label} value={item.value} valueClassName={item.className} />
+          </div>
+        ))}
       </div>
 
-      {/* Recent Form */}
-      <div className={themeClass('space-y-2', 'space-y-2')}>
+      <div ref={formRef} className={themeClass('space-y-2', 'space-y-2')}>
         <h3 className="text-sm font-bold text-gray-500">최근 전적</h3>
         <div className="flex gap-2">
-          {recentFormItems.map(({ result, key }) => (
+          {recentFormItems.map(({ result, key }, i) => (
             <div
               key={key}
               className={cn(
                 'h-8 w-8 rounded-full border-2 border-white shadow-sm',
-                getResultColor(result)
+                getResultColor(result),
+                formInView ? 'anim-pop-in' : 'opacity-0 scale-0'
               )}
+              style={{ animationDelay: `${i * 60}ms` }}
               title={result}
             />
           ))}
         </div>
       </div>
 
-      {/* Match Type Breakdown */}
-      <div className="space-y-4">
+      <div ref={matchTypeRef} className="space-y-4">
         <h3 className="text-sm font-bold text-gray-500">경기 유형별</h3>
         <div className="space-y-3">
-          {Object.entries(stats.by_match_type).map(([type, data]) => {
+          {Object.entries(stats.by_match_type).map(([type, data], i) => {
             if (!data) return null;
-            const winRate = calculateWinRate(data.wins, data.total);
+            const typeWinRate = calculateWinRate(data.wins, data.total);
             return (
               <div key={type} className="space-y-1">
                 <div className="flex justify-between text-sm">
@@ -123,13 +128,16 @@ export default function RecordStats() {
                     {MATCH_TYPE_LABELS[type as keyof typeof MATCH_TYPE_LABELS]}
                   </span>
                   <span className="text-gray-500">
-                    {data.wins}승 / {data.total}전 ({winRate}%)
+                    {data.wins}승 / {data.total}전 ({typeWinRate}%)
                   </span>
                 </div>
                 <div className="h-2.5 w-full overflow-hidden rounded-full bg-gray-100">
                   <div
                     className="h-full bg-green-500"
-                    style={{ width: `${(data.total / stats.total_matches) * 100}%` }}
+                    style={{
+                      width: matchTypeInView ? `${(data.total / stats.total_matches) * 100}%` : '0%',
+                      transition: `width 0.7s cubic-bezier(0.22, 1, 0.36, 1) ${i * 100}ms`,
+                    }}
                   />
                 </div>
               </div>
@@ -138,11 +146,10 @@ export default function RecordStats() {
         </div>
       </div>
 
-      {/* Monthly Activity */}
-      <div className="space-y-4">
+      <div ref={monthlyRef} className="space-y-4">
         <h3 className="text-sm font-bold text-gray-500">월별 활동</h3>
         <div className="space-y-2">
-          {stats.monthly_activity.map((monthData) => {
+          {stats.monthly_activity.map((monthData, i) => {
             const maxTotal = Math.max(
               ...stats.monthly_activity.map((m) => m.total)
             );
@@ -157,7 +164,10 @@ export default function RecordStats() {
                 <div className="flex-1">
                   <div
                     className="relative h-6 rounded bg-gray-100"
-                    style={{ width: `${widthPercent}%` }}
+                    style={{
+                      width: monthlyInView ? `${widthPercent}%` : '0%',
+                      transition: `width 0.7s cubic-bezier(0.22, 1, 0.36, 1) ${i * 80}ms`,
+                    }}
                   >
                     <div
                       className="absolute left-0 top-0 h-full rounded-l bg-green-500/80"

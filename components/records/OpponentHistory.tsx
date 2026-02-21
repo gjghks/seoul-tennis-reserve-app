@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useTheme } from '@/contexts/ThemeContext';
 import { cn, useThemeClass } from '@/lib/cn';
+import { useInView } from '@/lib/hooks/useInView';
 
 interface OpponentHistoryProps {
   opponents: Array<{
@@ -33,6 +34,7 @@ export default function OpponentHistory({ opponents }: OpponentHistoryProps) {
   const [expanded, setExpanded] = useState(false);
   const themeClass = useThemeClass();
   const { isNeoBrutalism } = useTheme();
+  const { ref: listRef, inView } = useInView();
 
   const visibleOpponents = expanded ? opponents : opponents.slice(0, 5);
 
@@ -49,7 +51,7 @@ export default function OpponentHistory({ opponents }: OpponentHistoryProps) {
         <p className="mt-3 text-sm text-gray-500">상대 정보가 있는 기록이 없습니다</p>
       ) : (
         <>
-          <div className="mt-2">
+          <div ref={listRef} className="mt-2">
             {visibleOpponents.map((opponent, index) => {
               const winPercent = (opponent.wins / opponent.total) * 100;
               const lossPercent = (opponent.losses / opponent.total) * 100;
@@ -74,7 +76,13 @@ export default function OpponentHistory({ opponents }: OpponentHistoryProps) {
                   </div>
 
                   <div className="h-1 w-full overflow-hidden rounded-full bg-gray-100">
-                    <div className="flex h-full w-full">
+                    <div
+                      className="flex h-full"
+                      style={{
+                        width: inView ? '100%' : '0%',
+                        transition: `width 0.7s cubic-bezier(0.22, 1, 0.36, 1) ${index * 80}ms`,
+                      }}
+                    >
                       <div className="h-full bg-green-500" style={{ width: `${winPercent}%` }} />
                       <div className="h-full bg-red-400" style={{ width: `${lossPercent}%` }} />
                       <div className="h-full bg-gray-300" style={{ width: `${drawPercent}%` }} />

@@ -3,6 +3,7 @@
 import { useMemo } from 'react';
 import { useTheme } from '@/contexts/ThemeContext';
 import { cn, useThemeClass } from '@/lib/cn';
+import { useInView } from '@/lib/hooks/useInView';
 
 interface SkillProgressChartProps {
   trend: Array<{
@@ -81,11 +82,25 @@ export default function SkillProgressChart({ trend }: SkillProgressChartProps) {
   const now = new Date();
   const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
 
+  const { ref: chartRef, inView } = useInView();
+
   const points = timeline.map((item, index) => {
     const x = timeline.length === 1 ? 0 : (index / (timeline.length - 1)) * 100;
     const y = Math.max(0, Math.min(100, item.winRate));
     return { ...item, x, y };
   });
+
+  const totalLength = useMemo(() => {
+    let len = 0;
+    for (let i = 0; i < points.length - 1; i++) {
+      const p = points[i];
+      const n = points[i + 1];
+      const y1 = 90 - p.y * 0.78;
+      const y2 = 90 - n.y * 0.78;
+      len += Math.sqrt((n.x - p.x) ** 2 + (y2 - y1) ** 2);
+    }
+    return Math.ceil(len);
+  }, [points]);
 
   return (
     <section
@@ -104,7 +119,7 @@ export default function SkillProgressChart({ trend }: SkillProgressChartProps) {
         <span>100%</span>
       </div>
 
-      <div className="relative h-36 w-full">
+      <div ref={chartRef} className="relative h-36 w-full">
         <div className="absolute inset-0 rounded-md bg-gray-50" />
         <div className="absolute left-0 right-0 top-3 border-t border-dashed border-gray-200" />
         <div className="absolute left-0 right-0 top-1/2 border-t border-dashed border-gray-200" />
@@ -125,6 +140,9 @@ export default function SkillProgressChart({ trend }: SkillProgressChartProps) {
                 y2={y2}
                 stroke={isNeoBrutalism ? '#000000' : '#6b7280'}
                 strokeWidth="1.5"
+                strokeDasharray={totalLength}
+                strokeDashoffset={inView ? 0 : totalLength}
+                style={{ transition: 'stroke-dashoffset 1.2s cubic-bezier(0.22, 1, 0.36, 1)' }}
               />
             );
           })}
@@ -142,6 +160,11 @@ export default function SkillProgressChart({ trend }: SkillProgressChartProps) {
                 fill={isCurrentMonth ? '#22c55e' : '#ffffff'}
                 stroke={isCurrentMonth || isNeoBrutalism ? '#000000' : '#6b7280'}
                 strokeWidth="1.5"
+                style={{
+                  opacity: inView ? 1 : 0,
+                  transition: 'opacity 0.3s ease',
+                  transitionDelay: '0.8s',
+                }}
               >
                 <title>{`${toMonthLabel(point.month)} ${point.winRate}% (${point.total}경기)`}</title>
               </circle>
