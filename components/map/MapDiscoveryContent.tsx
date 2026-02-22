@@ -296,9 +296,7 @@ export default function MapDiscoveryContent({ courts }: MapDiscoveryContentProps
           >
             {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
             <div
-              onClick={(e) => e.stopPropagation()}
-              onMouseDown={(e) => e.stopPropagation()}
-              onTouchStart={(e) => e.stopPropagation()}
+              onPointerDownCapture={(e) => e.stopPropagation()}
               style={{ width: 300, padding: 14, boxSizing: 'border-box', whiteSpace: 'normal' }}
               className={
                 isNeoBrutalism
@@ -348,13 +346,16 @@ export default function MapDiscoveryContent({ courts }: MapDiscoveryContentProps
               </div>
 
               {/* Court list */}
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 5,
-                maxHeight: selectedGroup.courts.length > 6 ? 220 : undefined,
-                overflowY: selectedGroup.courts.length > 6 ? 'auto' : undefined,
-              }}>
+              <div
+                onWheel={(e) => e.stopPropagation()}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 5,
+                  maxHeight: selectedGroup.courts.length > 6 ? 220 : undefined,
+                  overflowY: selectedGroup.courts.length > 6 ? 'auto' : undefined,
+                }}
+              >
                 {selectedGroup.courts.map(court => {
                   const isAvailable = isCourtAccepting(court.SVCSTATNM);
                   const shortName = getShortName(court.SVCNM, selectedGroup.placeName);

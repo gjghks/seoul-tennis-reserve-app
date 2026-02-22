@@ -236,13 +236,11 @@ export default function KakaoMapView({ courts, district, focusPlaceName, onPlace
           >
             {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
             <div
-              onClick={(e) => e.stopPropagation()}
-              onMouseDown={(e) => e.stopPropagation()}
-              onTouchStart={(e) => e.stopPropagation()}
+              onPointerDownCapture={(e) => e.stopPropagation()}
               style={{ display: 'block', whiteSpace: 'normal', width: 320, padding: 14, boxSizing: 'border-box' }}
-              className={
-                isNeoBrutalism
-                  ? 'bg-white border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000]'
+                className={
+                  isNeoBrutalism
+                    ? 'bg-white border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000]'
                   : 'bg-white border border-gray-200 rounded-xl shadow-lg'
               }
             >
@@ -285,7 +283,10 @@ export default function KakaoMapView({ courts, district, focusPlaceName, onPlace
                 </button>
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 5, maxHeight: selectedGroup.courts.length > 8 ? 300 : undefined, overflowY: selectedGroup.courts.length > 8 ? 'auto' : undefined }}>
+              <div
+                onWheel={(e) => e.stopPropagation()}
+                style={{ display: 'flex', flexDirection: 'column', gap: 5, maxHeight: selectedGroup.courts.length > 8 ? 300 : undefined, overflowY: selectedGroup.courts.length > 8 ? 'auto' : undefined }}
+              >
                 {selectedGroup.courts.map(court => {
                   const isAvailable = isCourtAccepting(court.SVCSTATNM);
                   const shortName = getShortName(court.SVCNM, selectedGroup.placeName);
