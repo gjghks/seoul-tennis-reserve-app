@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import TrendsContent from '@/components/trends/TrendsContent';
 
-export const revalidate = 300;
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: '경쟁률 트렌드 | 서울 테니스',

@@ -72,7 +72,7 @@ function TennisDataProviderInner({
       revalidateOnFocus: false,
       revalidateOnReconnect: true,
       keepPreviousData: true,
-      refreshInterval: 15 * 60 * 1000,
+      refreshInterval: 30 * 60 * 1000, // 30 min (was 15 min — reduced for Vercel free tier CPU)
       dedupingInterval: 60 * 1000, // 1분 내 중복 요청 방지
     }
   );

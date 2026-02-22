@@ -3,7 +3,7 @@ import { fetchTennisAvailability } from '@/lib/seoulApi';
 import { computeAllDistrictStats } from '@/lib/utils/districtStats';
 import CompareContent from '@/components/compare/CompareContent';
 
-export const revalidate = 300;
+export const revalidate = 1800;
 
 export const metadata: Metadata = {
   title: '서울시 구별 테니스장 비교 | 서울 테니스',

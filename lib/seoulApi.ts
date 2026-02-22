@@ -5,7 +5,7 @@ const BASE_URL = 'http://openAPI.seoul.go.kr:8088';
 const REQUEST_TIMEOUT_MS = 8_000;
 const MAX_RETRIES = 2;
 const RETRY_DELAYS_MS = [1_000, 2_000] as const;
-const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
+const CACHE_TTL_MS = 30 * 60 * 1000; // 30 minutes (matches ISR revalidate interval)
 
 // 서울시 25개 구
 const SEOUL_DISTRICTS = [

@@ -4,7 +4,7 @@ import HomeContent from '@/components/home/HomeContent';
 import { DistrictStats } from '@/contexts/TennisDataContext';
 import { isCourtAvailable } from '@/lib/utils/courtStatus';
 
-export const revalidate = 300;
+export const revalidate = 1800; // 30 min (was 5 min — reduced for Vercel free tier ISR writes)
 
 export const metadata: Metadata = {
   alternates: {

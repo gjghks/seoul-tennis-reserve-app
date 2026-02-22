@@ -5,7 +5,7 @@ import { isCourtAvailable } from '@/lib/utils/courtStatus';
 import type { SeoulService } from '@/lib/seoulApi';
 import { createRateLimiter } from '@/lib/rateLimit';
 
-export const revalidate = 300;
+export const dynamic = 'force-dynamic';
 
 const limiter = createRateLimiter({ windowMs: 60_000, maxRequests: 60 });
 

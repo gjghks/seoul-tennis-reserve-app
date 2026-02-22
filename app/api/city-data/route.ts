@@ -9,7 +9,7 @@ import {
 } from '@/lib/seoulCityDataApi';
 import { createRateLimiter } from '@/lib/rateLimit';
 
-export const revalidate = 300;
+export const dynamic = 'force-dynamic';
 
 const limiter = createRateLimiter({ windowMs: 60_000, maxRequests: 60 });
 const DEFAULT_FIELDS = ['weather', 'parking', 'congestion'] as const;

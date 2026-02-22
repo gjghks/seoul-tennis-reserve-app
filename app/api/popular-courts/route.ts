@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { computePopularCourts, PopularCourt } from '@/lib/popularCourts';
+import { PopularCourt } from '@/lib/popularCourts';
 import { createAnonSupabaseClient } from '@/lib/supabaseServer';
 
 export const dynamic = 'force-dynamic';
@@ -27,6 +27,7 @@ export async function GET() {
     }
   }
 
-  const courts = await computePopularCourts();
-  return NextResponse.json({ courts, updatedAt: null });
+  // Return empty array instead of running expensive computePopularCourts().
+  // The cron job (/api/cron/popular-courts) will populate the cache.
+  return NextResponse.json({ courts: [], updatedAt: null });
 }

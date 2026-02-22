@@ -179,7 +179,7 @@ describe('seoulApi', () => {
       const freshResult = await fetchTennisAvailability();
       expect(freshResult).toHaveLength(1);
 
-      await vi.advanceTimersByTimeAsync(6 * 60 * 1000);
+      await vi.advanceTimersByTimeAsync(31 * 60 * 1000); // exceed 30-min cache TTL
 
       mockGet.mockReset();
       mockError(new Error('Network down'));

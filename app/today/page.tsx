@@ -3,7 +3,7 @@ import { fetchTennisAvailability } from '@/lib/seoulApi';
 import { isCourtAvailable } from '@/lib/utils/courtStatus';
 import TodayContent from '@/components/today/TodayContent';
 
-export const revalidate = 300;
+export const revalidate = 1800;
 
 export const metadata: Metadata = {
   title: '오늘 예약 가능한 테니스장 | 서울 테니스',

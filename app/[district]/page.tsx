@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { sortByAvailability } from '@/lib/utils/courtStatus';
 
-export const revalidate = 300;
+export const revalidate = 1800;
 
 interface DistrictPageProps {
   params: Promise<{

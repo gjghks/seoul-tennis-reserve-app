@@ -6,7 +6,7 @@ import { computeAllDistrictStats, getDistrictRank } from '@/lib/utils/districtSt
 import { notFound } from 'next/navigation';
 import GuideContent from '@/components/guide/GuideContent';
 
-export const revalidate = 300;
+export const revalidate = 86400; // 24 hours — guide content is mostly static
 
 interface GuidePageProps {
   params: Promise<{ district: string }>;
