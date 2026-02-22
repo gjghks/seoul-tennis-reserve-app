@@ -6,10 +6,10 @@ export const dynamic = 'force-dynamic';
 export const maxDuration = 30;
 
 function getTimeSlot(date: Date): string {
-  const hour = date.getHours();
-  if (hour >= 6 && hour < 12) return 'morning';
-  if (hour >= 12 && hour < 18) return 'afternoon';
-  if (hour >= 18 && hour < 22) return 'evening';
+  const kstHour = (date.getUTCHours() + 9) % 24;
+  if (kstHour >= 6 && kstHour < 12) return 'morning';
+  if (kstHour >= 12 && kstHour < 18) return 'afternoon';
+  if (kstHour >= 18 && kstHour < 22) return 'evening';
   return 'night';
 }
 

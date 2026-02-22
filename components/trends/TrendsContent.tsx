@@ -18,16 +18,16 @@ interface DistrictRate {
   bookingRate: number;
 }
 
-interface Snapshot {
-  snapshot_at: string;
-  district: string;
+interface DailyTrend {
+  day: string;
   total_courts: number;
   available_courts: number;
   booked_courts: number;
+  booking_rate: number;
 }
 
 interface TrendsData {
-  snapshots: Snapshot[];
+  dailyTrends: DailyTrend[];
   currentRates: DistrictRate[];
   period: { from: string; to: string; days: number };
   hasHistory: boolean;
@@ -267,7 +267,7 @@ export default function TrendsContent() {
                   </h2>
                 </div>
                 <div className="p-5">
-                  <TrendTimeline snapshots={data.snapshots} isNeoBrutalism={isNeoBrutalism} />
+                  <TrendTimeline trends={data.dailyTrends} isNeoBrutalism={isNeoBrutalism} />
                 </div>
               </div>
             ) : (
@@ -380,46 +380,35 @@ function DistrictBars({
   );
 }
 
-function TrendTimeline({ snapshots, isNeoBrutalism }: { snapshots: Snapshot[]; isNeoBrutalism: boolean }) {
+function TrendTimeline({ trends, isNeoBrutalism }: { trends: DailyTrend[]; isNeoBrutalism: boolean }) {
   const { ref, inView } = useInView();
 
-  const grouped = new Map<string, { day: string; total: number; booked: number }>();
-  for (const s of snapshots) {
-    const dayKey = s.snapshot_at.slice(0, 10);
-    const existing = grouped.get(dayKey) ?? { day: dayKey, total: 0, booked: 0 };
-    existing.total += s.total_courts;
-    existing.booked += s.booked_courts;
-    grouped.set(dayKey, existing);
-  }
-
-  const timeline = Array.from(grouped.values())
-    .map(g => ({ ...g, rate: g.total > 0 ? Math.round((g.booked / g.total) * 100) : 0 }))
-    .slice(-30);
+  const timeline = trends.slice(-30);
 
   if (timeline.length < 2) {
     return <p className={isNeoBrutalism ? 'text-black/40' : 'text-gray-400'}>데이터가 충분하지 않습니다.</p>;
   }
 
-  const maxRate = Math.max(...timeline.map(t => t.rate), 100);
+  const maxRate = Math.max(...timeline.map(t => t.booking_rate), 100);
   const chartHeight = 120;
 
   return (
     <div ref={ref} className="overflow-x-auto scrollbar-hide">
       <div className="flex items-end gap-1 min-w-[400px]" style={{ height: chartHeight }}>
         {timeline.map((point, i) => {
-          const height = (point.rate / maxRate) * chartHeight;
-          const date = new Date(point.day);
+          const height = (point.booking_rate / maxRate) * chartHeight;
+          const date = new Date(point.day + 'T00:00:00');
           const label = `${date.getMonth() + 1}/${date.getDate()}`;
           return (
             <div key={point.day} className="flex-1 flex flex-col items-center justify-end gap-1" style={{ height: chartHeight }}>
               <span className={`text-[10px] ${isNeoBrutalism ? 'font-bold text-black' : 'text-gray-500'}`}>
-                {point.rate}%
+                {point.booking_rate}%
               </span>
               <div
                 className={`w-full min-w-[12px] rounded-t ${
                   isNeoBrutalism
-                    ? `border border-black ${point.rate >= 70 ? 'bg-[#fca5a5]' : point.rate >= 40 ? 'bg-[#facc15]' : 'bg-[#a3e635]'}`
-                    : point.rate >= 70 ? 'bg-red-400' : point.rate >= 40 ? 'bg-yellow-400' : 'bg-green-400'
+                    ? `border border-black ${point.booking_rate >= 70 ? 'bg-[#fca5a5]' : point.booking_rate >= 40 ? 'bg-[#facc15]' : 'bg-[#a3e635]'}`
+                    : point.booking_rate >= 70 ? 'bg-red-400' : point.booking_rate >= 40 ? 'bg-yellow-400' : 'bg-green-400'
                 } ${inView ? 'anim-bar-y' : 'scale-y-0'}`}
                 style={{
                   height: Math.max(height, 4),

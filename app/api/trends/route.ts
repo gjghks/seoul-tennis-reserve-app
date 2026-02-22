@@ -35,52 +35,57 @@ export async function GET(request: NextRequest) {
     return handleHeatmapAnalysis(supabase, since, district);
   }
 
-  let query = supabase
-    .from('reservation_snapshots')
-    .select('snapshot_at, district, total_courts, available_courts, booked_courts, free_courts, paid_courts')
-    .gte('snapshot_at', since.toISOString())
-    .order('snapshot_at', { ascending: true });
-
+  const rpcParams: { p_since: string; p_district?: string } = {
+    p_since: since.toISOString(),
+  };
   if (district) {
-    query = query.eq('district', district);
+    rpcParams.p_district = district;
   }
 
-  const { data, error } = await query;
+  const [trendsResult, ratesResult] = await Promise.all([
+    supabase.rpc('get_daily_trends', rpcParams),
+    supabase.rpc('get_latest_district_rates'),
+  ]);
 
-  if (error) {
-    console.error('Trends query error:', error);
+  if (trendsResult.error) {
+    console.error('Daily trends query error:', trendsResult.error);
     return NextResponse.json({ error: 'Failed to fetch trends' }, { status: 500 });
   }
 
-  const snapshots = data ?? [];
-
-  const districtLatest = new Map<string, {
-    total: number;
-    available: number;
-    booked: number;
-    bookingRate: number;
-  }>();
-
-  for (const row of snapshots) {
-    districtLatest.set(row.district, {
-      total: row.total_courts,
-      available: row.available_courts,
-      booked: row.booked_courts,
-      bookingRate: row.total_courts > 0
-        ? Math.round((row.booked_courts / row.total_courts) * 100)
-        : 0,
-    });
+  if (ratesResult.error) {
+    console.error('District rates query error:', ratesResult.error);
+    return NextResponse.json({ error: 'Failed to fetch rates' }, { status: 500 });
   }
 
-  const currentRates = Array.from(districtLatest.entries())
-    .map(([d, stats]) => ({ district: d, ...stats }))
-    .sort((a, b) => b.bookingRate - a.bookingRate);
+  const dailyTrends = (trendsResult.data ?? []) as Array<{
+    day: string;
+    total_courts: number;
+    available_courts: number;
+    booked_courts: number;
+    booking_rate: number;
+  }>;
+
+  const currentRates = (ratesResult.data ?? [] as Array<{
+    district: string;
+    total_courts: number;
+    available_courts: number;
+    booked_courts: number;
+    booking_rate: number;
+  }>)
+    .map((r: { district: string; total_courts: number; available_courts: number; booked_courts: number; booking_rate: number }) => ({
+      district: r.district,
+      total: r.total_courts,
+      available: r.available_courts,
+      booked: r.booked_courts,
+      bookingRate: r.booking_rate,
+    }))
+    .sort((a: { bookingRate: number }, b: { bookingRate: number }) => b.bookingRate - a.bookingRate);
 
   return NextResponse.json({
-    snapshots,
+    dailyTrends,
     currentRates,
     period: { from: since.toISOString(), to: new Date().toISOString(), days },
-    hasHistory: snapshots.length >= 50,
+    hasHistory: dailyTrends.length >= 2,
   });
 }
 
@@ -89,42 +94,29 @@ async function handleHeatmapAnalysis(
   since: Date,
   district: string | null,
 ) {
-  let query = supabase
-    .from('reservation_snapshots')
-    .select('snapshot_at, total_courts, booked_courts, time_slot')
-    .gte('snapshot_at', since.toISOString())
-    .not('time_slot', 'is', null);
-
+  const rpcParams: { p_since: string; p_district?: string } = {
+    p_since: since.toISOString(),
+  };
   if (district) {
-    query = query.eq('district', district);
+    rpcParams.p_district = district;
   }
 
-  const { data, error } = await query;
+  const { data, error } = await supabase.rpc('get_heatmap_data', rpcParams);
 
   if (error) {
     console.error('Heatmap query error:', error);
     return NextResponse.json({ error: 'Failed to fetch heatmap data' }, { status: 500 });
   }
 
-  const rows = data ?? [];
+  const rows = (data ?? []) as Array<{
+    day_of_week: number;
+    time_slot: string;
+    avg_booking_rate: number;
+    sample_count: number;
+  }>;
 
   if (rows.length === 0) {
     return NextResponse.json({ heatmap: {}, insights: null, hasData: false });
-  }
-
-  const buckets = new Map<string, { totalBooked: number; totalCourts: number; count: number }>();
-
-  for (const row of rows) {
-    const dayOfWeek = new Date(row.snapshot_at).getDay();
-    const timeSlot = row.time_slot as TimeSlot;
-    if (!TIME_SLOTS.includes(timeSlot)) continue;
-
-    const key = `${dayOfWeek}_${timeSlot}`;
-    const bucket = buckets.get(key) ?? { totalBooked: 0, totalCourts: 0, count: 0 };
-    bucket.totalBooked += row.booked_courts;
-    bucket.totalCourts += row.total_courts;
-    bucket.count++;
-    buckets.set(key, bucket);
   }
 
   const heatmap: Record<number, Record<string, HeatmapCell>> = {};
@@ -132,16 +124,16 @@ async function handleHeatmapAnalysis(
   for (let day = 0; day < 7; day++) {
     heatmap[day] = {};
     for (const slot of TIME_SLOTS) {
-      const key = `${day}_${slot}`;
-      const bucket = buckets.get(key);
-      if (bucket && bucket.totalCourts > 0) {
-        heatmap[day][slot] = {
-          avgBookingRate: Math.round((bucket.totalBooked / bucket.totalCourts) * 100),
-          sampleCount: bucket.count,
-        };
-      } else {
-        heatmap[day][slot] = { avgBookingRate: 0, sampleCount: 0 };
-      }
+      heatmap[day][slot] = { avgBookingRate: 0, sampleCount: 0 };
+    }
+  }
+
+  for (const row of rows) {
+    if (heatmap[row.day_of_week]?.[row.time_slot]) {
+      heatmap[row.day_of_week][row.time_slot] = {
+        avgBookingRate: row.avg_booking_rate,
+        sampleCount: row.sample_count,
+      };
     }
   }
 
