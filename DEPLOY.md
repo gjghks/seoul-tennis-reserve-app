@@ -45,6 +45,9 @@ Vercel Dashboard > Project > Settings > Environment Variables에서 설정:
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase 서비스 역할 키 (서버용) | ✅ |
 | `SEOUL_OPEN_DATA_KEY` | 서울 열린데이터 API 키 | ✅ |
 | `NEXT_PUBLIC_GA_ID` | Google Analytics ID | ❌ |
+| `NEXT_PUBLIC_SEARCH_V2_ROLLOUT_PERCENT` | v2 검색 롤아웃 비율 (0~100, 기본 100) | ❌ |
+| `NEXT_PUBLIC_SEARCH_V2_FORCE` | 검색 변형 강제 (`v2` 또는 `legacy`) | ❌ |
+| `NEXT_PUBLIC_SEARCH_V2_PROFILE` | v2 랭킹 프로파일 (`balanced`/`precision`/`recall`) | ❌ |
 
 ---
 

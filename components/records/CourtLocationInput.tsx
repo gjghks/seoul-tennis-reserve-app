@@ -1,9 +1,13 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import useSWR from 'swr';
 import { useThemeClass } from '@/lib/cn';
 import type { LocationType } from '@/lib/constants/tennis';
+import { rankCourtsByQuery } from '@/lib/utils/courtSearch';
+import { splitHighlightSegments } from '@/lib/utils/searchHighlight';
+import { buildSearchTelemetry, trackSearchEvent } from '@/lib/utils/searchAnalytics';
+import { getSearchExperiment } from '@/lib/utils/searchExperiment';
 
 interface CourtLocationInputProps {
   locationType: LocationType;
@@ -27,35 +31,94 @@ interface CourtItem {
 
 const fetcher = (url: string) => fetch(url).then(r => r.json());
 
-function useDebounce(value: string, delay: number) {
-  const [debounced, setDebounced] = useState(value);
-  useEffect(() => {
-    const timer = setTimeout(() => setDebounced(value), delay);
-    return () => clearTimeout(timer);
-  }, [value, delay]);
-  return debounced;
+function renderHighlightedText(text: string, query: string, highlightClass: string) {
+  const segments = splitHighlightSegments(text, query);
+
+  return segments.map((segment, index) => (
+    <span
+      key={`${text}-${index}-${segment.matched ? 'm' : 'n'}`}
+      className={segment.matched ? highlightClass : undefined}
+    >
+      {segment.text}
+    </span>
+  ));
 }
 
 export default function CourtLocationInput({ locationType, courtId, courtName, district, onChange }: CourtLocationInputProps) {
   const themeClass = useThemeClass();
+  const searchExperiment = useMemo(() => getSearchExperiment(), []);
   const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
+  const [isComposing, setIsComposing] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const debouncedSearch = useDebounce(searchTerm, 300);
+  const noResultTrackedRef = useRef<string>('');
+
+  useEffect(() => {
+    if (isComposing) {
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      setDebouncedSearch(searchTerm.trim());
+    }, 300);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [searchTerm, isComposing]);
+
+  const canSearch = locationType === 'seoul_court' && debouncedSearch.length >= 1;
 
   const { data: tennisData } = useSWR(
-    locationType === 'seoul_court' && debouncedSearch.length >= 1 ? '/api/tennis' : null,
+    canSearch ? '/api/tennis' : null,
     fetcher,
     { revalidateOnFocus: false, dedupingInterval: 60000 }
   );
 
-  const filteredCourts: CourtItem[] = tennisData?.courts
-    ? tennisData.courts.filter((c: CourtItem) =>
-        c.SVCNM?.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
-        c.AREANM?.includes(debouncedSearch) ||
-        c.PLACENM?.toLowerCase().includes(debouncedSearch.toLowerCase())
-      ).slice(0, 10)
-    : [];
+  const filteredCourts: CourtItem[] = useMemo(() => {
+    if (!tennisData?.courts) {
+      return [];
+    }
+
+    if (searchExperiment.variant === 'legacy') {
+      const keyword = debouncedSearch.toLowerCase();
+
+      return (tennisData.courts as CourtItem[])
+        .filter((court) =>
+          court.SVCNM?.toLowerCase().includes(keyword)
+          || court.AREANM?.includes(debouncedSearch)
+          || court.PLACENM?.toLowerCase().includes(keyword)
+        )
+        .slice(0, 10);
+    }
+
+    return rankCourtsByQuery(tennisData.courts as CourtItem[], debouncedSearch, {
+      limit: 10,
+      includeDistrict: true,
+      profile: searchExperiment.rankingProfile,
+    });
+  }, [tennisData?.courts, debouncedSearch, searchExperiment]);
+
+  useEffect(() => {
+    if (!showDropdown || !canSearch || isComposing || filteredCourts.length > 0) {
+      return;
+    }
+
+    if (debouncedSearch.length < 2 || noResultTrackedRef.current === debouncedSearch) {
+      return;
+    }
+
+    trackSearchEvent('search_no_results', {
+      source: 'records_form',
+      ...buildSearchTelemetry(debouncedSearch),
+      result_count: 0,
+      search_variant: searchExperiment.variant,
+      ranking_profile: searchExperiment.rankingProfile,
+      algo_version: searchExperiment.algoVersion,
+    });
+    noResultTrackedRef.current = debouncedSearch;
+  }, [showDropdown, canSearch, isComposing, filteredCourts.length, debouncedSearch, searchExperiment]);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -80,6 +143,8 @@ export default function CourtLocationInput({ locationType, courtId, courtName, d
           onClick={() => {
             onChange({ locationType: 'seoul_court', courtId: null, courtName: '', district: null });
             setSearchTerm('');
+            setDebouncedSearch('');
+            noResultTrackedRef.current = '';
           }}
           className={locationType === 'seoul_court'
             ? themeClass(
@@ -99,6 +164,8 @@ export default function CourtLocationInput({ locationType, courtId, courtName, d
           onClick={() => {
             onChange({ locationType: 'custom', courtId: null, courtName: '', district: null });
             setSearchTerm('');
+            setDebouncedSearch('');
+            noResultTrackedRef.current = '';
           }}
           className={locationType === 'custom'
             ? themeClass(
@@ -131,6 +198,8 @@ export default function CourtLocationInput({ locationType, courtId, courtName, d
                 onClick={() => {
                   onChange({ locationType: 'seoul_court', courtId: null, courtName: '', district: null });
                   setSearchTerm('');
+                  setDebouncedSearch('');
+                  noResultTrackedRef.current = '';
                 }}
                 className={themeClass('text-black/50 hover:text-red-600 font-bold', 'text-gray-400 hover:text-red-500')}
               >
@@ -142,41 +211,98 @@ export default function CourtLocationInput({ locationType, courtId, courtName, d
               <input
                 type="text"
                 value={searchTerm}
-                onChange={e => { setSearchTerm(e.target.value); setShowDropdown(true); }}
-                onFocus={() => setShowDropdown(true)}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                  setShowDropdown(true);
+                  if (!isComposing && !e.target.value.trim()) {
+                    noResultTrackedRef.current = '';
+                  }
+                }}
+                onFocus={() => {
+                  setShowDropdown(true);
+                  trackSearchEvent('search_open', {
+                    source: 'records_form',
+                    search_variant: searchExperiment.variant,
+                    ranking_profile: searchExperiment.rankingProfile,
+                    algo_version: searchExperiment.algoVersion,
+                  });
+                }}
+                onCompositionStart={() => {
+                  setIsComposing(true);
+                }}
+                onCompositionEnd={(event) => {
+                  const value = event.currentTarget.value;
+                  setIsComposing(false);
+                  setSearchTerm(value);
+                  setDebouncedSearch(value.trim());
+                  setShowDropdown(true);
+                }}
                 placeholder="코트 이름으로 검색"
                 className={inputClass}
               />
-              {showDropdown && filteredCourts.length > 0 && (
-                <ul className={themeClass(
+              {showDropdown && canSearch && (
+                <div className={themeClass(
                   'absolute z-20 w-full mt-1 border-2 border-black rounded-[5px] bg-white shadow-[3px_3px_0px_0px_#000] max-h-48 overflow-y-auto',
                   'absolute z-20 w-full mt-1 border border-gray-200 rounded-lg bg-white shadow-lg max-h-48 overflow-y-auto'
                 )}>
-                  {filteredCourts.map(court => (
-                    <li key={court.SVCID}>
-                      <button
-                        type="button"
-                        className={themeClass(
-                          'w-full text-left px-3 py-2 hover:bg-[#88aaee]/20 font-bold',
-                          'w-full text-left px-3 py-2 hover:bg-gray-50'
-                        )}
-                        onClick={() => {
-                          onChange({
-                            locationType: 'seoul_court',
-                            courtId: court.SVCID,
-                            courtName: court.SVCNM,
-                            district: court.AREANM,
-                          });
-                          setSearchTerm('');
-                          setShowDropdown(false);
-                        }}
-                      >
-                        <span className={themeClass('text-black', 'text-gray-900')}>{court.SVCNM}</span>
-                        <span className={themeClass('text-black/50 text-sm ml-2', 'text-gray-400 text-sm ml-2')}>{court.AREANM}</span>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
+                  {filteredCourts.length > 0 ? (
+                    <ul>
+                      {filteredCourts.map((court, index) => (
+                        <li key={court.SVCID}>
+                          <button
+                            type="button"
+                            className={themeClass(
+                              'w-full text-left px-3 py-2 hover:bg-[#88aaee]/20 font-bold',
+                              'w-full text-left px-3 py-2 hover:bg-gray-50'
+                            )}
+                            onClick={() => {
+                              trackSearchEvent('search_select', {
+                                source: 'records_form',
+                                ...buildSearchTelemetry(debouncedSearch),
+                                result_count: filteredCourts.length,
+                                selected_rank: index + 1,
+                                district: court.AREANM,
+                                court_id: court.SVCID,
+                                search_variant: searchExperiment.variant,
+                                ranking_profile: searchExperiment.rankingProfile,
+                                algo_version: searchExperiment.algoVersion,
+                              });
+                              onChange({
+                                locationType: 'seoul_court',
+                                courtId: court.SVCID,
+                                courtName: court.SVCNM,
+                                district: court.AREANM,
+                              });
+                              setSearchTerm('');
+                              setDebouncedSearch('');
+                              setShowDropdown(false);
+                              noResultTrackedRef.current = '';
+                            }}
+                          >
+                            <span className={themeClass('text-black', 'text-gray-900')}>
+                              {renderHighlightedText(
+                                court.SVCNM,
+                                debouncedSearch,
+                                themeClass('rounded bg-[#facc15] px-0.5 text-black', 'rounded bg-green-100 px-0.5 text-green-900')
+                              )}
+                            </span>
+                            <span className={themeClass('text-black/50 text-sm ml-2', 'text-gray-400 text-sm ml-2')}>
+                              {renderHighlightedText(
+                                court.AREANM,
+                                debouncedSearch,
+                                themeClass('rounded bg-[#facc15] px-0.5 text-black', 'rounded bg-green-100 px-0.5 text-gray-700')
+                              )}
+                            </span>
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <div className={themeClass('px-3 py-2 text-sm font-bold text-black/60', 'px-3 py-2 text-sm text-gray-500')}>
+                      검색 결과가 없습니다
+                    </div>
+                  )}
+                </div>
               )}
             </>
           )}

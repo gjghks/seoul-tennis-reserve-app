@@ -7,18 +7,42 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { useThemeClass } from '@/lib/cn';
 import { KOREAN_TO_SLUG } from '@/lib/constants/districts';
 import { isCourtAvailable } from '@/lib/utils/courtStatus';
+import { rankCourtsByQuery } from '@/lib/utils/courtSearch';
+import { splitHighlightSegments } from '@/lib/utils/searchHighlight';
+import { buildSearchTelemetry, trackSearchEvent } from '@/lib/utils/searchAnalytics';
+import { getSearchExperiment } from '@/lib/utils/searchExperiment';
+
+function renderHighlightedText(text: string, query: string, highlightClass: string) {
+  const segments = splitHighlightSegments(text, query);
+
+  return segments.map((segment, index) => (
+    <span
+      key={`${text}-${index}-${segment.matched ? 'm' : 'n'}`}
+      className={segment.matched ? highlightClass : undefined}
+    >
+      {segment.text}
+    </span>
+  ));
+}
 
 export default function CourtSearch() {
   const router = useRouter();
   const { courts } = useTennisData();
   const { isNeoBrutalism } = useTheme();
   const themeClass = useThemeClass();
+  const searchExperiment = useMemo(() => getSearchExperiment(), []);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [query, setQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
+  const [isComposing, setIsComposing] = useState(false);
+  const noResultTrackedRef = useRef<string>('');
 
   useEffect(() => {
+    if (isComposing) {
+      return;
+    }
+
     const timer = window.setTimeout(() => {
       setDebouncedQuery(query.trim());
     }, 300);
@@ -26,7 +50,7 @@ export default function CourtSearch() {
     return () => {
       window.clearTimeout(timer);
     };
-  }, [query]);
+  }, [query, isComposing]);
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
@@ -51,21 +75,59 @@ export default function CourtSearch() {
   }, []);
 
   const filteredCourts = useMemo(() => {
-    if (!debouncedQuery) return [];
-    const keyword = debouncedQuery.toLowerCase();
+    if (searchExperiment.variant === 'legacy') {
+      if (!debouncedQuery) {
+        return [];
+      }
 
-    return courts
-      .filter((court) => {
-        const courtName = court.SVCNM?.toLowerCase() || '';
-        const placeName = court.PLACENM?.toLowerCase() || '';
-        return courtName.includes(keyword) || placeName.includes(keyword);
-      })
-      .slice(0, 8);
-  }, [courts, debouncedQuery]);
+      const keyword = debouncedQuery.toLowerCase();
+
+      return courts
+        .filter((court) => {
+          const courtName = court.SVCNM?.toLowerCase() || '';
+          const placeName = court.PLACENM?.toLowerCase() || '';
+
+          return courtName.includes(keyword) || placeName.includes(keyword);
+        })
+        .slice(0, 8);
+    }
+
+    return rankCourtsByQuery(courts, debouncedQuery, {
+      limit: 8,
+      includeDistrict: true,
+      isAvailable: (court) => isCourtAvailable(court.SVCSTATNM),
+      profile: searchExperiment.rankingProfile,
+    });
+  }, [courts, debouncedQuery, searchExperiment]);
 
   const hasQuery = debouncedQuery.length > 0;
   const showDropdown = isOpen && query.trim().length > 0;
   const dropdownOffset = isNeoBrutalism ? 'top-[calc(100%+10px)]' : 'top-[calc(100%+8px)]';
+
+  useEffect(() => {
+    if (!showDropdown || isComposing || filteredCourts.length > 0) {
+      return;
+    }
+
+    const normalized = debouncedQuery.trim();
+    if (normalized.length < 2) {
+      return;
+    }
+
+    if (noResultTrackedRef.current === normalized) {
+      return;
+    }
+
+    trackSearchEvent('search_no_results', {
+      source: 'home',
+      ...buildSearchTelemetry(normalized),
+      result_count: 0,
+      search_variant: searchExperiment.variant,
+      ranking_profile: searchExperiment.rankingProfile,
+      algo_version: searchExperiment.algoVersion,
+    });
+    noResultTrackedRef.current = normalized;
+  }, [showDropdown, isComposing, debouncedQuery, filteredCourts.length, searchExperiment]);
 
   const handleSelectCourt = (districtName: string, serviceId: string) => {
     const districtSlug = KOREAN_TO_SLUG[districtName];
@@ -102,11 +164,30 @@ export default function CourtSearch() {
           onChange={(event) => {
             setQuery(event.target.value);
             setIsOpen(true);
+            if (!isComposing && !event.target.value.trim()) {
+              noResultTrackedRef.current = '';
+            }
           }}
           onFocus={() => {
+            trackSearchEvent('search_open', {
+              source: 'home',
+              search_variant: searchExperiment.variant,
+              ranking_profile: searchExperiment.rankingProfile,
+              algo_version: searchExperiment.algoVersion,
+            });
             if (query.trim()) {
               setIsOpen(true);
             }
+          }}
+          onCompositionStart={() => {
+            setIsComposing(true);
+          }}
+          onCompositionEnd={(event) => {
+            const value = event.currentTarget.value;
+            setIsComposing(false);
+            setQuery(value);
+            setDebouncedQuery(value.trim());
+            setIsOpen(true);
           }}
           type="text"
           placeholder="테니스장 검색 (이름, 장소)"
@@ -130,14 +211,27 @@ export default function CourtSearch() {
               검색 결과가 없습니다
             </div>
           ) : (
-            filteredCourts.map((court) => {
+            filteredCourts.map((court, index) => {
               const available = isCourtAvailable(court.SVCSTATNM);
 
               return (
                 <button
                   key={`${court.SVCID}-${court.AREANM}`}
                   type="button"
-                  onClick={() => handleSelectCourt(court.AREANM, court.SVCID)}
+                  onClick={() => {
+                    trackSearchEvent('search_select', {
+                      source: 'home',
+                      ...buildSearchTelemetry(debouncedQuery),
+                      result_count: filteredCourts.length,
+                      selected_rank: index + 1,
+                      district: court.AREANM,
+                      court_id: court.SVCID,
+                      search_variant: searchExperiment.variant,
+                      ranking_profile: searchExperiment.rankingProfile,
+                      algo_version: searchExperiment.algoVersion,
+                    });
+                    handleSelectCourt(court.AREANM, court.SVCID);
+                  }}
                   className={themeClass(
                     'w-full border-b-2 border-black/10 px-4 py-3 text-left transition-colors last:border-b-0 hover:bg-[#facc15]/30',
                     'w-full border-b border-gray-100 px-4 py-3 text-left transition-colors last:border-b-0 hover:bg-green-50'
@@ -146,10 +240,24 @@ export default function CourtSearch() {
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
                       <p className={themeClass('truncate text-sm font-black text-black uppercase tracking-tight', 'truncate text-sm font-semibold text-gray-900')}>
-                        {court.SVCNM}
+                        {renderHighlightedText(
+                          court.SVCNM,
+                          debouncedQuery,
+                          themeClass('rounded bg-[#facc15] px-0.5 text-black', 'rounded bg-green-100 px-0.5 text-green-900')
+                        )}
                       </p>
                       <p className={themeClass('mt-0.5 truncate text-xs font-medium text-black/60', 'mt-0.5 truncate text-xs text-gray-500')}>
-                        {court.AREANM} · {court.PLACENM}
+                        {renderHighlightedText(
+                          court.AREANM,
+                          debouncedQuery,
+                          themeClass('rounded bg-[#facc15] px-0.5 text-black', 'rounded bg-green-100 px-0.5 text-gray-700')
+                        )}
+                        {' · '}
+                        {renderHighlightedText(
+                          court.PLACENM,
+                          debouncedQuery,
+                          themeClass('rounded bg-[#facc15] px-0.5 text-black', 'rounded bg-green-100 px-0.5 text-gray-700')
+                        )}
                       </p>
                     </div>
                     <span
