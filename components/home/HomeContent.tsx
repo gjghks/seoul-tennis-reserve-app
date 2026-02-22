@@ -101,8 +101,8 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
       className={`min-h-[var(--main-height)] flex flex-col ${themeClass('bg-nb-bg', '')}`}
     >
       <DustAlertBanner />
-      <section className={themeClass('court-pattern-nb text-white py-4 lg:py-3', 'court-pattern text-white py-4 lg:py-3')}>
-        <div className="container relative z-10">
+      <section className={themeClass('relative z-20 court-pattern-nb text-white py-4 lg:py-3', 'relative z-20 court-pattern text-white py-4 lg:py-3')}>
+        <div className="container relative">
           <div className="flex flex-row items-center justify-between gap-2 sm:gap-4">
             <div className="min-w-0">
               <h1 className={`${themeClass('text-2xl sm:text-2xl md:text-3xl font-black uppercase tracking-tight', 'text-2xl sm:text-2xl md:text-2xl font-bold')}`}>
