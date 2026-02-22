@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, useMemo, Suspense } from 'react';
+import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -36,28 +37,19 @@ function LoginContent() {
   const redirectTo = sanitizeRedirectPath(searchParams.get('redirect'));
   const [loadingProvider, setLoadingProvider] = useState<LoginProvider | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [inAppBrowser, setInAppBrowser] = useState(false);
-  const [inAppBrowserName, setInAppBrowserName] = useState<string | null>(null);
-
-  useEffect(() => {
-    setInAppBrowser(isInAppBrowser());
-    setInAppBrowserName(getInAppBrowserName());
-  }, []);
+  const inAppBrowser = useMemo(() => isInAppBrowser(), []);
+  const inAppBrowserName = useMemo(() => getInAppBrowserName(), []);
+  const authErrorMessage = useMemo(() => {
+    const errorCode = searchParams.get('error');
+    const errorDescription = searchParams.get('error_description');
+    return getAuthErrorMessage(errorCode, errorDescription);
+  }, [searchParams]);
 
   useEffect(() => {
     if (user) {
       router.replace(redirectTo);
     }
   }, [user, router, redirectTo]);
-
-  useEffect(() => {
-    const errorCode = searchParams.get('error');
-    const errorDescription = searchParams.get('error_description');
-    const message = getAuthErrorMessage(errorCode, errorDescription);
-    if (message) {
-      setError(message);
-    }
-  }, [searchParams]);
 
   const handleOAuthLogin = async (displayProvider: LoginProvider, supabaseProvider: SupabaseProvider, scopes?: string) => {
     setLoadingProvider(displayProvider);
@@ -126,13 +118,13 @@ function LoginContent() {
           </div>
         )}
 
-        {error && (
+        {(error || authErrorMessage) && (
           <div
             role="alert"
             aria-live="assertive"
             className={themeClass('bg-red-100 border-2 border-black text-red-700 font-bold p-4 rounded-[5px] mb-6 text-center', 'bg-red-50 border border-red-200 text-red-600 p-4 rounded-lg mb-6 text-center')}
           >
-            {error}
+            {error || authErrorMessage}
           </div>
         )}
 
@@ -189,7 +181,7 @@ function LoginContent() {
         </div>
 
         <p className={`text-center text-xs mt-4 ${themeClass('text-black/50 font-medium', 'text-gray-400')}`}>
-          로그인 시 <a href="/terms" className="underline">이용약관</a> 및 <a href="/privacy" className="underline">개인정보처리방침</a>에 동의하게 됩니다.
+          로그인 시 <Link href="/terms" className="underline">이용약관</Link> 및 <Link href="/privacy" className="underline">개인정보처리방침</Link>에 동의하게 됩니다.
         </p>
       </div>
     </div>

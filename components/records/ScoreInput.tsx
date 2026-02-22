@@ -17,8 +17,9 @@ export default function ScoreInput({ score, onChange }: ScoreInputProps) {
     const newSets = [...score.sets];
     if (field === 'tb') {
       if (value === undefined) {
-        const { tb: _tb, ...rest } = newSets[setIdx];
-        newSets[setIdx] = rest;
+        const nextSet = { ...newSets[setIdx] };
+        delete nextSet.tb;
+        newSets[setIdx] = nextSet;
       } else {
         newSets[setIdx] = { ...newSets[setIdx], tb: { my: 0, opp: 0 } };
       }

@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { fetchTennisAvailability } from '@/lib/seoulApi';
 import { isCourtAvailable } from '@/lib/utils/courtStatus';
-import { KOREAN_TO_SLUG } from '@/lib/constants/districts';
 import TodayContent from '@/components/today/TodayContent';
 
 export const revalidate = 300;

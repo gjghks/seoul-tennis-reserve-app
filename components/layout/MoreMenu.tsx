@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
@@ -69,22 +69,6 @@ export default function MoreMenu({ isOpen, onClose }: MoreMenuProps) {
   const { user } = useAuth();
   const { toggleTheme, isNeoBrutalism } = useTheme();
 
-  const [isRendered, setIsRendered] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    if (isOpen) {
-      setIsRendered(true);
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => setIsVisible(true));
-      });
-    } else {
-      setIsVisible(false);
-      const timer = setTimeout(() => setIsRendered(false), 300);
-      return () => clearTimeout(timer);
-    }
-  }, [isOpen]);
-
   useEffect(() => {
     if (!isOpen) return;
     const handleKey = (e: KeyboardEvent) => {
@@ -102,7 +86,7 @@ export default function MoreMenu({ isOpen, onClose }: MoreMenuProps) {
     };
   }, [isOpen]);
 
-  if (!isRendered) return null;
+  if (!isOpen) return null;
 
   const loginUrl = pathname === '/' ? '/login' : `/login?redirect=${encodeURIComponent(pathname)}`;
 
@@ -112,7 +96,7 @@ export default function MoreMenu({ isOpen, onClose }: MoreMenuProps) {
     <>
       <div
         className={`fixed inset-0 z-40 bg-black/50 transition-opacity duration-300 ${
-          isVisible ? 'opacity-100' : 'opacity-0'
+          isOpen ? 'opacity-100' : 'opacity-0'
         }`}
         onClick={onClose}
         aria-hidden="true"
@@ -120,7 +104,7 @@ export default function MoreMenu({ isOpen, onClose }: MoreMenuProps) {
 
       <div
         className={`fixed left-0 right-0 z-40 transition-transform duration-300 ease-out ${
-          isVisible ? 'translate-y-0' : 'translate-y-full'
+          isOpen ? 'translate-y-0' : 'translate-y-full'
         } ${themeClass(
           'bg-white border-t-[3px] border-x-[3px] border-black rounded-t-[16px]',
           'bg-white border-t border-gray-200 rounded-t-2xl shadow-[0_-4px_24px_rgba(0,0,0,0.08)]'

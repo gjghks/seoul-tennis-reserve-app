@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useRef, useMemo } from 'react';
 import dynamic from 'next/dynamic';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useTennisData } from '@/contexts/TennisDataContext';
@@ -47,16 +47,15 @@ export default function DistrictContent({
   const themeClass = useThemeClass();
   const { courts: allCourts, isLoading, lastUpdated } = useTennisData();
   const { handleReservationClick } = useReservationTip();
-  const [viewMode, setViewMode] = useState<'list' | 'map'>('map');
+  const [viewMode, setViewMode] = useState<'list' | 'map'>(() => {
+    if (typeof window === 'undefined') return 'map';
+    const saved = localStorage.getItem('tennis-view-mode');
+    return saved === 'list' || saved === 'map' ? saved : 'map';
+  });
   const [showAvailableOnly, setShowAvailableOnly] = useState(false);
   const [surfaceFilter, setSurfaceFilter] = useState<SurfaceCategory | 'all'>('all');
   const [focusPlaceName, setFocusPlaceName] = useState<string | null>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const saved = localStorage.getItem('tennis-view-mode') as 'list' | 'map' | null;
-    if (saved) setViewMode(saved);
-  }, []);
 
   const toggleView = (mode: 'list' | 'map') => {
     setViewMode(mode);

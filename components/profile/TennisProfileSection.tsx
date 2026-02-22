@@ -13,6 +13,11 @@ import {
 import { useToast } from '@/contexts/ToastContext';
 import Spinner from '@/components/ui/Spinner';
 
+interface OptionValue<T extends string | number> {
+  value: T;
+  label: string;
+}
+
 export default function TennisProfileSection() {
   const themeClass = useThemeClass();
   const { profile, isLoading, updateProfile } = useTennisProfile();
@@ -39,8 +44,9 @@ export default function TennisProfileSection() {
       await updateProfile(formData);
       showToast('프로필이 저장되었습니다', 'success');
       setIsEditing(false);
-    } catch (error: any) {
-      showToast(error.message || '프로필 저장 중 오류가 발생했습니다', 'error');
+    } catch (error) {
+      const message = error instanceof Error ? error.message : '프로필 저장 중 오류가 발생했습니다';
+      showToast(message, 'error');
     } finally {
       setIsSaving(false);
     }
@@ -77,7 +83,7 @@ export default function TennisProfileSection() {
     profile.age_group !== null
   );
 
-  const getLabel = (options: { value: any; label: string }[], value: any) => {
+  const getLabel = <T extends string | number>(options: OptionValue<T>[], value: T | null) => {
     return options.find((opt) => opt.value === value)?.label || '-';
   };
 

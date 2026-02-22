@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 
 export interface RecentCourt {
   svcId: string;
@@ -15,26 +15,18 @@ const STORAGE_KEY = 'seoul-tennis-recent-courts';
 const MAX_RECENT_COURTS = 20;
 
 export function useRecentCourts() {
-  const [recentCourts, setRecentCourts] = useState<RecentCourt[]>([]);
-  const [isHydrated, setIsHydrated] = useState(false);
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-
+  const [recentCourts, setRecentCourts] = useState<RecentCourt[]>(() => {
+    if (typeof window === 'undefined') return [];
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed)) {
-          setRecentCourts(parsed);
-        }
-      }
+      if (!stored) return [];
+      const parsed = JSON.parse(stored);
+      return Array.isArray(parsed) ? parsed : [];
     } catch {
-      setRecentCourts([]);
+      return [];
     }
-
-    setIsHydrated(true);
-  }, []);
+  });
+  const [isHydrated] = useState(() => typeof window !== 'undefined');
 
   const addRecentCourt = useCallback((court: RecentCourt) => {
     if (typeof window === 'undefined') return;

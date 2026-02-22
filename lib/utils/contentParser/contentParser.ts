@@ -1,6 +1,5 @@
 import { ContentItem, ContentSection, FeeInfo, InfoCard } from '@/components/court-detail/types';
 import {
-  SECTION_KEYWORDS,
   SECTION_SPLIT_PATTERN,
   TEXT_HEADER_PATTERN,
   INFO_PATTERN,
@@ -371,7 +370,6 @@ export const parseContent = (content: string): { sections: ContentSection[]; sta
     if (nonEmptyLines.length === 0) return;
 
     let titleLine = '';
-    let contentStartIdx = 1;
     
     const firstLine = nonEmptyLines[0].trim();
     
@@ -393,7 +391,6 @@ export const parseContent = (content: string): { sections: ContentSection[]; sta
           const extracted = extractTitle(line);
           titleLine = extracted.title;
           firstLineContent = extracted.content;
-          contentStartIdx = i + 1;
           break;
         }
       }
@@ -480,7 +477,6 @@ export const parseContent = (content: string): { sections: ContentSection[]; sta
       let itemType: ContentItem['type'] = 'text';
       
       const isNumberedItem = /^\d+\.\s/.test(text);
-      const isBulletItem = /^[-•◦◇▶►]/.test(text) || text.startsWith('※');
       const isParenthetical = /^\([^)]+\)/.test(text);
       const isExample = /^예시\)/.test(text);
       const isInfoItem = /^(운영시간\s*:|이용요금\s*:|조명시설\s*:|1회\s*\d+시간)/.test(text);

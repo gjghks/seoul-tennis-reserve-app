@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { useThemeClass, cn } from '@/lib/cn';
-import { useTheme } from '@/contexts/ThemeContext';
 import {
   GameRecord,
   MATCH_TYPE_LABELS,
@@ -31,7 +30,6 @@ export default function RecordDetail({
   onEdit,
 }: RecordDetailProps) {
   const themeClass = useThemeClass();
-  const { isNeoBrutalism } = useTheme();
 
   const getResultStyles = (result: MatchResult) => {
     switch (result) {

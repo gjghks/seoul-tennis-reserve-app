@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useCallback, useEffect } from 'react';
+import Image from 'next/image';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
 import LoginPrompt from '@/components/auth/LoginPrompt';
@@ -370,10 +371,12 @@ export default function ReviewForm({
                 key={img.id}
                 className={`relative aspect-square rounded-lg overflow-hidden ${themeClass('border-2 border-black', 'border border-gray-200')}`}
               >
-                <img
+                <Image
                   src={img.preview}
-                  alt="미리보기"
-                  className="w-full h-full object-cover"
+                  alt="업로드 미리보기"
+                  fill
+                  unoptimized
+                  className="object-cover"
                 />
                 <button
                   type="button"

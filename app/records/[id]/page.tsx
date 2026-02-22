@@ -1,13 +1,11 @@
 'use client';
 
 import { useRouter, useParams } from 'next/navigation';
-import { useAuth } from '@/contexts/AuthContext';
 import { useThemeClass } from '@/lib/cn';
 import { useToast } from '@/contexts/ToastContext';
 import RecordDetail from '@/components/records/RecordDetail';
 import useSWR from 'swr';
 import type { GameRecord } from '@/lib/constants/tennis';
-import { useState } from 'react';
 import Spinner from '@/components/ui/Spinner';
 import Link from 'next/link';
 
@@ -20,10 +18,8 @@ export default function RecordDetailPage() {
   const router = useRouter();
   const params = useParams();
   const id = params?.id as string;
-  const { user } = useAuth();
   const themeClass = useThemeClass();
   const { showToast } = useToast();
-  const [isDeleting, setIsDeleting] = useState(false);
 
   const { data, error, isLoading } = useSWR<{ record: GameRecord }>(
     id ? `/api/records/${id}` : null, 
@@ -33,7 +29,6 @@ export default function RecordDetailPage() {
   const handleDelete = async () => {
     if (!window.confirm('정말 삭제하시겠습니까?')) return;
 
-    setIsDeleting(true);
     try {
       const res = await fetch(`/api/records/${id}`, {
         method: 'DELETE',
@@ -45,7 +40,6 @@ export default function RecordDetailPage() {
       router.push('/records');
     } catch {
       showToast('삭제 중 오류가 발생했습니다', 'error');
-      setIsDeleting(false);
     }
   };
 

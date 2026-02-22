@@ -116,14 +116,20 @@ export default function RecordsPromoCard({ user, authLoading }: RecordsPromoCard
                 <div className={`text-xs ${themeClass('text-gray-500 font-bold uppercase', 'text-gray-500')}`}>최근 전적</div>
                 <div className="flex gap-1 mt-1">
                   {stats.recent_form.slice(0, 5).map((result, i) => (
+                    (() => {
+                      const occurrence = stats.recent_form
+                        .slice(0, i + 1)
+                        .filter((value) => value === result).length;
+                      return (
                     <div 
-                      // eslint-disable-next-line react/no-array-index-key
-                      key={i}
+                      key={`${result}-${occurrence}`}
                       className={`w-2 h-2 rounded-full ${
                         result === 'win' ? 'bg-blue-500' : 
                         result === 'loss' ? 'bg-red-500' : 'bg-gray-300'
                       }`}
                     />
+                      );
+                    })()
                   ))}
                 </div>
               </div>

@@ -293,10 +293,9 @@ export default function MapDiscoveryContent({ courts }: MapDiscoveryContentProps
             position={{ lat: selectedGroup.lat, lng: selectedGroup.lng }}
             yAnchor={1.15}
             zIndex={10}
+            clickable
           >
-            {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
             <div
-              onPointerDownCapture={(e) => e.stopPropagation()}
               style={{ width: 300, padding: 14, boxSizing: 'border-box', whiteSpace: 'normal' }}
               className={
                 isNeoBrutalism

@@ -98,7 +98,7 @@ export default function CourtLocationInput({ locationType, courtId, courtName, d
       includeDistrict: true,
       profile: searchExperiment.rankingProfile,
     });
-  }, [tennisData?.courts, debouncedSearch, searchExperiment]);
+  }, [tennisData, debouncedSearch, searchExperiment]);
 
   useEffect(() => {
     if (!showDropdown || !canSearch || isComposing || filteredCourts.length > 0) {

@@ -14,7 +14,6 @@ interface GuideContentProps {
   stat: DistrictGuideStats;
   allStats: AllDistrictStats;
   facilityRank: number;
-  availableRateRank: number;
 }
 
 export default function GuideContent({
@@ -22,7 +21,6 @@ export default function GuideContent({
   stat,
   allStats,
   facilityRank,
-  availableRateRank,
 }: GuideContentProps) {
   const themeClass = useThemeClass();
   const avg = allStats.seoulAverage;

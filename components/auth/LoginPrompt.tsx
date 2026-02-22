@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useCallback, useId, useState } from 'react';
+import { useEffect, useRef, useCallback, useId } from 'react';
 import { createPortal } from 'react-dom';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
@@ -21,11 +21,6 @@ export default function LoginPrompt({ isOpen, onClose, message }: LoginPromptPro
   const pathname = usePathname();
   const loginUrl = `/login?redirect=${encodeURIComponent(pathname)}`;
   const titleId = useId();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   // Sync dialog open/close with isOpen prop + manage focus
   useEffect(() => {
@@ -81,7 +76,7 @@ export default function LoginPrompt({ isOpen, onClose, message }: LoginPromptPro
     }
   }, []);
 
-  if (!mounted) return null;
+  if (typeof document === 'undefined') return null;
 
   return createPortal(
     <dialog

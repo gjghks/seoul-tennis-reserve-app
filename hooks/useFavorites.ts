@@ -40,7 +40,10 @@ export function useFavorites() {
   }, [user]);
 
   useEffect(() => {
-    fetchFavorites();
+    const timer = window.setTimeout(() => {
+      void fetchFavorites();
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, [fetchFavorites]);
 
   const isFavorite = useCallback((svcId: string) => {

@@ -3,9 +3,32 @@
 import { useToast } from '@/contexts/ToastContext';
 import { useThemeClass } from '@/lib/cn';
 
+interface KakaoSharePayload {
+  objectType: 'feed';
+  content: {
+    title: string;
+    description: string;
+    imageUrl: string;
+    link: { mobileWebUrl: string; webUrl: string };
+  };
+  buttons: Array<{
+    title: string;
+    link: { mobileWebUrl: string; webUrl: string };
+  }>;
+}
+
+interface KakaoSdk {
+  isInitialized: () => boolean;
+  init: (appKey: string) => void;
+  Share: {
+    cleanup: () => void;
+    sendDefault: (payload: KakaoSharePayload) => void;
+  };
+}
+
 declare global {
   interface Window {
-    Kakao: any;
+    Kakao?: KakaoSdk;
   }
 }
 
@@ -20,7 +43,9 @@ interface KakaoShareButtonProps {
 function ensureKakaoInit(): boolean {
   if (!window.Kakao) return false;
   if (!window.Kakao.isInitialized()) {
-    window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_MAP_KEY);
+    const appKey = process.env.NEXT_PUBLIC_KAKAO_MAP_KEY;
+    if (!appKey) return false;
+    window.Kakao.init(appKey);
   }
   return window.Kakao.isInitialized();
 }
@@ -47,8 +72,10 @@ export default function KakaoShareButton({
   const { showToast } = useToast();
 
   const sendKakaoShare = (shareUrl: string) => {
-    try { window.Kakao.Share.cleanup(); } catch {}
-    window.Kakao.Share.sendDefault({
+    const kakao = window.Kakao;
+    if (!kakao) return;
+    try { kakao.Share.cleanup(); } catch {}
+    kakao.Share.sendDefault({
       objectType: 'feed',
       content: {
         title,
@@ -66,7 +93,7 @@ export default function KakaoShareButton({
   const handleKakaoShare = async () => {
     const shareUrl = url || window.location.href;
 
-    if (ensureKakaoInit() && window.Kakao.Share) {
+    if (ensureKakaoInit() && window.Kakao?.Share) {
       try {
         sendKakaoShare(shareUrl);
         return;
@@ -76,7 +103,7 @@ export default function KakaoShareButton({
     }
 
     const fallbackLoaded = await loadKakaoSdkFallback();
-    if (fallbackLoaded && window.Kakao.Share) {
+    if (fallbackLoaded && window.Kakao?.Share) {
       try {
         sendKakaoShare(shareUrl);
         return;

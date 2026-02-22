@@ -47,17 +47,18 @@ function isStandalone(): boolean {
 export default function InstallPrompt() {
   const themeClass = useThemeClass();
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
-  const [showIOSGuide, setShowIOSGuide] = useState(false);
-  const [visible, setVisible] = useState(false);
+  const [showIOSGuide] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return !isStandalone() && !isDismissed() && isIOSSafari();
+  });
+  const [visible, setVisible] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return !isStandalone() && !isDismissed() && isIOSSafari();
+  });
 
   useEffect(() => {
+    if (showIOSGuide) return;
     if (isStandalone() || isDismissed()) return;
-
-    if (isIOSSafari()) {
-      setShowIOSGuide(true);
-      setVisible(true);
-      return;
-    }
 
     const handler = (e: Event) => {
       e.preventDefault();
@@ -67,7 +68,7 @@ export default function InstallPrompt() {
 
     window.addEventListener('beforeinstallprompt', handler);
     return () => window.removeEventListener('beforeinstallprompt', handler);
-  }, []);
+  }, [showIOSGuide]);
 
   const handleInstall = useCallback(async () => {
     if (!deferredPrompt) return;

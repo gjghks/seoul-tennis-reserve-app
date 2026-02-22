@@ -93,16 +93,17 @@ export default function ParkingSection({ lat, lng, isNeoBrutalism }: ParkingSect
       keepPreviousData: true,
     }
   );
+  const parkingLots = data?.parking;
 
   const sortedParking = useMemo(() => {
-    if (!data?.parking) return [];
-    return [...data.parking]
+    if (!parkingLots) return [];
+    return [...parkingLots]
       .map(p => ({
         ...p,
         distance: haversineDistance(lat, lng, p.lat, p.lng),
       }))
       .sort((a, b) => a.distance - b.distance);
-  }, [data?.parking, lat, lng]);
+  }, [parkingLots, lat, lng]);
 
   const visibleParking = showAll ? sortedParking : sortedParking.slice(0, INITIAL_SHOW_COUNT);
 

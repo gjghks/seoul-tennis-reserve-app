@@ -52,8 +52,11 @@ export default function NavigationProgress() {
   useEffect(() => {
     if (pathname !== prevPathname.current) {
       prevPathname.current = pathname;
-      complete();
+      const timer = window.setTimeout(() => {
+        complete();
+      }, 0);
       window.scrollTo(0, 0);
+      return () => window.clearTimeout(timer);
     }
   }, [pathname, complete]);
 

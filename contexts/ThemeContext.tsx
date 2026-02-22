@@ -13,22 +13,18 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>('neo-brutalism');
-  const [mounted, setMounted] = useState(false);
+  const [theme, setTheme] = useState<Theme>(() => {
+    if (typeof window === 'undefined') return 'neo-brutalism';
+    const savedTheme = localStorage.getItem('tennis-theme');
+    return savedTheme === 'default' || savedTheme === 'neo-brutalism'
+      ? savedTheme
+      : 'neo-brutalism';
+  });
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('tennis-theme') as Theme | null;
-    if (savedTheme && (savedTheme === 'default' || savedTheme === 'neo-brutalism')) {
-      setTheme(savedTheme);
-    }
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!mounted) return;
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('tennis-theme', theme);
-  }, [theme, mounted]);
+  }, [theme]);
 
   const toggleTheme = () => {
     setTheme(prev => prev === 'default' ? 'neo-brutalism' : 'default');

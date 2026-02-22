@@ -1,6 +1,5 @@
 'use client';
 
-import { useTheme } from '@/contexts/ThemeContext';
 import { useToast } from '@/contexts/ToastContext';
 import { useThemeClass } from '@/lib/cn';
 
@@ -19,7 +18,6 @@ export default function ShareButton({
   className = '',
   showLabel = false,
 }: ShareButtonProps) {
-  const { isNeoBrutalism } = useTheme();
   const themeClass = useThemeClass();
   const { showToast } = useToast();
 

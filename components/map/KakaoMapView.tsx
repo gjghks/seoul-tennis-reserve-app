@@ -117,8 +117,11 @@ export default function KakaoMapView({ courts, district, focusPlaceName, onPlace
     if (!focusPlaceName || courtGroups.length === 0) return;
     const target = courtGroups.find(g => g.placeName === focusPlaceName);
     if (target) {
-      setSelectedGroup(target);
-      setMapCenter({ lat: target.lat, lng: target.lng });
+      const timer = window.setTimeout(() => {
+        setSelectedGroup(target);
+        setMapCenter({ lat: target.lat, lng: target.lng });
+      }, 0);
+      return () => window.clearTimeout(timer);
     }
   }, [focusPlaceName, courtGroups]);
 
@@ -233,10 +236,9 @@ export default function KakaoMapView({ courts, district, focusPlaceName, onPlace
             position={{ lat: selectedGroup.lat, lng: selectedGroup.lng }}
             yAnchor={0.5}
             zIndex={10}
+            clickable
           >
-            {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
             <div
-              onPointerDownCapture={(e) => e.stopPropagation()}
               style={{ display: 'block', whiteSpace: 'normal', width: 320, padding: 14, boxSizing: 'border-box' }}
                 className={
                   isNeoBrutalism

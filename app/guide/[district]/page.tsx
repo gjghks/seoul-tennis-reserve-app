@@ -118,7 +118,6 @@ export default async function GuidePage({ params }: GuidePageProps) {
   }
 
   const facilityRank = getDistrictRank(allStats, koreanName, 'totalCourts');
-  const availableRateRank = getDistrictRank(allStats, koreanName, 'availableRate');
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -168,7 +167,6 @@ export default async function GuidePage({ params }: GuidePageProps) {
         stat={districtStat}
         allStats={allStats}
         facilityRank={facilityRank}
-        availableRateRank={availableRateRank}
       />
     </>
   );

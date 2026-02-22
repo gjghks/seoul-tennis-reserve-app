@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { useTheme } from '@/contexts/ThemeContext';
 import { useToast } from '@/contexts/ToastContext';
 import { supabase } from '@/lib/supabase';
 import LoginPrompt from '@/components/auth/LoginPrompt';
@@ -27,7 +26,6 @@ export default function FavoriteButton({
   showLabel = false,
 }: FavoriteButtonProps) {
   const { user, loading: authLoading } = useAuth();
-  const { isNeoBrutalism } = useTheme();
   const themeClass = useThemeClass();
   const { showToast } = useToast();
   const [isFavorite, setIsFavorite] = useState(false);

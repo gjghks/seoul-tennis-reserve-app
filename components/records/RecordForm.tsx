@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useCallback, useEffect } from 'react';
+import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useThemeClass } from '@/lib/cn';
@@ -578,10 +579,12 @@ export default function RecordForm({
                     themeClass('border-2 border-black rounded-[5px]', 'border border-gray-200 rounded-lg')
                   )}
                 >
-                  <img
+                  <Image
                     src={img.preview}
-                    alt="미리보기"
-                    className="w-full h-full object-cover"
+                    alt="업로드 미리보기"
+                    fill
+                    unoptimized
+                    className="object-cover"
                   />
                   <button
                     type="button"

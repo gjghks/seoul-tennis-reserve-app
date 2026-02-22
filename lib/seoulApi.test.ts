@@ -12,10 +12,12 @@ function createReq(): EventEmitter & { destroy: ReturnType<typeof vi.fn> } {
   return req;
 }
 
+type MockHttpResponse = EventEmitter & { statusCode: number; resume: ReturnType<typeof vi.fn> };
+
 function mockSuccess(body: object): void {
-  mockGet.mockImplementationOnce((_url: string, _opts: unknown, callback: Function) => {
+  mockGet.mockImplementationOnce((_url: string, _opts: unknown, callback: (response: MockHttpResponse) => void) => {
     const req = createReq();
-    const res = Object.assign(new EventEmitter(), { statusCode: 200, resume: vi.fn() });
+    const res = Object.assign(new EventEmitter(), { statusCode: 200, resume: vi.fn() }) as MockHttpResponse;
 
     Promise.resolve()
       .then(() => callback(res))
