@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useThemeClass } from '@/lib/cn';
 import { useKakaoLoaderWithHttps } from '@/lib/hooks/useKakaoLoaderWithHttps';
-import { isCourtAccepting } from '@/lib/utils/courtStatus';
+import { isCourtAccepting, isCourtAvailable } from '@/lib/utils/courtStatus';
 import { DISTRICTS, KOREAN_TO_SLUG } from '@/lib/constants/districts';
 import type { SeoulService } from '@/lib/seoulApi';
 
@@ -47,15 +47,14 @@ export default function MapDiscoveryContent({ courts }: MapDiscoveryContentProps
   const [locating, setLocating] = useState(false);
   const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const validCourts = useMemo(
-    () => courts.filter(c => c.X && c.Y && parseFloat(c.X) !== 0 && parseFloat(c.Y) !== 0),
-    [courts]
-  );
+  const districtCourts = useMemo(() => {
+    if (selectedDistrict === 'all') return courts;
+    return courts.filter(c => c.AREANM === selectedDistrict);
+  }, [courts, selectedDistrict]);
 
   const filteredCourts = useMemo(() => {
-    if (selectedDistrict === 'all') return validCourts;
-    return validCourts.filter(c => c.AREANM === selectedDistrict);
-  }, [validCourts, selectedDistrict]);
+    return districtCourts.filter(c => c.X && c.Y && parseFloat(c.X) !== 0 && parseFloat(c.Y) !== 0);
+  }, [districtCourts]);
 
   const courtGroups = useMemo(() => {
     const map = new Map<string, CourtGroup>();
@@ -88,14 +87,14 @@ export default function MapDiscoveryContent({ courts }: MapDiscoveryContentProps
   }, [filteredCourts]);
 
   const totalAvailable = useMemo(
-    () => filteredCourts.filter(c => isCourtAccepting(c.SVCSTATNM)).length,
-    [filteredCourts]
+    () => districtCourts.filter(c => isCourtAvailable(c.SVCSTATNM)).length,
+    [districtCourts]
   );
 
   const availableDistricts = useMemo(() => {
-    const set = new Set(validCourts.map(c => c.AREANM));
+    const set = new Set(courts.map(c => c.AREANM));
     return DISTRICTS.filter(d => set.has(d.nameKo));
-  }, [validCourts]);
+  }, [courts]);
 
   const handleMarkerClick = useCallback((group: CourtGroup) => {
     if (hoverTimerRef.current) {
@@ -219,7 +218,7 @@ export default function MapDiscoveryContent({ courts }: MapDiscoveryContentProps
           )
         }`}
       >
-        전체 {filteredCourts.length}개 · <span className={themeClass('text-[#16a34a]', 'text-green-600')}>예약가능 {totalAvailable}개</span>
+        전체 {districtCourts.length}개 · <span className={themeClass('text-[#16a34a]', 'text-green-600')}>예약가능 {totalAvailable}개</span>
       </div>
 
       {/* Locate me button */}
