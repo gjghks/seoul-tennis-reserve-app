@@ -24,6 +24,7 @@ export default function CompareContent({ stats }: CompareContentProps) {
   const { ref: heroRef, inView: heroInView } = useInView();
   const { ref: avgRef, inView: avgInView } = useInView();
   const { ref: topRef, inView: topInView } = useInView();
+  const { ref: tableRef, inView: tableInView } = useInView();
 
   const animTotalCourts = useCountUp(stats.totalCourtsSeoul, heroInView);
   const animTotalAvailable = useCountUp(stats.totalAvailableSeoul, heroInView);
@@ -137,7 +138,7 @@ export default function CompareContent({ stats }: CompareContentProps) {
           구별 상세 비교
         </h2>
 
-        <div className="overflow-x-auto -mx-4 px-4">
+        <div ref={tableRef} className="overflow-x-auto -mx-4 px-4">
           <table className={`w-full text-sm ${themeClass(
             'border-[3px] border-black',
             'border border-gray-200 rounded-xl overflow-hidden'
@@ -160,8 +161,7 @@ export default function CompareContent({ stats }: CompareContentProps) {
                   className={`${themeClass(
                     i % 2 === 0 ? 'bg-white' : 'bg-gray-50',
                     i % 2 === 0 ? 'bg-white' : 'bg-gray-50'
-                  )} ${themeClass('border-t-2 border-black', 'border-t border-gray-100')} ${topInView ? 'stagger-item' : 'opacity-0'}`}
-                  style={{ animationDelay: `${i * 30}ms` }}
+                  )} ${themeClass('border-t-2 border-black', 'border-t border-gray-100')}`}
                 >
                   <td className="px-3 py-3">
                     <Link
@@ -180,10 +180,10 @@ export default function CompareContent({ stats }: CompareContentProps) {
                     <div className="flex items-center justify-center gap-2">
                       <div className="w-16 h-2 bg-gray-200 rounded-full overflow-hidden">
                         <div
-                          className={`h-full ${d.availableCourts > 0 ? themeClass('bg-[#16a34a]', 'bg-green-500') : themeClass('bg-gray-400', 'bg-gray-300')} ${topInView ? 'anim-bar-x' : 'w-0'}`}
+                          className={`h-full ${d.availableCourts > 0 ? themeClass('bg-[#16a34a]', 'bg-green-500') : themeClass('bg-gray-400', 'bg-gray-300')} ${tableInView ? 'anim-bar-x' : 'w-0'}`}
                           style={{
                             width: `${Math.min((d.availableCourts / d.totalCourts) * 100, 100)}%`,
-                            animationDelay: `${i * 30 + 100}ms`,
+                            animationDelay: `${i * 30}ms`,
                           }}
                         />
                       </div>
