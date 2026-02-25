@@ -59,12 +59,12 @@ export default function DiscoveryCards() {
           <Link
             key={card.href}
             href={card.href}
-            className={`flex flex-col items-center gap-2 p-3 sm:p-4 text-center transition-colors ${themeClass(
+            className={`group flex flex-col items-center gap-2 p-3 sm:p-4 text-center transition-colors ${themeClass(
               'bg-white border-[3px] border-black rounded-[10px] hover:bg-[#facc15]/20 shadow-[3px_3px_0_0_rgba(0,0,0,1)]',
               'bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-green-200'
             )}`}
           >
-            <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${themeClass(
+            <div className={`w-10 h-10 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300 ${themeClass(
               'bg-[#facc15] text-black',
               'bg-green-50 text-green-600'
             )}`}>

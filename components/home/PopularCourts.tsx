@@ -127,7 +127,9 @@ export default function PopularCourts() {
                     'flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gray-100 text-sm font-semibold text-gray-700'
                   )}
                 >
-                  {getRankLabel(rank, isNeoBrutalism)}
+                  <span className="inline-block transition-transform group-hover:rotate-12 duration-300">
+                    {getRankLabel(rank, isNeoBrutalism)}
+                  </span>
                 </div>
                 <div className="min-w-0">
                   <p className={themeClass('truncate font-black text-black uppercase tracking-tight', 'truncate font-semibold text-gray-900')}>
