@@ -4,6 +4,7 @@ import { useState } from 'react';
 import useSWR from 'swr';
 import { useThemeClass } from '@/lib/cn';
 import { useScrollFade } from '@/lib/hooks/useScrollFade';
+import { AnimatedWeatherIcon } from '@/components/icons/weather';
 import type { AirQualityData } from '@/lib/airQualityApi';
 import { resolveAirQualityGradeColor, isAirQualityBad, resolvePmColor, resolvePmColorNeo, getOverallDustAlert, getDustAlertColor } from '@/lib/airQualityApi';
 import type { SeoulDustAlertStatus } from '@/lib/airkoreaApi';
@@ -71,13 +72,6 @@ const livingWeatherFetcher = async (url: string): Promise<LivingWeatherData> => 
   if (!response.ok) throw new Error('Failed to fetch living weather');
   return response.json();
 };
-
-function resolveIcon(sky: string | null, rainfall: number | null): string {
-  if (sky === '눈' || sky === '비/눈') return '❄️';
-  if (sky === '비' || sky === '소나기' || (rainfall ?? 0) > 0) return '🌧️';
-  if (sky === '맑음') return '☀️';
-  return '☁️';
-}
 
 function resolveForecastIcon(sky: string, precipType: string): string {
   if (precipType === '눈' || precipType === '비/눈') return '❄️';
@@ -196,7 +190,6 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
   const hasData = data && data.temperature !== null;
   if (!hasData) return null;
 
-  const icon = resolveIcon(data.sky, data.rainfall);
   const dustAlert = airData ? getOverallDustAlert(airData.pm25, airData.pm10) : { level: null, type: null, value: null };
   const isOfficialAlert = officialAlert?.hasAlert === true;
   const warning = isOutdoor ? resolveWarning(data.sky, data.rainfall, airData?.grade, dustAlert.level, isOfficialAlert) : null;
@@ -221,7 +214,7 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
       <div className="flex flex-col sm:flex-row items-stretch gap-3 sm:gap-4">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1.5">
-            <span className="text-xl leading-none">{icon}</span>
+            <AnimatedWeatherIcon sky={data.sky} rainfall={data.rainfall} size={20} />
             <div>
               <p className={themeClass('text-xs text-black/60 font-bold uppercase', 'text-xs text-gray-400')}>현재 날씨</p>
               <p className={themeClass('font-black text-black text-base', 'font-semibold text-gray-800 text-base')}>

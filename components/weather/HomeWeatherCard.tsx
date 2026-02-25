@@ -2,6 +2,7 @@
 
 import useSWR from 'swr';
 import { useThemeClass } from '@/lib/cn';
+import { AnimatedWeatherIcon } from '@/components/icons/weather';
 import type { AirQualityData } from '@/lib/airQualityApi';
 import { resolveAirQualityGradeColor, isAirQualityBad, resolvePmColorLight, getOverallDustAlert } from '@/lib/airQualityApi';
 import type { SeoulDustAlertStatus } from '@/lib/airkoreaApi';
@@ -54,13 +55,6 @@ const cityDataFetcher = async (url: string): Promise<CityWeatherData> => {
   if (!response.ok) throw new Error('Failed to fetch city data');
   return response.json();
 };
-
-function resolveIcon(sky: string | null, rainfall: number | null): string {
-  if (sky === '눈' || sky === '비/눈') return '❄️';
-  if (sky === '비' || sky === '소나기' || (rainfall ?? 0) > 0) return '🌧️';
-  if (sky === '맑음') return '☀️';
-  return '☁️';
-}
 
 function resolveTennisMessage(
   sky: string | null,
@@ -147,12 +141,12 @@ export default function HomeWeatherCard({ nx, ny }: HomeWeatherCardProps) {
 
   if (!data || data.temperature === null) return null;
 
-  const icon = resolveIcon(data.sky, data.rainfall);
   const temp = Math.round(data.temperature);
   const dustAlert = airData ? getOverallDustAlert(airData.pm25, airData.pm10) : { level: null, type: null, value: null };
   const isOfficialAlert = officialAlert?.hasAlert === true;
   const message = resolveTennisMessage(data.sky, data.rainfall, data.temperature, airData?.grade, dustAlert.level, isOfficialAlert);
   const isRainOrSnow = data.sky === '비' || data.sky === '소나기' || data.sky === '눈' || data.sky === '비/눈' || (data.rainfall ?? 0) > 0;
+
 
   const cw = cityWeather?.weather;
   const sensibleTemp = cw?.sensibleTemp;
@@ -172,7 +166,7 @@ export default function HomeWeatherCard({ nx, ny }: HomeWeatherCardProps) {
       'mt-3 bg-white/15 backdrop-blur-sm rounded-lg border border-white/20 px-3 py-2.5'
     )}>
       <div className="flex items-center gap-2.5">
-        <span className="text-xl leading-none shrink-0">{icon}</span>
+        <AnimatedWeatherIcon sky={data.sky} rainfall={data.rainfall} size={20} />
         <div className="flex-1 min-w-0">
           <div className="flex items-baseline gap-1.5 flex-wrap">
             <span className={themeClass(

@@ -2,6 +2,7 @@
 
 import useSWR from 'swr';
 import { useThemeClass } from '@/lib/cn';
+import { AnimatedWeatherIcon } from '@/components/icons/weather';
 import type { AirQualityData } from '@/lib/airQualityApi';
 import { resolveAirQualityGradeColor, isAirQualityBad, resolvePmColor, resolvePmColorNeo, resolvePmColorLight, getOverallDustAlert, getDustAlertColor } from '@/lib/airQualityApi';
 import type { SeoulDustAlertStatus } from '@/lib/airkoreaApi';
@@ -152,7 +153,7 @@ export default function WeatherBadge({ nx, ny, isOutdoor = false, compact = fals
         `inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[5px] border-2 ${pillStyleNeo.border} ${pillStyleNeo.bg} ${pillStyleNeo.text} text-xs font-black`,
         `inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border ${pillStyle.border} ${pillStyle.bg} ${pillStyle.text} text-xs font-semibold`
       )}>
-        <span className="text-sm leading-none">{weatherState.icon}</span>
+        <AnimatedWeatherIcon sky={data.sky} rainfall={data.rainfall} size={16} />
         <span>{Math.round(data.temperature)}°C</span>
         {data.sky && <span className={themeClass('opacity-70', 'opacity-70')}>{data.sky}</span>}
         {hasAirData && (
@@ -184,7 +185,7 @@ export default function WeatherBadge({ nx, ny, isOutdoor = false, compact = fals
           'inline-flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-full'
         )}
       >
-        <span className="text-base leading-none">{weatherState.icon}</span>
+        <AnimatedWeatherIcon sky={data.sky} rainfall={data.rainfall} size={18} />
         <span className={themeClass('text-sm font-black text-black', 'text-sm font-semibold text-gray-800')}>
           {Math.round(data.temperature)}°C
         </span>
