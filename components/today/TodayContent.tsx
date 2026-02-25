@@ -134,7 +134,7 @@ export default function TodayContent({
               'bg-white border border-gray-100'
             )}`}
           >
-            <div className={`text-4xl mb-3 ${themeClass('', '')}`}>😔</div>
+            <div className={`text-4xl mb-3 inline-block animate-bounce ${themeClass('', '')}`} style={{ animationDuration: '2s' }}>😔</div>
             <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
               현재 예약 가능한 코트가 없습니다
             </h2>

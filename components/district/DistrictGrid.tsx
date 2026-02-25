@@ -55,8 +55,11 @@ const DistrictCard = memo(function DistrictCard({
           {loading ? (
             <div className="w-10 h-5 skeleton-neo !border-0 shrink-0" />
           ) : hasAvailable ? (
-            <span className="bg-black text-[#a3e635] px-1.5 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-black rounded-[3px] uppercase shrink-0">
-              {available}
+            <span className="relative shrink-0">
+              <span className="absolute inset-0 bg-[#a3e635] rounded-[3px] animate-pulse opacity-40" />
+              <span className="relative bg-black text-[#a3e635] px-1.5 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-black rounded-[3px] uppercase">
+                {available}
+              </span>
             </span>
           ) : total > 0 ? (
             <span className="text-[10px] sm:text-xs font-bold text-black/60 uppercase shrink-0">
@@ -85,7 +88,8 @@ const DistrictCard = memo(function DistrictCard({
         {loading ? (
           <div className="w-10 h-5 skeleton shrink-0" />
         ) : hasAvailable ? (
-          <span className="badge badge-available text-[10px] sm:text-xs shrink-0">
+          <span className="badge badge-available text-[10px] sm:text-xs shrink-0 flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
             {available}개
           </span>
         ) : total > 0 ? (

@@ -217,6 +217,7 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
                 ? `border-2 border-black rounded-[5px] ${isAvailable ? 'bg-[#a3e635] text-black font-black' : 'bg-[#fca5a5] text-black font-black'}`
                 : `rounded-full ${isAvailable ? 'bg-green-100 text-green-700' : 'bg-red-50 text-red-600 border border-red-200'}`
             }`}>
+              {isNeoBrutalism && <span className={`w-2.5 h-2.5 rounded-full border border-black ${isAvailable ? 'bg-[#a3e635] animate-pulse' : 'bg-red-400'}`} />}
               {!isNeoBrutalism && <span className={`w-2 h-2 rounded-full ${isAvailable ? 'bg-green-500 animate-pulse' : 'bg-red-400'}`} />}
               {court.SVCSTATNM}
             </span>
