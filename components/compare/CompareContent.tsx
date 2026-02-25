@@ -75,19 +75,19 @@ export default function CompareContent({ stats }: CompareContentProps) {
           </p>
 
           <div ref={heroRef} className={`mt-4 flex flex-wrap gap-3 ${themeClass('', '')}`}>
-            <div className={`px-4 py-2 rounded-lg ${themeClass('bg-black/20 border-2 border-white/30', 'bg-white/10 backdrop-blur-sm')}`}>
+            <div className={`px-4 py-2 rounded-lg ${themeClass('bg-black/20 border-2 border-white/30', 'bg-white/10 backdrop-blur-sm')} ${heroInView ? 'anim-fade-up' : 'opacity-0'}`} style={{ animationDelay: '0ms' }}>
               <div className={`text-2xl font-bold ${themeClass('text-[#facc15]', 'text-white')}`}>
                 {animTotalCourts}
               </div>
               <div className="text-xs text-white/70">전체 시설</div>
             </div>
-            <div className={`px-4 py-2 rounded-lg ${themeClass('bg-black/20 border-2 border-white/30', 'bg-white/10 backdrop-blur-sm')}`}>
+            <div className={`px-4 py-2 rounded-lg ${themeClass('bg-black/20 border-2 border-white/30', 'bg-white/10 backdrop-blur-sm')} ${heroInView ? 'anim-fade-up' : 'opacity-0'}`} style={{ animationDelay: '80ms' }}>
               <div className={`text-2xl font-bold ${themeClass('text-[#facc15]', 'text-white')}`}>
                 {animTotalAvailable}
               </div>
               <div className="text-xs text-white/70">예약 가능</div>
             </div>
-            <div className={`px-4 py-2 rounded-lg ${themeClass('bg-black/20 border-2 border-white/30', 'bg-white/10 backdrop-blur-sm')}`}>
+            <div className={`px-4 py-2 rounded-lg ${themeClass('bg-black/20 border-2 border-white/30', 'bg-white/10 backdrop-blur-sm')} ${heroInView ? 'anim-fade-up' : 'opacity-0'}`} style={{ animationDelay: '160ms' }}>
               <div className={`text-2xl font-bold ${themeClass('text-[#facc15]', 'text-white')}`}>
                 {animDistrictCount}
               </div>
@@ -106,25 +106,25 @@ export default function CompareContent({ stats }: CompareContentProps) {
             서울 평균
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
-            <div>
+            <div className={avgInView ? 'anim-fade-up' : 'opacity-0'} style={{ animationDelay: '0ms' }}>
               <span className={themeClass('text-black/60 font-bold', 'text-gray-500')}>구당 평균 시설</span>
               <p className={`text-lg font-bold ${themeClass('text-black', 'text-gray-900')}`}>
                 {animAvgCourts}개
               </p>
             </div>
-            <div>
+            <div className={avgInView ? 'anim-fade-up' : 'opacity-0'} style={{ animationDelay: '80ms' }}>
               <span className={themeClass('text-black/60 font-bold', 'text-gray-500')}>평균 예약가능률</span>
               <p className={`text-lg font-bold ${themeClass('text-black', 'text-gray-900')}`}>
                 {animAvgAvailableRate}%
               </p>
             </div>
-            <div>
+            <div className={avgInView ? 'anim-fade-up' : 'opacity-0'} style={{ animationDelay: '160ms' }}>
               <span className={themeClass('text-black/60 font-bold', 'text-gray-500')}>평균 무료 비율</span>
               <p className={`text-lg font-bold ${themeClass('text-black', 'text-gray-900')}`}>
                 {animAvgFreeRate}%
               </p>
             </div>
-            <div>
+            <div className={avgInView ? 'anim-fade-up' : 'opacity-0'} style={{ animationDelay: '240ms' }}>
               <span className={themeClass('text-black/60 font-bold', 'text-gray-500')}>평균 경쟁률</span>
               <p className={`text-lg font-bold ${themeClass('text-black', 'text-gray-900')}`}>
                 {animAvgCompetition}%
@@ -160,7 +160,8 @@ export default function CompareContent({ stats }: CompareContentProps) {
                   className={`${themeClass(
                     i % 2 === 0 ? 'bg-white' : 'bg-gray-50',
                     i % 2 === 0 ? 'bg-white' : 'bg-gray-50'
-                  )} ${themeClass('border-t-2 border-black', 'border-t border-gray-100')}`}
+                  )} ${themeClass('border-t-2 border-black', 'border-t border-gray-100')} ${topInView ? 'stagger-item' : 'opacity-0'}`}
+                  style={{ animationDelay: `${i * 30}ms` }}
                 >
                   <td className="px-3 py-3">
                     <Link
@@ -176,12 +177,23 @@ export default function CompareContent({ stats }: CompareContentProps) {
                     </span>
                   </td>
                   <td className="px-3 py-3 text-center">
-                    <span className={`font-bold ${d.availableCourts > 0
-                      ? themeClass('text-[#16a34a]', 'text-green-600')
-                      : themeClass('text-black/60', 'text-gray-400')
-                    }`}>
-                      {d.availableCourts}
-                    </span>
+                    <div className="flex items-center justify-center gap-2">
+                      <div className="w-16 h-2 bg-gray-200 rounded-full overflow-hidden">
+                        <div
+                          className={`h-full ${d.availableCourts > 0 ? themeClass('bg-[#16a34a]', 'bg-green-500') : themeClass('bg-gray-400', 'bg-gray-300')} ${topInView ? 'anim-bar-x' : 'w-0'}`}
+                          style={{
+                            width: `${Math.min((d.availableCourts / d.totalCourts) * 100, 100)}%`,
+                            animationDelay: `${i * 30 + 100}ms`,
+                          }}
+                        />
+                      </div>
+                      <span className={`font-bold text-sm ${d.availableCourts > 0
+                        ? themeClass('text-[#16a34a]', 'text-green-600')
+                        : themeClass('text-black/60', 'text-gray-400')
+                      }`}>
+                        {d.availableCourts}
+                      </span>
+                    </div>
                     <span className={`text-xs ml-1 ${themeClass('text-black/60', 'text-gray-400')}`}>
                       ({d.availableRate}%)
                     </span>
@@ -230,7 +242,7 @@ export default function CompareContent({ stats }: CompareContentProps) {
             <div
               key={card.title}
               className={topInView ? 'anim-fade-up' : 'opacity-0'}
-              style={{ animationDelay: `${i * 120}ms` }}
+              style={{ animationDelay: `${i * 100}ms` }}
             >
               <TopCard
                 themeClass={themeClass}
@@ -300,7 +312,7 @@ function TopCard({
       </h3>
       <ol className="space-y-2">
         {districts.map((d, i) => (
-          <li key={d.slug} className="flex items-center justify-between">
+          <li key={d.slug} className={`flex items-center justify-between ${i > 0 ? 'stagger-item' : ''}`} style={i > 0 ? { animationDelay: `${i * 50}ms` } : {}}>
             <div className="flex items-center gap-2">
               <span className={`w-6 h-6 flex items-center justify-center rounded-full text-xs font-bold ${
                 i === 0
