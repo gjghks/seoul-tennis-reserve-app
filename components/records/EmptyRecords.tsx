@@ -18,9 +18,11 @@ export default function EmptyRecords({ showCreateButton = true }: EmptyRecordsPr
       'flex flex-col items-center justify-center py-12 px-4 text-center'
     )}>
       <div className={themeClass(
-        'w-20 h-20 bg-[#a3e635] border-2 border-black rounded-full flex items-center justify-center mb-4 shadow-[4px_4px_0px_0px_#000]',
-        'w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4'
-      )}>
+        'w-20 h-20 bg-[#a3e635] border-2 border-black rounded-full flex items-center justify-center mb-4 shadow-[4px_4px_0px_0px_#000] animate-bounce',
+        'w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4 animate-bounce'
+      )}
+      style={{ animationDuration: '3s' }}
+      >
         {isNeoBrutalism ? (
           <span className="text-4xl">🎾</span>
         ) : (
