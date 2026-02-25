@@ -117,7 +117,7 @@ export default function FavoriteButton({
         disabled={loading}
         aria-label={isFavorite ? '즐겨찾기 해제' : '즐겨찾기 추가'}
         aria-pressed={isFavorite}
-        className={themeClass(
+        className={`interact-favorite${isFavorite ? ' is-active' : ''} ${themeClass(
           `flex items-center gap-2 px-3 py-2 border-2 border-black rounded-[5px] transition-all active:duration-0 font-bold ${
             isFavorite
               ? 'bg-[#f472b6] text-black shadow-[3px_3px_0px_0px_#000]'
@@ -128,7 +128,7 @@ export default function FavoriteButton({
               ? 'bg-pink-50 text-pink-600'
               : 'bg-gray-100 text-gray-500 active:text-pink-600'
           } ${loading ? 'cursor-not-allowed' : 'active:bg-pink-50'} ${className}`
-        )}
+        )}`}
       >
         {loading ? (
           <Spinner />

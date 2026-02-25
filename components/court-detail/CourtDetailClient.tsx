@@ -238,7 +238,7 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
                 ? `w-full flex items-center justify-center gap-3 py-4 px-6 rounded-[5px] font-black text-lg uppercase tracking-wide border-[3px] border-black transition-all ${
                     isAvailable
                       ? 'bg-[#22c55e] text-black shadow-[6px_6px_0px_0px_#000] hover:translate-x-[6px] hover:translate-y-[6px] hover:shadow-none'
-                      : 'bg-gray-300 text-black/40 cursor-not-allowed'
+                      : 'bg-gray-300 text-black/60 cursor-not-allowed'
                   }`
                 : `w-full flex items-center justify-center gap-3 py-4 px-6 rounded-2xl font-bold text-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg ${
                     isAvailable

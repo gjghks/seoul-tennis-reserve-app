@@ -267,7 +267,7 @@ export default function MyPage() {
                   <button
                     type="button"
                     onClick={() => handleDeleteFavorite(fav.svc_id)}
-                    className={`shrink-0 p-2 transition-colors ${themeClass('text-black/50 hover:text-red-600', 'text-gray-400 hover:text-red-500')} `}
+                    className={`shrink-0 p-2 transition-colors ${themeClass('text-black/60 hover:text-red-600', 'text-gray-400 hover:text-red-500')} `}
                     aria-label={`${fav.svc_name} 즐겨찾기 삭제`}
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

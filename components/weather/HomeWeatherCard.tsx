@@ -187,7 +187,7 @@ export default function HomeWeatherCard({ nx, ny }: HomeWeatherCardProps) {
               </span>
             )}
             {details.length > 0 && (
-              <span className="text-xs text-white/60">
+              <span className="text-xs text-white/70">
                 {details.join(' · ')}
               </span>
             )}
@@ -224,7 +224,7 @@ export default function HomeWeatherCard({ nx, ny }: HomeWeatherCardProps) {
             )}>
               <span className="text-sm leading-none">{airGradeColor.icon}</span>
               <div>
-                <span className="text-[10px] text-white/60 block leading-tight">미세먼지</span>
+                <span className="text-[10px] text-white/70 block leading-tight">미세먼지</span>
                 <span className={themeClass(
                   `text-xs font-black ${txt}`,
                   `text-xs font-semibold ${txt}`

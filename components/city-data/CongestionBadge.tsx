@@ -65,7 +65,7 @@ function resolveCongestionColor(level: string) {
     default:
       return {
         bg: 'bg-gray-100', text: 'text-gray-500', dot: 'bg-gray-400',
-        bgNeo: 'bg-gray-200', textNeo: 'text-black/50',
+        bgNeo: 'bg-gray-200', textNeo: 'text-black/60',
       };
   }
 }
@@ -141,7 +141,7 @@ export default function CongestionBadge({ lat, lng, isNeoBrutalism, variant = 'c
             <span className="text-xl leading-none">👥</span>
             <div>
               <p className={themeClass(
-                'text-xs text-black/50 font-bold uppercase',
+                'text-xs text-black/60 font-bold uppercase',
                 'text-xs text-gray-400'
               )}>주변 혼잡도</p>
               <div className="flex items-center gap-2">
@@ -153,7 +153,7 @@ export default function CongestionBadge({ lat, lng, isNeoBrutalism, variant = 'c
                   {congestion.level}
                 </span>
                 <span className={themeClass(
-                  'text-[11px] font-bold text-black/40',
+                  'text-[11px] font-bold text-black/60',
                   'text-[11px] text-gray-400'
                 )}>
                   {area}
@@ -162,13 +162,13 @@ export default function CongestionBadge({ lat, lng, isNeoBrutalism, variant = 'c
             </div>
           </div>
           <p className={themeClass(
-            'text-xs font-bold text-black/50 mt-1',
+            'text-xs font-bold text-black/60 mt-1',
             'text-xs text-gray-500 mt-1'
           )}>
             {congestion.message}
           </p>
           <div className={themeClass(
-            'flex items-center gap-1.5 text-[11px] font-bold text-black/40 mt-1',
+            'flex items-center gap-1.5 text-[11px] font-bold text-black/60 mt-1',
             'flex items-center gap-1.5 text-[11px] text-gray-400 mt-1'
           )}>
             <span>현재 약 {formatPopulation(congestion.populationMin)}~{formatPopulation(congestion.populationMax)}명</span>
@@ -184,7 +184,7 @@ export default function CongestionBadge({ lat, lng, isNeoBrutalism, variant = 'c
             type="button"
             onClick={() => setExpanded(prev => !prev)}
             className={themeClass(
-              'mt-3 pt-3 border-t-2 border-black/10 w-full flex items-center justify-between text-xs font-black text-black/50',
+              'mt-3 pt-3 border-t-2 border-black/15 w-full flex items-center justify-between text-xs font-black text-black/60',
               'mt-3 pt-3 border-t border-gray-100 w-full flex items-center justify-between text-xs text-gray-400'
             )}
             aria-expanded={expanded}
@@ -213,7 +213,7 @@ export default function CongestionBadge({ lat, lng, isNeoBrutalism, variant = 'c
                         )}
                       >
                         <span className={themeClass(
-                          'text-[10px] font-black text-black/40',
+                          'text-[10px] font-black text-black/60',
                           'text-[10px] text-gray-400'
                         )}>
                           {formatForecastTime(f.time)}

@@ -261,7 +261,7 @@ function StatBox({
       <div className={`text-lg font-bold ${themeClass('text-black', 'text-gray-900')}`}>
         {value}
       </div>
-      <div className={`text-xs ${themeClass('text-black/50', 'text-gray-400')}`}>
+      <div className={`text-xs ${themeClass('text-black/60', 'text-gray-400')}`}>
         {sub}
       </div>
     </div>
@@ -298,7 +298,7 @@ function CompareBar({
             : themeClass('text-black/60', 'text-gray-500')
         }`}>
           {value}{unit}
-          <span className={`text-xs ml-1 ${themeClass('text-black/40', 'text-gray-400')}`}>
+          <span className={`text-xs ml-1 ${themeClass('text-black/60', 'text-gray-400')}`}>
             (평균 {avg}{unit})
           </span>
         </span>

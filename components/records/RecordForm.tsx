@@ -560,7 +560,7 @@ export default function RecordForm({
               disabled={images.length >= MAX_IMAGES}
             />
             <div className="flex flex-col items-center gap-2">
-              <svg className={themeClass('w-8 h-8 text-black/40', 'w-8 h-8 text-gray-400')} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <svg className={themeClass('w-8 h-8 text-black/60', 'w-8 h-8 text-gray-400')} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
               <p className={themeClass('text-sm text-black/60', 'text-sm text-gray-500')}>
@@ -666,7 +666,7 @@ export default function RecordForm({
               themeClass(
                 `border-2 border-black rounded-[5px] ${
                   isSubmitting
-                    ? 'bg-gray-200 text-black/40 cursor-not-allowed'
+                    ? 'bg-gray-200 text-black/60 cursor-not-allowed'
                     : 'bg-[#22c55e] text-black shadow-[4px_4px_0px_0px_#000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[3px_3px_0px_0px_#000]'
                 }`,
                 `rounded-lg ${

@@ -436,7 +436,7 @@ html, body {
 
   --theme-text-primary: #000000;
   --theme-text-secondary: rgba(0, 0, 0, 0.7);
-  --theme-text-muted: rgba(0, 0, 0, 0.5);
+  --theme-text-muted: rgba(0, 0, 0, 0.6);
   --theme-bg-primary: #dfe5f2;
   --theme-bg-secondary: #ffffff;
   --theme-accent: #22c55e;
@@ -493,6 +493,45 @@ html, body {
 
   .theme-emphasis {
     font-weight: var(--theme-font-emphasis);
+  }
+
+  /* ─── Micro-interaction utilities ─── */
+  .interact-press {
+    transition: transform 150ms ease-out;
+  }
+  .interact-press:active {
+    transform: scale(0.95);
+  }
+
+  .interact-nb-press {
+    transition: all 150ms ease;
+  }
+  .interact-nb-press:active {
+    transform: translate(4px, 4px);
+    box-shadow: 0px 0px 0px 0px #000 !important;
+  }
+
+  .interact-favorite {
+    transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .interact-favorite.is-active {
+    animation: pop-in 400ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .stagger-item {
+    opacity: 0;
+    animation: stagger-fade 400ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .live-indicator::after {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #22c55e;
+    margin-left: 6px;
+    animation: pulse-live 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 }
 
@@ -614,4 +653,15 @@ html, body {
   background: #000;
   color: #fff;
   border-top: 3px solid #000;
+}
+
+/* ─── Stagger fade keyframe (for CSS use) ─── */
+@keyframes stagger-fade {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-live {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }

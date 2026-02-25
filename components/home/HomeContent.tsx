@@ -114,7 +114,7 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
               {lastUpdated && (
                 <LastUpdated 
                   timestamp={lastUpdated} 
-                  className={`mt-1 ${themeClass('text-white/60', 'text-green-200/80')}`} 
+                  className={`mt-1 ${themeClass('text-white/70', 'text-green-200/80')}`} 
                 />
               )}
             </div>

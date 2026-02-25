@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, useRef, useMemo } from 'react';
+import { useState, useRef, useMemo, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useTennisData } from '@/contexts/TennisDataContext';
 import { SeoulService } from '@/lib/seoulApi';
 import { SLUG_TO_KOREAN, KOREAN_TO_SLUG } from '@/lib/constants/districts';
 import Link from 'next/link';
+import PullToRefresh from 'react-simple-pull-to-refresh';
 import AdBanner from '@/components/ads/AdBanner';
 import { AD_SLOTS } from '@/lib/adConfig';
 import LastUpdated from '@/components/ui/LastUpdated';
@@ -45,7 +46,7 @@ export default function DistrictContent({
 }: DistrictContentProps) {
   const { isNeoBrutalism } = useTheme();
   const themeClass = useThemeClass();
-  const { courts: allCourts, isLoading, lastUpdated } = useTennisData();
+  const { courts: allCourts, isLoading, lastUpdated, mutate } = useTennisData();
   const { handleReservationClick } = useReservationTip();
   const [viewMode, setViewMode] = useState<'list' | 'map'>(() => {
     if (typeof window === 'undefined') return 'map';
@@ -131,7 +132,30 @@ export default function DistrictContent({
 
   const loading = isLoading && initialCourts.length === 0;
 
+  const handleRefresh = useCallback(async () => {
+    await mutate();
+  }, [mutate]);
+
+  const RefreshIndicator = (
+    <div className={`flex items-center justify-center py-4 ${themeClass('text-black font-bold', 'text-green-600')}`}>
+      <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24" aria-hidden="true">
+        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+      </svg>
+      <span>새로고침 중...</span>
+    </div>
+  );
+
   return (
+    <PullToRefresh
+      onRefresh={handleRefresh}
+      pullingContent={
+        <div className={`flex items-center justify-center py-4 ${themeClass('text-black font-bold', 'text-green-600')}`}>
+          <span>↓ 당겨서 새로고침</span>
+        </div>
+      }
+      refreshingContent={RefreshIndicator}
+    >
      <div className={`min-h-screen scrollbar-hide ${themeClass('bg-nb-bg', 'bg-gray-50')} `}>
       <div className={`sticky top-14 z-40 ${
         isNeoBrutalism 
@@ -325,7 +349,7 @@ export default function DistrictContent({
 
                   return (
                     <div className="mt-8">
-                      <p className={`text-xs mb-3 ${themeClass('text-black/50 font-bold uppercase', 'text-gray-400')}`}>
+                      <p className={`text-xs mb-3 ${themeClass('text-black/60 font-bold uppercase', 'text-gray-400')}`}>
                         접수중인 코트가 있는 다른 지역
                       </p>
                       <div className="flex flex-wrap justify-center gap-2">
@@ -366,7 +390,7 @@ export default function DistrictContent({
                     <h2 className={`text-base ${themeClass('font-black text-black uppercase tracking-tight group-hover:text-[#16a34a]', 'font-semibold text-gray-800 group-hover:text-green-600')}`}>
                       {placeName}
                     </h2>
-                    <span className={`text-xs ${themeClass('font-bold text-black/50', 'text-gray-400')}`}>
+                    <span className={`text-xs ${themeClass('font-bold text-black/60', 'text-gray-400')}`}>
                       {placeCourts.length}개{placeAvailable > 0 && ` · 접수중 ${placeAvailable}`}
                     </span>
                   </button>
@@ -396,7 +420,7 @@ export default function DistrictContent({
                                 <FacilityTags tags={facilityTags} maxTags={3} className="mt-2" />
                               </div>
                               <span className={`px-3 py-1 text-xs font-black uppercase border-2 border-black rounded-[3px] ${
-                                isAvailable ? 'bg-[#a3e635] text-black' : 'bg-gray-300 text-black/50'
+                                isAvailable ? 'bg-[#a3e635] text-black' : 'bg-gray-300 text-black/60'
                               }`}>
                                 {court.SVCSTATNM}
                               </span>
@@ -506,5 +530,6 @@ export default function DistrictContent({
         </div>
       </div>
     </div>
+    </PullToRefresh>
   );
 }

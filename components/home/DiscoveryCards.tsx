@@ -74,7 +74,7 @@ export default function DiscoveryCards() {
               <p className={`text-sm font-semibold ${themeClass('text-black', 'text-gray-900')}`}>
                 {card.title}
               </p>
-              <p className={`text-[11px] mt-0.5 hidden sm:block ${themeClass('text-black/50', 'text-gray-500')}`}>
+              <p className={`text-[11px] mt-0.5 hidden sm:block ${themeClass('text-black/60', 'text-gray-500')}`}>
                 {card.description}
               </p>
             </div>

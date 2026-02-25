@@ -1,6 +1,8 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
+import PullToRefresh from 'react-simple-pull-to-refresh';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useThemeClass } from '@/lib/cn';
 import { DISTRICTS, KOREAN_TO_SLUG } from '@/lib/constants/districts';
@@ -62,6 +64,12 @@ interface CalendarContentProps {
 export default function CalendarContent({ courts }: CalendarContentProps) {
   const { isNeoBrutalism } = useTheme();
   const themeClass = useThemeClass();
+  const router = useRouter();
+
+  const handleRefresh = useCallback(async () => {
+    router.refresh();
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  }, [router]);
 
   const now = new Date();
   const [viewYear, setViewYear] = useState(now.getFullYear());
@@ -150,6 +158,23 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
   const animPeakDay = useCountUp(peakDayNum, summaryInView);
 
   return (
+    <PullToRefresh
+      onRefresh={handleRefresh}
+      pullingContent={
+        <div className={`flex items-center justify-center py-4 ${themeClass('text-black font-bold', 'text-green-600')}`}>
+          <span>↓ 당겨서 새로고침</span>
+        </div>
+      }
+      refreshingContent={
+        <div className={`flex items-center justify-center py-4 ${themeClass('text-black font-bold', 'text-green-600')}`}>
+          <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24" aria-hidden="true">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+          </svg>
+          <span>새로고침 중...</span>
+        </div>
+      }
+    >
     <div className={`min-h-screen ${themeClass('bg-nb-bg', 'bg-gray-50')}`}>
       <div className="container py-8 max-w-4xl">
         {/* Header */}
@@ -245,7 +270,7 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
                       ? themeClass('font-bold text-red-500', 'font-medium text-red-400')
                       : i === 6
                         ? themeClass('font-bold text-blue-500', 'font-medium text-blue-400')
-                        : themeClass('font-bold text-black/50', 'font-medium text-gray-400')
+                        : themeClass('font-bold text-black/60', 'font-medium text-gray-400')
                   }`}
                 >
                   {label}
@@ -316,7 +341,7 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
             </div>
 
             {/* Legend */}
-            <div className={`flex items-center justify-center gap-4 mt-4 pt-4 ${themeClass('border-t-2 border-black/10', 'border-t border-gray-100')}`}>
+            <div className={`flex items-center justify-center gap-4 mt-4 pt-4 ${themeClass('border-t-2 border-black/15', 'border-t border-gray-100')}`}>
               {[
                 { label: '1~5개', cls: getDotClass(1, isNeoBrutalism) },
                 { label: '6~15개', cls: getDotClass(6, isNeoBrutalism) },
@@ -324,7 +349,7 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
               ].map(item => (
                 <div key={item.label} className="flex items-center gap-1.5">
                   <span className={`w-2.5 h-2.5 rounded-full ${item.cls}`} />
-                  <span className={`text-xs ${themeClass('text-black/50 font-bold', 'text-gray-400')}`}>{item.label}</span>
+                  <span className={`text-xs ${themeClass('text-black/60 font-bold', 'text-gray-400')}`}>{item.label}</span>
                 </div>
               ))}
             </div>
@@ -338,7 +363,7 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
             { label: '최다 접수일', value: peakDayNum > 0 ? `${animPeakDay}일` : '-' },
           ].map(item => (
             <div key={item.label} className={`${cardClass} p-4 text-center`}>
-              <p className={`text-xs mb-1 ${themeClass('text-black/50 font-bold uppercase', 'text-gray-400')}`}>{item.label}</p>
+              <p className={`text-xs mb-1 ${themeClass('text-black/60 font-bold uppercase', 'text-gray-400')}`}>{item.label}</p>
               <p className={`text-xl ${themeClass('font-black text-black', 'font-bold text-gray-900')}`}>{item.value}</p>
             </div>
           ))}
@@ -361,7 +386,7 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
             </div>
             <div className="p-5">
               {selectedDateCourts.length === 0 ? (
-                <p className={`text-center py-6 ${themeClass('text-black/40', 'text-gray-400')}`}>
+                <p className={`text-center py-6 ${themeClass('text-black/60', 'text-gray-400')}`}>
                   이 날짜에 접수 가능한 테니스장이 없습니다.
                 </p>
               ) : (
@@ -383,7 +408,7 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
                             <p className={`text-sm truncate ${themeClass('font-bold text-black', 'font-medium text-gray-900')}`}>
                               {court.SVCNM}
                             </p>
-                            <p className={`text-xs mt-0.5 ${themeClass('text-black/50', 'text-gray-400')}`}>
+                            <p className={`text-xs mt-0.5 ${themeClass('text-black/60', 'text-gray-400')}`}>
                               {court.PLACENM} · {court.AREANM}
                             </p>
                           </div>
@@ -399,7 +424,7 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
                             {court.SVCSTATNM}
                           </span>
                         </div>
-                        <div className={`flex items-center gap-3 mt-2 text-xs ${themeClass('text-black/40', 'text-gray-400')}`}>
+                        <div className={`flex items-center gap-3 mt-2 text-xs ${themeClass('text-black/60', 'text-gray-400')}`}>
                           <span>접수: {court.RCPTBGNDT?.slice(0, 10)} ~ {court.RCPTENDDT?.slice(0, 10)}</span>
                           <span>{court.PAYATNM}</span>
                         </div>
@@ -413,5 +438,6 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
         )}
       </div>
     </div>
+    </PullToRefresh>
   );
 }

@@ -33,7 +33,7 @@ export default function Footer() {
             <span>서울시 공공서비스예약 데이터 기반</span>
           </div>
           <div className="flex items-center justify-center gap-1 flex-wrap">
-            <div className={`flex items-center gap-[clamp(6px,1.5vw,12px)] text-[clamp(10px,2.8vw,12px)] ${themeClass('text-white/60', 'text-gray-400')}`}>
+            <div className={`flex items-center gap-[clamp(6px,1.5vw,12px)] text-[clamp(10px,2.8vw,12px)] ${themeClass('text-white/70', 'text-gray-400')}`}>
               {NAV_LINKS.map((link, i) => (
                 <span key={link.href} className="flex items-center gap-[clamp(6px,1.5vw,12px)]">
                   {i > 0 && <span className={themeClass('text-white/25', 'text-gray-200')}>·</span>}

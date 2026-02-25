@@ -118,7 +118,7 @@ export default function SimilarCourts({
           비슷한 테니스장
         </h2>
         <p className={`text-sm mt-1 ${
-          isNeoBrutalism ? 'text-black/50' : 'text-gray-500'
+          isNeoBrutalism ? 'text-black/60' : 'text-gray-500'
         }`}>
           같은 지역 또는 인근 지역의 다른 테니스장을 확인해보세요
         </p>
@@ -158,7 +158,7 @@ export default function SimilarCourts({
                 </h3>
 
                 <p className={`text-xs truncate mb-3 ${
-                  isNeoBrutalism ? 'text-black/50' : 'text-gray-500'
+                  isNeoBrutalism ? 'text-black/60' : 'text-gray-500'
                 }`}>
                   {court.PLACENM}
                 </p>
@@ -238,7 +238,7 @@ export default function SimilarCourts({
 
         {districtSlug && (
           <div className={`mt-4 pt-4 text-center ${
-            isNeoBrutalism ? 'border-t-2 border-black/10' : 'border-t border-gray-100'
+            isNeoBrutalism ? 'border-t-2 border-black/15' : 'border-t border-gray-100'
           }`}>
             <Link
               href={`/${districtSlug}`}

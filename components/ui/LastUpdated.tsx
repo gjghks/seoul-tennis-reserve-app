@@ -51,7 +51,7 @@ export default function LastUpdated({ timestamp, className = '' }: LastUpdatedPr
 
   return (
     <div
-      className={`flex items-center gap-1.5 text-xs ${themeClass('text-black/50 font-medium', 'text-gray-400')} ${className}`}
+      className={`flex items-center gap-1.5 text-xs ${themeClass('text-black/60 font-medium', 'text-gray-400')} ${className}`}
       title={formatExactTime(timestamp)}
     >
       <svg 

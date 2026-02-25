@@ -137,7 +137,7 @@ export default function MoreMenu({ isOpen, onClose }: MoreMenuProps) {
               <p className={`text-sm font-semibold truncate ${themeClass('text-black', 'text-gray-900')}`}>
                 {user ? '마이페이지' : '로그인'}
               </p>
-              <p className={`text-xs truncate ${themeClass('text-black/50', 'text-gray-500')}`}>
+              <p className={`text-xs truncate ${themeClass('text-black/60', 'text-gray-500')}`}>
                 {user ? myPageItem.description : '로그인하고 더 많은 기능을 이용하세요'}
               </p>
             </div>
@@ -169,7 +169,7 @@ export default function MoreMenu({ isOpen, onClose }: MoreMenuProps) {
                     <p className={`text-sm font-medium ${themeClass('text-black', 'text-gray-900')}`}>
                       {item.label}
                     </p>
-                    <p className={`text-xs ${themeClass('text-black/50', 'text-gray-500')}`}>
+                    <p className={`text-xs ${themeClass('text-black/60', 'text-gray-500')}`}>
                       {item.description}
                     </p>
                   </div>
@@ -178,13 +178,13 @@ export default function MoreMenu({ isOpen, onClose }: MoreMenuProps) {
             })}
           </div>
 
-          <div className={`border-t pt-3 ${themeClass('border-black/10', 'border-gray-100')}`}>
+          <div className={`border-t pt-3 ${themeClass('border-black/15', 'border-gray-100')}`}>
             <div className="flex items-center gap-2">
               <Link
                 href="/about"
                 onClick={onClose}
                 className={`flex-1 text-center px-3 py-2 text-xs transition-colors ${themeClass(
-                  'text-black/50 hover:bg-gray-100 font-medium rounded-[8px]',
+                  'text-black/60 hover:bg-gray-100 font-medium rounded-[8px]',
                   'text-gray-500 hover:bg-gray-50 rounded-lg'
                 )}`}
               >
@@ -194,7 +194,7 @@ export default function MoreMenu({ isOpen, onClose }: MoreMenuProps) {
                 type="button"
                 onClick={() => { toggleTheme(); onClose(); }}
                 className={`flex-1 text-center px-3 py-2 text-xs transition-colors ${themeClass(
-                  'text-black/50 hover:bg-gray-100 font-medium rounded-[8px]',
+                  'text-black/60 hover:bg-gray-100 font-medium rounded-[8px]',
                   'text-gray-500 hover:bg-gray-50 rounded-lg'
                 )}`}
               >

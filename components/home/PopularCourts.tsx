@@ -5,6 +5,7 @@ import useSWR from 'swr';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useThemeClass } from '@/lib/cn';
 import { KOREAN_TO_SLUG } from '@/lib/constants/districts';
+import Skeleton from '@/components/ui/Skeleton';
 
 interface PopularCourt {
   court_id: string;
@@ -81,15 +82,7 @@ export default function PopularCourts() {
   if (isLoading && !data) {
     return (
       <div className="grid grid-cols-1 gap-3">
-        {[1, 2, 3, 4, 5].map(i => (
-          <div
-            key={`popular-skeleton-${i}`}
-            className={themeClass(
-              'h-20 skeleton-neo !rounded-[10px] !border-[3px]',
-              'h-20 skeleton !rounded-xl'
-            )}
-          />
-        ))}
+        <Skeleton variant="card" height={80} count={5} className={themeClass('!rounded-[10px] !border-[3px]', '!rounded-xl')} />
       </div>
     );
   }
@@ -106,7 +99,7 @@ export default function PopularCourts() {
         <h2 className={themeClass('mb-1 text-lg font-black uppercase tracking-tight text-black', 'mb-1 text-base font-semibold text-gray-900')}>
           인기 테니스장 TOP 5
         </h2>
-        <p className={themeClass('text-sm font-medium text-black/60', 'text-sm text-gray-500')}>
+        <p className={themeClass('text-sm font-medium text-black/60 live-indicator', 'text-sm text-gray-500 live-indicator')}>
           예약 경쟁률, 평점, 즐겨찾기를 종합한 실시간 랭킹
         </p>
       </div>
@@ -166,7 +159,7 @@ export default function PopularCourts() {
                     <span className="ml-1">{court.avg_rating.toFixed(1)}</span>
                   </p>
                 ) : (
-                  <p className={themeClass('text-xs font-bold text-black/40', 'text-xs font-medium text-gray-400')}>
+                  <p className={themeClass('text-xs font-bold text-black/60', 'text-xs font-medium text-gray-400')}>
                     평점 없음
                   </p>
                 )}

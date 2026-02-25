@@ -55,11 +55,11 @@ export function ProviderBadge() {
 
   const badgeStyle = provider === 'kakao'
     ? themeClass(
-        'bg-[#FEE500]/40 border-2 border-black/10 text-[#191919]',
+        'bg-[#FEE500]/40 border-2 border-black/15 text-[#191919]',
         'bg-[#FEE500]/30 border border-[#FEE500] text-[#191919]'
       )
     : themeClass(
-        'bg-white border-2 border-black/10 text-gray-700',
+        'bg-white border-2 border-black/15 text-gray-700',
         'bg-gray-50 border border-gray-200 text-gray-600'
       );
 

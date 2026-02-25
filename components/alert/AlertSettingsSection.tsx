@@ -144,7 +144,7 @@ export default function AlertSettingsSection() {
                       {alert.target_name}
                     </p>
                     {href && (
-                      <svg className={`w-4 h-4 shrink-0 ${themeClass('text-black/40', 'text-gray-300')}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <svg className={`w-4 h-4 shrink-0 ${themeClass('text-black/60', 'text-gray-300')}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
                     )}
@@ -162,7 +162,7 @@ export default function AlertSettingsSection() {
                     e.stopPropagation();
                     handleRemoveAlert(alert);
                   }}
-                  className={`shrink-0 p-2 transition-colors ${themeClass('text-black/50 hover:text-red-600', 'text-gray-400 hover:text-red-500')}`}
+                  className={`shrink-0 p-2 transition-colors ${themeClass('text-black/60 hover:text-red-600', 'text-gray-400 hover:text-red-500')}`}
                   aria-label={`${alert.target_name} 알림 삭제`}
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

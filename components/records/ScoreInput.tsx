@@ -163,7 +163,7 @@ export default function ScoreInput({ score, onChange }: ScoreInputProps) {
             {set.tb && (
               <div className={cn(
                 "mt-3 pt-3 border-t flex items-center justify-center gap-3 animate-in fade-in slide-in-from-top-2",
-                themeClass("border-black/10", "border-gray-100")
+                themeClass("border-black/15", "border-gray-100")
               )}>
                 <div className="flex items-center gap-2">
                   <label htmlFor={`${tbId}-my`} className={cn("text-xs", themeClass("font-bold text-black/60", "text-gray-400"))}>TB</label>
@@ -183,7 +183,7 @@ export default function ScoreInput({ score, onChange }: ScoreInputProps) {
                     )}
                     placeholder="0"
                   />
-                  <span className={themeClass("font-bold text-black/40", "text-gray-300")} aria-hidden="true">:</span>
+                  <span className={themeClass("font-bold text-black/60", "text-gray-300")} aria-hidden="true">:</span>
                   <label htmlFor={`${tbId}-opp`} className="sr-only">상대 타이브레이크</label>
                   <input
                     id={`${tbId}-opp`}

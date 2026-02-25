@@ -1,6 +1,9 @@
 'use client';
 
+import { useCallback } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import PullToRefresh from 'react-simple-pull-to-refresh';
 import { useThemeClass } from '@/lib/cn';
 import { AllDistrictStats, DistrictGuideStats, getCompetitionStars } from '@/lib/utils/districtStats';
 import { useInView } from '@/lib/hooks/useInView';
@@ -12,6 +15,12 @@ interface CompareContentProps {
 
 export default function CompareContent({ stats }: CompareContentProps) {
   const themeClass = useThemeClass();
+  const router = useRouter();
+
+  const handleRefresh = useCallback(async () => {
+    router.refresh();
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  }, [router]);
   const { ref: heroRef, inView: heroInView } = useInView();
   const { ref: avgRef, inView: avgInView } = useInView();
   const { ref: topRef, inView: topInView } = useInView();
@@ -26,6 +35,23 @@ export default function CompareContent({ stats }: CompareContentProps) {
   const animAvgCompetition = useCountUp(stats.seoulAverage.competitionRate, avgInView);
 
   return (
+    <PullToRefresh
+      onRefresh={handleRefresh}
+      pullingContent={
+        <div className={`flex items-center justify-center py-4 ${themeClass('text-black font-bold', 'text-green-600')}`}>
+          <span>↓ 당겨서 새로고침</span>
+        </div>
+      }
+      refreshingContent={
+        <div className={`flex items-center justify-center py-4 ${themeClass('text-black font-bold', 'text-green-600')}`}>
+          <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24" aria-hidden="true">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+          </svg>
+          <span>새로고침 중...</span>
+        </div>
+      }
+    >
     <div className={`min-h-screen scrollbar-hide ${themeClass('bg-nb-bg', 'bg-gray-50')}`}>
       <section className={themeClass('court-pattern-nb text-white py-6', 'court-pattern text-white py-6')}>
         <div className="container relative z-10">
@@ -152,11 +178,11 @@ export default function CompareContent({ stats }: CompareContentProps) {
                   <td className="px-3 py-3 text-center">
                     <span className={`font-bold ${d.availableCourts > 0
                       ? themeClass('text-[#16a34a]', 'text-green-600')
-                      : themeClass('text-black/40', 'text-gray-400')
+                      : themeClass('text-black/60', 'text-gray-400')
                     }`}>
                       {d.availableCourts}
                     </span>
-                    <span className={`text-xs ml-1 ${themeClass('text-black/40', 'text-gray-400')}`}>
+                    <span className={`text-xs ml-1 ${themeClass('text-black/60', 'text-gray-400')}`}>
                       ({d.availableRate}%)
                     </span>
                   </td>
@@ -164,7 +190,7 @@ export default function CompareContent({ stats }: CompareContentProps) {
                     <span className={themeClass('text-black', 'text-gray-700')}>
                       {d.freeCourts}
                     </span>
-                    <span className={`text-xs ml-1 ${themeClass('text-black/40', 'text-gray-400')}`}>
+                    <span className={`text-xs ml-1 ${themeClass('text-black/60', 'text-gray-400')}`}>
                       ({d.freeRate}%)
                     </span>
                   </td>
@@ -245,6 +271,7 @@ export default function CompareContent({ stats }: CompareContentProps) {
         </div>
       </section>
     </div>
+    </PullToRefresh>
   );
 }
 

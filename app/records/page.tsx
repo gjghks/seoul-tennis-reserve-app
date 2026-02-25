@@ -122,7 +122,7 @@ export default function RecordsPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
             </button>
-            <p className={`mt-4 text-sm ${themeClass('text-black/50 font-bold', 'text-gray-400')}`}>
+            <p className={`mt-4 text-sm ${themeClass('text-black/60 font-bold', 'text-gray-400')}`}>
               * 카카오 또는 구글 계정으로 3초 만에 시작할 수 있습니다
             </p>
           </div>

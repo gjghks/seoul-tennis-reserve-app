@@ -196,7 +196,7 @@ export default function ParkingSection({ lat, lng, isNeoBrutalism }: ParkingSect
                         </span>
                       </div>
                       <div className={themeClass(
-                        'flex items-center gap-1.5 text-[11px] font-bold text-black/40',
+                        'flex items-center gap-1.5 text-[11px] font-bold text-black/60',
                         'flex items-center gap-1.5 text-[11px] text-gray-400'
                       )}>
                         <span>{formatDistance(p.distance)}</span>
@@ -240,7 +240,7 @@ export default function ParkingSection({ lat, lng, isNeoBrutalism }: ParkingSect
               type="button"
               onClick={() => setShowAll(prev => !prev)}
               className={themeClass(
-                'w-full py-3 text-center text-xs font-black text-black/50 border-t-2 border-black/10 hover:bg-black/5 transition-colors',
+                'w-full py-3 text-center text-xs font-black text-black/60 border-t-2 border-black/15 hover:bg-black/5 transition-colors',
                 'w-full py-3 text-center text-xs text-gray-400 border-t border-gray-100 hover:bg-gray-50 transition-colors'
               )}
             >

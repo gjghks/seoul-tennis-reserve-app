@@ -1,13 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import Link from 'next/link';
+import PullToRefresh from 'react-simple-pull-to-refresh';
 import { useThemeClass, cn } from '@/lib/cn';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useGameRecords } from '@/lib/hooks/useGameRecords';
 import RecordCard from '@/components/records/RecordCard';
 import RecordStats from '@/components/records/RecordStats';
 import EmptyRecords from '@/components/records/EmptyRecords';
+import Skeleton from '@/components/ui/Skeleton';
 
 const PAGE_SIZE = 20;
 
@@ -15,12 +17,35 @@ export default function RecordsContent() {
   const themeClass = useThemeClass();
   const { isNeoBrutalism } = useTheme();
   const [offset, setOffset] = useState(0);
-  const { records, total, isLoading, error } = useGameRecords({ limit: PAGE_SIZE, offset });
+  const { records, total, isLoading, error, mutate } = useGameRecords({ limit: PAGE_SIZE, offset });
 
   const totalPages = Math.ceil(total / PAGE_SIZE);
   const currentPage = Math.floor(offset / PAGE_SIZE) + 1;
 
+  const handleRefresh = useCallback(async () => {
+    await mutate();
+  }, [mutate]);
+
+  const RefreshIndicator = (
+    <div className={`flex items-center justify-center py-4 ${themeClass('text-black font-bold', 'text-green-600')}`}>
+      <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24" aria-hidden="true">
+        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+      </svg>
+      <span>새로고침 중...</span>
+    </div>
+  );
+
   return (
+    <PullToRefresh
+      onRefresh={handleRefresh}
+      pullingContent={
+        <div className={`flex items-center justify-center py-4 ${themeClass('text-black font-bold', 'text-green-600')}`}>
+          <span>↓ 당겨서 새로고침</span>
+        </div>
+      }
+      refreshingContent={RefreshIndicator}
+    >
     <div className={cn('min-h-screen scrollbar-hide', themeClass('bg-nb-bg', 'bg-gray-50'))}>
       <div className="container mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-6">
@@ -56,12 +81,7 @@ export default function RecordsContent() {
 
           {isLoading ? (
             <div className="space-y-3">
-              {['a', 'b', 'c'].map(k => (
-                <div
-                  key={k}
-                  className={cn('h-28', themeClass('skeleton-neo', 'skeleton !rounded-xl'))}
-                />
-              ))}
+              <Skeleton variant="card" height={112} count={3} className={themeClass('', '!rounded-xl')} />
             </div>
           ) : error ? (
             <div className={cn(
@@ -141,5 +161,6 @@ export default function RecordsContent() {
         </svg>
       </Link>
     </div>
+    </PullToRefresh>
   );
 }

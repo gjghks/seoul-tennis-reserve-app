@@ -11,6 +11,8 @@ import { KOREAN_TO_SLUG } from '@/lib/constants/districts';
 import { isCourtAvailable } from '@/lib/utils/courtStatus';
 import { useThemeClass } from '@/lib/cn';
 import FavoriteButton from './FavoriteButton';
+import Skeleton from '@/components/ui/Skeleton';
+import EmptyState from '@/components/ui/EmptyState';
 
 interface FavoriteWithStatus extends Favorite {
   status?: string;
@@ -79,15 +81,12 @@ export default function FavoriteCourtSection() {
     return (
       <section className="container">
         <div className={`${themeClass('bg-white border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000] p-5', 'bg-white rounded-xl p-5 border border-gray-100 shadow-sm')} `}>
-          <div className="flex items-center gap-3 mb-3">
-            <span className="text-2xl">💚</span>
-            <h2 className={`font-bold ${themeClass('text-black uppercase', 'text-gray-900')} `}>
-              내 즐겨찾기
-            </h2>
-          </div>
-          <p className={`${themeClass('text-black/70', 'text-gray-500')} `}>
-            아직 즐겨찾기한 테니스장이 없습니다. 지역을 선택하고 ♡ 버튼을 눌러 추가해보세요!
-          </p>
+          <EmptyState
+            icon="💚"
+            title="내 즐겨찾기"
+            description="아직 즐겨찾기한 테니스장이 없습니다. 지역을 선택하고 ♡ 버튼을 눌러 추가해보세요!"
+            size="sm"
+          />
         </div>
       </section>
     );
@@ -108,12 +107,9 @@ export default function FavoriteCourtSection() {
 
       {statusLoading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" aria-busy="true">
-          {[1, 2, 3].map(i => (
-            <div 
-              key={`fav-skeleton-${i}`}
-              className={`h-24 ${themeClass('skeleton-neo !rounded-[10px] !border-[3px]', 'skeleton !rounded-xl')} `}
-            />
-          ))}
+          <Skeleton variant="card" height={96} />
+          <Skeleton variant="card" height={96} />
+          <Skeleton variant="card" height={96} />
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

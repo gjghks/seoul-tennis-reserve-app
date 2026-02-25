@@ -147,14 +147,14 @@ export default function HeatmapChart({ data }: HeatmapChartProps) {
           <span className={themeClass('text-black', 'text-green-700 font-semibold')}>
             {selectedCell.avgBookingRate}%
           </span>
-          <span className={`ml-2 text-xs ${themeClass('text-black/50', 'text-gray-400')}`}>
+          <span className={`ml-2 text-xs ${themeClass('text-black/60', 'text-gray-400')}`}>
             (데이터 {selectedCell.sampleCount}건)
           </span>
         </div>
       )}
 
       <div className="flex items-center gap-2 justify-center">
-        <span className={`text-[10px] ${themeClass('text-black/50 font-bold', 'text-gray-400')}`}>여유</span>
+        <span className={`text-[10px] ${themeClass('text-black/60 font-bold', 'text-gray-400')}`}>여유</span>
         {[
           { neo: 'bg-[#a3e635]', min: 'bg-green-200' },
           { neo: 'bg-[#facc15]', min: 'bg-yellow-200' },
@@ -168,7 +168,7 @@ export default function HeatmapChart({ data }: HeatmapChartProps) {
             )}`}
           />
         ))}
-        <span className={`text-[10px] ${themeClass('text-black/50 font-bold', 'text-gray-400')}`}>치열</span>
+        <span className={`text-[10px] ${themeClass('text-black/60 font-bold', 'text-gray-400')}`}>치열</span>
       </div>
     </div>
   );

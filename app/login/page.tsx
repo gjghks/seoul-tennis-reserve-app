@@ -171,7 +171,7 @@ function LoginContent() {
         </div>
 
         <div className={themeClass(
-          'bg-[#FEE500]/20 border-2 border-black/10 rounded-[5px] p-3 mt-6',
+          'bg-[#FEE500]/20 border-2 border-black/15 rounded-[5px] p-3 mt-6',
           'bg-amber-50 border border-amber-100 rounded-lg p-3 mt-6'
         )}>
           <p className={`text-xs text-center ${themeClass('text-black/60 font-medium', 'text-amber-700')}`}>
@@ -180,7 +180,7 @@ function LoginContent() {
           </p>
         </div>
 
-        <p className={`text-center text-xs mt-4 ${themeClass('text-black/50 font-medium', 'text-gray-400')}`}>
+        <p className={`text-center text-xs mt-4 ${themeClass('text-black/60 font-medium', 'text-gray-400')}`}>
           로그인 시 <Link href="/terms" className="underline">이용약관</Link> 및 <Link href="/privacy" className="underline">개인정보처리방침</Link>에 동의하게 됩니다.
         </p>
       </div>

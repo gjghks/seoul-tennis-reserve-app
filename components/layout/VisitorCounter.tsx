@@ -42,9 +42,9 @@ export default function VisitorCounter() {
 
   return (
     <div className={`flex items-center justify-center gap-3 text-[clamp(10px,2.5vw,12px)] ${themeClass('text-white/40', 'text-gray-300')}`}>
-      <span>오늘 <strong className={themeClass('text-white/60', 'text-gray-400')}>{formatNumber(counts.today)}</strong></span>
+      <span>오늘 <strong className={themeClass('text-white/70', 'text-gray-400')}>{formatNumber(counts.today)}</strong></span>
       <span className={themeClass('text-white/20', 'text-gray-200')}>·</span>
-      <span>전체 <strong className={themeClass('text-white/60', 'text-gray-400')}>{formatNumber(counts.total)}</strong></span>
+      <span>전체 <strong className={themeClass('text-white/70', 'text-gray-400')}>{formatNumber(counts.total)}</strong></span>
     </div>
   );
 }

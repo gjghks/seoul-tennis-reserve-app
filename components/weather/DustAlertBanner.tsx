@@ -114,27 +114,27 @@ export default function DustAlertBanner() {
             `border-t pt-2.5 ${isGyeongbo ? 'border-red-200/60' : 'border-orange-200/60'}`
           )}>
             <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-[11px]">
-              <dt className={themeClass('font-black text-black/50', 'font-medium text-current/50')}>발령</dt>
+              <dt className={themeClass('font-black text-black/60', 'font-medium text-current/50')}>발령</dt>
               <dd className={themeClass('font-bold', 'font-medium')}>
                 {primaryAlert.issueDate} {primaryAlert.issueTime}
               </dd>
 
-              <dt className={themeClass('font-black text-black/50', 'font-medium text-current/50')}>지역</dt>
+              <dt className={themeClass('font-black text-black/60', 'font-medium text-current/50')}>지역</dt>
               <dd className={themeClass('font-bold', 'font-medium')}>
                 {primaryAlert.districtName} · {primaryAlert.moveName}
               </dd>
 
-              <dt className={themeClass('font-black text-black/50', 'font-medium text-current/50')}>항목</dt>
+              <dt className={themeClass('font-black text-black/60', 'font-medium text-current/50')}>항목</dt>
               <dd className={themeClass('font-bold', 'font-medium')}>
                 {formatItemCode(primaryAlert.itemCode)}
               </dd>
 
-              <dt className={themeClass('font-black text-black/50', 'font-medium text-current/50')}>경보단계</dt>
+              <dt className={themeClass('font-black text-black/60', 'font-medium text-current/50')}>경보단계</dt>
               <dd className={themeClass('font-bold', 'font-medium')}>
                 {primaryAlert.issueGbn} (농도: {primaryAlert.issueVal}㎍/㎥)
               </dd>
 
-              <dt className={themeClass('font-black text-black/50', 'font-medium text-current/50')}>해제</dt>
+              <dt className={themeClass('font-black text-black/60', 'font-medium text-current/50')}>해제</dt>
               <dd className={themeClass('font-bold', 'font-medium')}>
                 {formatClearStatus(primaryAlert)}
               </dd>

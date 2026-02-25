@@ -134,7 +134,7 @@ export default function InstallPrompt() {
               type="button"
               onClick={handleDismiss}
               className={`text-sm ${themeClass(
-                'text-black/50 font-bold hover:text-black/80',
+                'text-black/60 font-bold hover:text-black/80',
                 'text-gray-400 hover:text-gray-600'
               )} transition-colors`}
             >

@@ -1,11 +1,12 @@
 'use client';
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { useTheme } from '@/contexts/ThemeContext';
 import { useThemeClass } from '@/lib/cn';
+
 import ReviewForm from './ReviewForm';
 import ReviewList, { Review } from './ReviewList';
 import RatingDistribution from './RatingDistribution';
+import Skeleton from '@/components/ui/Skeleton';
 
 interface ReviewSectionProps {
   courtId: string;
@@ -14,7 +15,6 @@ interface ReviewSectionProps {
 }
 
 export default function ReviewSection({ courtId, courtName, district }: ReviewSectionProps) {
-  const { isNeoBrutalism } = useTheme();
   const themeClass = useThemeClass();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
@@ -79,7 +79,7 @@ export default function ReviewSection({ courtId, courtName, district }: ReviewSe
                 <span className={themeClass('font-black text-black', 'font-bold text-gray-900')}>
                   {averageRating}
                 </span>
-                <span className={`text-sm ${themeClass('text-black/50', 'text-gray-400')} `}>
+                <span className={`text-sm ${themeClass('text-black/60', 'text-gray-400')} `}>
                   ({reviews.length}개)
                 </span>
               </div>
@@ -114,16 +114,9 @@ export default function ReviewSection({ courtId, courtName, district }: ReviewSe
 
         {loading ? (
           <div className="space-y-4">
-            {[1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className={`h-24 ${
-                  isNeoBrutalism
-                    ? 'skeleton-neo'
-                    : 'skeleton !rounded-xl'
-                }`}
-              />
-            ))}
+            <Skeleton variant="card" height={96} />
+            <Skeleton variant="card" height={96} />
+            <Skeleton variant="card" height={96} />
           </div>
         ) : fetchError ? (
           <div className={`p-6 text-center ${themeClass('bg-gray-100 border-2 border-black rounded-[5px]', 'bg-gray-50 rounded-xl')}`}>

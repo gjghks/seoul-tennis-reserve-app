@@ -20,12 +20,14 @@ const DistrictCard = memo(function DistrictCard({
   district,
   stats,
   loading,
-  isNeoBrutalism
+  isNeoBrutalism,
+  index,
 }: {
   district: District;
   stats?: DistrictStats;
   loading?: boolean;
   isNeoBrutalism: boolean;
+  index: number;
 }) {
   const available = stats?.available || 0;
   const total = stats?.count || 0;
@@ -37,16 +39,17 @@ const DistrictCard = memo(function DistrictCard({
       <Link
         href={`/${district.slug}`}
         className={`
-          flex items-center px-3 py-[16px] border-2 border-black rounded-[5px] 
+          stagger-item flex items-center px-3 py-[16px] border-2 border-black rounded-[5px] 
           shadow-[2px_2px_0px_0px_#000] sm:shadow-[3px_3px_0px_0px_#000]
           transition-all duration-150 active:scale-[0.98]
           hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none
           sm:hover:translate-x-[3px] sm:hover:translate-y-[3px]
           ${bgColor}
         `}
+        style={{ animationDelay: `${index * 30}ms` } as React.CSSProperties}
       >
         <div className="w-full flex items-center justify-between gap-2">
-          <h3 className={`font-bold text-sm sm:text-base uppercase tracking-tight truncate ${total === 0 ? 'text-black/50' : 'text-black'}`}>
+          <h3 className={`font-bold text-sm sm:text-base uppercase tracking-tight truncate ${total === 0 ? 'text-black/60' : 'text-black'}`}>
             {district.nameKo}
           </h3>
           {loading ? (
@@ -56,11 +59,11 @@ const DistrictCard = memo(function DistrictCard({
               {available}
             </span>
           ) : total > 0 ? (
-            <span className="text-[10px] sm:text-xs font-bold text-black/50 uppercase shrink-0">
+            <span className="text-[10px] sm:text-xs font-bold text-black/60 uppercase shrink-0">
               마감
             </span>
           ) : (
-            <span className="text-[10px] sm:text-xs font-bold text-black/40 uppercase shrink-0">
+            <span className="text-[10px] sm:text-xs font-bold text-black/60 uppercase shrink-0">
               -
             </span>
           )}
@@ -72,7 +75,8 @@ const DistrictCard = memo(function DistrictCard({
   return (
     <Link
       href={`/${district.slug}`}
-      className={`card flex items-center px-3 py-[16px] hover:shadow-md transition-all group active:scale-[0.98] ${total === 0 ? 'bg-gray-50' : ''}`}
+      className={`stagger-item card flex items-center px-3 py-[16px] hover:shadow-md transition-all group active:scale-[0.98] ${total === 0 ? 'bg-gray-50' : ''}`}
+      style={{ animationDelay: `${index * 30}ms` } as React.CSSProperties}
     >
       <div className="w-full flex items-center justify-between gap-2">
         <h3 className={`font-medium text-sm sm:text-base transition-colors truncate ${total === 0 ? 'text-gray-400' : 'text-gray-900 group-hover:text-green-600'}`}>
@@ -147,13 +151,14 @@ export default function DistrictGrid({ stats, loading }: DistrictGridProps) {
 
   return (
     <div className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 ${themeClass('gap-3.5', 'gap-3')} `}>
-      {sortedDistricts.map((district) => (
+      {sortedDistricts.map((district, index) => (
         <DistrictCard
           key={district.slug}
           district={district}
           stats={stats?.[district.nameKo]}
           loading={false}
           isNeoBrutalism={isNeoBrutalism}
+          index={index}
         />
       ))}
     </div>

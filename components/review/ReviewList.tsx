@@ -7,6 +7,7 @@ import { useToast } from '@/contexts/ToastContext';
 import { supabase } from '@/lib/supabase';
 import { useThemeClass } from '@/lib/cn';
 import ReviewForm from './ReviewForm';
+import EmptyState from '@/components/ui/EmptyState';
 
 export interface Review {
   id: string;
@@ -248,13 +249,13 @@ export default function ReviewList({ reviews, onReviewDeleted }: ReviewListProps
 
   if (reviews.length === 0) {
     return (
-      <div className={`p-8 text-center ${themeClass('bg-gray-100 border-2 border-black rounded-[5px]', 'bg-gray-50 rounded-xl')} `}>
-        <p className={themeClass('text-black/60 font-medium', 'text-gray-400')}>
-          아직 작성된 후기가 없습니다.
-        </p>
-        <p className={`mt-1 text-sm ${themeClass('text-black/40', 'text-gray-300')} `}>
-          첫 번째 후기를 작성해보세요!
-        </p>
+      <div className={`${themeClass('bg-gray-100 border-2 border-black rounded-[5px]', 'bg-gray-50 rounded-xl')} `}>
+        <EmptyState
+          icon="💬"
+          title="아직 후기가 없습니다"
+          description="첫 번째 후기를 작성해 보세요!"
+          size="sm"
+        />
       </div>
     );
   }
@@ -282,7 +283,7 @@ export default function ReviewList({ reviews, onReviewDeleted }: ReviewListProps
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-2">
                     <StarRating rating={review.rating} />
-                    <span className={`text-sm ${themeClass('text-black/50 font-medium', 'text-gray-400')} `}>
+                    <span className={`text-sm ${themeClass('text-black/60 font-medium', 'text-gray-400')} `}>
                       {formatDate(review.created_at)}
                       {isEditedReview(review) && (
                         <span className={themeClass('ml-1 text-black/60 font-bold', 'ml-1 text-green-600 font-medium')}>

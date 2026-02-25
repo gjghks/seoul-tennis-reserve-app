@@ -61,7 +61,7 @@ export default function OpponentHistory({ opponents }: OpponentHistoryProps) {
                 <div
                   key={`${opponent.name}-${opponent.lastPlayed}-${index}`}
                   className={cn(
-                    themeClass('border-b-2 border-black/10 py-3', 'border-b border-gray-100 py-3'),
+                    themeClass('border-b-2 border-black/15 py-3', 'border-b border-gray-100 py-3'),
                     index === visibleOpponents.length - 1 && 'border-b-0 pb-1'
                   )}
                 >

@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
+import PullToRefresh from 'react-simple-pull-to-refresh';
 import useSWR from 'swr';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useThemeClass } from '@/lib/cn';
@@ -86,23 +87,44 @@ export default function TrendsContent() {
   const themeClass = useThemeClass();
   const [days, setDays] = useState<number>(7);
 
-  const { data, error, isLoading } = useSWR<TrendsData>(
+  const { data, error, isLoading, mutate } = useSWR<TrendsData>(
     `/api/trends?days=${days}`,
     fetcher,
     { revalidateOnFocus: false }
   );
 
-  const { data: heatmapData } = useSWR<HeatmapData>(
+  const { data: heatmapData, mutate: mutateHeatmap } = useSWR<HeatmapData>(
     `/api/trends?analysis=heatmap&days=${days}`,
     fetcher,
     { revalidateOnFocus: false }
   );
+
+  const handleRefresh = useCallback(async () => {
+    await Promise.all([mutate(), mutateHeatmap()]);
+  }, [mutate, mutateHeatmap]);
 
   const cardClass = isNeoBrutalism
     ? 'bg-white border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000]'
     : 'bg-white rounded-2xl border border-gray-100';
 
   return (
+    <PullToRefresh
+      onRefresh={handleRefresh}
+      pullingContent={
+        <div className={`flex items-center justify-center py-4 ${themeClass('text-black font-bold', 'text-green-600')}`}>
+          <span>↓ 당겨서 새로고침</span>
+        </div>
+      }
+      refreshingContent={
+        <div className={`flex items-center justify-center py-4 ${themeClass('text-black font-bold', 'text-green-600')}`}>
+          <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24" aria-hidden="true">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+          </svg>
+          <span>새로고침 중...</span>
+        </div>
+      }
+    >
     <div className={`min-h-screen ${themeClass('bg-nb-bg', 'bg-gray-50')}`}>
       <div className="container py-8 max-w-4xl">
         <div className="mb-8">
@@ -289,6 +311,7 @@ export default function TrendsContent() {
         )}
       </div>
     </div>
+    </PullToRefresh>
   );
 }
 
@@ -322,7 +345,7 @@ function TrendsKPI({
     <div ref={ref} className="grid grid-cols-3 gap-3 mb-6">
       {items.map((item) => (
         <div key={item.label} className={`${cardClass} p-4 text-center`}>
-          <p className={`text-xs mb-1 ${themeClass('text-black/50 font-bold uppercase', 'text-gray-400')}`}>{item.label}</p>
+          <p className={`text-xs mb-1 ${themeClass('text-black/60 font-bold uppercase', 'text-gray-400')}`}>{item.label}</p>
           <p className={`text-xl ${themeClass('font-black text-black', 'font-bold text-gray-900')}`}>{item.value}{item.unit}</p>
         </div>
       ))}
@@ -344,7 +367,7 @@ function DistrictBars({
   return (
     <div ref={ref} className="p-5 space-y-3">
       {rates.length === 0 ? (
-        <p className={`text-center py-8 ${themeClass('text-black/40', 'text-gray-400')}`}>
+        <p className={`text-center py-8 ${themeClass('text-black/60', 'text-gray-400')}`}>
           아직 수집된 데이터가 없습니다.
         </p>
       ) : (
@@ -359,7 +382,7 @@ function DistrictBars({
               <span className={`w-16 text-xs text-right shrink-0 ${themeClass('font-bold text-black', 'font-medium text-gray-700')}`}>
                 {rate.district.replace(/구$/, '')}
               </span>
-              <div className={`flex-1 h-7 rounded-full overflow-hidden ${themeClass('border border-black/10 bg-white', 'bg-gray-100')}`}>
+              <div className={`flex-1 h-7 rounded-full overflow-hidden ${themeClass('border border-black/15 bg-white', 'bg-gray-100')}`}>
                 <div
                   className={`h-full rounded-full ${getBarColor(rate.bookingRate, isNeoBrutalism)} ${inView ? 'anim-bar-x' : 'scale-x-0'}`}
                   style={{
@@ -386,7 +409,7 @@ function TrendTimeline({ trends, isNeoBrutalism }: { trends: DailyTrend[]; isNeo
   const timeline = trends.slice(-30);
 
   if (timeline.length < 2) {
-    return <p className={isNeoBrutalism ? 'text-black/40' : 'text-gray-400'}>데이터가 충분하지 않습니다.</p>;
+    return <p className={isNeoBrutalism ? 'text-black/60' : 'text-gray-400'}>데이터가 충분하지 않습니다.</p>;
   }
 
   const maxRate = Math.max(...timeline.map(t => t.booking_rate), 100);
@@ -417,7 +440,7 @@ function TrendTimeline({ trends, isNeoBrutalism }: { trends: DailyTrend[]; isNeo
                 }}
               />
               {i % Math.max(1, Math.floor(timeline.length / 7)) === 0 && (
-                <span className={`text-[9px] leading-none mt-0.5 whitespace-nowrap ${isNeoBrutalism ? 'text-black/40' : 'text-gray-400'}`}>
+                <span className={`text-[9px] leading-none mt-0.5 whitespace-nowrap ${isNeoBrutalism ? 'text-black/60' : 'text-gray-400'}`}>
                   {label}
                 </span>
               )}
