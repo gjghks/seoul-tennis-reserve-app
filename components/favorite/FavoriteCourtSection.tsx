@@ -57,21 +57,53 @@ export default function FavoriteCourtSection() {
     return (
       <section className="container">
         <div className={`${themeClass('bg-[#fef3c7] border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000] p-5', 'bg-amber-50 rounded-xl p-5 border border-amber-100')} `}>
-          <div className="flex items-center gap-3 mb-3">
-            <span className="text-2xl">{isNeoBrutalism ? '⭐' : '💡'}</span>
-            <h2 className={`font-bold ${themeClass('text-black uppercase', 'text-gray-900')} `}>
-              즐겨찾기 기능
-            </h2>
+          <div className="flex items-start gap-4">
+            <svg
+              className={themeClass('w-12 h-12 shrink-0 mt-0.5', 'w-10 h-10 shrink-0 mt-0.5')}
+              viewBox="0 0 48 48"
+              fill="none"
+              aria-hidden="true"
+            >
+              {/* outer heart pulse */}
+              <path
+                d="M24 42s-18-10.2-18-22.8C6 12.36 11.16 8 17.4 8c3.48 0 5.64 1.8 6.6 3.6C24.96 9.8 27.12 8 30.6 8 36.84 8 42 12.36 42 19.2 42 31.8 24 42 24 42z"
+                className={themeClass('fill-[#facc15]/30 stroke-black stroke-[2.5]', 'fill-amber-200/50 stroke-amber-400 stroke-[1.5]')}
+                style={{ animation: 'fav-pulse 2s ease-in-out infinite' }}
+              />
+              {/* inner heart */}
+              <path
+                d="M24 36s-12-7-12-15.6C12 15.6 15.24 13 18.6 13c2.04 0 3.72 1.08 5.4 3 1.68-1.92 3.36-3 5.4-3C32.76 13 36 15.6 36 20.4 36 29 24 36 24 36z"
+                className={themeClass('fill-[#facc15] stroke-black stroke-[2]', 'fill-amber-400 stroke-amber-500 stroke-[1]')}
+                style={{ animation: 'fav-beat 2s ease-in-out infinite', transformOrigin: 'center' }}
+              />
+              {/* sparkle top-right */}
+              <circle
+                cx="38" cy="12" r="2"
+                className={themeClass('fill-black', 'fill-amber-400')}
+                style={{ animation: 'fav-sparkle 2s ease-in-out infinite' }}
+              />
+              {/* sparkle left */}
+              <circle
+                cx="10" cy="16" r="1.5"
+                className={themeClass('fill-black', 'fill-amber-300')}
+                style={{ animation: 'fav-sparkle 2s ease-in-out infinite 0.5s' }}
+              />
+            </svg>
+            <div>
+              <h2 className={`font-bold mb-2 ${themeClass('text-black uppercase', 'text-gray-900')} `}>
+                즐겨찾기 기능
+              </h2>
+              <p className={`mb-4 ${themeClass('text-sm text-black/80', 'text-sm text-gray-600')} `}>
+                로그인하면 자주 이용하는 테니스장을 즐겨찾기에 추가하고 예약 현황을 빠르게 확인할 수 있어요.
+              </p>
+              <Link
+                href={loginUrl}
+                className={`inline-block ${themeClass('bg-black text-[#facc15] font-bold px-4 py-2 rounded-[5px] border-2 border-black shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all', 'bg-amber-500 text-white px-4 py-2 rounded-lg hover:bg-amber-600 transition-colors')}`}
+              >
+                로그인하기
+              </Link>
+            </div>
           </div>
-          <p className={`mb-4 ${themeClass('text-black/80', 'text-gray-600')} `}>
-            로그인하면 자주 이용하는 테니스장을 즐겨찾기에 추가하고 예약 현황을 빠르게 확인할 수 있어요.
-          </p>
-          <Link
-            href={loginUrl}
-            className={`inline-block ${themeClass('bg-black text-[#facc15] font-bold px-4 py-2 rounded-[5px] border-2 border-black shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all', 'bg-amber-500 text-white px-4 py-2 rounded-lg hover:bg-amber-600 transition-colors')}`}
-          >
-            로그인하기
-          </Link>
         </div>
       </section>
     );

@@ -173,6 +173,16 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
         </div>
       )}
 
+      {!showFavoritesAbove && (
+        <div className="pt-2 pb-4 lg:pt-1 lg:pb-3">
+          <FavoriteCourtSection />
+        </div>
+      )}
+
+      <div className="pb-4 lg:pb-3">
+        <PopularCourts />
+      </div>
+
       <section className="container pt-4 pb-6 lg:pt-3 lg:pb-4 flex-1 flex flex-col">
         <div className="mb-4 lg:mb-3">
           <div className="flex items-center gap-1.5 mb-2">
@@ -208,16 +218,6 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
           <AdBanner adSlot={AD_SLOTS.HOME_TOP} adFormat="horizontal" className="min-h-[90px]" />
         </div>
       )}
-
-      {!showFavoritesAbove && (
-        <div className="pt-2 pb-6 lg:pt-1 lg:pb-4">
-          <FavoriteCourtSection />
-        </div>
-      )}
-
-      <div className="pb-6 lg:pb-4">
-        <PopularCourts />
-      </div>
 
       <div className="pb-4 lg:pb-3 sm:hidden">
         <DiscoveryCards />
