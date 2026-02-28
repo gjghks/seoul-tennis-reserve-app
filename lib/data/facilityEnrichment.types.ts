@@ -36,4 +36,7 @@ export interface FacilityEnrichment {
   lighting: LightingInfo | null;
   spectatorSeats: number | null;
   renovation: string | null;
+  /** Optional coordinate override — used when Seoul API returns empty X/Y */
+  longitude?: number;
+  latitude?: number;
 }

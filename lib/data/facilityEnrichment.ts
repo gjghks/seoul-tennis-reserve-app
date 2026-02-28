@@ -154,6 +154,20 @@ export function getFacilitiesByDistrict(district: string): FacilityEnrichment[] 
   return indexByDistrict.get(district) ?? [];
 }
 
+/**
+ * Get coordinate fallback from enrichment data when Seoul API returns empty X/Y.
+ * Returns { longitude, latitude } or null if enrichment has no coordinates.
+ */
+export function getEnrichmentCoordinates(
+  svcnm: string,
+  areanm: string,
+  placenm?: string
+): { longitude: number; latitude: number } | null {
+  const enrichment = findEnrichment(svcnm, areanm, placenm);
+  if (!enrichment?.longitude || !enrichment?.latitude) return null;
+  return { longitude: enrichment.longitude, latitude: enrichment.latitude };
+}
+
 export const SURFACE_LABELS: Record<SurfaceCategory, string> = {
   clay: '클레이',
   artificial_grass: '인조잔디',

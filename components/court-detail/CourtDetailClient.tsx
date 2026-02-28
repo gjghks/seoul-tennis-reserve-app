@@ -18,7 +18,7 @@ import { AD_SLOTS } from '@/lib/adConfig';
 import { useThemeClass } from '@/lib/cn';
 import FacilityTags from '@/components/ui/FacilityTags';
 import { extractFacilityTags } from '@/lib/utils/facilityTags';
-import { findEnrichment } from '@/lib/data/facilityEnrichment';
+import { findEnrichment, getEnrichmentCoordinates } from '@/lib/data/facilityEnrichment';
 import { convertToWeatherGrid } from '@/lib/utils/weatherGrid';
 import WeatherInfoCard from '@/components/weather/WeatherInfoCard';
 import { useRecentCourts } from '@/lib/hooks/useRecentCourts';
@@ -102,23 +102,36 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
   const canReserve = isAvailable || isExternal;
   const facilityTags = extractFacilityTags(court);
   const enrichment = useMemo(() => findEnrichment(court.SVCNM, court.AREANM, court.PLACENM), [court.SVCNM, court.AREANM, court.PLACENM]);
+  const enrichmentCoords = useMemo(() => getEnrichmentCoordinates(court.SVCNM, court.AREANM, court.PLACENM), [court.SVCNM, court.AREANM, court.PLACENM]);
+
   const weatherGrid = useMemo(() => {
-    const longitude = Number.parseFloat(court.X);
-    const latitude = Number.parseFloat(court.Y);
+    let longitude = Number.parseFloat(court.X);
+    let latitude = Number.parseFloat(court.Y);
 
     if (!Number.isFinite(longitude) || !Number.isFinite(latitude)) {
-      return null;
+      if (enrichmentCoords) {
+        longitude = enrichmentCoords.longitude;
+        latitude = enrichmentCoords.latitude;
+      } else {
+        return null;
+      }
     }
 
     return convertToWeatherGrid(longitude, latitude);
-  }, [court.X, court.Y]);
+  }, [court.X, court.Y, enrichmentCoords]);
 
   const courtCoords = useMemo(() => {
     const lng = Number.parseFloat(court.X);
     const lat = Number.parseFloat(court.Y);
-    if (!Number.isFinite(lng) || !Number.isFinite(lat) || lng === 0 || lat === 0) return null;
-    return { lat, lng };
-  }, [court.X, court.Y]);
+    if (Number.isFinite(lng) && Number.isFinite(lat) && lng !== 0 && lat !== 0) {
+      return { lat, lng };
+    }
+    // Fallback to enrichment coordinates when Seoul API returns empty X/Y
+    if (enrichmentCoords) {
+      return { lat: enrichmentCoords.latitude, lng: enrichmentCoords.longitude };
+    }
+    return null;
+  }, [court.X, court.Y, enrichmentCoords]);
 
   const scrollToMap = () => {
     mapRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });

@@ -17,7 +17,7 @@ import { extractFacilityTags } from '@/lib/utils/facilityTags';
 import { convertToWeatherGrid } from '@/lib/utils/weatherGrid';
 import WeatherBadge from '@/components/weather/WeatherBadge';
 import { isCourtAvailable, isCourtAccepting, sortByAvailability } from '@/lib/utils/courtStatus';
-import { findEnrichment } from '@/lib/data/facilityEnrichment';
+import { findEnrichment, getEnrichmentCoordinates } from '@/lib/data/facilityEnrichment';
 import type { SurfaceCategory } from '@/lib/data/facilityEnrichment';
 import { useReservationTip } from '@/lib/hooks/useReservationTip';
 import ReservationNotice from '@/components/reservation/ReservationNotice';
@@ -110,6 +110,18 @@ export default function DistrictContent({
     }
     return result;
   }, [courts, showAvailableOnly, surfaceFilter]);
+
+  // Patch courts with enrichment coordinates for the map when Seoul API returns empty X/Y
+  const mapCourts = useMemo(() => {
+    return filteredCourts.map(court => {
+      if (court.X && court.Y && parseFloat(court.X) !== 0 && parseFloat(court.Y) !== 0) {
+        return court;
+      }
+      const coords = getEnrichmentCoordinates(court.SVCNM, court.AREANM, court.PLACENM);
+      if (!coords) return court;
+      return { ...court, X: String(coords.longitude), Y: String(coords.latitude) };
+    });
+  }, [filteredCourts]);
 
   const groupedCourts = useMemo(() => {
     const groups: Record<string, SeoulService[]> = {};
@@ -277,7 +289,7 @@ export default function DistrictContent({
 
       {viewMode === 'map' && !loading && filteredCourts.length > 0 && (
         <div ref={mapContainerRef} className="container mb-4">
-          <KakaoMapView courts={filteredCourts} district={district} focusPlaceName={focusPlaceName} onPlaceSelect={handleMapPlaceSelect} />
+          <KakaoMapView courts={mapCourts} district={district} focusPlaceName={focusPlaceName} onPlaceSelect={handleMapPlaceSelect} />
         </div>
       )}
 

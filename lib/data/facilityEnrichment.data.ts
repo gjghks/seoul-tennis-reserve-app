@@ -64,7 +64,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "facilityName": "손기정체육공원 테니스장",
     "normalizedName": "손기정체육공원",
     "district": "중구",
-    "address": null,
+    "address": "서울 중구 만리동2가 10-82",
     "courtCount": 2,
     "surfaces": [
       {
@@ -79,12 +79,14 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "builtYear": null,
     "owner": "중구",
     "manager": "중구 시설관리공단",
-    "contact": null,
+    "contact": "중구시설관리공단",
     "website": null,
     "indoorOutdoor": null,
     "lighting": null,
     "spectatorSeats": 16,
-    "renovation": null
+    "renovation": null,
+    "longitude": 126.9650,
+    "latitude": 37.5553
   },
   {
     "facilityName": "한강시민공원 이촌지구 테니스장",
