@@ -16,7 +16,7 @@ import FacilityTags from '@/components/ui/FacilityTags';
 import { extractFacilityTags } from '@/lib/utils/facilityTags';
 import { convertToWeatherGrid } from '@/lib/utils/weatherGrid';
 import WeatherBadge from '@/components/weather/WeatherBadge';
-import { isCourtAvailable, isCourtAccepting, isExternalReservation, sortByAvailability } from '@/lib/utils/courtStatus';
+import { isCourtAvailable, isCourtAccepting, sortByAvailability } from '@/lib/utils/courtStatus';
 import { findEnrichment } from '@/lib/data/facilityEnrichment';
 import type { SurfaceCategory } from '@/lib/data/facilityEnrichment';
 import { useReservationTip } from '@/lib/hooks/useReservationTip';
@@ -93,7 +93,11 @@ export default function DistrictContent({
   const filteredCourts = useMemo(() => {
     let result = courts;
     if (showAvailableOnly) {
-      result = result.filter(court => isCourtAccepting(court.SVCSTATNM));
+      result = result.filter(
+        court =>
+          isCourtAccepting(court.SVCSTATNM) ||
+          isIndependentCourt(court.SVCID)
+      );
     }
     if (surfaceFilter !== 'all') {
       result = result.filter(court => {
@@ -404,8 +408,8 @@ export default function DistrictContent({
                   <div className="grid gap-3">
                     {placeCourts.map((court) => {
                       const isAvailable = isCourtAvailable(court.SVCSTATNM);
-                      const isExternal = isExternalReservation(court.SVCSTATNM);
                       const isIndependent = isIndependentCourt(court.SVCID);
+                      const isExternal = isIndependent;
                       const showReservationLink = (isAvailable || isExternal) && Boolean(court.SVCURL);
                       const facilityTags = extractFacilityTags(court).filter(tag => tag.key !== 'free' && tag.key !== 'paid');
                       

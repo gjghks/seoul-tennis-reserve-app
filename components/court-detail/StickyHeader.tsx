@@ -2,7 +2,7 @@
 
 import { SeoulService } from '@/lib/seoulApi';
 import { cn } from '@/lib/cn';
-import { isExternalReservation } from '@/lib/utils/courtStatus';
+import { isIndependentCourt } from '@/lib/data/independentCourts';
 
 function StickyHeader({ 
   court, 
@@ -19,7 +19,7 @@ function StickyHeader({
 }) {
   if (!isVisible) return null;
 
-  const isExternal = isExternalReservation(court.SVCSTATNM);
+  const isExternal = isIndependentCourt(court.SVCID);
   const canReserve = isAvailable || isExternal;
 
   return (

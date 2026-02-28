@@ -11,13 +11,17 @@ import { useState } from 'react';
 
 interface TodayContentProps {
   courts: Record<string, SeoulService[]>;
+  externalCourts: Record<string, SeoulService[]>;
   totalAvailable: number;
+  totalExternal: number;
   totalDistricts: number;
 }
 
 export default function TodayContent({
   courts,
+  externalCourts,
   totalAvailable,
+  totalExternal,
   totalDistricts,
 }: TodayContentProps) {
   const themeClass = useThemeClass();
@@ -46,6 +50,7 @@ export default function TodayContent({
   const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
 
   const sortedDistricts = Object.keys(courts).sort();
+  const sortedExternalDistricts = Object.keys(externalCourts).sort();
 
   return (
     <PullToRefresh
@@ -99,6 +104,17 @@ export default function TodayContent({
                 {totalAvailable}
               </div>
               <div className="text-xs text-white/70">예약 가능</div>
+            </div>
+            <div
+              className={`px-4 py-2 rounded-lg ${themeClass(
+                'bg-black/20 border-2 border-white/30',
+                'bg-white/10 backdrop-blur-sm'
+              )}`}
+            >
+              <div className={`text-2xl font-bold ${themeClass('text-[#93c5fd]', 'text-white')}`}>
+                {totalExternal}
+              </div>
+              <div className="text-xs text-white/70">외부 예약</div>
             </div>
             <div
               className={`px-4 py-2 rounded-lg ${themeClass(
@@ -258,6 +274,103 @@ export default function TodayContent({
               })}
             </div>
           </>
+        )}
+
+        {sortedExternalDistricts.length > 0 && (
+          <div className="mt-8">
+            <h2
+              className={`text-xl mb-2 ${themeClass(
+                'font-black text-black uppercase tracking-tight',
+                'font-bold text-gray-900'
+              )}`}
+            >
+              외부 예약 가능한 테니스장
+            </h2>
+            <p className={`text-sm mb-4 ${themeClass('text-black/60 font-bold', 'text-gray-500')}`}>
+              아래 시설은 각 관리공단에서 직접 예약합니다.
+            </p>
+
+            <div className="space-y-4">
+              {sortedExternalDistricts.map((district) => {
+                const districtCourts = externalCourts[district];
+                return (
+                  <div
+                    key={`external-${district}`}
+                    className={`rounded-lg overflow-hidden ${themeClass(
+                      'border-[3px] border-black shadow-[4px_4px_0px_0px_#000] bg-white',
+                      'border border-blue-200 bg-white'
+                    )}`}
+                  >
+                    <div
+                      className={`px-4 py-3 flex items-center justify-between ${themeClass(
+                        'bg-[#93c5fd] border-b-2 border-black',
+                        'bg-blue-100 border-b border-blue-200'
+                      )}`}
+                    >
+                      <span className={themeClass('font-black text-black uppercase tracking-tight', 'font-semibold text-blue-900')}>
+                        {district}
+                      </span>
+                      <span className={`text-xs ${themeClass('font-bold text-black/70', 'font-medium text-blue-700')}`}>
+                        {districtCourts.length}개
+                      </span>
+                    </div>
+
+                    <div className="divide-y divide-blue-100">
+                      {districtCourts.map((court) => (
+                        <div
+                          key={court.SVCID}
+                          className={`p-4 ${themeClass('hover:bg-blue-50/60', 'hover:bg-blue-50/50')}`}
+                        >
+                          <div className="flex items-start justify-between gap-3 mb-2">
+                            <div className="flex-1 min-w-0">
+                              <h3 className={`font-bold text-sm mb-1 ${themeClass('text-black', 'text-gray-900')} `}>
+                                {court.SVCNM}
+                              </h3>
+                              <p className={`text-xs ${themeClass('text-black/60', 'text-gray-500')} `}>
+                                {court.PLACENM}
+                              </p>
+                            </div>
+                            {court.SVCURL && (
+                              <a
+                                href={court.SVCURL}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={`px-3 py-1.5 text-xs font-bold whitespace-nowrap transition-all ${themeClass(
+                                  'bg-[#93c5fd] text-black border-2 border-black rounded-[5px] shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none',
+                                  'bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200'
+                                )}`}
+                              >
+                                외부 사이트 예약
+                              </a>
+                            )}
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-2 text-xs">
+                            <div>
+                              <span className={`${themeClass('text-black/60', 'text-gray-500')}`}>
+                                이용료
+                              </span>
+                              <p className={`font-bold ${themeClass('text-black', 'text-gray-900')}`}>
+                                {court.PAYATNM}
+                              </p>
+                            </div>
+                            <div>
+                              <span className={`${themeClass('text-black/60', 'text-gray-500')}`}>
+                                운영시간
+                              </span>
+                              <p className={`font-bold ${themeClass('text-black', 'text-gray-900')}`}>
+                                {court.V_MIN || '-'} ~ {court.V_MAX || '-'}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         )}
       </section>
     </div>

@@ -175,6 +175,11 @@ export default function CompareContent({ stats }: CompareContentProps) {
                     <span className={`font-bold ${themeClass('text-black', 'text-gray-900')}`}>
                       {d.totalCourts}
                     </span>
+                    {d.externalCourts > 0 && (
+                      <span className={`ml-1 text-xs ${themeClass('font-bold text-[#2563eb]', 'text-blue-600')}`}>
+                        +{d.externalCourts} 외부
+                      </span>
+                    )}
                   </td>
                   <td className="px-3 py-3 text-center">
                     <div className="flex items-center justify-center gap-2">
@@ -182,7 +187,7 @@ export default function CompareContent({ stats }: CompareContentProps) {
                         <div
                           className={`h-full ${d.availableCourts > 0 ? themeClass('bg-[#16a34a]', 'bg-green-500') : themeClass('bg-gray-400', 'bg-gray-300')} ${tableInView ? 'anim-bar-x' : 'w-0'}`}
                           style={{
-                            width: `${Math.min((d.availableCourts / d.totalCourts) * 100, 100)}%`,
+                            width: `${Math.min(d.availableRate, 100)}%`,
                             animationDelay: `${i * 30}ms`,
                           }}
                         />

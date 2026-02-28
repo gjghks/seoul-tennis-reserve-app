@@ -1,11 +1,13 @@
 import { SeoulService } from '@/lib/seoulApi';
-import { isCourtAvailable, isExternalReservation } from '@/lib/utils/courtStatus';
+import { isIndependentCourt } from '@/lib/data/independentCourts';
+import { isCourtAvailable } from '@/lib/utils/courtStatus';
 import { DISTRICTS, KOREAN_TO_SLUG } from '@/lib/constants/districts';
 
 export interface DistrictGuideStats {
   nameKo: string;
   slug: string;
   totalCourts: number;
+  externalCourts: number;
   availableCourts: number;
   availableRate: number; // 0~100
   freeCourts: number;
@@ -52,8 +54,10 @@ function minutesToTime(minutes: number): string {
 export function computeDistrictStats(services: SeoulService[]): DistrictGuideStats {
   const total = services.length;
   const available = services.filter(s => isCourtAvailable(s.SVCSTATNM)).length;
+  const externalCount = services.filter(s => isIndependentCourt(s.SVCID)).length;
   const free = services.filter(s => s.PAYATNM === '무료').length;
   const closedCount = services.filter(s => s.SVCSTATNM === '예약마감').length;
+  const seoulApiTotal = total - externalCount;
 
   let earliestMinutes: number | null = null;
   let latestMinutes: number | null = null;
@@ -76,17 +80,18 @@ export function computeDistrictStats(services: SeoulService[]): DistrictGuideSta
     nameKo: district,
     slug,
     totalCourts: total,
+    externalCourts: externalCount,
     availableCourts: available,
-    availableRate: total > 0 ? Math.round((available / total) * 100) : 0,
+    availableRate: seoulApiTotal > 0 ? Math.round((available / seoulApiTotal) * 100) : 0,
     freeCourts: free,
     freeRate: total > 0 ? Math.round((free / total) * 100) : 0,
     paidCourts: total - free,
-    competitionRate: total > 0 ? Math.round((closedCount / total) * 100) : 0,
+    competitionRate: seoulApiTotal > 0 ? Math.round((closedCount / seoulApiTotal) * 100) : 0,
     earliestOpen: earliestMinutes !== null ? minutesToTime(earliestMinutes) : null,
     latestClose: latestMinutes !== null ? minutesToTime(latestMinutes) : null,
     courtNames: [...new Set(services.map(s => s.SVCNM))],
     placeNames: [...new Set(services.map(s => s.PLACENM))],
-    hasExternalOnly: total > 0 && services.every(s => isExternalReservation(s.SVCSTATNM)),
+    hasExternalOnly: total > 0 && services.every(s => isIndependentCourt(s.SVCID)),
   };
 }
 
@@ -103,20 +108,28 @@ export function computeAllDistrictStats(allServices: SeoulService[]): AllDistric
     .filter(d => byDistrict[d.nameKo] && byDistrict[d.nameKo].length > 0)
     .map(d => computeDistrictStats(byDistrict[d.nameKo]));
 
+  const districtServices = DISTRICTS
+    .map(d => byDistrict[d.nameKo] || [])
+    .flat();
+
   districtStats.sort((a, b) => b.totalCourts - a.totalCourts);
 
   const totalCourts = districtStats.reduce((sum, d) => sum + d.totalCourts, 0);
   const totalAvailable = districtStats.reduce((sum, d) => sum + d.availableCourts, 0);
   const totalFree = districtStats.reduce((sum, d) => sum + d.freeCourts, 0);
-  const totalClosed = districtStats.reduce((sum, d) => sum + Math.round(d.competitionRate * d.totalCourts / 100), 0);
+  const totalExternal = districtStats.reduce((sum, d) => sum + d.externalCourts, 0);
+  const totalSeoulApi = totalCourts - totalExternal;
+  const totalClosed = districtServices.filter(
+    s => s.SVCSTATNM === '예약마감' && !isIndependentCourt(s.SVCID)
+  ).length;
 
   return {
     districts: districtStats,
     seoulAverage: {
       totalCourts: districtStats.length > 0 ? Math.round(totalCourts / districtStats.length) : 0,
-      availableRate: totalCourts > 0 ? Math.round((totalAvailable / totalCourts) * 100) : 0,
+      availableRate: totalSeoulApi > 0 ? Math.round((totalAvailable / totalSeoulApi) * 100) : 0,
       freeRate: totalCourts > 0 ? Math.round((totalFree / totalCourts) * 100) : 0,
-      competitionRate: totalCourts > 0 ? Math.round((totalClosed / totalCourts) * 100) : 0,
+      competitionRate: totalSeoulApi > 0 ? Math.round((totalClosed / totalSeoulApi) * 100) : 0,
     },
     totalCourtsSeoul: totalCourts,
     totalAvailableSeoul: totalAvailable,

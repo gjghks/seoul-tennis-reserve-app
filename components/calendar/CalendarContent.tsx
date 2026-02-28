@@ -6,6 +6,7 @@ import PullToRefresh from 'react-simple-pull-to-refresh';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useThemeClass } from '@/lib/cn';
 import { DISTRICTS, KOREAN_TO_SLUG } from '@/lib/constants/districts';
+import { isIndependentCourt } from '@/lib/data/independentCourts';
 import { useInView } from '@/lib/hooks/useInView';
 import { useCountUp } from '@/lib/hooks/useCountUp';
 import type { SeoulService } from '@/lib/seoulApi';
@@ -100,6 +101,24 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
     if (!selectedDate) return [];
     return filteredCourts.filter(c => isReceiptOpenOn(c, selectedDate));
   }, [filteredCourts, selectedDate]);
+
+  const externalCourts = useMemo(() => {
+    const sourceCourts = selectedDistrict === 'all'
+      ? courts
+      : courts.filter(c => c.AREANM === selectedDistrict);
+    return sourceCourts.filter(c => isIndependentCourt(c.SVCID));
+  }, [courts, selectedDistrict]);
+
+  const groupedExternalCourts = useMemo(() => {
+    const grouped: Record<string, SeoulService[]> = {};
+    for (const court of externalCourts) {
+      if (!grouped[court.AREANM]) {
+        grouped[court.AREANM] = [];
+      }
+      grouped[court.AREANM].push(court);
+    }
+    return Object.entries(grouped).sort(([a], [b]) => a.localeCompare(b, 'ko-KR'));
+  }, [externalCourts]);
 
   const goPrev = () => {
     if (viewMonth === 0) {
@@ -433,6 +452,99 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
                   })}
                 </div>
               )}
+            </div>
+          </div>
+        )}
+
+        {externalCourts.length > 0 && (
+          <div className={`${cardClass} overflow-hidden mt-6`}>
+            <div className={sectionHeaderClass}>
+              <h2 className={`font-bold flex items-center gap-2 ${themeClass('text-black font-black', 'text-gray-900')}`}>
+                {isNeoBrutalism ? (
+                  <span className="w-6 h-6 bg-[#93c5fd] border-2 border-black rounded-[3px] flex items-center justify-center text-xs">🌐</span>
+                ) : (
+                  <span className="w-6 h-6 bg-blue-100 text-blue-700 rounded-md flex items-center justify-center text-xs">🌐</span>
+                )}
+                상시 예약 가능 (외부 예약)
+              </h2>
+              <p className={`mt-1 text-xs ${themeClass('text-black/60 font-bold', 'text-gray-500')}`}>
+                아래 시설은 별도의 예약 사이트에서 상시 예약 가능합니다.
+              </p>
+            </div>
+
+            <div className="p-5 space-y-4">
+              {groupedExternalCourts.map(([district, districtCourts]) => {
+                const districtSlug = KOREAN_TO_SLUG[district];
+                return (
+                  <div
+                    key={`external-${district}`}
+                    className={themeClass(
+                      'border-2 border-black rounded-[5px] overflow-hidden',
+                      'border border-blue-200 rounded-xl overflow-hidden'
+                    )}
+                  >
+                    <div className={`px-3 py-2 flex items-center justify-between ${themeClass('bg-[#93c5fd] border-b-2 border-black', 'bg-blue-100 border-b border-blue-200')}`}>
+                      <p className={themeClass('font-black text-black uppercase tracking-tight text-sm', 'font-semibold text-blue-900 text-sm')}>
+                        {district}
+                      </p>
+                      <p className={`text-xs ${themeClass('font-bold text-black/70', 'text-blue-700')}`}>
+                        {districtCourts.length}개
+                      </p>
+                    </div>
+
+                    <div className="divide-y divide-blue-100">
+                      {districtCourts.map(court => (
+                        <div key={court.SVCID} className="p-3">
+                          <div className="flex items-start justify-between gap-2">
+                            <div className="min-w-0">
+                              <p className={`text-sm truncate ${themeClass('font-bold text-black', 'font-medium text-gray-900')}`}>
+                                {court.SVCNM}
+                              </p>
+                              <p className={`text-xs mt-0.5 ${themeClass('text-black/60', 'text-gray-500')}`}>
+                                {court.PLACENM} · {court.AREANM}
+                              </p>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              {isIndependentCourt(court.SVCID) && (
+                                <span className={`px-1.5 py-0.5 text-[11px] rounded ${themeClass('bg-[#93c5fd] border border-black font-bold text-black', 'bg-blue-100 text-blue-700')}`}>
+                                  독립
+                                </span>
+                              )}
+                              {court.SVCURL && (
+                                <a
+                                  href={court.SVCURL}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className={`px-2.5 py-1 text-xs font-bold whitespace-nowrap ${themeClass('bg-[#93c5fd] border-2 border-black rounded-[3px] text-black hover:bg-[#60a5fa]', 'bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200')}`}
+                                >
+                                  외부 사이트
+                                </a>
+                              )}
+                            </div>
+                          </div>
+
+                          <div className={`flex items-center gap-2 mt-2 text-xs ${themeClass('text-black/60', 'text-gray-500')}`}>
+                            <span>{court.V_MIN || '-'} ~ {court.V_MAX || '-'}</span>
+                            <span>·</span>
+                            <span>{court.PAYATNM}</span>
+                            {districtSlug && (
+                              <>
+                                <span>·</span>
+                                <Link
+                                  href={`/${districtSlug}`}
+                                  className={themeClass('font-bold text-black underline', 'font-medium text-blue-700 hover:text-blue-800')}
+                                >
+                                  지역 보기
+                                </Link>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}

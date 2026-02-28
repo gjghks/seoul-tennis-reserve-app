@@ -7,7 +7,8 @@ import Image from 'next/image';
 import { SeoulService } from '@/lib/seoulApi';
 import { District } from '@/lib/constants/districts';
 import { useTheme } from '@/contexts/ThemeContext';
-import { isCourtAvailable, isExternalReservation } from '@/lib/utils/courtStatus';
+import { isCourtAvailable } from '@/lib/utils/courtStatus';
+import { isIndependentCourt } from '@/lib/data/independentCourts';
 import FavoriteButton from '@/components/favorite/FavoriteButton';
 import ShareButton from '@/components/ui/ShareButton';
 import StickyHeader from '@/components/court-detail/StickyHeader';
@@ -97,7 +98,7 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
   }, []);
 
   const isAvailable = isCourtAvailable(court.SVCSTATNM);
-  const isExternal = isExternalReservation(court.SVCSTATNM);
+  const isExternal = isIndependentCourt(court.SVCID);
   const canReserve = isAvailable || isExternal;
   const facilityTags = extractFacilityTags(court);
   const enrichment = useMemo(() => findEnrichment(court.SVCNM, court.AREANM, court.PLACENM), [court.SVCNM, court.AREANM, court.PLACENM]);

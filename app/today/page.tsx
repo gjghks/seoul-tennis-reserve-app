@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { fetchTennisAvailability } from '@/lib/seoulApi';
+import { isIndependentCourt } from '@/lib/data/independentCourts';
 import { isCourtAvailable } from '@/lib/utils/courtStatus';
 import TodayContent from '@/components/today/TodayContent';
 
@@ -35,6 +36,9 @@ export default async function TodayPage() {
   const availableCourts = services.filter((court) =>
     isCourtAvailable(court.SVCSTATNM)
   );
+  const externalCourts = services.filter((court) =>
+    isIndependentCourt(court.SVCID)
+  );
 
   const groupedByDistrict = availableCourts.reduce(
     (acc, court) => {
@@ -46,6 +50,17 @@ export default async function TodayPage() {
       return acc;
     },
     {} as Record<string, typeof availableCourts>
+  );
+  const groupedExternal = externalCourts.reduce(
+    (acc, court) => {
+      const district = court.AREANM;
+      if (!acc[district]) {
+        acc[district] = [];
+      }
+      acc[district].push(court);
+      return acc;
+    },
+    {} as Record<string, typeof externalCourts>
   );
 
   const totalAvailable = availableCourts.length;
@@ -91,7 +106,9 @@ export default async function TodayPage() {
       />
       <TodayContent
         courts={groupedByDistrict}
+        externalCourts={groupedExternal}
         totalAvailable={totalAvailable}
+        totalExternal={externalCourts.length}
         totalDistricts={totalDistricts}
       />
     </>
