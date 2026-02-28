@@ -735,7 +735,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "facilityName": "북한산근린공원 테니스장",
     "normalizedName": "북한산근린공원",
     "district": "은평구",
-    "address": "서울특별시 은평구 진흥로 290",
+    "address": "서울특별시 은평구 진흥로 300 (녹번동)",
     "courtCount": 2,
     "surfaces": [
       {
