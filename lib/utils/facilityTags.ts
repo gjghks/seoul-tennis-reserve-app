@@ -17,6 +17,15 @@ const SURFACE_TAG_MAP: Record<string, { key: string; label: string; color: strin
 
 const TAG_LIMIT = 5;
 
+const NEGATION_PATTERNS = ['없음', '불가', '미설치', '안됨', '없는'];
+
+function isNegated(text: string, keyword: string): boolean {
+  const idx = text.indexOf(keyword);
+  if (idx === -1) return false;
+  const surrounding = text.slice(Math.max(0, idx - 20), idx + keyword.length + 10);
+  return NEGATION_PATTERNS.some(neg => surrounding.includes(neg));
+}
+
 const TAG_DEFINITIONS: Array<{
   key: string;
   label: string;
@@ -123,7 +132,7 @@ export function extractFacilityTags(court: SeoulService): FacilityTag[] {
     : TAG_DEFINITIONS;
 
   for (const definition of nonSurfaceDefinitions) {
-    if (definition.keywords.some(keyword => detailText.includes(keyword))) {
+    if (definition.keywords.some(keyword => detailText.includes(keyword) && !isNegated(detailText, keyword))) {
       pushTag({
         key: definition.key,
         label: definition.label,

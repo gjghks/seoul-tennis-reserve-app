@@ -90,6 +90,7 @@ export default function DistrictContent({
   const courts = sortByAvailability(liveCourts);
 
   const availableCount = courts.filter(court => isCourtAccepting(court.SVCSTATNM)).length;
+  const seoulApiAcceptingCount = courts.filter(court => isCourtAccepting(court.SVCSTATNM) && !isIndependentCourt(court.SVCID)).length;
   const filteredCourts = useMemo(() => {
     let result = courts;
     if (showAvailableOnly) {
@@ -530,7 +531,7 @@ export default function DistrictContent({
           </div>
         )}
 
-        {availableCount > 0 && <ReservationNotice />}
+        {seoulApiAcceptingCount > 0 && <ReservationNotice />}
 
         <div className={`mt-6 p-4 ${themeClass(
           'bg-[#fef3c7] border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000]',
