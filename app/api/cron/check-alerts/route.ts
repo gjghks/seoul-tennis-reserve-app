@@ -238,7 +238,7 @@ export async function GET(request: Request) {
     }
 
     const nowIso = new Date().toISOString();
-    const cacheUpsertRows = services.map((court) => ({
+    const cacheUpsertRows = services.filter((court) => !court.SVCID.startsWith('INDEP_')).map((court) => ({
       svc_id: court.SVCID,
       status: court.SVCSTATNM,
       svc_name: court.SVCNM,
