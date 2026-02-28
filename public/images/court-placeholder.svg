@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f0fdf4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#dcfce7;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#bg)"/>
+  <!-- Tennis court outline -->
+  <rect x="200" y="100" width="400" height="250" rx="4" fill="none" stroke="#86efac" stroke-width="2"/>
+  <!-- Center line -->
+  <line x1="400" y1="100" x2="400" y2="350" stroke="#86efac" stroke-width="2"/>
+  <!-- Net -->
+  <line x1="200" y1="225" x2="600" y2="225" stroke="#86efac" stroke-width="2" stroke-dasharray="6,4"/>
+  <!-- Service boxes -->
+  <rect x="280" y="100" width="240" height="125" fill="none" stroke="#86efac" stroke-width="1.5" opacity="0.6"/>
+  <rect x="280" y="225" width="240" height="125" fill="none" stroke="#86efac" stroke-width="1.5" opacity="0.6"/>
+  <!-- Tennis ball icon -->
+  <circle cx="400" cy="200" r="20" fill="#4ade80" opacity="0.3"/>
+  <circle cx="400" cy="200" r="20" fill="none" stroke="#22c55e" stroke-width="1.5"/>
+  <path d="M385 188 Q400 200 385 212" fill="none" stroke="#22c55e" stroke-width="1.5"/>
+  <path d="M415 188 Q400 200 415 212" fill="none" stroke="#22c55e" stroke-width="1.5"/>
+  <!-- Text -->
+  <text x="400" y="400" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" fill="#86efac" letter-spacing="0.05em">TENNIS COURT</text>
+</svg>

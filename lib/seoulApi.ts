@@ -1,4 +1,5 @@
 import http from 'node:http';
+import { getIndependentCourts } from '@/lib/data/independentCourts';
 
 const API_KEY = process.env.SEOUL_OPEN_DATA_KEY;
 const BASE_URL = 'http://openAPI.seoul.go.kr:8088';
@@ -6,6 +7,7 @@ const REQUEST_TIMEOUT_MS = 8_000;
 const MAX_RETRIES = 2;
 const RETRY_DELAYS_MS = [1_000, 2_000] as const;
 const CACHE_TTL_MS = 30 * 60 * 1000; // 30 minutes (matches ISR revalidate interval)
+const INCLUDE_INDEPENDENT_COURTS = process.env.NODE_ENV !== 'test';
 
 // 서울시 25개 구
 const SEOUL_DISTRICTS = [
@@ -58,6 +60,16 @@ interface TennisDataCache {
 
 let tennisDataCache: TennisDataCache | null = null;
 
+function mergeIndependentCourts(courts: SeoulService[]): SeoulService[] {
+    if (!INCLUDE_INDEPENDENT_COURTS) {
+        return courts;
+    }
+
+    const independentCourts = getIndependentCourts();
+    const existingIds = new Set(courts.map(court => court.SVCID));
+    return [...courts, ...independentCourts.filter(court => !existingIds.has(court.SVCID))];
+}
+
 function wait(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -99,7 +111,7 @@ export async function fetchTennisAvailability(startIndex = 1, endIndex = 1000): 
 
     if (!API_KEY) {
         console.error('SEOUL_OPEN_DATA_KEY is missing');
-        return [];
+        return INCLUDE_INDEPENDENT_COURTS ? getIndependentCourts() : [];
     }
 
     const url = `${BASE_URL}/${API_KEY}/json/ListPublicReservationSport/${startIndex}/${endIndex}/`;
@@ -130,12 +142,14 @@ export async function fetchTennisAvailability(startIndex = 1, endIndex = 1000): 
                 SEOUL_DISTRICTS.includes(svc.AREANM)
             );
 
+            const allCourts = mergeIndependentCourts(tennisServices);
+
             tennisDataCache = {
-                data: tennisServices,
+                data: allCourts,
                 timestamp: Date.now(),
             };
 
-            return tennisServices;
+            return allCourts;
         } catch (error) {
             lastError = error;
             console.error(`Seoul API attempt ${attempt} failed:`, error);
@@ -148,9 +162,9 @@ export async function fetchTennisAvailability(startIndex = 1, endIndex = 1000): 
 
     if (tennisDataCache) {
         console.warn('Serving stale tennis data from in-memory cache after Seoul API failures');
-        return tennisDataCache.data;
+        return mergeIndependentCourts(tennisDataCache.data);
     }
 
     console.error('Seoul API failed with no cache fallback. Returning empty array:', lastError);
-    return [];
+    return INCLUDE_INDEPENDENT_COURTS ? getIndependentCourts() : [];
 }

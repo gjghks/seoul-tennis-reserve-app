@@ -16,11 +16,12 @@ import FacilityTags from '@/components/ui/FacilityTags';
 import { extractFacilityTags } from '@/lib/utils/facilityTags';
 import { convertToWeatherGrid } from '@/lib/utils/weatherGrid';
 import WeatherBadge from '@/components/weather/WeatherBadge';
-import { isCourtAvailable, isCourtAccepting, sortByAvailability } from '@/lib/utils/courtStatus';
+import { isCourtAvailable, isCourtAccepting, isExternalReservation, sortByAvailability } from '@/lib/utils/courtStatus';
 import { findEnrichment } from '@/lib/data/facilityEnrichment';
 import type { SurfaceCategory } from '@/lib/data/facilityEnrichment';
 import { useReservationTip } from '@/lib/hooks/useReservationTip';
 import ReservationNotice from '@/components/reservation/ReservationNotice';
+import { isIndependentCourt } from '@/lib/data/independentCourts';
 
 const SURFACE_FILTER_OPTIONS: Array<{ value: SurfaceCategory | 'all'; label: string }> = [
   { value: 'all', label: '전체' },
@@ -403,6 +404,9 @@ export default function DistrictContent({
                   <div className="grid gap-3">
                     {placeCourts.map((court) => {
                       const isAvailable = isCourtAvailable(court.SVCSTATNM);
+                      const isExternal = isExternalReservation(court.SVCSTATNM);
+                      const isIndependent = isIndependentCourt(court.SVCID);
+                      const showReservationLink = (isAvailable || isExternal) && Boolean(court.SVCURL);
                       const facilityTags = extractFacilityTags(court).filter(tag => tag.key !== 'free' && tag.key !== 'paid');
                       
                       if (isNeoBrutalism) {
@@ -410,7 +414,7 @@ export default function DistrictContent({
                           <div
                             key={court.SVCID}
                             className={`p-5 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] transition-all ${
-                              isAvailable ? 'bg-white' : 'bg-gray-100'
+                              isAvailable || isExternal ? 'bg-white' : 'bg-gray-100'
                             }`}
                           >
                             <div className="flex justify-between items-start mb-3">
@@ -426,7 +430,11 @@ export default function DistrictContent({
                                 <FacilityTags tags={facilityTags} maxTags={3} className="mt-2" />
                               </div>
                               <span className={`px-3 py-1 text-xs font-black uppercase border-2 border-black rounded-[3px] ${
-                                isAvailable ? 'bg-[#a3e635] text-black' : 'bg-gray-300 text-black/60'
+                                isExternal
+                                  ? 'bg-[#93c5fd] text-black'
+                                  : isAvailable
+                                    ? 'bg-[#a3e635] text-black'
+                                    : 'bg-gray-300 text-black/60'
                               }`}>
                                 {court.SVCSTATNM}
                               </span>
@@ -441,15 +449,17 @@ export default function DistrictContent({
                                   {court.V_MIN}~{court.V_MAX}
                                 </span>
                               </div>
-                              {isAvailable && court.SVCURL && (
+                              {showReservationLink && (
                                 <a
                                   href={court.SVCURL}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="bg-[#22c55e] text-black font-black text-sm py-2 px-4 border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all uppercase"
+                                  className={`text-black font-black text-sm py-2 px-4 border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all uppercase ${
+                                    isExternal ? 'bg-[#60a5fa]' : 'bg-[#22c55e]'
+                                  }`}
                                   onClick={(e) => { e.stopPropagation(); handleReservationClick(); }}
                                 >
-                                  예약하기
+                                  {isExternal || isIndependent ? '외부 예약 사이트' : '예약하기'}
                                 </a>
                               )}
                             </div>
@@ -474,7 +484,13 @@ export default function DistrictContent({
                               </Link>
                               <FacilityTags tags={facilityTags} maxTags={3} className="mt-2" />
                             </div>
-                            <span className={`badge ${isAvailable ? 'badge-available' : 'badge-closed'}`}>
+                            <span className={`badge ${
+                              isExternal
+                                ? 'bg-blue-100 text-blue-700 border border-blue-200'
+                                : isAvailable
+                                  ? 'badge-available'
+                                  : 'badge-closed'
+                            }`}>
                               {court.SVCSTATNM}
                             </span>
                           </div>
@@ -488,15 +504,15 @@ export default function DistrictContent({
                                 {court.V_MIN}~{court.V_MAX}
                               </span>
                             </div>
-                            {isAvailable && court.SVCURL && (
+                            {showReservationLink && (
                               <a
                                 href={court.SVCURL}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="btn btn-primary text-sm py-2 px-4"
+                                className={`text-sm py-2 px-4 ${isExternal ? 'btn bg-blue-600 text-white hover:bg-blue-700' : 'btn btn-primary'}`}
                                 onClick={(e) => { e.stopPropagation(); handleReservationClick(); }}
                               >
-                                바로 예약
+                                {isExternal || isIndependent ? '외부 예약 사이트' : '바로 예약'}
                               </a>
                             )}
                           </div>

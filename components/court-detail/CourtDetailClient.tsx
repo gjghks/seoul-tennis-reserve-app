@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { SeoulService } from '@/lib/seoulApi';
 import { District } from '@/lib/constants/districts';
 import { useTheme } from '@/contexts/ThemeContext';
-import { isCourtAvailable } from '@/lib/utils/courtStatus';
+import { isCourtAvailable, isExternalReservation } from '@/lib/utils/courtStatus';
 import FavoriteButton from '@/components/favorite/FavoriteButton';
 import ShareButton from '@/components/ui/ShareButton';
 import StickyHeader from '@/components/court-detail/StickyHeader';
@@ -97,6 +97,8 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
   }, []);
 
   const isAvailable = isCourtAvailable(court.SVCSTATNM);
+  const isExternal = isExternalReservation(court.SVCSTATNM);
+  const canReserve = isAvailable || isExternal;
   const facilityTags = extractFacilityTags(court);
   const enrichment = useMemo(() => findEnrichment(court.SVCNM, court.AREANM, court.PLACENM), [court.SVCNM, court.AREANM, court.PLACENM]);
   const weatherGrid = useMemo(() => {
@@ -214,11 +216,23 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
             <span className={themeClass('text-black/30', 'text-gray-300')}>·</span>
             <span className={`inline-flex items-center gap-1.5 px-3 py-1 text-sm font-bold ${
               isNeoBrutalism
-                ? `border-2 border-black rounded-[5px] ${isAvailable ? 'bg-[#a3e635] text-black font-black' : 'bg-[#fca5a5] text-black font-black'}`
-                : `rounded-full ${isAvailable ? 'bg-green-100 text-green-700' : 'bg-red-50 text-red-600 border border-red-200'}`
+                ? `border-2 border-black rounded-[5px] ${
+                    isExternal
+                      ? 'bg-[#93c5fd] text-black font-black'
+                      : isAvailable
+                        ? 'bg-[#a3e635] text-black font-black'
+                        : 'bg-[#fca5a5] text-black font-black'
+                  }`
+                : `rounded-full ${
+                    isExternal
+                      ? 'bg-blue-100 text-blue-700 border border-blue-200'
+                      : isAvailable
+                        ? 'bg-green-100 text-green-700'
+                        : 'bg-red-50 text-red-600 border border-red-200'
+                  }`
             }`}>
-              {isNeoBrutalism && <span className={`w-2.5 h-2.5 rounded-full border border-black ${isAvailable ? 'bg-[#a3e635] animate-pulse' : 'bg-red-400'}`} />}
-              {!isNeoBrutalism && <span className={`w-2 h-2 rounded-full ${isAvailable ? 'bg-green-500 animate-pulse' : 'bg-red-400'}`} />}
+              {isNeoBrutalism && <span className={`w-2.5 h-2.5 rounded-full border border-black ${isExternal ? 'bg-blue-500' : isAvailable ? 'bg-[#a3e635] animate-pulse' : 'bg-red-400'}`} />}
+              {!isNeoBrutalism && <span className={`w-2 h-2 rounded-full ${isExternal ? 'bg-blue-500' : isAvailable ? 'bg-green-500 animate-pulse' : 'bg-red-400'}`} />}
               {court.SVCSTATNM}
             </span>
           </div>
@@ -235,20 +249,31 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
               target="_blank"
               rel="noopener noreferrer"
               onClick={handleReservationClick}
-              className={isNeoBrutalism
-                ? `w-full flex items-center justify-center gap-3 py-4 px-6 rounded-[5px] font-black text-lg uppercase tracking-wide border-[3px] border-black transition-all ${
-                    isAvailable
-                      ? 'bg-[#22c55e] text-black shadow-[6px_6px_0px_0px_#000] hover:translate-x-[6px] hover:translate-y-[6px] hover:shadow-none'
+                className={isNeoBrutalism
+                  ? `w-full flex items-center justify-center gap-3 py-4 px-6 rounded-[5px] font-black text-lg uppercase tracking-wide border-[3px] border-black transition-all ${
+                    canReserve
+                      ? isExternal
+                        ? 'bg-[#60a5fa] text-black shadow-[6px_6px_0px_0px_#000] hover:translate-x-[6px] hover:translate-y-[6px] hover:shadow-none'
+                        : 'bg-[#22c55e] text-black shadow-[6px_6px_0px_0px_#000] hover:translate-x-[6px] hover:translate-y-[6px] hover:shadow-none'
                       : 'bg-gray-300 text-black/60 cursor-not-allowed'
                   }`
-                : `w-full flex items-center justify-center gap-3 py-4 px-6 rounded-2xl font-bold text-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg ${
-                    isAvailable
-                      ? 'bg-gradient-to-r from-green-600 to-green-500 text-white hover:from-green-700 hover:to-green-600 shadow-green-200'
+                  : `w-full flex items-center justify-center gap-3 py-4 px-6 rounded-2xl font-bold text-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg ${
+                    canReserve
+                      ? isExternal
+                        ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white hover:from-blue-700 hover:to-blue-600 shadow-blue-200'
+                        : 'bg-gradient-to-r from-green-600 to-green-500 text-white hover:from-green-700 hover:to-green-600 shadow-green-200'
                       : 'bg-gray-200 text-gray-400 cursor-not-allowed shadow-none'
                   }`
               }
             >
-              {isAvailable ? (
+              {isExternal ? (
+                <>
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-1.5-7.5H21m0 0v4.5m0-4.5L10.5 13.5" />
+                  </svg>
+                  외부 사이트에서 예약
+                </>
+              ) : isAvailable ? (
                 <>
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -264,32 +289,38 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
                 </>
               )}
             </a>
-            <ReservationNotice />
+            {!isExternal && <ReservationNotice />}
           </div>
         )}
 
-        {court.IMGURL && (
-          <div className="relative aspect-video rounded-2xl overflow-hidden bg-gray-100 mb-6 shadow-sm">
-            {!imageError ? (
-              <Image
-                src={court.IMGURL}
-                alt={court.SVCNM}
-                fill
-                unoptimized
-                className="object-cover"
-                onError={() => setImageError(true)}
-                priority
-              />
-            ) : (
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-400">
-                <svg className="w-12 h-12 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z" />
-                </svg>
-                <span className="text-sm">이미지를 불러올 수 없습니다</span>
-              </div>
-            )}
-          </div>
-        )}
+        <div className="relative aspect-video rounded-2xl overflow-hidden bg-gray-100 mb-6 shadow-sm">
+          {court.IMGURL && !imageError ? (
+            <Image
+              src={court.IMGURL}
+              alt={court.SVCNM}
+              fill
+              unoptimized
+              className="object-cover"
+              onError={() => setImageError(true)}
+              priority
+            />
+          ) : court.IMGURL && imageError ? (
+            <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-400">
+              <svg className="w-12 h-12 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z" />
+              </svg>
+              <span className="text-sm">이미지를 불러올 수 없습니다</span>
+            </div>
+          ) : (
+            <Image
+              src="/images/court-placeholder.svg"
+              alt={`${court.SVCNM} 기본 이미지`}
+              fill
+              className="object-contain"
+              priority
+            />
+          )}
+        </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-3">
           {infoItems.map((item) => (
@@ -575,19 +606,19 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
         )}
       </div>
 
-      {court.SVCURL && isAvailable && (
+      {court.SVCURL && canReserve && (
         <div className="fixed bottom-0 left-0 right-0 z-50 p-4 bg-white/80 backdrop-blur-lg border-t border-gray-100 sm:hidden">
           <a
             href={court.SVCURL}
             target="_blank"
             rel="noopener noreferrer"
             onClick={handleReservationClick}
-            className="w-full flex items-center justify-center gap-2 py-4 rounded-xl bg-green-600 text-white font-bold shadow-lg"
+            className={`w-full flex items-center justify-center gap-2 py-4 rounded-xl text-white font-bold shadow-lg ${isExternal ? 'bg-blue-600' : 'bg-green-600'}`}
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isExternal ? 'M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-1.5-7.5H21m0 0v4.5m0-4.5L10.5 13.5' : 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'} />
             </svg>
-            지금 예약하기
+            {isExternal ? '외부 사이트에서 예약' : '지금 예약하기'}
           </a>
         </div>
       )}

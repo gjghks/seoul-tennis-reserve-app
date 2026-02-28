@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useCallback, useId } from 'react';
+import { useEffect, useRef, useCallback, useId, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
@@ -76,7 +76,10 @@ export default function LoginPrompt({ isOpen, onClose, message }: LoginPromptPro
     }
   }, []);
 
-  if (typeof document === 'undefined') return null;
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+
+  if (!mounted) return null;
 
   return createPortal(
     <dialog

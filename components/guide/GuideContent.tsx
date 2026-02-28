@@ -170,7 +170,11 @@ export default function GuideContent({
             )}
             <li className="flex items-start gap-2">
               <span className="shrink-0">💡</span>
-              <span>서울시 공공서비스예약 시스템에서 직접 예약해야 합니다. 서울 테니스에서 예약 페이지로 바로 이동할 수 있습니다.</span>
+              {stat.hasExternalOnly ? (
+                <span>각 자치구 시설관리공단 예약 시스템에서 직접 예약해야 합니다. 서울 테니스에서 해당 예약 사이트로 바로 이동할 수 있습니다.</span>
+              ) : (
+                <span>서울시 공공서비스예약 시스템에서 직접 예약해야 합니다. 서울 테니스에서 예약 페이지로 바로 이동할 수 있습니다.</span>
+              )}
             </li>
           </ul>
         </div>

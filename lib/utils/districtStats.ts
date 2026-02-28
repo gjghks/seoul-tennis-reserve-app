@@ -1,5 +1,5 @@
 import { SeoulService } from '@/lib/seoulApi';
-import { isCourtAvailable } from '@/lib/utils/courtStatus';
+import { isCourtAvailable, isExternalReservation } from '@/lib/utils/courtStatus';
 import { DISTRICTS, KOREAN_TO_SLUG } from '@/lib/constants/districts';
 
 export interface DistrictGuideStats {
@@ -16,6 +16,7 @@ export interface DistrictGuideStats {
   latestClose: string | null; // e.g. "22:00"
   courtNames: string[];
   placeNames: string[];
+  hasExternalOnly: boolean; // true if ALL courts in this district use external reservation
 }
 
 export interface AllDistrictStats {
@@ -85,6 +86,7 @@ export function computeDistrictStats(services: SeoulService[]): DistrictGuideSta
     latestClose: latestMinutes !== null ? minutesToTime(latestMinutes) : null,
     courtNames: [...new Set(services.map(s => s.SVCNM))],
     placeNames: [...new Set(services.map(s => s.PLACENM))],
+    hasExternalOnly: total > 0 && services.every(s => isExternalReservation(s.SVCSTATNM)),
   };
 }
 

@@ -487,6 +487,32 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "renovation": null
   },
   {
+    "facilityName": "면목구립테니스장",
+    "normalizedName": "면목구립테니스장",
+    "district": "중랑구",
+    "address": "중랑구 면목동 727-94",
+    "courtCount": 5,
+    "surfaces": [
+      {
+        "type": "인조잔디",
+        "count": null
+      }
+    ],
+    "surfaceCategory": "artificial_grass",
+    "surfaceDisplay": "인조잔디",
+    "area": 3635,
+    "siteArea": 3635,
+    "builtYear": null,
+    "owner": "중랑구",
+    "manager": "중랑구시설관리공단",
+    "contact": "070-8824-3599",
+    "website": "https://tennis.jungnangimc.or.kr",
+    "indoorOutdoor": "outdoor",
+    "lighting": null,
+    "spectatorSeats": null,
+    "renovation": null
+  },
+  {
     "facilityName": "월곡테니스장",
     "normalizedName": "월곡",
     "district": "성북구",
@@ -720,8 +746,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "builtYear": 2003,
     "owner": "은평구",
     "manager": "은평구시설관리공단",
-    "contact": "354-9123",
-    "website": "www.eunpyeongspo.seoul.kr",
+    "contact": "02-350-5393",
+    "website": "https://www.efmc.or.kr/fmcs/14",
     "indoorOutdoor": "outdoor",
     "lighting": {
       "count": 4,
@@ -734,7 +760,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "facilityName": "북한산근린공원 테니스장",
     "normalizedName": "북한산근린공원",
     "district": "은평구",
-    "address": null,
+    "address": "은평구 녹번동 산1-1",
     "courtCount": 2,
     "surfaces": [
       {
@@ -749,9 +775,35 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "builtYear": null,
     "owner": "은평구",
     "manager": "은평구시설관리공단",
-    "contact": "은평구시설관리공단",
-    "website": "1000",
+    "contact": "02-350-5358",
+    "website": "https://www.efmc.or.kr/fmcs/441",
     "indoorOutdoor": null,
+    "lighting": null,
+    "spectatorSeats": null,
+    "renovation": null
+  },
+  {
+    "facilityName": "서오릉근린공원 선정테니스장",
+    "normalizedName": "선정테니스장",
+    "district": "은평구",
+    "address": "은평구 갈현로27길 45-4",
+    "courtCount": 3,
+    "surfaces": [
+      {
+        "type": "인조잔디",
+        "count": null
+      }
+    ],
+    "surfaceCategory": "artificial_grass",
+    "surfaceDisplay": "인조잔디",
+    "area": 1750,
+    "siteArea": 1750,
+    "builtYear": 2024,
+    "owner": "은평구",
+    "manager": "은평구시설관리공단",
+    "contact": "02-350-5236",
+    "website": "https://www.efmc.or.kr/fmcs/761",
+    "indoorOutdoor": "outdoor",
     "lighting": null,
     "spectatorSeats": null,
     "renovation": null

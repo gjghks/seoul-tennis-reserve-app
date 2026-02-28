@@ -93,6 +93,14 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: '**.supabase.co',
       },
+      {
+        protocol: 'https',
+        hostname: '**.nowonsc.kr',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.jungnangimc.or.kr',
+      },
     ],
   },
 };
