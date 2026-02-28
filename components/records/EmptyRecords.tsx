@@ -17,23 +17,16 @@ export default function EmptyRecords({ showCreateButton = true }: EmptyRecordsPr
       'flex flex-col items-center justify-center py-12 px-4 text-center',
       'flex flex-col items-center justify-center py-12 px-4 text-center'
     )}>
-      <div className={themeClass(
-        'w-20 h-20 bg-[#a3e635] border-2 border-black rounded-full flex items-center justify-center mb-4 shadow-[4px_4px_0px_0px_#000] animate-bounce',
-        'w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4 animate-bounce'
-      )}
-      style={{ animationDuration: '3s' }}
-      >
-        {isNeoBrutalism ? (
-          <span className="text-4xl">🎾</span>
-        ) : (
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-green-600">
-            <title>Tennis Racket Icon</title>
-            <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20Z" fill="currentColor" fillOpacity="0.2"/>
-            <path d="M14.5 13.5L11 17L7.5 13.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M12 7V13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        )}
-      </div>
+      <svg className={themeClass('w-24 h-24 mx-auto mb-4', 'w-20 h-20 mx-auto mb-4')} viewBox="0 0 96 96" fill="none" aria-hidden="true">
+        <g style={{ animation: 'gentle-float 3s ease-in-out infinite' }}>
+          <circle cx="48" cy="48" r="28" className={themeClass('fill-[#a3e635] stroke-black stroke-[2.5]', 'fill-green-400 stroke-green-500 stroke-[1.5]')} />
+          <path d="M33 24.5 A 22 22 0 0 1 33 71.5 M63 24.5 A 22 22 0 0 0 63 71.5" fill="none" className={themeClass('stroke-black stroke-[2.5]', 'stroke-green-500 stroke-[1.5]')} style={{ animation: 'fav-pulse 2.5s ease-in-out infinite' }} />
+        </g>
+        <circle cx="20" cy="20" r="3" className={themeClass('fill-black', 'fill-green-500')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0s' }} />
+        <circle cx="80" cy="28" r="2" className={themeClass('fill-black', 'fill-green-500')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.5s' }} />
+        <circle cx="72" cy="76" r="3.5" className={themeClass('fill-black', 'fill-green-500')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '1s' }} />
+        <path d="M24 64 Q24 72 32 72 Q24 72 24 80 Q24 72 16 72 Q24 72 24 64 Z" className={themeClass('fill-black', 'fill-green-500')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.3s' }} />
+      </svg>
       
       <h3 className={themeClass(
         'text-xl font-black mb-2',

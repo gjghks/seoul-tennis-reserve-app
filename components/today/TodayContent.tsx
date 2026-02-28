@@ -134,7 +134,13 @@ export default function TodayContent({
               'bg-white border border-gray-100'
             )}`}
           >
-            <div className={`text-4xl mb-3 inline-block animate-bounce ${themeClass('', '')}`} style={{ animationDuration: '2s' }}>😔</div>
+            <svg className={themeClass('w-20 h-20 mx-auto mb-3', 'w-16 h-16 mx-auto mb-3')} viewBox="0 0 80 80" fill="none" aria-hidden="true">
+              <rect x="20" y="16" width="40" height="48" rx="2" className={themeClass('stroke-black stroke-[2.5] fill-none', 'stroke-gray-300 stroke-[1.5] fill-none')} />
+              <line x1="14" y1="40" x2="66" y2="40" className={themeClass('stroke-black stroke-[2.5]', 'stroke-gray-300 stroke-[1.5]')} style={{ animation: 'fav-pulse 2.5s ease-in-out infinite' }} strokeDasharray="4 4" />
+              <path d="M35 35 L45 45 M45 35 L35 45" className={themeClass('stroke-black stroke-[2.5]', 'stroke-gray-400 stroke-[1.5]')} strokeLinecap="round" style={{ animation: 'fav-sparkle 3s ease-in-out infinite', animationDelay: '0.5s' }} />
+              <circle cx="16" cy="12" r="2" className={themeClass('fill-black', 'fill-gray-400')} style={{ animation: 'fav-sparkle 2s ease-in-out infinite', animationDelay: '0s' }} />
+              <circle cx="68" cy="64" r="1.5" className={themeClass('fill-black', 'fill-gray-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '1s' }} />
+            </svg>
             <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
               현재 예약 가능한 코트가 없습니다
             </h2>

@@ -88,7 +88,10 @@ function fetchWeatherData(nx: string, ny: string): Promise<WeatherPayload> {
   return unstable_cache(
     async (): Promise<WeatherPayload> => {
       const weatherKey = process.env.WEATHER_API_KEY;
-      if (!weatherKey) return EMPTY_WEATHER;
+      if (!weatherKey) {
+        console.error('[weather] WEATHER_API_KEY is not set');
+        return EMPTY_WEATHER;
+      }
 
       const { baseDate, baseTime } = toKstBaseDateTime();
       const params = new URLSearchParams({
@@ -106,12 +109,18 @@ function fetchWeatherData(nx: string, ny: string): Promise<WeatherPayload> {
         `https://apihub.kma.go.kr/api/typ02/openApi/VilageFcstInfoService_2.0/getUltraSrtNcst?${params.toString()}`,
       );
 
-      if (!response.ok) return EMPTY_WEATHER;
+      if (!response.ok) {
+        console.error(`[weather] KMA API returned HTTP ${response.status} for nx=${nx}, ny=${ny}`);
+        return EMPTY_WEATHER;
+      }
 
       const data = (await response.json()) as KmaResponse;
       const items = data.response?.body?.items?.item;
 
-      if (!items || items.length === 0) return EMPTY_WEATHER;
+      if (!items || items.length === 0) {
+        console.error(`[weather] KMA API returned no items for nx=${nx}, ny=${ny}`, JSON.stringify(data).slice(0, 500));
+        return EMPTY_WEATHER;
+      }
 
       const itemMap = new Map(items.map((item) => [item.category, item.obsrValue]));
 
@@ -153,7 +162,8 @@ export async function GET(request: NextRequest) {
 
     const payload = await fetchWeatherData(nx, ny);
     return NextResponse.json(payload);
-  } catch {
+  } catch (error) {
+    console.error('[weather] Unexpected error:', error);
     return NextResponse.json(EMPTY_WEATHER);
   }
 }

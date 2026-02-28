@@ -177,6 +177,20 @@ export default function TennisProfileSection() {
             </div>
           ) : (
             <div className="text-center py-4 relative z-10">
+              <svg className={themeClass('w-20 h-20 mx-auto mb-3', 'w-16 h-16 mx-auto mb-3')} viewBox="0 0 80 80" fill="none" aria-hidden="true">
+                <g style={{ animation: 'gentle-float 3s ease-in-out infinite' }}>
+                  {/* head */}
+                  <circle cx="40" cy="26" r="12" className={themeClass('fill-[#a3e635] stroke-black stroke-[2.5]', 'fill-green-200 stroke-green-400 stroke-[1.5]')} />
+                  {/* body */}
+                  <path d="M24 62c0-8.8 7.2-16 16-16s16 7.2 16 16" className={themeClass('fill-[#a3e635]/50 stroke-black stroke-[2.5]', 'fill-green-100 stroke-green-400 stroke-[1.5]')} />
+                  {/* racket */}
+                  <ellipse cx="62" cy="30" rx="7" ry="10" className={themeClass('fill-none stroke-black stroke-[2]', 'fill-none stroke-green-400 stroke-[1.5]')} transform="rotate(-30 62 30)" />
+                  <line x1="56" y1="38" x2="50" y2="50" className={themeClass('stroke-black stroke-[2]', 'stroke-green-400 stroke-[1.5]')} strokeLinecap="round" />
+                </g>
+                <circle cx="14" cy="16" r="2" className={themeClass('fill-black', 'fill-green-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0s' }} />
+                <circle cx="70" cy="62" r="2.5" className={themeClass('fill-black', 'fill-green-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.7s' }} />
+                <path d="M68 12 Q68 16 72 16 Q68 16 68 20 Q68 16 64 16 Q68 16 68 12 Z" className={themeClass('fill-black', 'fill-green-300')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.4s' }} />
+              </svg>
               <p className={themeClass('font-bold mb-3', 'text-gray-600 mb-3')}>
                 아직 프로필 정보가 없습니다.
               </p>

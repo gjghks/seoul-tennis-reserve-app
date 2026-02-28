@@ -291,15 +291,20 @@ export default function DistrictContent({
               ? 'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]' 
               : 'bg-white rounded-2xl border border-gray-100'
           }`}>
-            <div className={`w-20 h-20 mx-auto mb-6 flex items-center justify-center ${
-              isNeoBrutalism 
-                ? 'bg-[#facc15] border-2 border-black rounded-[5px]' 
-                : 'bg-gray-100 rounded-full'
-            }`}>
-              <svg className={`w-10 h-10 ${themeClass('text-black', 'text-gray-400')} `} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M12 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
+            <svg className={themeClass('w-24 h-24 mx-auto mb-6', 'w-20 h-20 mx-auto mb-6')} viewBox="0 0 96 96" fill="none" aria-hidden="true">
+              <g style={{ animation: 'search-drift 4s ease-in-out infinite' }}>
+                {/* magnifier glass */}
+                <circle cx="42" cy="42" r="20" className={themeClass('fill-[#facc15]/30 stroke-black stroke-[2.5]', 'fill-gray-100 stroke-gray-400 stroke-[1.5]')} />
+                {/* magnifier handle */}
+                <line x1="56" y1="56" x2="72" y2="72" className={themeClass('stroke-black stroke-[3]', 'stroke-gray-400 stroke-[2]')} strokeLinecap="round" />
+                {/* tennis ball inside magnifier */}
+                <circle cx="42" cy="42" r="10" className={themeClass('fill-[#a3e635] stroke-black stroke-[2]', 'fill-green-200 stroke-green-400 stroke-[1]')} />
+                <path d="M37 34 A 8 8 0 0 1 37 50" fill="none" className={themeClass('stroke-black stroke-[1.5]', 'stroke-green-500 stroke-[1]')} />
+              </g>
+              <circle cx="18" cy="18" r="2.5" className={themeClass('fill-black', 'fill-gray-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0s' }} />
+              <circle cx="80" cy="28" r="2" className={themeClass('fill-black', 'fill-gray-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.6s' }} />
+              <path d="M76 70 Q76 74 80 74 Q76 74 76 78 Q76 74 72 74 Q76 74 76 70 Z" className={themeClass('fill-black', 'fill-gray-300')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.3s' }} />
+            </svg>
             <h3 className={`text-lg mb-2 ${themeClass('font-black text-black uppercase', 'font-semibold text-gray-900')} `}>
               {showAvailableOnly ? '접수중인 테니스장이 없습니다' : '등록된 테니스장이 없습니다'}
             </h3>

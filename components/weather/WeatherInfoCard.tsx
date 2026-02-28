@@ -33,6 +33,9 @@ interface CityDataWeatherResponse {
   weather: {
     temp: number;
     sensibleTemp: number;
+    humidity: number;
+    windSpeed: number;
+    precipType: string;
     uvIndex: string;
     uvIndexLevel: string;
     uvMsg: string;
@@ -126,6 +129,14 @@ function formatForecastHour(fcstDt: string): string {
   return fcstDt;
 }
 
+/** city-data의 precipType + forecast에서 sky 값을 추론 */
+function resolveCityDataSky(precipType?: string, firstForecastSky?: string): string | null {
+  if (precipType && precipType !== '없음' && precipType !== '-') return precipType;
+  if (firstForecastSky === '맑음') return '맑음';
+  if (firstForecastSky === '구름많음') return '구름많음';
+  return null;
+}
+
 export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, district, courtLat, courtLng }: WeatherInfoCardProps) {
   const themeClass = useThemeClass();
   const [forecastExpanded, setForecastExpanded] = useState(false);
@@ -161,7 +172,7 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
   );
 
   const cityDataUrl = (courtLat && courtLng) ? `/api/city-data?lat=${courtLat}&lng=${courtLng}&fields=weather` : null;
-  const { data: cityWeather } = useSWR<CityDataWeatherResponse>(cityDataUrl, cityDataFetcher, {
+  const { data: cityWeather, isLoading: isCityWeatherLoading } = useSWR<CityDataWeatherResponse>(cityDataUrl, cityDataFetcher, {
     revalidateOnFocus: false,
     revalidateOnReconnect: true,
     refreshInterval: 10 * 60 * 1000,
@@ -178,21 +189,34 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
     keepPreviousData: true,
   });
 
-  if (isLoading && !data) {
-    return (
-      <div className={isNeoBrutalism
-        ? 'border-2 border-black rounded-[5px] p-4 shadow-[3px_3px_0px_0px_#000] skeleton-neo h-24'
-        : 'rounded-xl p-4 border border-gray-100 skeleton h-24'
-      } />
-    );
+  // Resolve weather: primary (KMA) → city-data fallback
+  const primaryOk = data != null && data.temperature !== null;
+  const cityW = cityWeather?.weather;
+  const hasCityWeather = cityW != null && cityW.temp != null;
+
+  // Show skeleton while waiting for at least one weather source
+  if (!primaryOk && !hasCityWeather) {
+    if (isLoading || (cityDataUrl && isCityWeatherLoading)) {
+      return (
+        <div className={isNeoBrutalism
+          ? 'border-2 border-black rounded-[5px] p-4 shadow-[3px_3px_0px_0px_#000] skeleton-neo h-24'
+          : 'rounded-xl p-4 border border-gray-100 skeleton h-24'
+        } />
+      );
+    }
+    return null;
   }
 
-  const hasData = data && data.temperature !== null;
-  if (!hasData) return null;
+  // Resolved values: prefer primary, fall back to city-data
+  const temperature = primaryOk ? data.temperature! : cityW!.temp;
+  const humidity = primaryOk ? data.humidity : hasCityWeather ? cityW!.humidity : null;
+  const windSpeed = primaryOk ? data.windSpeed : hasCityWeather ? cityW!.windSpeed : null;
+  const sky = primaryOk ? data.sky : resolveCityDataSky(cityW?.precipType, cityW?.forecast24h?.[0]?.sky);
+  const rainfall = primaryOk ? data.rainfall : null;
 
   const dustAlert = airData ? getOverallDustAlert(airData.pm25, airData.pm10) : { level: null, type: null, value: null };
   const isOfficialAlert = officialAlert?.hasAlert === true;
-  const warning = isOutdoor ? resolveWarning(data.sky, data.rainfall, airData?.grade, dustAlert.level, isOfficialAlert) : null;
+  const warning = isOutdoor ? resolveWarning(sky, rainfall, airData?.grade, dustAlert.level, isOfficialAlert) : null;
   const airGradeColor = airData?.grade ? resolveAirQualityGradeColor(airData.grade) : null;
   const dustAlertColor = dustAlert.level ? getDustAlertColor(dustAlert.level) : null;
   const showAirQuality = airData && airData.grade !== '정보없음' && airGradeColor;
@@ -214,11 +238,11 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
       <div className="flex flex-col sm:flex-row items-stretch gap-3 sm:gap-4">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1.5">
-            <AnimatedWeatherIcon sky={data.sky} rainfall={data.rainfall} size={20} />
+            <AnimatedWeatherIcon sky={sky} rainfall={rainfall} size={20} />
             <div>
               <p className={themeClass('text-xs text-black/60 font-bold uppercase', 'text-xs text-gray-400')}>현재 날씨</p>
               <p className={themeClass('font-black text-black text-base', 'font-semibold text-gray-800 text-base')}>
-                {Math.round(data.temperature!)}°C {data.sky ?? ''}
+                {Math.round(temperature)}°C {sky ?? ''}
               </p>
             </div>
           </div>
@@ -226,9 +250,9 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
             'flex items-center gap-1.5 text-[11px] font-bold text-black/60',
             'flex items-center gap-1.5 text-[11px] text-gray-400'
           )}>
-            {data.humidity !== null && <span>습도 {data.humidity}%</span>}
-            {data.humidity !== null && data.windSpeed !== null && <span>·</span>}
-            {data.windSpeed !== null && <span>바람 {data.windSpeed}m/s</span>}
+            {humidity !== null && <span>습도 {humidity}%</span>}
+            {humidity !== null && windSpeed !== null && <span>·</span>}
+            {windSpeed !== null && <span>바람 {windSpeed}m/s</span>}
             {uvData?.sensibleTemp !== undefined && (
               <>
                 <span>·</span>

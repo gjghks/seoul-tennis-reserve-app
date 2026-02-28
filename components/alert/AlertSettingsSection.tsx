@@ -111,15 +111,63 @@ export default function AlertSettingsSection() {
             ? 'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]'
             : 'bg-white rounded-2xl border border-gray-100'
         }`}>
-          <div className={`w-12 h-12 mx-auto mb-3 flex items-center justify-center ${
-            isNeoBrutalism
-              ? 'bg-[#facc15] border-2 border-black rounded-[5px]'
-              : 'bg-amber-50 rounded-full'
-          }`}>
-            <svg className={`w-6 h-6 ${themeClass('text-black', 'text-amber-400')}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-            </svg>
-          </div>
+          <svg
+            className={themeClass('w-20 h-20 mx-auto mb-3', 'w-16 h-16 mx-auto mb-3')}
+            viewBox="0 0 96 96"
+            fill="none"
+            aria-hidden="true"
+          >
+            {/* sound wave rings */}
+            <circle
+              cx="48" cy="28" r="20"
+              className={themeClass('stroke-black/20 stroke-[1.5]', 'stroke-amber-200 stroke-[1]')}
+              fill="none"
+              style={{ animation: 'bell-ring-wave 3s ease-out infinite', transformOrigin: '48px 28px' }}
+            />
+            <circle
+              cx="48" cy="28" r="14"
+              className={themeClass('stroke-black/25 stroke-[1.5]', 'stroke-amber-300 stroke-[1]')}
+              fill="none"
+              style={{ animation: 'bell-ring-wave 3s ease-out infinite 0.4s', transformOrigin: '48px 28px' }}
+            />
+            {/* bell body group - swing */}
+            <g style={{ animation: 'bell-swing 4s ease-in-out infinite', transformOrigin: '48px 18px' }}>
+              {/* bell dome */}
+              <path
+                d="M32 56h32l-2.8-2.8A4 4 0 0160 50.3V40a12 12 0 00-24 0v10.3a4 4 0 01-1.2 2.9L32 56z"
+                className={themeClass('fill-[#facc15] stroke-black stroke-[2.5]', 'fill-amber-400 stroke-amber-500 stroke-[1.5]')}
+              />
+              {/* bell top knob */}
+              <circle
+                cx="48" cy="28" r="3"
+                className={themeClass('fill-[#facc15] stroke-black stroke-[2]', 'fill-amber-400 stroke-amber-500 stroke-[1.5]')}
+              />
+              {/* clapper */}
+              <circle
+                cx="48" cy="62" r="3.5"
+                className={themeClass('fill-black', 'fill-amber-600')}
+                style={{ animation: 'bell-clapper 4s ease-in-out infinite' }}
+              />
+            </g>
+            {/* notification dot */}
+            <circle
+              cx="62" cy="30" r="5"
+              className={themeClass('fill-[#ef4444] stroke-black stroke-[1.5]', 'fill-red-500 stroke-white stroke-[1.5]')}
+              style={{ animation: 'bell-dot-pop 4s ease-out infinite' }}
+            />
+            {/* sparkle left */}
+            <circle
+              cx="24" cy="44" r="2"
+              className={themeClass('fill-black', 'fill-amber-300')}
+              style={{ animation: 'fav-sparkle 3s ease-in-out infinite 0.8s' }}
+            />
+            {/* sparkle right */}
+            <circle
+              cx="74" cy="40" r="1.5"
+              className={themeClass('fill-black', 'fill-amber-300')}
+              style={{ animation: 'fav-sparkle 3s ease-in-out infinite 1.6s' }}
+            />
+          </svg>
           <p className={themeClass('font-bold text-black', 'text-gray-500')}>
             설정된 알림이 없습니다
           </p>

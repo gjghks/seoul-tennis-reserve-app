@@ -88,6 +88,18 @@ export default function FavoriteCourtSection() {
                 className={themeClass('fill-black', 'fill-amber-300')}
                 style={{ animation: 'fav-sparkle 2s ease-in-out infinite 0.5s' }}
               />
+              {/* sparkle bottom-right */}
+              <circle
+                cx="40" cy="38" r="2.5"
+                className={themeClass('fill-black', 'fill-amber-400')}
+                style={{ animation: 'fav-sparkle 2s ease-in-out infinite 1s' }}
+              />
+              {/* star sparkle bottom-left */}
+              <path
+                d="M8 36 Q8 40 12 40 Q8 40 8 44 Q8 40 4 40 Q8 40 8 36 Z"
+                className={themeClass('fill-black', 'fill-amber-300')}
+                style={{ animation: 'fav-sparkle 2s ease-in-out infinite 0.3s' }}
+              />
             </svg>
             <div>
               <h2 className={`font-bold mb-2 ${themeClass('text-black uppercase', 'text-gray-900')} `}>

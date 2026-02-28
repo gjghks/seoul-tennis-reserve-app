@@ -135,10 +135,10 @@ export default function EmptyState({
       {icon && (
         <div
           className={themeClass(
-            `${iconWrapperSizeNeo} bg-white border-2 border-black rounded-full flex items-center justify-center shadow-[4px_4px_0px_0px_#000] animate-bounce`,
-            `${iconWrapperSizeMinimal} bg-gray-50 border border-gray-100 rounded-full flex items-center justify-center animate-bounce`
+            `${iconWrapperSizeNeo} bg-white border-2 border-black rounded-full flex items-center justify-center shadow-[4px_4px_0px_0px_#000]`,
+            `${iconWrapperSizeMinimal} bg-gray-50 border border-gray-100 rounded-full flex items-center justify-center`
           )}
-          style={{ animationDuration: '3s' }}
+          style={{ animation: 'gentle-float 3s ease-in-out infinite' }}
         >
           {isNeoBrutalism ? (
             <span className={iconSizeNeo}>{icon}</span>

@@ -151,15 +151,17 @@ export default function MyPage() {
           ? 'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] py-12 px-6 text-center mb-8'
           : 'bg-white rounded-2xl border border-gray-100 py-12 px-6 text-center mb-8'
         }>
-          <div className={`w-16 h-16 mx-auto mb-4 flex items-center justify-center ${
-            isNeoBrutalism 
-              ? 'bg-[#bfdbfe] border-2 border-black rounded-[5px]' 
-              : 'bg-blue-50 rounded-full'
-          }`}>
-            <svg className={`w-8 h-8 ${themeClass('text-black', 'text-blue-400')} `} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          </div>
+          <svg className={themeClass('w-20 h-20 mx-auto mb-4', 'w-16 h-16 mx-auto mb-4')} viewBox="0 0 80 80" fill="none" aria-hidden="true">
+            <g style={{ animation: 'gentle-float 3s ease-in-out infinite' }}>
+              <circle cx="40" cy="40" r="24" className={themeClass('fill-[#bfdbfe] stroke-black stroke-[2.5]', 'fill-blue-100 stroke-blue-400 stroke-[1.5]')} />
+              <circle cx="40" cy="40" r="2" className={themeClass('fill-black', 'fill-blue-500')} />
+              <line x1="40" y1="40" x2="40" y2="26" className={themeClass('stroke-black stroke-[2.5]', 'stroke-blue-500 stroke-[1.5]')} strokeLinecap="round" />
+              <line x1="40" y1="40" x2="52" y2="40" className={themeClass('stroke-black stroke-[2]', 'stroke-blue-400 stroke-[1]')} strokeLinecap="round" style={{ animation: 'clock-tick 3s ease-in-out infinite', transformOrigin: '40px 40px' }} />
+            </g>
+            <circle cx="16" cy="14" r="2.5" className={themeClass('fill-black', 'fill-blue-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0s' }} />
+            <circle cx="68" cy="20" r="2" className={themeClass('fill-black', 'fill-blue-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.7s' }} />
+            <path d="M66 60 Q66 64 70 64 Q66 64 66 68 Q66 64 62 64 Q66 64 66 60 Z" className={themeClass('fill-black', 'fill-blue-300')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.4s' }} />
+          </svg>
           <h3 className={`text-lg mb-2 ${themeClass('font-black text-black', 'font-semibold text-gray-900')} `}>
             최근 본 코트가 없습니다
           </h3>
@@ -216,15 +218,49 @@ export default function MyPage() {
             ? 'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] py-12 px-6 text-center'
             : 'bg-white rounded-2xl border border-gray-100 py-12 px-6 text-center'
           }>
-            <div className={`w-16 h-16 mx-auto mb-4 flex items-center justify-center ${
-              isNeoBrutalism 
-                ? 'bg-[#f472b6] border-2 border-black rounded-[5px]' 
-                : 'bg-pink-50 rounded-full'
-            }`}>
-            <svg className={`w-8 h-8 ${themeClass('text-black', 'text-pink-400')} `} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg>
-            </div>
+            <svg
+              className={themeClass('w-24 h-24 mx-auto mb-4', 'w-20 h-20 mx-auto mb-4')}
+              viewBox="0 0 96 96"
+              fill="none"
+              aria-hidden="true"
+            >
+              {/* outer heart - pulse */}
+              <path
+                d="M48 80S12 62 12 36c0-11.4 7.8-18 16.8-18 5.4 0 9.6 2.4 11.4 4.8L48 32l7.8-9.2C57.6 20.4 61.8 18 67.2 18 76.2 18 84 24.6 84 36 84 62 48 80 48 80z"
+                className={themeClass('fill-[#f472b6]/30 stroke-black stroke-[2.5]', 'fill-pink-200/40 stroke-pink-300 stroke-[1.5]')}
+                style={{ animation: 'fav-pulse 2.5s ease-in-out infinite' }}
+              />
+              {/* inner heart - beat */}
+              <path
+                d="M48 70S24 56 24 40c0-7.8 4.8-12 10.2-12 3.6 0 6.6 1.8 8.4 3.6L48 38l5.4-6.4c1.8-1.8 4.8-3.6 8.4-3.6C67.2 28 72 32.2 72 40 72 56 48 70 48 70z"
+                className={themeClass('fill-[#f472b6] stroke-black stroke-[2]', 'fill-pink-400 stroke-pink-500 stroke-[1]')}
+                style={{ animation: 'fav-beat 2.5s ease-in-out infinite', transformOrigin: 'center' }}
+              />
+              {/* sparkle top-right */}
+              <circle
+                cx="76" cy="20" r="3.5"
+                className={themeClass('fill-black', 'fill-pink-400')}
+                style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite' }}
+              />
+              {/* sparkle top-left */}
+              <circle
+                cx="18" cy="28" r="2.5"
+                className={themeClass('fill-black', 'fill-pink-300')}
+                style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite 0.6s' }}
+              />
+              {/* sparkle bottom-right */}
+              <circle
+                cx="80" cy="52" r="2"
+                className={themeClass('fill-black', 'fill-pink-300')}
+                style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite 1.2s' }}
+              />
+              {/* star sparkle top */}
+              <path
+                d="M60 12l1.5 3 3 .5-2.2 2.1.5 3-2.8-1.5-2.8 1.5.5-3-2.2-2.1 3-.5z"
+                className={themeClass('fill-black', 'fill-pink-400')}
+                style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite 0.3s' }}
+              />
+            </svg>
             <h3 className={`text-lg mb-2 ${themeClass('font-black text-black', 'font-semibold text-gray-900')} `}>
               즐겨찾기가 비어있습니다
             </h3>
@@ -287,15 +323,20 @@ export default function MyPage() {
           ? 'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] py-12 px-6 text-center'
           : 'bg-white rounded-2xl border border-gray-100 py-12 px-6 text-center'
         }>
-          <div className={`w-16 h-16 mx-auto mb-4 flex items-center justify-center ${
-            isNeoBrutalism 
-              ? 'bg-[#fca5a5] border-2 border-black rounded-[5px]' 
-              : 'bg-red-50 rounded-full'
-          }`}>
-            <svg className={`w-8 h-8 ${themeClass('text-black', 'text-red-400')} `} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-            </svg>
-          </div>
+          <svg className={themeClass('w-20 h-20 mx-auto mb-4', 'w-16 h-16 mx-auto mb-4')} viewBox="0 0 80 80" fill="none" aria-hidden="true">
+            <g style={{ animation: 'gentle-float 3s ease-in-out infinite' }}>
+              {/* lock body */}
+              <rect x="24" y="38" width="32" height="24" rx="4" className={themeClass('fill-[#fca5a5] stroke-black stroke-[2.5]', 'fill-red-100 stroke-red-400 stroke-[1.5]')} />
+              {/* lock shackle */}
+              <path d="M30 38V28a10 10 0 0120 0v10" fill="none" className={themeClass('stroke-black stroke-[2.5]', 'stroke-red-400 stroke-[1.5]')} style={{ animation: 'lock-wiggle 4s ease-in-out infinite', transformOrigin: '40px 38px' }} />
+              {/* keyhole */}
+              <circle cx="40" cy="48" r="3" className={themeClass('fill-black', 'fill-red-500')} />
+              <rect x="39" y="48" width="2" height="6" className={themeClass('fill-black', 'fill-red-500')} />
+            </g>
+            <circle cx="14" cy="20" r="2.5" className={themeClass('fill-black', 'fill-red-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0s' }} />
+            <circle cx="70" cy="24" r="2" className={themeClass('fill-black', 'fill-red-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.8s' }} />
+            <path d="M64 66 Q64 70 68 70 Q64 70 64 74 Q64 70 60 70 Q64 70 64 66 Z" className={themeClass('fill-black', 'fill-red-300')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.4s' }} />
+          </svg>
           <h3 className={`text-lg mb-2 ${themeClass('font-black text-black', 'font-semibold text-gray-900')} `}>
             로그인이 필요합니다
           </h3>
