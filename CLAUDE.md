@@ -147,7 +147,7 @@ components/
   guide/           # GuideContent, RecordsGuideContent
   auth/            # LoginPrompt, ProviderBadge
   map/             # KakaoMapView
-  reservation/     # KakaoReserveTip
+  reservation/     # ReservationNotice
   ui/              # ShareButton, KakaoShareButton, NavigationProgress,
                    #   LastUpdated, FacilityTags, Toast, Spinner
   pwa/             # InstallPrompt

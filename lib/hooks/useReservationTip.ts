@@ -2,10 +2,9 @@
 
 import { useCallback } from 'react';
 import { User } from '@supabase/supabase-js';
-import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/contexts/ToastContext';
 
-const TIP_STORAGE_KEY = 'kakao_reserve_tip_shown';
+const TIP_STORAGE_KEY = 'reserve_tip_shown';
 export const LOGIN_PROVIDER_KEY = 'current_login_provider';
 
 export type LoginProvider = 'kakao' | 'google' | null;
@@ -61,27 +60,22 @@ export function hasKakaoIdentity(user: User | null): boolean {
 }
 
 export function useReservationTip() {
-  const { user } = useAuth();
   const { showToast } = useToast();
 
-  const isKakaoUser = hasKakaoIdentity(user);
-
   const handleReservationClick = useCallback(() => {
-    if (!isKakaoUser) return;
-
     try {
       const tipShown = localStorage.getItem(TIP_STORAGE_KEY);
       if (tipShown) return;
 
       localStorage.setItem(TIP_STORAGE_KEY, 'true');
       showToast(
-        '예약 사이트에서 카카오 로그인을 누르면, 이미 로그인된 계정으로 바로 연결됩니다!',
+        '예약 시 서울시 통합회원 로그인이 필요합니다 (간편로그인·비회원 예약 불가)',
         'info'
       );
     } catch {
       // localStorage unavailable (private browsing etc.)
     }
-  }, [isKakaoUser, showToast]);
+  }, [showToast]);
 
-  return { handleReservationClick, isKakaoUser };
+  return { handleReservationClick };
 }

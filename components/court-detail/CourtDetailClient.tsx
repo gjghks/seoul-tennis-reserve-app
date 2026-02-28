@@ -24,7 +24,7 @@ import { useRecentCourts } from '@/lib/hooks/useRecentCourts';
 import SimilarCourts from '@/components/court-detail/SimilarCourts';
 import { renderPhoneLinks } from '@/lib/utils/phoneLink';
 import CourtAlertButton from '@/components/alert/CourtAlertButton';
-import KakaoReserveTip from '@/components/reservation/KakaoReserveTip';
+import ReservationNotice from '@/components/reservation/ReservationNotice';
 import { useReservationTip } from '@/lib/hooks/useReservationTip';
 
 const KakaoShareButton = dynamic(() => import('@/components/ui/KakaoShareButton'), {
@@ -264,7 +264,7 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
                 </>
               )}
             </a>
-            {isAvailable && <KakaoReserveTip />}
+            {isAvailable && <ReservationNotice />}
           </div>
         )}
 

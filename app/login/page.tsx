@@ -171,12 +171,12 @@ function LoginContent() {
         </div>
 
         <div className={themeClass(
-          'bg-[#FEE500]/20 border-2 border-black/15 rounded-[5px] p-3 mt-6',
-          'bg-amber-50 border border-amber-100 rounded-lg p-3 mt-6'
+          'bg-gray-100 border-2 border-black/15 rounded-[5px] p-3 mt-6',
+          'bg-gray-50 border border-gray-200 rounded-lg p-3 mt-6'
         )}>
-          <p className={`text-xs text-center ${themeClass('text-black/60 font-medium', 'text-amber-700')}`}>
-            서울시 예약 사이트(yeyak.seoul.go.kr)도 카카오 로그인을 지원합니다.
-            동일한 카카오 계정으로 로그인하면 예약 시 더 편리합니다.
+          <p className={`text-xs text-center ${themeClass('text-black/60 font-medium', 'text-gray-500')}`}>
+            서울시 공공서비스 예약 시 서울시 통합회원 로그인이 필요합니다.
+            yeyak.seoul.go.kr에서 통합회원 가입 후 예약하세요.
           </p>
         </div>
 
