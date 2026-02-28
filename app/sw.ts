@@ -67,6 +67,7 @@ interface PushPayload {
   title: string;
   body: string;
   url?: string;
+  svcUrl?: string;
 }
 
 self.addEventListener("push", (event: PushEvent) => {
@@ -79,21 +80,36 @@ self.addEventListener("push", (event: PushEvent) => {
     payload = { title: "서울 테니스", body: event.data.text() };
   }
 
+  const notificationOptions: NotificationOptions & { actions?: { action: string; title: string }[] } = {
+    body: payload.body,
+    icon: "/icons/icon-192x192.png",
+    badge: "/icons/icon-96x96.png",
+    data: { url: payload.url || "/", svcUrl: payload.svcUrl },
+    tag: `tennis-alert-${Date.now()}`,
+  };
+
+  if (payload.svcUrl) {
+    notificationOptions.actions = [
+      { action: "reserve", title: "바로 예약" },
+    ];
+  }
+
   event.waitUntil(
-    self.registration.showNotification(payload.title, {
-      body: payload.body,
-      icon: "/icons/icon-192x192.png",
-      badge: "/icons/icon-96x96.png",
-      data: { url: payload.url || "/" },
-      tag: `tennis-alert-${Date.now()}`,
-    })
+    self.registration.showNotification(payload.title, notificationOptions)
   );
 });
 
 self.addEventListener("notificationclick", (event: NotificationEvent) => {
   event.notification.close();
 
-  const targetUrl = (event.notification.data as { url?: string })?.url || "/";
+  const data = event.notification.data as { url?: string; svcUrl?: string };
+
+  if (event.action === "reserve" && data.svcUrl) {
+    event.waitUntil(self.clients.openWindow(data.svcUrl));
+    return;
+  }
+
+  const targetUrl = data.url || "/";
 
   event.waitUntil(
     self.clients

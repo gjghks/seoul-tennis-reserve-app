@@ -49,16 +49,6 @@ export function getLoginProvider(user: User | null): LoginProvider {
   return null;
 }
 
-export function hasKakaoIdentity(user: User | null): boolean {
-  if (!user) return false;
-  return (
-    user.app_metadata?.provider === 'kakao' ||
-    user.app_metadata?.providers?.includes('kakao') ||
-    user.identities?.some(i => i.provider === 'kakao') ||
-    false
-  );
-}
-
 export function useReservationTip() {
   const { showToast } = useToast();
 

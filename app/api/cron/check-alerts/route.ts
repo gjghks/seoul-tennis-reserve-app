@@ -29,6 +29,7 @@ type NotificationPayload = {
   title: string;
   body: string;
   url: string;
+  svcUrl?: string;
 };
 
 type QueuedNotification = {
@@ -138,6 +139,7 @@ export async function GET(request: Request) {
           title: '🎾 접수 시작!',
           body: `${court.SVCNM} 예약 접수가 시작되었습니다`,
           url,
+          svcUrl: court.SVCURL || undefined,
         },
       });
     }
