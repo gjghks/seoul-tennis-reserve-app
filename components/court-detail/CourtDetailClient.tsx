@@ -264,7 +264,7 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
                 </>
               )}
             </a>
-            {isAvailable && <ReservationNotice />}
+            <ReservationNotice />
           </div>
         )}
 

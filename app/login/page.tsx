@@ -175,8 +175,13 @@ function LoginContent() {
           'bg-gray-50 border border-gray-200 rounded-lg p-3 mt-6'
         )}>
           <p className={`text-xs text-center ${themeClass('text-black/60 font-medium', 'text-gray-500')}`}>
-            서울시 공공서비스 예약 시 서울시 통합회원 로그인이 필요합니다.
-            yeyak.seoul.go.kr에서 통합회원 가입 후 예약하세요.
+            서울시 공공서비스 예약 시 서울시 통합회원 로그인이 필요합니다.{' '}
+            <Link
+              href="/guide/reservation"
+              className={`underline underline-offset-2 ${themeClass('hover:text-black/80', 'hover:text-gray-700')}`}
+            >
+              예약 가이드 보기
+            </Link>
           </p>
         </div>
 

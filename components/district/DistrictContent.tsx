@@ -20,6 +20,7 @@ import { isCourtAvailable, isCourtAccepting, sortByAvailability } from '@/lib/ut
 import { findEnrichment } from '@/lib/data/facilityEnrichment';
 import type { SurfaceCategory } from '@/lib/data/facilityEnrichment';
 import { useReservationTip } from '@/lib/hooks/useReservationTip';
+import ReservationNotice from '@/components/reservation/ReservationNotice';
 
 const SURFACE_FILTER_OPTIONS: Array<{ value: SurfaceCategory | 'all'; label: string }> = [
   { value: 'all', label: '전체' },
@@ -508,6 +509,8 @@ export default function DistrictContent({
             })}
           </div>
         )}
+
+        {availableCount > 0 && <ReservationNotice />}
 
         <div className={`mt-6 p-4 ${themeClass(
           'bg-[#fef3c7] border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000]',

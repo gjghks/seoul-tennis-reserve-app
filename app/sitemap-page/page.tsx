@@ -24,6 +24,11 @@ export default function SitemapPage() {
     { href: '/my', label: '마이페이지', description: '즐겨찾기 및 알림 관리' },
   ];
 
+  const guidePages = [
+    { href: '/guide/reservation', label: '예약 가이드', description: '통합회원 가입 및 예약 방법 안내' },
+    { href: '/guide/records', label: '경기 기록 가이드', description: '테니스 경기 기록 기능 안내' },
+  ];
+
   return (
     <div className="container py-8 scrollbar-hide">
       <div className="max-w-4xl mx-auto">
@@ -66,6 +71,30 @@ export default function SitemapPage() {
             </h2>
             <ul className="space-y-3">
               {userPages.map((page) => (
+                <li key={page.href}>
+                  <Link 
+                    href={page.href}
+                    className="group block p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                  >
+                    <span className="font-medium text-gray-900 group-hover:text-green-600 transition-colors">
+                      {page.label}
+                    </span>
+                    <p className="text-sm text-gray-500 mt-0.5">{page.description}</p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section className="bg-white rounded-xl border border-gray-100 p-6">
+            <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <span className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600">
+                📖
+              </span>
+              가이드
+            </h2>
+            <ul className="space-y-3">
+              {guidePages.map((page) => (
                 <li key={page.href}>
                   <Link 
                     href={page.href}

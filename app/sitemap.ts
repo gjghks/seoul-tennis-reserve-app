@@ -75,5 +75,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...staticPages, ...districtPages, ...guidePages];
+  const standaloneGuidePages: MetadataRoute.Sitemap = [
+    {
+      url: `${baseUrl}/guide/reservation`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/guide/records`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    },
+  ];
+
+  return [...staticPages, ...districtPages, ...guidePages, ...standaloneGuidePages];
 }
