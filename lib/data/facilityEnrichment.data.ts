@@ -356,32 +356,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "spectatorSeats": null,
     "renovation": null
   },
-  {
-    "facilityName": "장평근린공원 테니스장",
-    "normalizedName": "장평근린공원",
-    "district": "동대문구",
-    "address": "장안동 356",
-    "courtCount": 3,
-    "surfaces": [
-      {
-        "type": "인조잔디",
-        "count": null
-      }
-    ],
-    "surfaceCategory": "artificial_grass",
-    "surfaceDisplay": "인조잔디",
-    "area": 1145,
-    "siteArea": 1198,
-    "builtYear": 1984,
-    "owner": "동대문구",
-    "manager": "동대문 시설관리공단",
-    "contact": "동대문구시설관리공단",
-    "website": "www.dfmc.kr:8443/course/sports/fmcs/14",
-    "indoorOutdoor": "outdoor",
-    "lighting": null,
-    "spectatorSeats": null,
-    "renovation": null
-  },
+
   {
     "facilityName": "이문체육문화센터 테니스장",
     "normalizedName": "이문체육문화센터",
