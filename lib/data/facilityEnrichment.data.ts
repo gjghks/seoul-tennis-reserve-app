@@ -376,7 +376,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "owner": "동대문구",
     "manager": "동대문 시설관리공단",
     "contact": "동대문구시설관리공단",
-    "website": "www.ddmgongdan.or.kr/",
+    "website": "www.dfmc.kr:8443/course/sports/fmcs/14",
     "indoorOutdoor": "outdoor",
     "lighting": null,
     "spectatorSeats": null,
@@ -386,8 +386,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "facilityName": "이문체육문화센터 테니스장",
     "normalizedName": "이문체육문화센터",
     "district": "동대문구",
-    "address": null,
-    "courtCount": 3,
+    "address": "한천로58길 81-49 (이문동)",
+    "courtCount": 2,
     "surfaces": [
       {
         "type": "클레이",
@@ -401,18 +401,18 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "builtYear": 2005,
     "owner": "한국철도공사",
     "manager": "동대문 시설관리공단",
-    "contact": null,
-    "website": null,
-    "indoorOutdoor": null,
+    "contact": "02-963-0534",
+    "website": "www.dfmc.kr:8443/course/sports/fmcs/14",
+    "indoorOutdoor": "outdoor",
     "lighting": null,
     "spectatorSeats": null,
-    "renovation": null
+    "renovation": "2025년 10~12월 노후시설개선공사"
   },
   {
     "facilityName": "중랑천 제1체육공원 테니스장",
     "normalizedName": "중랑천제1체육공원",
     "district": "동대문구",
-    "address": null,
+    "address": "장안벚꽃로 74 (장안동)",
     "courtCount": 2,
     "surfaces": [
       {
@@ -428,8 +428,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "owner": "동대문구",
     "manager": "동대문 시설관리공단",
     "contact": "동대문구시설관리공단",
-    "website": "www.ddmgongdan.or.kr/",
-    "indoorOutdoor": null,
+    "website": "www.dfmc.kr:8443/course/sports/fmcs/14",
+    "indoorOutdoor": "outdoor",
     "lighting": null,
     "spectatorSeats": null,
     "renovation": null
@@ -454,8 +454,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "owner": "중랑구",
     "manager": "중랑구 시설관리공단",
     "contact": "중랑구 시설관리공단",
-    "website": null,
-    "indoorOutdoor": null,
+    "website": "https://jnrent2.jungnangimc.or.kr/page/rent/s01.od.list.php",
+    "indoorOutdoor": "outdoor",
     "lighting": null,
     "spectatorSeats": null,
     "renovation": null
@@ -464,7 +464,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "facilityName": "용마폭포공원테니스장",
     "normalizedName": "용마폭포공원",
     "district": "중랑구",
-    "address": null,
+    "address": "서울시 중랑구 용마산로250-12 (면목동)",
     "courtCount": 3,
     "surfaces": [
       {
@@ -480,8 +480,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "owner": "중랑구",
     "manager": "중랑구 시설관리공단",
     "contact": null,
-    "website": null,
-    "indoorOutdoor": null,
+    "website": "https://jnrent2.jungnangimc.or.kr/page/rent/s02.od.list.php",
+    "indoorOutdoor": "outdoor",
     "lighting": null,
     "spectatorSeats": null,
     "renovation": null
@@ -572,7 +572,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "facilityName": "오동근린공원 테니스장",
     "normalizedName": "오동근린공원",
     "district": "강북구",
-    "address": null,
+    "address": "서울특별시 강북구 월계로 191-40 (번동)",
     "courtCount": 3,
     "surfaces": [
       {
@@ -587,9 +587,9 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "builtYear": 2019,
     "owner": "강북구",
     "manager": "강북구테니스협회",
-    "contact": null,
+    "contact": "010-9976-3143",
     "website": null,
-    "indoorOutdoor": null,
+    "indoorOutdoor": "outdoor",
     "lighting": null,
     "spectatorSeats": null,
     "renovation": null
@@ -624,7 +624,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "facilityName": "마들스포츠타운 테니스장",
     "normalizedName": "마들스포츠타운",
     "district": "노원구",
-    "address": "상계6동 770-2",
+    "address": "서울특별시 노원구 덕릉로 450",
     "courtCount": 9,
     "surfaces": [
       {
@@ -639,8 +639,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "builtYear": 1991,
     "owner": "노원구",
     "manager": "노원구서비스공단",
-    "contact": "개인(임승호), 933-0233",
-    "website": "nowon.seoul.kr",
+    "contact": "02-2289-6855",
+    "website": "https://reservation.nowonsc.kr/sports/tennis_list",
     "indoorOutdoor": "outdoor",
     "lighting": {
       "count": 6,
@@ -653,7 +653,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "facilityName": "초안산스포츠타운 테니스장",
     "normalizedName": "초안산스포츠타운",
     "district": "노원구",
-    "address": "월계동 산 1",
+    "address": "서울특별시 노원구 마들로 5가길 113",
     "courtCount": 4,
     "surfaces": [
       {
@@ -668,8 +668,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "builtYear": 2001,
     "owner": "노원구",
     "manager": "노원구서비스공단",
-    "contact": "노원구청(950-3509)",
-    "website": "nowon.seoul.kr",
+    "contact": "02-2289-6855",
+    "website": "https://reservation.nowonsc.kr/sports/tennis_list",
     "indoorOutdoor": "outdoor",
     "lighting": null,
     "spectatorSeats": null,
@@ -679,7 +679,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "facilityName": "불암산스포츠타운 테니스장",
     "normalizedName": "불암산스포츠타운",
     "district": "노원구",
-    "address": null,
+    "address": "서울특별시 노원구 중계로 36",
     "courtCount": 3,
     "surfaces": [
       {
@@ -694,9 +694,9 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "builtYear": 2009,
     "owner": "서울시",
     "manager": "노원구서비스공단",
-    "contact": null,
-    "website": null,
-    "indoorOutdoor": null,
+    "contact": "02-2289-6855",
+    "website": "https://reservation.nowonsc.kr/sports/tennis_list",
+    "indoorOutdoor": "outdoor",
     "lighting": null,
     "spectatorSeats": null,
     "renovation": null
@@ -705,7 +705,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "facilityName": "수락산스포츠타운 테니스장",
     "normalizedName": "수락산스포츠타운",
     "district": "노원구",
-    "address": null,
+    "address": "서울특별시 노원구 수락산로8길 39",
     "courtCount": 3,
     "surfaces": [
       {
@@ -720,9 +720,9 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "builtYear": 2022,
     "owner": "노원구",
     "manager": "노원구서비스공단",
-    "contact": null,
-    "website": null,
-    "indoorOutdoor": null,
+    "contact": "02-2289-6855",
+    "website": "https://reservation.nowonsc.kr/sports/tennis_list",
+    "indoorOutdoor": "outdoor",
     "lighting": null,
     "spectatorSeats": null,
     "renovation": null
@@ -760,7 +760,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "facilityName": "북한산근린공원 테니스장",
     "normalizedName": "북한산근린공원",
     "district": "은평구",
-    "address": "은평구 녹번동 산1-1",
+    "address": "서울특별시 은평구 진흥로 290",
     "courtCount": 2,
     "surfaces": [
       {
@@ -777,7 +777,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "manager": "은평구시설관리공단",
     "contact": "02-350-5358",
     "website": "https://www.efmc.or.kr/fmcs/441",
-    "indoorOutdoor": null,
+    "indoorOutdoor": "outdoor",
     "lighting": null,
     "spectatorSeats": null,
     "renovation": null
