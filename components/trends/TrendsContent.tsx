@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, Fragment } from 'react';
 import PullToRefresh from 'react-simple-pull-to-refresh';
 import useSWR from 'swr';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -185,7 +185,7 @@ export default function TrendsContent() {
         )}
 
         {data && !isLoading && (
-          <>
+          <Fragment key={days}>
             {(data.currentRates?.length ?? 0) > 0 && (
               <TrendsKPI data={data} cardClass={cardClass} themeClass={themeClass} />
             )}
@@ -307,7 +307,7 @@ export default function TrendsContent() {
                 </div>
               </div>
             )}
-          </>
+          </Fragment>
         )}
       </div>
     </div>
