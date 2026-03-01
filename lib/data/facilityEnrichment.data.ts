@@ -86,7 +86,9 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "spectatorSeats": 16,
     "renovation": null,
     "longitude": 126.9650,
-    "latitude": 37.5553
+    "latitude": 37.5553,
+    "operatingHoursStart": "06:00",
+    "operatingHoursEnd": "21:00"
   },
   {
     "facilityName": "한강시민공원 이촌지구 테니스장",
@@ -595,7 +597,9 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "indoorOutdoor": null,
     "lighting": null,
     "spectatorSeats": null,
-    "renovation": null
+    "renovation": null,
+    "operatingHoursStart": "06:00",
+    "operatingHoursEnd": "22:00"
   },
   {
     "facilityName": "마들스포츠타운 테니스장",

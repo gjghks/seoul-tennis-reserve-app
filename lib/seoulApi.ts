@@ -1,5 +1,6 @@
 import http from 'node:http';
 import { getIndependentCourts } from '@/lib/data/independentCourts';
+import { getEnrichmentOperatingHours } from '@/lib/data/facilityEnrichment';
 
 const API_KEY = process.env.SEOUL_OPEN_DATA_KEY;
 const BASE_URL = 'http://openAPI.seoul.go.kr:8088';
@@ -143,6 +144,17 @@ export async function fetchTennisAvailability(startIndex = 1, endIndex = 1000): 
             );
 
             const allCourts = mergeIndependentCourts(tennisServices);
+
+            // Apply enrichment operating hours for courts with empty/missing V_MIN/V_MAX
+            for (const court of allCourts) {
+                if (!court.V_MIN && !court.V_MAX) {
+                    const hours = getEnrichmentOperatingHours(court.SVCNM, court.AREANM, court.PLACENM);
+                    if (hours) {
+                        court.V_MIN = hours.start;
+                        court.V_MAX = hours.end;
+                    }
+                }
+            }
 
             tennisDataCache = {
                 data: allCourts,

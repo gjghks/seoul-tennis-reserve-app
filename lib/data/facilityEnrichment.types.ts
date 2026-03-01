@@ -39,4 +39,7 @@ export interface FacilityEnrichment {
   /** Optional coordinate override — used when Seoul API returns empty X/Y */
   longitude?: number;
   latitude?: number;
+  /** Optional operating hours override — used when Seoul API returns empty or incorrect V_MIN/V_MAX */
+  operatingHoursStart?: string;
+  operatingHoursEnd?: string;
 }

@@ -168,6 +168,21 @@ export function getEnrichmentCoordinates(
   return { longitude: enrichment.longitude, latitude: enrichment.latitude };
 }
 
+/**
+ * Get operating hours override from enrichment data.
+ * Used for courts where Seoul API returns empty or inaccurate V_MIN/V_MAX.
+ * Returns { start, end } or null if enrichment has no operating hours.
+ */
+export function getEnrichmentOperatingHours(
+  svcnm: string,
+  areanm: string,
+  placenm?: string
+): { start: string; end: string } | null {
+  const enrichment = findEnrichment(svcnm, areanm, placenm);
+  if (!enrichment?.operatingHoursStart || !enrichment?.operatingHoursEnd) return null;
+  return { start: enrichment.operatingHoursStart, end: enrichment.operatingHoursEnd };
+}
+
 export const SURFACE_LABELS: Record<SurfaceCategory, string> = {
   clay: '클레이',
   artificial_grass: '인조잔디',
