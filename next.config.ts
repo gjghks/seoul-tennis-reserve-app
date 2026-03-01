@@ -101,6 +101,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: '**.jungnangimc.or.kr',
       },
+      {
+        protocol: 'https',
+        hostname: '**.efmc.or.kr',
+      },
     ],
   },
 };
