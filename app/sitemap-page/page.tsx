@@ -13,6 +13,12 @@ export const metadata: Metadata = {
 export default function SitemapPage() {
   const mainPages = [
     { href: '/', label: '홈', description: '서울시 전체 테니스장 예약 현황' },
+    { href: '/today', label: '오늘 예약', description: '오늘 예약 가능한 테니스장' },
+    { href: '/compare', label: '구별 비교', description: '자치구별 코트 수·예약률·평점 비교' },
+    { href: '/trends', label: '경쟁률', description: '시간대·요일별 예약 경쟁률 추이' },
+    { href: '/calendar', label: '캘린더', description: '날짜별 예약 현황 캘린더 뷰' },
+    { href: '/map', label: '지도', description: '전체 테니스장 지도 뷰' },
+    { href: '/records', label: '경기 기록', description: '테니스 경기 기록 및 통계' },
     { href: '/about', label: '서비스 소개', description: '서울 테니스 서비스 안내' },
     { href: '/contact', label: '문의하기', description: '서비스 문의 및 건의' },
     { href: '/privacy', label: '개인정보처리방침', description: '개인정보 보호 정책' },
