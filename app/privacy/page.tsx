@@ -25,6 +25,8 @@ export default function PrivacyPage() {
             <ul className="list-disc list-inside mt-2 space-y-1">
               <li>소셜 로그인을 통한 회원 가입 및 관리</li>
               <li>즐겨찾기, 이용 후기 등 개인화 기능 제공</li>
+              <li>경기 기록 관리 및 통계 분석</li>
+              <li>테니스 프로필 관리</li>
               <li>서비스 이용 통계 분석 및 서비스 개선</li>
             </ul>
           </section>
@@ -55,6 +57,8 @@ export default function PrivacyPage() {
             <ul className="list-disc list-inside mt-2 space-y-1">
               <li>회원 정보: 회원 탈퇴 시까지</li>
               <li>이용 후기 및 즐겨찾기 데이터: 회원 탈퇴 시까지</li>
+              <li>경기 기록 및 테니스 프로필 데이터: 회원 탈퇴 시까지</li>
+              <li>경기 기록 이미지 및 리뷰 이미지: 회원 탈퇴 시 또는 게시물 삭제 시 즉시 삭제</li>
               <li>서비스 이용 기록: 3년</li>
               <li>익명 피드백 데이터: 서비스 개선 목적으로 보관 (개인 식별 정보 미포함)</li>
             </ul>
@@ -69,12 +73,13 @@ export default function PrivacyPage() {
               다만, 서비스 운영을 위해 다음과 같이 개인정보 처리를 위탁하고 있습니다.
             </p>
             <ul className="list-disc list-inside space-y-1">
-              <li><strong>Supabase</strong>: 회원 인증 및 데이터 저장 (후기, 즐겨찾기, 리뷰 이미지)</li>
+              <li><strong>Supabase</strong>: 회원 인증 및 데이터 저장 (후기, 즐겨찾기, 경기 기록, 테니스 프로필, 리뷰 이미지, 경기 기록 이미지)</li>
               <li><strong>Google Analytics</strong>: 서비스 이용 통계 분석</li>
               <li><strong>Google AdSense</strong>: 광고 제공 (쿠키 기반)</li>
               <li><strong>Vercel</strong>: 웹 서비스 호스팅</li>
               <li><strong>서울 열린데이터 광장</strong>: 공공서비스예약 현황 및 자치구별 실시간 대기환경(미세먼지) 정보 제공 (개인정보 미포함)</li>
               <li><strong>기상청</strong>: 단기예보 API를 통한 실시간 날씨 정보 제공 (개인정보 미포함)</li>
+              <li><strong>에어코리아</strong>: 전국 대기오염 정보 API를 통한 대기질 정보 제공 (개인정보 미포함)</li>
             </ul>
           </section>
 
