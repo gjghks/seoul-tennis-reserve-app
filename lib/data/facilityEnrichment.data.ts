@@ -115,7 +115,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "indoorOutdoor": null,
     "lighting": null,
     "spectatorSeats": null,
-    "renovation": null
+    "renovation": null,
+    "mapPOIName": "이촌한강공원 테니스장"
   },
   {
     "facilityName": "응봉근린공원 한남테니스장",
@@ -275,7 +276,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "indoorOutdoor": null,
     "lighting": null,
     "spectatorSeats": null,
-    "renovation": null
+    "renovation": null,
+    "mapPOIName": "대현산배수지공원 테니스장"
   },
   {
     "facilityName": "한강시민공원 뚝섬지구테니스장",
@@ -301,7 +303,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "indoorOutdoor": null,
     "lighting": null,
     "spectatorSeats": null,
-    "renovation": null
+    "renovation": null,
+    "mapPOIName": "뚝섬한강공원 테니스장2"
   },
   {
     "facilityName": "아차산배수지체육공원 테니스장",
@@ -412,7 +415,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "indoorOutdoor": "outdoor",
     "lighting": null,
     "spectatorSeats": null,
-    "renovation": null
+    "renovation": null,
+    "mapPOIName": "장안1수변공원 테니스장"
   },
   {
     "facilityName": "중랑IC 테니스장",
@@ -438,7 +442,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "indoorOutdoor": "outdoor",
     "lighting": null,
     "spectatorSeats": null,
-    "renovation": null
+    "renovation": null,
+    "mapPOIName": "중랑구립테니스장"
   },
   {
     "facilityName": "용마폭포공원테니스장",
@@ -629,7 +634,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
       "lux": 400
     },
     "spectatorSeats": null,
-    "renovation": "2002"
+    "renovation": "2002",
+    "mapPOIName": "마들체육공원 테니스장"
   },
   {
     "facilityName": "초안산스포츠타운 테니스장",
@@ -681,7 +687,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "indoorOutdoor": "outdoor",
     "lighting": null,
     "spectatorSeats": null,
-    "renovation": null
+    "renovation": null,
+    "mapPOIName": "불암산종합스타디움 테니스장"
   },
   {
     "facilityName": "수락산스포츠타운 테니스장",
@@ -762,7 +769,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "indoorOutdoor": "outdoor",
     "lighting": null,
     "spectatorSeats": null,
-    "renovation": null
+    "renovation": null,
+    "mapPOIName": "장미테니스장"
   },
   {
     "facilityName": "서오릉근린공원 선정테니스장",
@@ -788,7 +796,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "indoorOutdoor": "outdoor",
     "lighting": null,
     "spectatorSeats": null,
-    "renovation": null
+    "renovation": null,
+    "mapPOIName": "선정테니스장"
   },
   {
     "facilityName": "홍은동 테니스장",
@@ -892,7 +901,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "indoorOutdoor": null,
     "lighting": null,
     "spectatorSeats": null,
-    "renovation": null
+    "renovation": null,
+    "mapPOIName": "한강시민공원 망원지구 테니스장"
   },
   {
     "facilityName": "망원나들목 테니스장",
@@ -999,7 +1009,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
       "lux": null
     },
     "spectatorSeats": null,
-    "renovation": null
+    "renovation": null,
+    "mapPOIName": "서울에너지공사 목동본사 테니스장"
   },
   {
     "facilityName": "우장 테니스장",
@@ -1266,7 +1277,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "indoorOutdoor": null,
     "lighting": null,
     "spectatorSeats": null,
-    "renovation": null
+    "renovation": null,
+    "mapPOIName": "대림운동장 테니스장"
   },
   {
     "facilityName": "독산 테니스장",
@@ -1350,7 +1362,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
       "lux": null
     },
     "spectatorSeats": null,
-    "renovation": null
+    "renovation": null,
+    "mapPOIName": "대방공원 테니스장"
   },
   {
     "facilityName": "동작주차공원 테니스장",
@@ -1431,7 +1444,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "indoorOutdoor": null,
     "lighting": null,
     "spectatorSeats": null,
-    "renovation": null
+    "renovation": null,
+    "mapPOIName": "선우테니스장"
   },
   {
     "facilityName": "선우공원테니스장",
@@ -1778,7 +1792,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "indoorOutdoor": null,
     "lighting": null,
     "spectatorSeats": null,
-    "renovation": null
+    "renovation": null,
+    "mapPOIName": "올림픽공원 실내테니스장"
   },
   {
     "facilityName": "오금공원 테니스장",
@@ -1833,7 +1848,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
       "lux": null
     },
     "spectatorSeats": null,
-    "renovation": "93. 6.11, 94. 7.13"
+    "renovation": "93. 6.11, 94. 7.13",
+    "mapPOIName": "오륜테니스장"
   },
   {
     "facilityName": "송파 테니스장",
@@ -1937,7 +1953,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "indoorOutdoor": null,
     "lighting": null,
     "spectatorSeats": null,
-    "renovation": null
+    "renovation": null,
+    "mapPOIName": "한강공원광나루지구 테니스장"
   },
   {
     "facilityName": "한강시민공원 광나루지구 테니스장",
@@ -2010,7 +2027,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "indoorOutdoor": null,
     "lighting": null,
     "spectatorSeats": null,
-    "renovation": null
+    "renovation": null,
+    "mapPOIName": "테니스마스터 학여울점"
   },
   {
     "facilityName": "동부도로사업소 테니스장",

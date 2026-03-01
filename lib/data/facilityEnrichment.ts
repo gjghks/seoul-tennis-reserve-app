@@ -197,6 +197,15 @@ export function getEnrichmentImageUrl(
   return enrichment?.imageUrl ?? null;
 }
 
+/**
+ * Get the best map-searchable name for a facility.
+ * Priority: enrichment.mapPOIName > cleaned PLACENM > raw PLACENM
+ */
+export function getMapPOIName(svcnm: string, areanm: string, placenm?: string): string | null {
+  const enrichment = findEnrichment(svcnm, areanm, placenm);
+  return enrichment?.mapPOIName ?? null;
+}
+
 export const SURFACE_LABELS: Record<SurfaceCategory, string> = {
   clay: '클레이',
   artificial_grass: '인조잔디',
