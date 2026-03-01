@@ -763,7 +763,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "facilityName": "서오릉근린공원 선정테니스장",
     "normalizedName": "선정테니스장",
     "district": "은평구",
-    "address": "은평구 갈현로27길 45-4",
+    "address": "서울 은평구 갈현동 228-100",
     "courtCount": 3,
     "surfaces": [
       {
