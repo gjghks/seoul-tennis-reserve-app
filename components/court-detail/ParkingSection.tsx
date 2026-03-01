@@ -3,6 +3,8 @@
 import { useState, useMemo, useCallback } from 'react';
 import useSWR from 'swr';
 import { useThemeClass } from '@/lib/cn';
+import MapAppSelector from '@/components/ui/MapAppSelector';
+import type { MapDestination } from '@/lib/utils/mapNavigation';
 
 interface ParkingSectionProps {
   lat: number;
@@ -81,6 +83,7 @@ export default function ParkingSection({ lat, lng, isNeoBrutalism }: ParkingSect
   const themeClass = useThemeClass();
   const [expanded, setExpanded] = useState(false);
   const [showAll, setShowAll] = useState(false);
+  const [mapSelectorDest, setMapSelectorDest] = useState<MapDestination | null>(null);
 
   const { data, isLoading } = useSWR<ParkingResponse>(
     `/api/city-data?lat=${lat}&lng=${lng}&fields=parking`,
@@ -108,26 +111,7 @@ export default function ParkingSection({ lat, lng, isNeoBrutalism }: ParkingSect
   const visibleParking = showAll ? sortedParking : sortedParking.slice(0, INITIAL_SHOW_COUNT);
 
   const handleDirections = useCallback((parkingLat: number, parkingLng: number, parkingName: string) => {
-    const destParam = `${encodeURIComponent(parkingName)},${parkingLat},${parkingLng}`;
-    const fallbackUrl = `https://map.kakao.com/link/to/${destParam}`;
-
-    if (!navigator.geolocation) {
-      window.open(fallbackUrl, '_blank');
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        const fromParam = `${encodeURIComponent('현재위치')},${latitude},${longitude}`;
-        const toParam = destParam;
-        window.open(`https://map.kakao.com/link/from/${fromParam}/to/${toParam}`, '_blank');
-      },
-      () => {
-        window.open(fallbackUrl, '_blank');
-      },
-      { enableHighAccuracy: false, timeout: 5000, maximumAge: 300000 }
-    );
+    setMapSelectorDest({ lat: parkingLat, lng: parkingLng, name: parkingName });
   }, []);
 
   if (isLoading && !data) return null;
@@ -248,6 +232,14 @@ export default function ParkingSection({ lat, lng, isNeoBrutalism }: ParkingSect
             </button>
           )}
         </div>
+      )}
+
+      {mapSelectorDest !== null && (
+        <MapAppSelector
+          isOpen
+          onClose={() => setMapSelectorDest(null)}
+          destination={mapSelectorDest}
+        />
       )}
     </div>
   );

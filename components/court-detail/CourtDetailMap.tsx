@@ -1,18 +1,23 @@
 'use client';
 
-import { useCallback } from 'react';
+import { useState, useMemo } from 'react';
 import { Map as KakaoMap, MapMarker, CustomOverlayMap, ZoomControl } from 'react-kakao-maps-sdk';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useKakaoLoaderWithHttps } from '@/lib/hooks/useKakaoLoaderWithHttps';
+import MapAppSelector from '@/components/ui/MapAppSelector';
+import { cleanCourtNameForMap } from '@/lib/utils/mapNavigation';
+import type { MapDestination } from '@/lib/utils/mapNavigation';
 
 interface CourtDetailMapProps {
   lat: number;
   lng: number;
   placeName: string;
+  mapPOIName?: string;
 }
 
-export default function CourtDetailMap({ lat, lng, placeName }: CourtDetailMapProps) {
+export default function CourtDetailMap({ lat, lng, placeName, mapPOIName }: CourtDetailMapProps) {
   const { isNeoBrutalism } = useTheme();
+  const [showMapSelector, setShowMapSelector] = useState(false);
 
   const [, error] = useKakaoLoaderWithHttps();
 
@@ -20,27 +25,12 @@ export default function CourtDetailMap({ lat, lng, placeName }: CourtDetailMapPr
   const destParam = `${encodeURIComponent(shortPlaceName)},${lat},${lng}`;
   const kakaoMapViewUrl = `https://map.kakao.com/link/map/${destParam}`;
 
-  const handleDirections = useCallback(() => {
-    const fallbackUrl = `https://map.kakao.com/link/to/${destParam}`;
+  // For navigation: use enrichment POI name > cleaned name > raw name
+  const navigationName = mapPOIName || cleanCourtNameForMap(shortPlaceName);
 
-    if (!navigator.geolocation) {
-      window.open(fallbackUrl, '_blank');
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        const fromParam = `${encodeURIComponent('현재위치')},${latitude},${longitude}`;
-        const toParam = destParam;
-        window.open(`https://map.kakao.com/link/from/${fromParam}/to/${toParam}`, '_blank');
-      },
-      () => {
-        window.open(fallbackUrl, '_blank');
-      },
-      { enableHighAccuracy: false, timeout: 5000, maximumAge: 300000 }
-    );
-  }, [destParam]);
+  const destination: MapDestination = useMemo(() => ({
+    lat, lng, name: navigationName,
+  }), [lat, lng, navigationName]);
 
   if (error || !process.env.NEXT_PUBLIC_KAKAO_MAP_KEY) return null;
 
@@ -85,7 +75,7 @@ export default function CourtDetailMap({ lat, lng, placeName }: CourtDetailMapPr
       <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
         <button
           type="button"
-          onClick={handleDirections}
+          onClick={() => setShowMapSelector(true)}
           style={{
             flex: 1,
             display: 'flex',
@@ -135,6 +125,12 @@ export default function CourtDetailMap({ lat, lng, placeName }: CourtDetailMapPr
           지도에서 보기
         </a>
       </div>
+
+      <MapAppSelector
+        isOpen={showMapSelector}
+        onClose={() => setShowMapSelector(false)}
+        destination={destination}
+      />
     </div>
   );
 }
