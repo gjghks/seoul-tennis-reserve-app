@@ -43,6 +43,7 @@ module.exports = {
         'stagger-fade': 'stagger-fade 400ms cubic-bezier(0.22,1,0.36,1) both',
         'pulse-live': 'pulse-live 2s cubic-bezier(0.4,0,0.6,1) infinite',
         'shake': 'shake 400ms ease-out',
+        'slide-up': 'slide-up 300ms cubic-bezier(0.22,1,0.36,1)',
       },
       keyframes: {
         press: {
@@ -68,6 +69,10 @@ module.exports = {
           '25%': { transform: 'translateX(-4px)' },
           '50%': { transform: 'translateX(4px)' },
           '75%': { transform: 'translateX(-4px)' },
+        },
+        'slide-up': {
+          from: { transform: 'translateY(100%)' },
+          to: { transform: 'translateY(0)' },
         },
       },
 
