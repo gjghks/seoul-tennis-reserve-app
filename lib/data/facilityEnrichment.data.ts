@@ -88,7 +88,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "longitude": 126.9650,
     "latitude": 37.5553,
     "operatingHoursStart": "06:00",
-    "operatingHoursEnd": "21:00"
+    "operatingHoursEnd": "21:00",
+    "imageUrl": "/images/courts/junggu-songijeong.jpg"
   },
   {
     "facilityName": "한강시민공원 이촌지구 테니스장",

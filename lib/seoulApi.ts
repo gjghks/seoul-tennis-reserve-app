@@ -1,6 +1,6 @@
 import http from 'node:http';
 import { getIndependentCourts } from '@/lib/data/independentCourts';
-import { getEnrichmentOperatingHours } from '@/lib/data/facilityEnrichment';
+import { getEnrichmentOperatingHours, getEnrichmentImageUrl } from '@/lib/data/facilityEnrichment';
 
 const API_KEY = process.env.SEOUL_OPEN_DATA_KEY;
 const BASE_URL = 'http://openAPI.seoul.go.kr:8088';
@@ -152,6 +152,16 @@ export async function fetchTennisAvailability(startIndex = 1, endIndex = 1000): 
                     if (hours) {
                         court.V_MIN = hours.start;
                         court.V_MAX = hours.end;
+                    }
+                }
+            }
+
+            // Apply enrichment image URL for courts with empty IMGURL
+            for (const court of allCourts) {
+                if (!court.IMGURL) {
+                    const imageUrl = getEnrichmentImageUrl(court.SVCNM, court.AREANM, court.PLACENM);
+                    if (imageUrl) {
+                        court.IMGURL = imageUrl;
                     }
                 }
             }

@@ -183,6 +183,20 @@ export function getEnrichmentOperatingHours(
   return { start: enrichment.operatingHoursStart, end: enrichment.operatingHoursEnd };
 }
 
+/**
+ * Get image URL override from enrichment data.
+ * Used for courts where Seoul API returns empty IMGURL.
+ * Returns the image URL string or null if enrichment has no image.
+ */
+export function getEnrichmentImageUrl(
+  svcnm: string,
+  areanm: string,
+  placenm?: string
+): string | null {
+  const enrichment = findEnrichment(svcnm, areanm, placenm);
+  return enrichment?.imageUrl ?? null;
+}
+
 export const SURFACE_LABELS: Record<SurfaceCategory, string> = {
   clay: '클레이',
   artificial_grass: '인조잔디',
