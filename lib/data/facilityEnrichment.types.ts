@@ -44,4 +44,6 @@ export interface FacilityEnrichment {
   operatingHoursEnd?: string;
   /** Optional image URL override — used when Seoul API returns empty IMGURL */
   imageUrl?: string;
+  /** Optional map POI name — the actual place name on map services (Kakao, Naver) when it differs from our data */
+  mapPOIName?: string;
 }
