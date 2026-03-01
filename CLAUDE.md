@@ -76,6 +76,7 @@ To skip in emergencies: `git push --no-verify` (use with caution)
 | `/compare` | `app/compare/page.tsx` | District comparison (court count, availability, free courts, competition) |
 | `/trends` | `app/trends/page.tsx` | Reservation competition rate trends |
 | `/calendar` | `app/calendar/page.tsx` | Monthly calendar view of availability |
+| `/map` | `app/map/page.tsx` | Map view - all courts on Kakao Map |
 | `/records` | `app/records/page.tsx` | Game records list (match history, stats) |
 | `/records/new` | `app/records/new/page.tsx` | Create new game record |
 | `/records/[id]` | `app/records/[id]/page.tsx` | Game record detail view |
@@ -84,6 +85,7 @@ To skip in emergencies: `git push --no-verify` (use with caution)
 | `/[district]/[courtId]` | `app/[district]/[courtId]/page.tsx` | Court detail (reviews, weather, map, similar courts) |
 | `/my` | `app/my/page.tsx` | User dashboard (favorites, recent courts, alert settings, tennis profile) |
 | `/guide/[district]` | `app/guide/[district]/page.tsx` | District guide (tips, parking, accessibility) |
+| `/guide/reservation` | `app/guide/reservation/page.tsx` | Step-by-step Seoul public reservation guide |
 | `/guide/records` | `app/guide/records/page.tsx` | Match records usage guide |
 | `/login` | `app/login/page.tsx` | OAuth login (Kakao, Google) |
 | `/about` | `app/about/page.tsx` | Service introduction |
@@ -121,6 +123,7 @@ To skip in emergencies: `git push --no-verify` (use with caution)
 | `/api/cron/popular-courts` | GET | Scheduled: compute popular courts ranking |
 | `/api/cron/check-alerts` | GET | Scheduled: check and send push alerts |
 | `/api/cron/cleanup` | GET | Scheduled: database cleanup |
+| `/api/cron/scrape-external` | GET | Scheduled: scrape external facility data (non-Seoul API courts) |
 | `/auth/callback` | GET | OAuth callback handler |
 
 ### Component Structure
@@ -144,7 +147,7 @@ components/
   compare/         # CompareContent
   trends/          # TrendsContent
   calendar/        # CalendarContent
-  guide/           # GuideContent, RecordsGuideContent
+  guide/           # GuideContent, RecordsGuideContent, ReservationGuideContent
   auth/            # LoginPrompt, ProviderBadge
   map/             # KakaoMapView
   reservation/     # ReservationNotice
@@ -164,6 +167,10 @@ components/
 - `lib/` - Core utilities, API clients, hooks, constants, data, utils
   - `lib/constants/` - District data (`districts.ts`), tennis constants (`tennis.ts`)
   - `lib/data/` - Facility enrichment data and types
+    - `facilityEnrichment.data.ts` - Per-court enrichment (court count, surface, lighting, coordinates, operating hours, images)
+    - `facilityEnrichment.types.ts` - Enrichment type definitions
+    - `facilityEnrichment.ts` - Enrichment lookup functions (getEnrichment, getEnrichmentOperatingHours, getEnrichmentImageUrl)
+    - `independentCourts.ts` - Courts not in Seoul API (Gangbuk, Nowon, Dongdaemun, Eunpyeong, Jungnang)
   - `lib/hooks/` - Custom hooks (useAlertSettings, useGameRecords, useKakaoLoaderWithHttps, usePushSubscription, useRecentCourts, useRecordStats, useReservationTip, useScrollFade, useTennisProfile)
   - `lib/utils/` - Utilities (courtStatus, districtStats, facilityTags, inAppBrowser, phoneLink, sanitizeRedirect, tennis, weatherGrid, contentParser/)
 - `components/` - React components (organized by feature domain)
@@ -178,9 +185,11 @@ components/
 
 ### Data Flow
 1. **Seoul API** (`lib/seoulApi.ts`): Fetches ListPublicReservationSport, filters for tennis courts
-2. **API Routes** (`app/api/`): Proxy Seoul data + weather/air quality + Supabase CRUD
-3. **Client** (SWR): Fetches from API routes, displays by district with real-time status
-4. **Cron Jobs** (`app/api/cron/`): Daily snapshots for trends, ranking computation, alert checks
+2. **Independent Courts** (`lib/data/independentCourts.ts`): Merged with Seoul API data for districts not covered by the API
+3. **Facility Enrichment** (`lib/data/facilityEnrichment.ts`): Overrides empty V_MIN/V_MAX and IMGURL with curated data
+4. **API Routes** (`app/api/`): Proxy Seoul data + weather/air quality + Supabase CRUD
+5. **Client** (SWR): Fetches from API routes, displays by district with real-time status
+6. **Cron Jobs** (`app/api/cron/`): Daily snapshots for trends, ranking computation, alert checks, external scraping
 
 ### External API Integrations
 - **Seoul Open Data** (`data.seoul.go.kr`): Court reservation data, air quality data
@@ -246,6 +255,12 @@ VAPID_PRIVATE_KEY              # VAPID private key (server-side only)
 
 # Analytics (optional)
 NEXT_PUBLIC_GA_ID              # Google Analytics ID
+NEXT_PUBLIC_ADSENSE_CLIENT_ID  # Google AdSense client ID
+
+# Search v2 (optional)
+NEXT_PUBLIC_SEARCH_V2_ROLLOUT_PERCENT  # v2 search rollout percentage (0-100, default 100)
+NEXT_PUBLIC_SEARCH_V2_FORCE            # Force search variant ('v2' or 'legacy')
+NEXT_PUBLIC_SEARCH_V2_PROFILE          # v2 ranking profile ('balanced'/'precision'/'recall')
 ```
 
 ### Path Alias

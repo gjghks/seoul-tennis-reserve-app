@@ -44,7 +44,15 @@ Vercel Dashboard > Project > Settings > Environment Variables에서 설정:
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase 익명 키 (클라이언트용) | ✅ |
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase 서비스 역할 키 (서버용) | ✅ |
 | `SEOUL_OPEN_DATA_KEY` | 서울 열린데이터 API 키 | ✅ |
+| `SEOUL_AIR_QUALITY_KEY` | 서울 대기질 API 키 | ✅ |
+| `WEATHER_API_KEY` | 기상청 단기예보 API 키 | ✅ |
+| `AIRKOREA_API_KEY` | 에어코리아 대기질 API 키 | ✅ |
+| `LIVING_WEATHER_API_KEY` | 생활기상지수 API 키 | ✅ |
+| `NEXT_PUBLIC_KAKAO_MAP_KEY` | 카카오 지도 SDK 키 | ✅ |
+| `NEXT_PUBLIC_VAPID_PUBLIC_KEY` | Web Push VAPID 공개 키 | ✅ |
+| `VAPID_PRIVATE_KEY` | Web Push VAPID 비밀 키 | ✅ |
 | `NEXT_PUBLIC_GA_ID` | Google Analytics ID | ❌ |
+| `NEXT_PUBLIC_ADSENSE_CLIENT_ID` | Google AdSense 클라이언트 ID | ❌ |
 | `NEXT_PUBLIC_SEARCH_V2_ROLLOUT_PERCENT` | v2 검색 롤아웃 비율 (0~100, 기본 100) | ❌ |
 | `NEXT_PUBLIC_SEARCH_V2_FORCE` | 검색 변형 강제 (`v2` 또는 `legacy`) | ❌ |
 | `NEXT_PUBLIC_SEARCH_V2_PROFILE` | v2 랭킹 프로파일 (`balanced`/`precision`/`recall`) | ❌ |
