@@ -251,7 +251,16 @@ export default function ReviewList({ reviews, onReviewDeleted }: ReviewListProps
     return (
       <div className={`${themeClass('bg-gray-100 border-2 border-black rounded-[5px]', 'bg-gray-50 rounded-xl')} `}>
         <EmptyState
-          icon="💬"
+          icon={
+            <svg className={themeClass('w-14 h-14 mx-auto mb-1', 'w-12 h-12 mx-auto mb-1')} viewBox="0 0 64 64" fill="none" aria-hidden="true">
+              <g style={{ animation: 'gentle-float 3s ease-in-out infinite' }}>
+                <path d="M12 14 C12 10 16 6 20 6 L44 6 C48 6 52 10 52 14 L52 34 C52 38 48 42 44 42 L24 42 L16 50 L16 42 L20 42 C16 42 12 38 12 34 Z" className={themeClass('fill-white stroke-black stroke-[2.5]', 'fill-white stroke-gray-300 stroke-[1.5]')} />
+                <path d="M28 28 Q28 32 32 32 Q28 32 28 36 Q28 32 24 32 Q28 32 28 28 Z" className={themeClass('fill-[#facc15]', 'fill-green-300')} />
+              </g>
+              <circle cx="56" cy="10" r="2" className={themeClass('fill-black', 'fill-gray-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0s' }} />
+              <circle cx="8" cy="44" r="1.5" className={themeClass('fill-black', 'fill-gray-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.5s' }} />
+            </svg>
+          }
           title="아직 후기가 없습니다"
           description="첫 번째 후기를 작성해 보세요!"
           size="sm"

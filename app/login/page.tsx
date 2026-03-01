@@ -83,6 +83,27 @@ function LoginContent() {
   return (
     <div className={`min-h-screen flex items-center justify-center p-4 scrollbar-hide ${themeClass('bg-nb-bg', 'bg-gray-50')}`}>
       <div className={themeClass('w-full max-w-md bg-white border-[3px] border-black rounded-[5px] shadow-[8px_8px_0px_0px_#000] p-8', 'w-full max-w-md bg-white rounded-2xl shadow-lg p-8 border border-gray-100')}>
+        {/* Tennis court welcome illustration */}
+        <svg className={themeClass('w-20 h-20 mx-auto mb-4', 'w-16 h-16 mx-auto mb-4')} viewBox="0 0 96 96" fill="none" aria-hidden="true">
+          <g style={{ animation: 'gentle-float 3s ease-in-out infinite' }}>
+            {/* court outline */}
+            <rect x="24" y="28" width="48" height="40" rx="2" className={themeClass('fill-[#a3e635]/20 stroke-black stroke-[2.5]', 'fill-green-100 stroke-green-400 stroke-[1.5]')} />
+            {/* center line */}
+            <line x1="48" y1="28" x2="48" y2="68" className={themeClass('stroke-black stroke-[1.5]', 'stroke-green-300 stroke-[1]')} />
+            {/* net line */}
+            <line x1="24" y1="48" x2="72" y2="48" className={themeClass('stroke-black stroke-[2]', 'stroke-green-400 stroke-[1.5]')} strokeDasharray="4 3" />
+            {/* tennis ball */}
+            <circle cx="56" cy="40" r="7" className={themeClass('fill-[#facc15] stroke-black stroke-[2]', 'fill-green-300 stroke-green-500 stroke-[1.5]')} />
+            <path d="M52 35 A 6 6 0 0 1 52 45" fill="none" className={themeClass('stroke-black stroke-[1.5]', 'stroke-green-500 stroke-[1]')} />
+            {/* racket */}
+            <ellipse cx="36" cy="56" rx="6" ry="8" className={themeClass('fill-none stroke-black stroke-[2]', 'fill-none stroke-green-400 stroke-[1.5]')} transform="rotate(-20 36 56)" />
+            <line x1="33" y1="63" x2="28" y2="74" className={themeClass('stroke-black stroke-[2]', 'stroke-green-400 stroke-[1.5]')} strokeLinecap="round" />
+          </g>
+          {/* sparkle dots */}
+          <circle cx="16" cy="24" r="2.5" className={themeClass('fill-black', 'fill-green-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0s' }} />
+          <circle cx="82" cy="32" r="2" className={themeClass('fill-black', 'fill-green-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.7s' }} />
+          <path d="M78 68 Q78 72 82 72 Q78 72 78 76 Q78 72 74 72 Q78 72 78 68 Z" className={themeClass('fill-black', 'fill-green-300')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.3s' }} />
+        </svg>
         <h1 className={`text-2xl mb-2 text-center ${themeClass('font-black text-black uppercase', 'font-bold text-gray-900')}`}>
           {isNeoBrutalism ? '🎾 로그인' : '로그인'}
         </h1>

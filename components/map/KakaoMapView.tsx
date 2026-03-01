@@ -151,6 +151,14 @@ export default function KakaoMapView({ courts, district, focusPlaceName, onPlace
   if (courtGroups.length === 0) {
     return (
       <div className={`p-8 text-center ${isNeoBrutalism ? 'bg-white border-2 border-black rounded-[5px]' : 'bg-gray-50 rounded-xl'}`}>
+        <svg className={isNeoBrutalism ? 'w-12 h-12 mx-auto mb-2' : 'w-10 h-10 mx-auto mb-2'} viewBox="0 0 64 64" fill="none" aria-hidden="true">
+          <g style={{ animation: 'gentle-float 3s ease-in-out infinite' }}>
+            <path d="M32 8 C22 8 14 16 14 26 C14 40 32 56 32 56 C32 56 50 40 50 26 C50 16 42 8 32 8 Z" className={isNeoBrutalism ? 'fill-[#a3e635] stroke-black stroke-[2.5]' : 'fill-green-100 stroke-gray-300 stroke-[1.5]'} />
+            <text x="32" y="32" textAnchor="middle" dominantBaseline="central" className={isNeoBrutalism ? 'fill-black text-lg font-black' : 'fill-gray-400 text-lg font-bold'}>?</text>
+          </g>
+          <circle cx="54" cy="12" r="2" className={isNeoBrutalism ? 'fill-black' : 'fill-gray-400'} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0s' }} />
+          <circle cx="10" cy="42" r="1.5" className={isNeoBrutalism ? 'fill-black' : 'fill-gray-400'} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.5s' }} />
+        </svg>
         <p className={isNeoBrutalism ? 'text-black/60 font-medium' : 'text-gray-400'}>
           위치 정보가 있는 테니스장이 없습니다.
         </p>

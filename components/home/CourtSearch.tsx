@@ -220,6 +220,16 @@ export default function CourtSearch() {
         >
           {showResults && hasQuery && filteredCourts.length === 0 ? (
             <div className={themeClass('px-4 py-8 text-center', 'px-4 py-8 text-center')}>
+              <svg className={themeClass('w-12 h-12 mx-auto mb-3', 'w-10 h-10 mx-auto mb-3')} viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                <g style={{ animation: 'search-drift 4s ease-in-out infinite' }}>
+                  <circle cx="28" cy="28" r="16" className={themeClass('fill-[#facc15]/30 stroke-black stroke-[2]', 'fill-gray-100 stroke-gray-300 stroke-[1.5]')} />
+                  <circle cx="28" cy="28" r="6" className={themeClass('fill-[#a3e635] stroke-black stroke-[2]', 'fill-green-200 stroke-gray-300 stroke-[1.5]')} />
+                  <path d="M26 26 A 5 5 0 0 0 26 30 M30 26 A 5 5 0 0 1 30 30" className={themeClass('stroke-black stroke-[1.5]', 'stroke-gray-300 stroke-[1]')} fill="none" />
+                  <line x1="40" y1="40" x2="52" y2="52" className={themeClass('stroke-black stroke-[2.5]', 'stroke-gray-300 stroke-[2]')} strokeLinecap="round" />
+                </g>
+                <circle cx="52" cy="12" r="2" className={themeClass('fill-black', 'fill-gray-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0s' }} />
+                <circle cx="10" cy="50" r="1.5" className={themeClass('fill-black', 'fill-gray-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.5s' }} />
+              </svg>
               <p className={themeClass('text-base font-bold text-black mb-1', 'text-base font-medium text-gray-900 mb-1')}>
                 &apos;{query}&apos;에 대한 검색 결과가 없습니다
               </p>

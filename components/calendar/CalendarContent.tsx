@@ -405,9 +405,23 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
             </div>
             <div className="p-5">
               {selectedDateCourts.length === 0 ? (
-                <p className={`text-center py-6 ${themeClass('text-black/60', 'text-gray-400')}`}>
-                  이 날짜에 접수 가능한 테니스장이 없습니다.
-                </p>
+                <div className="text-center py-6">
+                  <svg className={themeClass('w-12 h-12 mx-auto mb-2', 'w-10 h-10 mx-auto mb-2')} viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                    <g style={{ animation: 'gentle-float 3s ease-in-out infinite' }}>
+                      <rect x="10" y="14" width="44" height="40" rx="4" className={themeClass('fill-white stroke-black stroke-[2.5]', 'fill-white stroke-gray-300 stroke-[1.5]')} />
+                      <rect x="10" y="14" width="44" height="12" rx="4" className={themeClass('fill-[#a3e635] stroke-black stroke-[2.5]', 'fill-green-100 stroke-gray-300 stroke-[1.5]')} />
+                      <line x1="24" y1="10" x2="24" y2="20" className={themeClass('stroke-black stroke-[2.5]', 'stroke-gray-300 stroke-[1.5]')} strokeLinecap="round" />
+                      <line x1="40" y1="10" x2="40" y2="20" className={themeClass('stroke-black stroke-[2.5]', 'stroke-gray-300 stroke-[1.5]')} strokeLinecap="round" />
+                      <line x1="26" y1="36" x2="38" y2="48" className={themeClass('stroke-black stroke-[2.5]', 'stroke-gray-400 stroke-[1.5]')} strokeLinecap="round" />
+                      <line x1="38" y1="36" x2="26" y2="48" className={themeClass('stroke-black stroke-[2.5]', 'stroke-gray-400 stroke-[1.5]')} strokeLinecap="round" />
+                    </g>
+                    <circle cx="56" cy="10" r="2" className={themeClass('fill-black', 'fill-gray-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0s' }} />
+                    <circle cx="6" cy="46" r="1.5" className={themeClass('fill-black', 'fill-gray-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.5s' }} />
+                  </svg>
+                  <p className={themeClass('text-black/60', 'text-gray-400')}>
+                    이 날짜에 접수 가능한 테니스장이 없습니다.
+                  </p>
+                </div>
               ) : (
                 <div className="space-y-3">
                   {selectedDateCourts.map(court => {

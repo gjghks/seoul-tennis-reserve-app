@@ -367,9 +367,21 @@ function DistrictBars({
   return (
     <div ref={ref} className="p-5 space-y-3">
       {rates.length === 0 ? (
-        <p className={`text-center py-8 ${themeClass('text-black/60', 'text-gray-400')}`}>
-          아직 수집된 데이터가 없습니다.
-        </p>
+        <div className="text-center py-8">
+          <svg className={themeClass('w-16 h-16 mx-auto mb-3', 'w-14 h-14 mx-auto mb-3')} viewBox="0 0 80 80" fill="none" aria-hidden="true">
+            <g style={{ animation: 'gentle-float 3s ease-in-out infinite' }}>
+              <line x1="12" y1="68" x2="68" y2="68" className={themeClass('stroke-black stroke-[2.5]', 'stroke-gray-300 stroke-[1.5]')} />
+              <rect x="18" y="44" width="10" height="24" rx="2" className={themeClass('fill-[#a3e635]/40 stroke-black stroke-[2]', 'fill-green-100 stroke-gray-300 stroke-[1.5]')} />
+              <rect x="35" y="30" width="10" height="38" rx="2" className={themeClass('fill-[#a3e635]/60 stroke-black stroke-[2]', 'fill-green-200 stroke-gray-300 stroke-[1.5]')} />
+              <rect x="52" y="50" width="10" height="18" rx="2" className={themeClass('fill-[#facc15]/50 stroke-black stroke-[2]', 'fill-gray-100 stroke-gray-300 stroke-[1.5]')} />
+            </g>
+            <circle cx="70" cy="16" r="2.5" className={themeClass('fill-black', 'fill-gray-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0s' }} />
+            <circle cx="10" cy="30" r="2" className={themeClass('fill-black', 'fill-gray-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.5s' }} />
+          </svg>
+          <p className={themeClass('text-black/60', 'text-gray-400')}>
+            아직 수집된 데이터가 없습니다.
+          </p>
+        </div>
       ) : (
         rates.map((rate, i) => {
           const slug = KOREAN_TO_SLUG[rate.district];

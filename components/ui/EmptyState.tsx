@@ -1,11 +1,12 @@
 'use client';
 
+import type { ReactNode } from 'react';
 import Link from 'next/link';
 import { useThemeClass, cn } from '@/lib/cn';
 import { useTheme } from '@/contexts/ThemeContext';
 
 export interface EmptyStateProps {
-  icon?: string;
+  icon?: ReactNode;
   title: string;
   description?: string;
   action?: {
@@ -133,19 +134,23 @@ export default function EmptyState({
       )}
     >
       {icon && (
-        <div
-          className={themeClass(
-            `${iconWrapperSizeNeo} bg-white border-2 border-black rounded-full flex items-center justify-center shadow-[4px_4px_0px_0px_#000]`,
-            `${iconWrapperSizeMinimal} bg-gray-50 border border-gray-100 rounded-full flex items-center justify-center`
-          )}
-          style={{ animation: 'gentle-float 3s ease-in-out infinite' }}
-        >
-          {isNeoBrutalism ? (
-            <span className={iconSizeNeo}>{icon}</span>
-          ) : (
-            <span className={iconSizeMinimal}>{icon}</span>
-          )}
-        </div>
+        typeof icon === 'string' ? (
+          <div
+            className={themeClass(
+              `${iconWrapperSizeNeo} bg-white border-2 border-black rounded-full flex items-center justify-center shadow-[4px_4px_0px_0px_#000]`,
+              `${iconWrapperSizeMinimal} bg-gray-50 border border-gray-100 rounded-full flex items-center justify-center`
+            )}
+            style={{ animation: 'gentle-float 3s ease-in-out infinite' }}
+          >
+            {isNeoBrutalism ? (
+              <span className={iconSizeNeo}>{icon}</span>
+            ) : (
+              <span className={iconSizeMinimal}>{icon}</span>
+            )}
+          </div>
+        ) : (
+          icon
+        )
       )}
 
       <h3
