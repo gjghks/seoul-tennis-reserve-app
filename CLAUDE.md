@@ -151,7 +151,7 @@ components/
   auth/            # LoginPrompt, ProviderBadge
   map/             # KakaoMapView
   reservation/     # ReservationNotice
-  ui/              # ShareButton, KakaoShareButton, NavigationProgress,
+  ui/              # ShareButton, KakaoShareButton, MapAppSelector, NavigationProgress,
                    #   LastUpdated, FacilityTags, Toast, Spinner
   pwa/             # InstallPrompt
   feedback/        # FeedbackModal
@@ -167,12 +167,12 @@ components/
 - `lib/` - Core utilities, API clients, hooks, constants, data, utils
   - `lib/constants/` - District data (`districts.ts`), tennis constants (`tennis.ts`)
   - `lib/data/` - Facility enrichment data and types
-    - `facilityEnrichment.data.ts` - Per-court enrichment (court count, surface, lighting, coordinates, operating hours, images)
-    - `facilityEnrichment.types.ts` - Enrichment type definitions
-    - `facilityEnrichment.ts` - Enrichment lookup functions (getEnrichment, getEnrichmentOperatingHours, getEnrichmentImageUrl)
+    - `facilityEnrichment.data.ts` - Per-court enrichment (court count, surface, lighting, coordinates, operating hours, images, mapPOIName)
+    - `facilityEnrichment.types.ts` - Enrichment type definitions (includes mapPOIName for map navigation)
+    - `facilityEnrichment.ts` - Enrichment lookup functions (getEnrichment, getEnrichmentOperatingHours, getEnrichmentImageUrl, getMapPOIName)
     - `independentCourts.ts` - Courts not in Seoul API (Gangbuk, Nowon, Dongdaemun, Eunpyeong, Jungnang)
   - `lib/hooks/` - Custom hooks (useAlertSettings, useGameRecords, useKakaoLoaderWithHttps, usePushSubscription, useRecentCourts, useRecordStats, useReservationTip, useScrollFade, useTennisProfile)
-  - `lib/utils/` - Utilities (courtStatus, districtStats, facilityTags, inAppBrowser, phoneLink, sanitizeRedirect, tennis, weatherGrid, contentParser/)
+  - `lib/utils/` - Utilities (courtStatus, districtStats, facilityTags, inAppBrowser, mapNavigation, phoneLink, sanitizeRedirect, tennis, weatherGrid, contentParser/)
 - `components/` - React components (organized by feature domain)
 - `contexts/` - React context providers (AuthContext, ThemeContext, TennisDataContext, ToastContext)
 - `hooks/` - Legacy hooks directory (useFavorites)
