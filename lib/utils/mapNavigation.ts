@@ -14,7 +14,7 @@ export interface MapProviderInfo {
 }
 
 export const MAP_PROVIDERS: MapProviderInfo[] = [
-  { id: 'tmap', label: 'T맵', color: 'bg-red-50 text-red-700 border-red-200', colorNeo: 'bg-[#ff4444] text-white border-black' },
+  { id: 'tmap', label: 'T맵', color: 'bg-red-50 text-red-700 border-red-200', colorNeo: 'bg-[#ff4444] text-black border-black' },
   { id: 'naver', label: '네이버 지도', color: 'bg-green-50 text-green-700 border-green-200', colorNeo: 'bg-[#03c75a] text-black border-black' },
   { id: 'kakao', label: '카카오맵', color: 'bg-yellow-50 text-yellow-700 border-yellow-200', colorNeo: 'bg-[#fee500] text-black border-black' },
 ];
