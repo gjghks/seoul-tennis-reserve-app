@@ -21,7 +21,7 @@ const COURT_DETAIL_FEATURES = [
   { title: '실시간 미세먼지', desc: '자치구별 대기질(PM2.5·PM10) 등급 및 수치, 나쁨 시 실내 코트 안내' },
   { title: '비슷한 테니스장 추천', desc: '같은 장소·인근 지역의 대안 코트를 자동 추천' },
   { title: '전화번호 바로 연결', desc: '시설 연락처를 탭 한 번으로 전화 연결' },
-  { title: '카카오 지도', desc: '테니스장 위치를 지도에서 한눈에 확인' },
+  { title: '길찾기', desc: 'T맵·네이버 지도·카카오맵으로 테니스장까지 길찾기' },
 ] as const;
 
 const CONVENIENCE_FEATURES = [
