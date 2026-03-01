@@ -367,12 +367,12 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "courtCount": 2,
     "surfaces": [
       {
-        "type": "클레이",
+        "type": "인조잔디",
         "count": null
       }
     ],
-    "surfaceCategory": "clay",
-    "surfaceDisplay": "클레이",
+    "surfaceCategory": "artificial_grass",
+    "surfaceDisplay": "인조잔디",
     "area": 1332,
     "siteArea": 1332,
     "builtYear": 2005,
@@ -383,7 +383,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "indoorOutdoor": "outdoor",
     "lighting": null,
     "spectatorSeats": null,
-    "renovation": "2025년 10~12월 노후시설개선공사"
+    "renovation": "2025.10~2026.02 노후시설개선공사 완료 (인조잔디 전면교체, 우배수로, 펜스, 휴게컨테이너)"
   },
   {
     "facilityName": "중랑천 제1체육공원 테니스장",
@@ -666,7 +666,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     ],
     "surfaceCategory": "artificial_grass",
     "surfaceDisplay": "인조잔디",
-    "area": 1857,
+    "area": 1900,
     "siteArea": 38000,
     "builtYear": 2009,
     "owner": "서울시",
