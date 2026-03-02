@@ -110,8 +110,8 @@ To skip in emergencies: `git push --no-verify` (use with caution)
 | `/api/records` | GET, POST | Game records CRUD (list, create) |
 | `/api/records/[id]` | GET, PUT, DELETE | Individual game record operations |
 | `/api/records/stats` | GET | Game record statistics (win rate, match count, etc.) |
-| `/api/profile/tennis` | GET, POST, PUT | Tennis player profile (NTRP, career years, skill level) |
-| `/api/reviews` | GET, POST, DELETE | User reviews with ratings and images |
+| `/api/profile/tennis` | GET, PUT | Tennis player profile (NTRP, career years, skill level) |
+| `/api/reviews` | GET, POST, PUT, DELETE | User reviews with ratings and images |
 | `/api/favorites` | GET, POST, DELETE | User favorite courts |
 | `/api/visit` | GET, POST | Recent court visit tracking |
 | `/api/alerts` | GET, POST | Push notification alert settings |
@@ -119,7 +119,7 @@ To skip in emergencies: `git push --no-verify` (use with caution)
 | `/api/push/subscribe` | POST, DELETE | Web push subscription management |
 | `/api/push/test` | POST | Test push notification |
 | `/api/feedback` | POST | Anonymous feedback submission |
-| `/api/cron/snapshot` | GET | Scheduled: snapshot court data for trends (daily via Vercel cron) |
+| `/api/cron/snapshot` | GET | Scheduled: snapshot court data for trends |
 | `/api/cron/popular-courts` | GET | Scheduled: compute popular courts ranking |
 | `/api/cron/check-alerts` | GET | Scheduled: check and send push alerts |
 | `/api/cron/cleanup` | GET | Scheduled: database cleanup |
@@ -130,29 +130,33 @@ To skip in emergencies: `git push --no-verify` (use with caution)
 
 ```
 components/
-  layout/          # Header, Footer, BottomNav, VisitorCounter
-  home/            # HomeContent, CourtSearch, PopularCourts, RecordsPromoCard
+  layout/          # Header, HeaderAuth, Footer, BottomNav, MoreMenu, VisitorCounter
+  home/            # HomeContent, CourtSearch, PopularCourts, RecordsPromoCard, DiscoveryCards
   district/        # DistrictContent, DistrictGrid
   court-detail/    # CourtDetailClient, StickyHeader, DetailContent, FeeTable,
-                   #   ParkingSection, CourtDetailMap, SimilarCourts
+                   #   ParkingSection, CourtDetailMap, SimilarCourts, CourtDetailFallback,
+                   #   ContentItem, TableRenderer, highlight, types
   weather/         # WeatherInfoCard, HomeWeatherCard, WeatherBadge, DustAlertBanner
-  review/          # ReviewSection, ReviewList, ReviewForm
+  review/          # ReviewSection, ReviewList, ReviewForm, RatingDistribution
   favorite/        # FavoriteCourtSection, FavoriteButton
   alert/           # AlertSettingsSection, CourtAlertButton
   records/         # RecordsContent, RecordCard, RecordDetail, RecordForm,
                    #   RecordStats, ScoreInput, MatchTypeSelect,
-                   #   CourtLocationInput, EmptyRecords
+                   #   CourtLocationInput, EmptyRecords, OpponentHistory, SkillProgressChart
   profile/         # TennisProfileSection
   today/           # TodayContent
   compare/         # CompareContent
-  trends/          # TrendsContent
+  trends/          # TrendsContent, HeatmapChart
   calendar/        # CalendarContent
   guide/           # GuideContent, RecordsGuideContent, ReservationGuideContent
   auth/            # LoginPrompt, ProviderBadge
-  map/             # KakaoMapView
+  map/             # KakaoMapView, MapDiscoveryContent
   reservation/     # ReservationNotice
-  ui/              # ShareButton, KakaoShareButton, MapAppSelector, NavigationProgress,
-                   #   LastUpdated, FacilityTags, Toast, Spinner
+  ui/              # Button, EmptyState, ShareButton, KakaoShareButton, MapAppSelector,
+                   #   NavigationProgress, LastUpdated, FacilityTags, Toast, Spinner,
+                   #   ScrollToTop, Skeleton
+  icons/           # weather/ (AnimatedWeatherIcon, SunnyIcon, CloudyIcon, PartlyCloudyIcon,
+                   #   RainyIcon, SnowyIcon)
   pwa/             # InstallPrompt
   feedback/        # FeedbackModal
   ads/             # AdBanner
@@ -171,8 +175,9 @@ components/
     - `facilityEnrichment.types.ts` - Enrichment type definitions (includes mapPOIName for map navigation)
     - `facilityEnrichment.ts` - Enrichment lookup functions (getEnrichment, getEnrichmentOperatingHours, getEnrichmentImageUrl, getMapPOIName)
     - `independentCourts.ts` - Courts not in Seoul API (Gangbuk, Nowon, Dongdaemun, Eunpyeong, Jungnang)
-  - `lib/hooks/` - Custom hooks (useAlertSettings, useGameRecords, useKakaoLoaderWithHttps, usePushSubscription, useRecentCourts, useRecordStats, useReservationTip, useScrollFade, useTennisProfile)
-  - `lib/utils/` - Utilities (courtStatus, districtStats, facilityTags, inAppBrowser, mapNavigation, phoneLink, sanitizeRedirect, tennis, weatherGrid, contentParser/)
+  - `lib/hooks/` - Custom hooks (useAlertSettings, useCountUp, useGameRecords, useInView, useKakaoLoaderWithHttps, usePushSubscription, useRecentCourts, useRecentSearches, useRecordStats, useReservationTip, useScrollFade, useTennisProfile)
+  - `lib/utils/` - Utilities (courtSearch, courtStatus, districtStats, facilityTags, inAppBrowser, mapNavigation, phoneLink, sanitizeRedirect, searchAnalytics, searchExperiment, searchHighlight, tennis, weatherGrid, contentParser/)
+  - `lib/scrapers/` - External facility data scrapers (`fmcsScraper.ts`, `jungrangScraper.ts`)
 - `components/` - React components (organized by feature domain)
 - `contexts/` - React context providers (AuthContext, ThemeContext, TennisDataContext, ToastContext)
 - `hooks/` - Legacy hooks directory (useFavorites)
@@ -269,5 +274,5 @@ NEXT_PUBLIC_SEARCH_V2_PROFILE          # v2 ranking profile ('balanced'/'precisi
 ### PWA
 Service worker via Serwist (`@serwist/next`). Manifest at `public/manifest.json`. Install prompt component at `components/pwa/InstallPrompt.tsx`.
 
-### Cron Jobs (Vercel)
-Configured in `vercel.json`. Currently: daily snapshot at midnight UTC (`/api/cron/snapshot`). Other cron routes (`popular-courts`, `check-alerts`, `cleanup`) may need additional Vercel cron entries or external triggers.
+### Cron Jobs
+Scheduled via [cron-job.org](https://cron-job.org) (external cron service). Cron routes at `app/api/cron/` are triggered by HTTP GET from cron-job.org on configured schedules. `vercel.json` contains only region config (`icn1`), not cron entries.

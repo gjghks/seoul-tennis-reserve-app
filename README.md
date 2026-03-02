@@ -114,6 +114,7 @@ npm run dev
 | `NEXT_PUBLIC_VAPID_PUBLIC_KEY` | Web Push VAPID 공개 키 | O |
 | `VAPID_PRIVATE_KEY` | Web Push VAPID 비밀 키 | O |
 | `NEXT_PUBLIC_GA_ID` | Google Analytics ID | - |
+| `NEXT_PUBLIC_ADSENSE_CLIENT_ID` | Google AdSense 클라이언트 ID | - |
 | `NEXT_PUBLIC_SEARCH_V2_ROLLOUT_PERCENT` | v2 검색 랭킹 롤아웃 비율 (0~100, 기본 100) | - |
 | `NEXT_PUBLIC_SEARCH_V2_FORCE` | 검색 변형 강제 (`v2` 또는 `legacy`) | - |
 | `NEXT_PUBLIC_SEARCH_V2_PROFILE` | v2 랭킹 프로파일 (`balanced`/`precision`/`recall`) | - |
