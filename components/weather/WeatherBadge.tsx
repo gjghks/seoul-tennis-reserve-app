@@ -68,8 +68,8 @@ export default function WeatherBadge({ nx, ny, isOutdoor = false, compact = fals
   const { data, isLoading } = useSWR<WeatherResponse>(`/api/weather?nx=${nx}&ny=${ny}`, weatherFetcher, {
     revalidateOnFocus: false,
     revalidateOnReconnect: true,
-    refreshInterval: 30 * 60 * 1000,
-    dedupingInterval: 30 * 60 * 1000,
+    refreshInterval: 10 * 60 * 1000,
+    dedupingInterval: 10 * 60 * 1000,
     keepPreviousData: true,
   });
 

@@ -134,6 +134,7 @@ function resolveCityDataSky(precipType?: string, firstForecastSky?: string): str
   if (precipType && precipType !== '없음' && precipType !== '-') return precipType;
   if (firstForecastSky === '맑음') return '맑음';
   if (firstForecastSky === '구름많음') return '구름많음';
+  if (firstForecastSky === '흐림') return '흐림';
   return null;
 }
 
@@ -145,8 +146,8 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
   const { data, isLoading } = useSWR<WeatherResponse>(`/api/weather?nx=${nx}&ny=${ny}`, weatherFetcher, {
     revalidateOnFocus: false,
     revalidateOnReconnect: true,
-    refreshInterval: 30 * 60 * 1000,
-    dedupingInterval: 30 * 60 * 1000,
+    refreshInterval: 10 * 60 * 1000,
+    dedupingInterval: 10 * 60 * 1000,
     keepPreviousData: true,
   });
 
@@ -211,7 +212,8 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
   const temperature = primaryOk ? data.temperature! : cityW!.temp;
   const humidity = primaryOk ? data.humidity : hasCityWeather ? cityW!.humidity : null;
   const windSpeed = primaryOk ? data.windSpeed : hasCityWeather ? cityW!.windSpeed : null;
-  const sky = primaryOk ? data.sky : resolveCityDataSky(cityW?.precipType, cityW?.forecast24h?.[0]?.sky);
+  const cityDataSky = resolveCityDataSky(cityW?.precipType, cityW?.forecast24h?.[0]?.sky);
+  const sky = (primaryOk && data.sky) ? data.sky : (primaryOk ? cityDataSky ?? data.sky : cityDataSky);
   const rainfall = primaryOk ? data.rainfall : null;
 
   const dustAlert = airData ? getOverallDustAlert(airData.pm25, airData.pm10) : { level: null, type: null, value: null };

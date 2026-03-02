@@ -86,8 +86,8 @@ export default function HomeWeatherCard({ nx, ny }: HomeWeatherCardProps) {
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: true,
-      refreshInterval: 30 * 60 * 1000,
-      dedupingInterval: 30 * 60 * 1000,
+      refreshInterval: 10 * 60 * 1000,
+      dedupingInterval: 10 * 60 * 1000,
       keepPreviousData: true,
     }
   );

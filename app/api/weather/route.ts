@@ -16,6 +16,13 @@ interface KmaItem {
   obsrValue: string;
 }
 
+interface KmaFcstItem {
+  category: string;
+  fcstDate: string;
+  fcstTime: string;
+  fcstValue: string;
+}
+
 interface KmaResponse {
   response?: {
     body?: {
@@ -26,7 +33,17 @@ interface KmaResponse {
   };
 }
 
-const CACHE_TTL = 30 * 60; // 30 minutes
+interface KmaFcstResponse {
+  response?: {
+    body?: {
+      items?: {
+        item?: KmaFcstItem[];
+      };
+    };
+  };
+}
+
+const CACHE_TTL = 10 * 60; // 10 minutes
 const limiter = createRateLimiter({ windowMs: 60_000, maxRequests: 60 });
 
 const EMPTY_WEATHER: WeatherPayload = {
@@ -37,19 +54,47 @@ const EMPTY_WEATHER: WeatherPayload = {
   sky: null,
 };
 
-function toKstBaseDateTime() {
+function formatKstDateTime(kstDate: Date) {
+  const year = kstDate.getFullYear();
+  const month = `${kstDate.getMonth() + 1}`.padStart(2, '0');
+  const day = `${kstDate.getDate()}`.padStart(2, '0');
+  const hour = `${kstDate.getHours()}`.padStart(2, '0');
+  return { year, month, day, hour };
+}
+
+/** 초단기실황 base_time: 매시 정각 발표, 약 40분 후 제공 */
+function toNcstBaseDateTime() {
   const kstNow = getKSTNow();
+  const minutes = kstNow.getMinutes();
+
+  // 실황 데이터는 매시 40분경 발표. 45분 이후면 현재 시각 데이터 사용 가능
+  if (minutes < 45) {
+    kstNow.setHours(kstNow.getHours() - 1);
+  }
   kstNow.setMinutes(0, 0, 0);
-  kstNow.setHours(kstNow.getHours() - 1);
 
-  const year = kstNow.getFullYear();
-  const month = `${kstNow.getMonth() + 1}`.padStart(2, '0');
-  const day = `${kstNow.getDate()}`.padStart(2, '0');
-  const hour = `${kstNow.getHours()}`.padStart(2, '0');
-
+  const { year, month, day, hour } = formatKstDateTime(kstNow);
   return {
     baseDate: `${year}${month}${day}`,
     baseTime: `${hour}00`,
+  };
+}
+
+/** 초단기예보 base_time: 매시 30분 생성, 약 45분 후 제공 */
+function toFcstBaseDateTime() {
+  const kstNow = getKSTNow();
+  const minutes = kstNow.getMinutes();
+
+  // 초단기예보는 매시 30분 생성, 45분경 발표
+  if (minutes < 45) {
+    kstNow.setHours(kstNow.getHours() - 1);
+  }
+  kstNow.setMinutes(0, 0, 0);
+
+  const { year, month, day, hour } = formatKstDateTime(kstNow);
+  return {
+    baseDate: `${year}${month}${day}`,
+    baseTime: `${hour}30`,
   };
 }
 
@@ -67,10 +112,9 @@ function parseNumeric(value?: string): number | null {
   return Number.isFinite(parsed) ? parsed : null;
 }
 
-function resolveSky(pty?: string): string | null {
+/** PTY(강수형태) → 강수 문자열. PTY=0이면 null (강수 없음 ≠ 맑음) */
+function resolvePrecipitation(pty?: string): string | null {
   switch (pty) {
-    case '0':
-      return '맑음';
     case '1':
       return '비';
     case '2':
@@ -79,8 +123,78 @@ function resolveSky(pty?: string): string | null {
       return '눈';
     case '4':
       return '소나기';
+    case '5':
+      return '비'; // 빗방울 (초단기실황 전용)
+    case '6':
+      return '비/눈'; // 빗방울눈날림 (초단기실황 전용)
+    case '7':
+      return '눈'; // 눈날림 (초단기실황 전용)
     default:
       return null;
+  }
+}
+
+/** SKY(하늘상태) 코드 → 문자열 (초단기예보에서 제공) */
+function resolveSkyCode(skyCode?: string): string | null {
+  switch (skyCode) {
+    case '1':
+      return '맑음';
+    case '3':
+      return '구름많음';
+    case '4':
+      return '흐림';
+    default:
+      return null;
+  }
+}
+
+/** PTY + SKY 조합으로 최종 sky 결정. 강수가 있으면 PTY 우선, 없으면 SKY 사용 */
+function resolveSky(pty?: string, skyCode?: string): string | null {
+  const precipitation = resolvePrecipitation(pty);
+  if (precipitation) return precipitation;
+  return resolveSkyCode(skyCode);
+}
+
+/** 초단기예보(getUltraSrtFcst)에서 가장 가까운 시간대의 SKY 값을 가져온다 */
+async function fetchSkyFromForecast(
+  nx: string,
+  ny: string,
+  weatherKey: string,
+): Promise<string | null> {
+  try {
+    const { baseDate, baseTime } = toFcstBaseDateTime();
+    const params = new URLSearchParams({
+      pageNo: '1',
+      numOfRows: '60',
+      dataType: 'JSON',
+      base_date: baseDate,
+      base_time: baseTime,
+      nx,
+      ny,
+      authKey: weatherKey,
+    });
+
+    const response = await fetch(
+      `https://apihub.kma.go.kr/api/typ02/openApi/VilageFcstInfoService_2.0/getUltraSrtFcst?${params.toString()}`,
+    );
+
+    if (!response.ok) return null;
+
+    const data = (await response.json()) as KmaFcstResponse;
+    const items = data.response?.body?.items?.item;
+    if (!items || items.length === 0) return null;
+
+    const skyItem = items
+      .filter((item) => item.category === 'SKY')
+      .sort((a, b) => {
+        const timeA = `${a.fcstDate}${a.fcstTime}`;
+        const timeB = `${b.fcstDate}${b.fcstTime}`;
+        return timeA.localeCompare(timeB);
+      })[0];
+
+    return skyItem?.fcstValue ?? null;
+  } catch {
+    return null;
   }
 }
 
@@ -93,8 +207,8 @@ function fetchWeatherData(nx: string, ny: string): Promise<WeatherPayload> {
         return EMPTY_WEATHER;
       }
 
-      const { baseDate, baseTime } = toKstBaseDateTime();
-      const params = new URLSearchParams({
+      const { baseDate, baseTime } = toNcstBaseDateTime();
+      const ncstParams = new URLSearchParams({
         pageNo: '1',
         numOfRows: '100',
         dataType: 'JSON',
@@ -105,16 +219,19 @@ function fetchWeatherData(nx: string, ny: string): Promise<WeatherPayload> {
         authKey: weatherKey,
       });
 
-      const response = await fetch(
-        `https://apihub.kma.go.kr/api/typ02/openApi/VilageFcstInfoService_2.0/getUltraSrtNcst?${params.toString()}`,
-      );
+      const [ncstResponse, skyCode] = await Promise.all([
+        fetch(
+          `https://apihub.kma.go.kr/api/typ02/openApi/VilageFcstInfoService_2.0/getUltraSrtNcst?${ncstParams.toString()}`,
+        ),
+        fetchSkyFromForecast(nx, ny, weatherKey),
+      ]);
 
-      if (!response.ok) {
-        console.error(`[weather] KMA API returned HTTP ${response.status} for nx=${nx}, ny=${ny}`);
+      if (!ncstResponse.ok) {
+        console.error(`[weather] KMA API returned HTTP ${ncstResponse.status} for nx=${nx}, ny=${ny}`);
         return EMPTY_WEATHER;
       }
 
-      const data = (await response.json()) as KmaResponse;
+      const data = (await ncstResponse.json()) as KmaResponse;
       const items = data.response?.body?.items?.item;
 
       if (!items || items.length === 0) {
@@ -129,7 +246,7 @@ function fetchWeatherData(nx: string, ny: string): Promise<WeatherPayload> {
         humidity: parseNumeric(itemMap.get('REH')),
         rainfall: parseNumeric(itemMap.get('RN1')),
         windSpeed: parseNumeric(itemMap.get('WSD')),
-        sky: resolveSky(itemMap.get('PTY')),
+        sky: resolveSky(itemMap.get('PTY'), skyCode ?? undefined),
       };
     },
     [`weather-${nx}-${ny}`],
