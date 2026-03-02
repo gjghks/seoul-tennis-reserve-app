@@ -23,11 +23,15 @@ export async function GET() {
       return NextResponse.json({
         courts: cacheRow.data,
         updatedAt: cacheRow.updated_at,
+      }, {
+        headers: { 'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400' },
       });
     }
   }
 
   // Return empty array instead of running expensive computePopularCourts().
   // The cron job (/api/cron/popular-courts) will populate the cache.
-  return NextResponse.json({ courts: [], updatedAt: null });
+  return NextResponse.json({ courts: [], updatedAt: null }, {
+    headers: { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600' },
+  });
 }

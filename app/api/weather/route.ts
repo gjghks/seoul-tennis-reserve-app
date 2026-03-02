@@ -43,7 +43,7 @@ interface KmaFcstResponse {
   };
 }
 
-const CACHE_TTL = 10 * 60; // 10 minutes
+const CACHE_TTL = 30 * 60;
 const limiter = createRateLimiter({ windowMs: 60_000, maxRequests: 60 });
 
 const EMPTY_WEATHER: WeatherPayload = {

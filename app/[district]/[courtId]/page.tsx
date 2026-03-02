@@ -5,7 +5,7 @@ import type { Metadata } from 'next';
 import CourtDetailClient from '@/components/court-detail/CourtDetailClient';
 import CourtDetailFallback from '@/components/court-detail/CourtDetailFallback';
 
-export const revalidate = 3600; // 1 hour — court detail is supplemented by client-side SWR
+export const revalidate = 86400;
 
 interface CourtDetailPageProps {
   params: Promise<{

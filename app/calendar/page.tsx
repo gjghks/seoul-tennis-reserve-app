@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { fetchTennisAvailability } from '@/lib/seoulApi';
 import CalendarContent from '@/components/calendar/CalendarContent';
 
-export const revalidate = 1800;
+export const revalidate = 7200;
 
 export const metadata: Metadata = {
   title: '예약 캘린더 | 서울 테니스',

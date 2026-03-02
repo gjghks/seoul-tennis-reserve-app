@@ -29,8 +29,12 @@ export async function GET(request: NextRequest) {
 
   try {
     const data = await getSeoulDustAlertStatus();
-    return NextResponse.json(data);
+    return NextResponse.json(data, {
+      headers: { 'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=7200' },
+    });
   } catch {
-    return NextResponse.json(EMPTY_RESPONSE);
+    return NextResponse.json(EMPTY_RESPONSE, {
+      headers: { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600' },
+    });
   }
 }

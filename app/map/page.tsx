@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { fetchTennisAvailability } from '@/lib/seoulApi';
 import MapDiscoveryContent from '@/components/map/MapDiscoveryContent';
 
-export const revalidate = 1800;
+export const revalidate = 7200;
 
 export const metadata: Metadata = {
   title: '지도로 찾기 | 서울 테니스',

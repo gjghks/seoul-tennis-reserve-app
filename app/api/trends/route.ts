@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createAnonSupabaseClient } from '@/lib/supabaseServer';
 
-export const dynamic = 'force-dynamic';
-
 const DAY_NAMES = ['일', '월', '화', '수', '목', '금', '토'];
 const TIME_SLOTS = ['morning', 'afternoon', 'evening', 'night'] as const;
 
@@ -86,6 +84,8 @@ export async function GET(request: NextRequest) {
     currentRates,
     period: { from: since.toISOString(), to: new Date().toISOString(), days },
     hasHistory: dailyTrends.length >= 2,
+  }, {
+    headers: { 'Cache-Control': 'public, s-maxage=1800, stale-while-revalidate=3600' },
   });
 }
 
@@ -116,7 +116,9 @@ async function handleHeatmapAnalysis(
   }>;
 
   if (rows.length === 0) {
-    return NextResponse.json({ heatmap: {}, insights: null, hasData: false });
+    return NextResponse.json({ heatmap: {}, insights: null, hasData: false }, {
+      headers: { 'Cache-Control': 'public, s-maxage=1800, stale-while-revalidate=3600' },
+    });
   }
 
   const heatmap: Record<number, Record<string, HeatmapCell>> = {};
@@ -182,5 +184,7 @@ async function handleHeatmapAnalysis(
     weekendAvg: weekendCount > 0 ? Math.round(weekendTotal / weekendCount) : 0,
   };
 
-  return NextResponse.json({ heatmap, insights, hasData: true });
+  return NextResponse.json({ heatmap, insights, hasData: true }, {
+    headers: { 'Cache-Control': 'public, s-maxage=1800, stale-while-revalidate=3600' },
+  });
 }

@@ -6,8 +6,6 @@ import type { SeoulService } from '@/lib/seoulApi';
 import { createRateLimiter } from '@/lib/rateLimit';
 import { createAnonSupabaseClient } from '@/lib/supabaseServer';
 
-export const dynamic = 'force-dynamic';
-
 const limiter = createRateLimiter({ windowMs: 60_000, maxRequests: 60 });
 
 type CachedIndependentStatusRow = {
@@ -61,6 +59,8 @@ async function applyScrapedStatuses(services: SeoulService[]): Promise<SeoulServ
 }
 
 function buildTennisResponse(services: SeoulService[], district: string | null, stale = false) {
+  const cacheHeaders = { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=3600' };
+
   if (district) {
     const koreanDistrict = SLUG_TO_KOREAN[district] || district;
     const filtered = services.filter(s => s.AREANM === koreanDistrict);
@@ -70,7 +70,7 @@ function buildTennisResponse(services: SeoulService[], district: string | null, 
       count: filtered.length,
       courts: filtered,
       ...(stale ? { stale: true } : {}),
-    });
+    }, { headers: cacheHeaders });
   }
 
   const byDistrict = services.reduce((acc, svc) => {
@@ -91,7 +91,7 @@ function buildTennisResponse(services: SeoulService[], district: string | null, 
     courts: services,
     lastUpdated: new Date().toISOString(),
     ...(stale ? { stale: true } : {}),
-  });
+  }, { headers: cacheHeaders });
 }
 
 export async function GET(request: NextRequest) {

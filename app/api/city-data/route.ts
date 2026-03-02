@@ -9,8 +9,6 @@ import {
 } from '@/lib/seoulCityDataApi';
 import { createRateLimiter } from '@/lib/rateLimit';
 
-export const dynamic = 'force-dynamic';
-
 const limiter = createRateLimiter({ windowMs: 60_000, maxRequests: 60 });
 const DEFAULT_FIELDS = ['weather', 'parking', 'congestion'] as const;
 
@@ -122,7 +120,9 @@ export async function GET(request: NextRequest) {
       response.congestion = congestion;
     }
 
-    return NextResponse.json(response);
+    return NextResponse.json(response, {
+      headers: { 'Cache-Control': 'public, s-maxage=600, stale-while-revalidate=3600' },
+    });
   } catch (error) {
     console.error('Error fetching city data:', error);
     return NextResponse.json({ error: 'Failed to fetch city data' }, { status: 500 });

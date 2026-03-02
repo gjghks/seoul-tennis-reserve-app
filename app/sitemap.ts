@@ -1,85 +1,89 @@
 import { MetadataRoute } from 'next';
 import { DISTRICTS } from '@/lib/constants/districts';
 
+// WARN: new Date() here causes ISR writes on EVERY revalidation (non-deterministic output).
+// See: vercel.com/docs/incremental-static-regeneration/limits-and-pricing
+const LAST_MODIFIED = new Date('2026-03-01T00:00:00Z');
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://seoul-tennis.com';
 
   const staticPages: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'daily',
       priority: 1,
     },
     {
       url: `${baseUrl}/today`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'hourly',
       priority: 0.9,
     },
     {
       url: `${baseUrl}/compare`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'daily',
       priority: 0.9,
     },
     {
       url: `${baseUrl}/trends`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'hourly',
       priority: 0.8,
     },
     {
       url: `${baseUrl}/calendar`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'daily',
       priority: 0.8,
     },
     {
       url: `${baseUrl}/login`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'monthly',
       priority: 0.5,
     },
     {
       url: `${baseUrl}/privacy`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'yearly',
       priority: 0.3,
     },
     {
       url: `${baseUrl}/terms`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'yearly',
       priority: 0.3,
     },
     {
       url: `${baseUrl}/about`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'monthly',
       priority: 0.5,
     },
     {
       url: `${baseUrl}/map`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'daily',
       priority: 0.8,
     },
     {
       url: `${baseUrl}/records`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'daily',
       priority: 0.7,
     },
     {
       url: `${baseUrl}/contact`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'monthly',
       priority: 0.5,
     },
     {
       url: `${baseUrl}/sitemap-page`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'monthly',
       priority: 0.3,
     },
@@ -87,14 +91,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const districtPages: MetadataRoute.Sitemap = DISTRICTS.map((district) => ({
     url: `${baseUrl}/${district.slug}`,
-    lastModified: new Date(),
+    lastModified: LAST_MODIFIED,
     changeFrequency: 'hourly' as const,
     priority: 0.8,
   }));
 
   const guidePages: MetadataRoute.Sitemap = DISTRICTS.map((district) => ({
     url: `${baseUrl}/guide/${district.slug}`,
-    lastModified: new Date(),
+    lastModified: LAST_MODIFIED,
     changeFrequency: 'daily' as const,
     priority: 0.7,
   }));
@@ -102,13 +106,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const standaloneGuidePages: MetadataRoute.Sitemap = [
     {
       url: `${baseUrl}/guide/reservation`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'monthly' as const,
       priority: 0.7,
     },
     {
       url: `${baseUrl}/guide/records`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'monthly' as const,
       priority: 0.6,
     },

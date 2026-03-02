@@ -40,8 +40,12 @@ export async function GET(request: NextRequest) {
       data = await getSeoulAverageAirQuality();
     }
 
-    return NextResponse.json(data ?? EMPTY_RESPONSE);
+    return NextResponse.json(data ?? EMPTY_RESPONSE, {
+      headers: { 'Cache-Control': 'public, s-maxage=1800, stale-while-revalidate=3600' },
+    });
   } catch {
-    return NextResponse.json(EMPTY_RESPONSE);
+    return NextResponse.json(EMPTY_RESPONSE, {
+      headers: { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600' },
+    });
   }
 }

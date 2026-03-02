@@ -4,7 +4,7 @@ import { isIndependentCourt } from '@/lib/data/independentCourts';
 import { isCourtAvailable } from '@/lib/utils/courtStatus';
 import TodayContent from '@/components/today/TodayContent';
 
-export const revalidate = 1800;
+export const revalidate = 7200;
 
 export const metadata: Metadata = {
   title: '오늘 예약 가능한 테니스장 | 서울 테니스',
@@ -78,7 +78,7 @@ export default async function TodayPage() {
       name: '서울 테니스',
       url: 'https://seoul-tennis.com',
     },
-    dateModified: new Date().toISOString(),
+    dateModified: '2026-03-01T00:00:00Z',
     breadcrumb: {
       '@type': 'BreadcrumbList',
       itemListElement: [
