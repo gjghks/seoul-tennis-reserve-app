@@ -17,11 +17,14 @@ import { extractFacilityTags } from '@/lib/utils/facilityTags';
 import { convertToWeatherGrid } from '@/lib/utils/weatherGrid';
 import WeatherBadge from '@/components/weather/WeatherBadge';
 import { isCourtAvailable, isCourtAccepting, sortByAvailability } from '@/lib/utils/courtStatus';
-import { findEnrichment, getEnrichmentCoordinates } from '@/lib/data/facilityEnrichment';
+import { findEnrichment, getEnrichmentCoordinates, getMapPOIName } from '@/lib/data/facilityEnrichment';
 import type { SurfaceCategory } from '@/lib/data/facilityEnrichment';
 import { useReservationTip } from '@/lib/hooks/useReservationTip';
 import ReservationNotice from '@/components/reservation/ReservationNotice';
 import { isIndependentCourt } from '@/lib/data/independentCourts';
+import MapAppSelector from '@/components/ui/MapAppSelector';
+import { cleanCourtNameForMap } from '@/lib/utils/mapNavigation';
+import type { MapDestination } from '@/lib/utils/mapNavigation';
 
 const SURFACE_FILTER_OPTIONS: Array<{ value: SurfaceCategory | 'all'; label: string }> = [
   { value: 'all', label: '전체' },
@@ -29,6 +32,17 @@ const SURFACE_FILTER_OPTIONS: Array<{ value: SurfaceCategory | 'all'; label: str
   { value: 'artificial_grass', label: '인조잔디' },
   { value: 'hard', label: '하드코트' },
 ];
+
+function getCourtCoords(court: SeoulService): { lat: number; lng: number } | null {
+  const x = parseFloat(court.X);
+  const y = parseFloat(court.Y);
+  if (Number.isFinite(x) && Number.isFinite(y) && x !== 0 && y !== 0) {
+    return { lat: y, lng: x };
+  }
+  const coords = getEnrichmentCoordinates(court.SVCNM, court.AREANM, court.PLACENM);
+  if (coords) return { lat: coords.latitude, lng: coords.longitude };
+  return null;
+}
 
 const KakaoMapView = dynamic(
   () => import('@/components/map/KakaoMapView'),
@@ -59,6 +73,7 @@ export default function DistrictContent({
   const [surfaceFilter, setSurfaceFilter] = useState<SurfaceCategory | 'all'>('all');
   const [focusPlaceName, setFocusPlaceName] = useState<string | null>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
+  const [navDestination, setNavDestination] = useState<MapDestination | null>(null);
 
   const toggleView = (mode: 'list' | 'map') => {
     setViewMode(mode);
@@ -80,6 +95,17 @@ export default function DistrictContent({
       el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
+
+  const handleNavClick = useCallback((court: SeoulService) => {
+    const coords = getCourtCoords(court);
+    if (!coords) return;
+    const poiName = getMapPOIName(court.SVCNM, court.AREANM, court.PLACENM);
+    const placeName = court.PLACENM?.includes('>')
+      ? court.PLACENM.split('>').pop()!.trim()
+      : (court.PLACENM || court.SVCNM);
+    const name = poiName || cleanCourtNameForMap(placeName);
+    setNavDestination({ lat: coords.lat, lng: coords.lng, name });
+  }, []);
 
   const koreanDistrict = SLUG_TO_KOREAN[district] || district;
   
@@ -466,19 +492,34 @@ export default function DistrictContent({
                                   {court.V_MIN}~{court.V_MAX}
                                 </span>
                               </div>
-                              {showReservationLink && (
-                                <a
-                                  href={court.SVCURL}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className={`text-black font-black text-sm py-2 px-4 border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all uppercase ${
-                                    isExternal ? 'bg-[#60a5fa]' : 'bg-[#22c55e]'
-                                  }`}
-                                  onClick={(e) => { e.stopPropagation(); handleReservationClick(); }}
-                                >
-                                  {isExternal || isIndependent ? '외부 예약 사이트' : '예약하기'}
-                                </a>
-                              )}
+                              <div className="flex items-center gap-2">
+                                {getCourtCoords(court) && (
+                                  <button
+                                    type="button"
+                                    onClick={(e) => { e.stopPropagation(); handleNavClick(court); }}
+                                    className="w-9 h-9 flex items-center justify-center border-2 border-black rounded-[5px] bg-[#88aaee] text-black shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all"
+                                    aria-label="길찾기"
+                                    title="길찾기"
+                                  >
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                      <polygon points="3 11 22 2 13 21 11 13 3 11" />
+                                    </svg>
+                                  </button>
+                                )}
+                                {showReservationLink && (
+                                  <a
+                                    href={court.SVCURL}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className={`text-black font-black text-sm py-2 px-4 border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all uppercase ${
+                                      isExternal ? 'bg-[#60a5fa]' : 'bg-[#22c55e]'
+                                    }`}
+                                    onClick={(e) => { e.stopPropagation(); handleReservationClick(); }}
+                                  >
+                                    {isExternal || isIndependent ? '외부 예약 사이트' : '예약하기'}
+                                  </a>
+                                )}
+                              </div>
                             </div>
                           </div>
                         );
@@ -521,17 +562,32 @@ export default function DistrictContent({
                                 {court.V_MIN}~{court.V_MAX}
                               </span>
                             </div>
-                            {showReservationLink && (
-                              <a
-                                href={court.SVCURL}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className={`text-sm py-2 px-4 ${isExternal ? 'btn bg-blue-600 text-white hover:bg-blue-700' : 'btn btn-primary'}`}
-                                onClick={(e) => { e.stopPropagation(); handleReservationClick(); }}
-                              >
-                                {isExternal || isIndependent ? '외부 예약 사이트' : '바로 예약'}
-                              </a>
-                            )}
+                            <div className="flex items-center gap-2">
+                              {getCourtCoords(court) && (
+                                <button
+                                  type="button"
+                                  onClick={(e) => { e.stopPropagation(); handleNavClick(court); }}
+                                  className="w-9 h-9 flex items-center justify-center border border-gray-200 rounded-lg bg-white text-gray-500 hover:border-green-300 hover:text-green-600 transition-colors"
+                                  aria-label="길찾기"
+                                  title="길찾기"
+                                >
+                                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                    <polygon points="3 11 22 2 13 21 11 13 3 11" />
+                                  </svg>
+                                </button>
+                              )}
+                              {showReservationLink && (
+                                <a
+                                  href={court.SVCURL}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className={`text-sm py-2 px-4 ${isExternal ? 'btn bg-blue-600 text-white hover:bg-blue-700' : 'btn btn-primary'}`}
+                                  onClick={(e) => { e.stopPropagation(); handleReservationClick(); }}
+                                >
+                                  {isExternal || isIndependent ? '외부 예약 사이트' : '바로 예약'}
+                                </a>
+                              )}
+                            </div>
                           </div>
                         </div>
                       );
@@ -571,6 +627,12 @@ export default function DistrictContent({
         </div>
       </div>
     </div>
+
+      <MapAppSelector
+        isOpen={navDestination !== null}
+        onClose={() => setNavDestination(null)}
+        destination={navDestination ?? { lat: 0, lng: 0, name: '' }}
+      />
     </PullToRefresh>
   );
 }
