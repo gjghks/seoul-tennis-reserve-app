@@ -219,12 +219,17 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "builtYear": 2007,
     "owner": "성동구",
     "manager": "성동구도시관리공단",
-    "contact": null,
-    "website": null,
-    "indoorOutdoor": null,
+    "contact": "02-2204-7640",
+    "website": "sports.happysd.or.kr",
+    "indoorOutdoor": "outdoor",
     "lighting": null,
     "spectatorSeats": null,
-    "renovation": null
+    "renovation": null,
+    "longitude": 127.0389408,
+    "latitude": 37.5641436,
+    "operatingHoursStart": "09:00",
+    "operatingHoursEnd": "18:00",
+    "imageUrl": "/images/courts/seongdong-majang.jpg"
   },
   {
     "facilityName": "응봉 테니스장",
@@ -311,7 +316,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "normalizedName": "아차산배수지체육공원",
     "district": "광진구",
     "address": "천호대로 731",
-    "courtCount": 4,
+    "courtCount": 5,
     "surfaces": [
       {
         "type": "인조잔디",
@@ -325,15 +330,18 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "builtYear": 1998,
     "owner": "서울시",
     "manager": "광진구시설관리공단",
-    "contact": null,
-    "website": null,
-    "indoorOutdoor": null,
+    "contact": "02-3437-7234",
+    "website": "booking.gwangjin.or.kr",
+    "indoorOutdoor": "outdoor",
     "lighting": {
       "count": 3,
       "lux": null
     },
     "spectatorSeats": null,
-    "renovation": null
+    "renovation": null,
+    "longitude": 127.0976,
+    "latitude": 37.5485,
+    "imageUrl": "/images/courts/gwangjin-achasan.jpg"
   },
   {
     "facilityName": "어린이대공원 테니스장",
@@ -389,7 +397,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "indoorOutdoor": "outdoor",
     "lighting": null,
     "spectatorSeats": null,
-    "renovation": "2025.10~2026.02 노후시설개선공사 완료 (인조잔디 전면교체, 우배수로, 펜스, 휴게컨테이너)"
+    "renovation": "2025.10~2026.02 노후시설개선공사 완료 (인조잔디 전면교체, 우배수로, 펜스, 휴게컨테이너)",
+    "mapPOIName": "이문체육문화센터"
   },
   {
     "facilityName": "중랑천 제1체육공원 테니스장",
@@ -469,7 +478,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "indoorOutdoor": "outdoor",
     "lighting": null,
     "spectatorSeats": null,
-    "renovation": null
+    "renovation": null,
+    "mapPOIName": "용마폭포공원 테니스장"
   },
   {
     "facilityName": "면목구립테니스장",
@@ -577,7 +587,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "indoorOutdoor": "outdoor",
     "lighting": null,
     "spectatorSeats": null,
-    "renovation": null
+    "renovation": null,
+    "mapPOIName": "오동근린공원 테니스장"
   },
   {
     "facilityName": "다락원체육공원 테니스장",
@@ -661,7 +672,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "indoorOutdoor": "outdoor",
     "lighting": null,
     "spectatorSeats": null,
-    "renovation": null
+    "renovation": null,
+    "mapPOIName": "초안산스포츠타운 테니스장"
   },
   {
     "facilityName": "불암산스포츠타운 테니스장",
@@ -714,7 +726,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "indoorOutdoor": "outdoor",
     "lighting": null,
     "spectatorSeats": null,
-    "renovation": null
+    "renovation": null,
+    "mapPOIName": "수락산 스포츠타운 테니스장"
   },
   {
     "facilityName": "은평구민체육센터 테니스장",
@@ -743,7 +756,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
       "lux": null
     },
     "spectatorSeats": null,
-    "renovation": null
+    "renovation": null,
+    "mapPOIName": "은평구민체육센터 테니스장"
   },
   {
     "facilityName": "북한산근린공원 테니스장",
@@ -959,17 +973,17 @@ const FACILITY_DATA: FacilityEnrichment[] = [
   {
     "facilityName": "난지물재생센터 테니스장",
     "normalizedName": "난지물재생센터",
-    "district": "고양시 덕양구",
+    "district": "마포구",
     "address": "경기도 고양시 덕양구 대덕로426",
     "courtCount": 4,
     "surfaces": [
       {
-        "type": "클레이",
+        "type": "인조잔디",
         "count": null
       }
     ],
-    "surfaceCategory": "clay",
-    "surfaceDisplay": "클레이",
+    "surfaceCategory": "artificial_grass",
+    "surfaceDisplay": "인조잔디",
     "area": 2500,
     "siteArea": 2500,
     "builtYear": 2011,
@@ -1031,12 +1045,17 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "builtYear": 1990,
     "owner": "서울시",
     "manager": "강서구",
-    "contact": "강서구(2600-6561)",
-    "website": null,
+    "contact": "02-2600-4193",
+    "website": "sports.gangseo.seoul.kr",
     "indoorOutdoor": "outdoor",
     "lighting": null,
     "spectatorSeats": null,
-    "renovation": null
+    "renovation": null,
+    "longitude": 126.845603,
+    "latitude": 37.5506510,
+    "operatingHoursStart": "09:00",
+    "operatingHoursEnd": "18:00",
+    "imageUrl": "/images/courts/gangseo-ujangsan.jpg"
   },
   {
     "facilityName": "구립 테니스장",
@@ -1057,15 +1076,20 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "builtYear": 2002,
     "owner": "강서구",
     "manager": "강서구",
-    "contact": "강서구(2600-6579)",
-    "website": null,
+    "contact": "02-2600-6579",
+    "website": "sports.gangseo.seoul.kr",
     "indoorOutdoor": "outdoor",
     "lighting": {
       "count": 8,
       "lux": null
     },
     "spectatorSeats": null,
-    "renovation": null
+    "renovation": null,
+    "longitude": 126.8156474,
+    "latitude": 37.5837823,
+    "operatingHoursStart": "09:00",
+    "operatingHoursEnd": "21:00",
+    "imageUrl": "/images/courts/gangseo-gurib.jpg"
   },
   {
     "facilityName": "수명산 테니스장",
@@ -1097,7 +1121,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "facilityName": "황금내 테니스장",
     "normalizedName": "황금내",
     "district": "강서구",
-    "address": null,
+    "address": "염창동 226-4",
     "courtCount": 1,
     "surfaces": [
       {
@@ -1112,12 +1136,17 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "builtYear": 2020,
     "owner": "강서구",
     "manager": "강서구",
-    "contact": null,
-    "website": null,
-    "indoorOutdoor": null,
+    "contact": "02-2600-4186",
+    "website": "sports.gangseo.seoul.kr",
+    "indoorOutdoor": "outdoor",
     "lighting": null,
     "spectatorSeats": null,
-    "renovation": null
+    "renovation": null,
+    "longitude": 126.863334,
+    "latitude": 37.562408,
+    "operatingHoursStart": "09:00",
+    "operatingHoursEnd": "18:00",
+    "imageUrl": "/images/courts/gangseo-hwanggeumnae.jpg"
   },
   {
     "facilityName": "서남물재생센터테니스장",
@@ -1157,12 +1186,12 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "courtCount": 3,
     "surfaces": [
       {
-        "type": "클레이",
+        "type": "하드코트",
         "count": null
       }
     ],
-    "surfaceCategory": "clay",
-    "surfaceDisplay": "클레이",
+    "surfaceCategory": "hard",
+    "surfaceDisplay": "하드코트",
     "area": 1558,
     "siteArea": 1764,
     "builtYear": 1989,
@@ -1231,53 +1260,54 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "facilityName": "안양천 하드코트테니스장",
     "normalizedName": "안양천하드코트",
     "district": "영등포구",
-    "address": null,
+    "address": "양화동 4-1 일대",
     "courtCount": 7,
     "surfaces": [
       {
-        "type": "우레탄",
+        "type": "하드코트",
         "count": null
       }
     ],
     "surfaceCategory": "hard",
-    "surfaceDisplay": "우레탄",
-    "area": 5100,
-    "siteArea": 5100,
+    "surfaceDisplay": "하드코트",
+    "area": 6500,
+    "siteArea": 6500,
     "builtYear": 2021,
     "owner": "영등포구",
     "manager": "영등포구시설관리공단",
-    "contact": "서울시한강시민공원사업소(3780-0777~8)",
-    "website": "hangang.seoul.go.kr",
-    "indoorOutdoor": null,
-    "lighting": null,
+    "contact": "영등포구시설관리공단(010-7389-2988)",
+    "website": "srent.y-sisul.or.kr",
+    "indoorOutdoor": "outdoor",
+    "lighting": { "count": 0, "lux": null },
     "spectatorSeats": null,
-    "renovation": null
+    "renovation": null,
+    "mapPOIName": "양평누리체육공원 테니스장"
   },
   {
-    "facilityName": "대림체육공원 테니스장",
-    "normalizedName": "대림체육공원",
+    "facilityName": "대림운동장 테니스장",
+    "normalizedName": "대림운동장",
     "district": "영등포구",
-    "address": "대림동780",
+    "address": "가마산로31길 16",
     "courtCount": 3,
     "surfaces": [
       {
-        "type": "클레이",
+        "type": "인조잔디",
         "count": null
       }
     ],
-    "surfaceCategory": "clay",
-    "surfaceDisplay": "클레이",
-    "area": 792,
+    "surfaceCategory": "artificial_grass",
+    "surfaceDisplay": "인조잔디",
+    "area": 1500,
     "siteArea": 6000,
     "builtYear": 1996,
     "owner": "영등포구",
     "manager": "영등포구시설관리공단",
-    "contact": "영등포구청 공원녹지과",
-    "website": "ydp.go.kr",
-    "indoorOutdoor": null,
+    "contact": "010-2640-8895",
+    "website": "srent.y-sisul.or.kr",
+    "indoorOutdoor": "outdoor",
     "lighting": null,
     "spectatorSeats": null,
-    "renovation": null,
+    "renovation": "2023년 8월 마사토→인조잔디 전면 교체, 펜스·팀벤치 신설",
     "mapPOIName": "대림운동장 테니스장"
   },
   {
@@ -1398,7 +1428,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "facilityName": "관악구민운동장 테니스장",
     "normalizedName": "관악구민운동장",
     "district": "관악구",
-    "address": "봉천7동 산53번지",
+    "address": "낙성대로 40",
     "courtCount": 4,
     "surfaces": [
       {
@@ -1413,12 +1443,17 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "builtYear": 1992,
     "owner": "관악구",
     "manager": "관악구시설관리공단",
-    "contact": "관악구(880-3137)",
-    "website": null,
+    "contact": "02-2015-2750",
+    "website": "booking.gwanakgongdan.or.kr",
     "indoorOutdoor": "outdoor",
-    "lighting": null,
+    "lighting": {
+      "count": 0,
+      "lux": null
+    },
     "spectatorSeats": null,
-    "renovation": null
+    "renovation": null,
+    "operatingHoursStart": "06:00",
+    "operatingHoursEnd": "22:00"
   },
   {
     "facilityName": "난우공원테니스장",
@@ -1666,7 +1701,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "normalizedName": "대치유수지체육공원",
     "district": "강남구",
     "address": "대치동78-20",
-    "courtCount": 2,
+    "courtCount": 3,
     "surfaces": [
       {
         "type": "탄성복합고무",
@@ -1747,7 +1782,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "normalizedName": "올림픽",
     "district": "송파구",
     "address": null,
-    "courtCount": 13,
+    "courtCount": 14,
     "surfaces": [
       {
         "type": "케미칼",
@@ -1839,7 +1874,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "siteArea": 7038,
     "builtYear": 1991,
     "owner": "송파구",
-    "manager": "생활체육연합회",
+    "manager": "송파구시설관리공단",
     "contact": "문화체육과(410-3410)",
     "website": "www.songpa.seoul.kr",
     "indoorOutdoor": "outdoor",
@@ -1869,7 +1904,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "siteArea": 1472,
     "builtYear": 1989,
     "owner": "송파구",
-    "manager": "테니스연합회",
+    "manager": "송파구시설관리공단",
     "contact": "문화체육과(410-3410)",
     "website": "www.songpa.seoul.kr",
     "indoorOutdoor": "outdoor",
@@ -1882,20 +1917,20 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "normalizedName": "성내천변",
     "district": "송파구",
     "address": null,
-    "courtCount": 3,
+    "courtCount": 2,
     "surfaces": [
       {
-        "type": "클레이",
+        "type": "인조잔디",
         "count": null
       }
     ],
-    "surfaceCategory": "clay",
-    "surfaceDisplay": "클레이",
+    "surfaceCategory": "artificial_grass",
+    "surfaceDisplay": "인조잔디",
     "area": 1680,
     "siteArea": 1680,
     "builtYear": 2004,
     "owner": "송파구",
-    "manager": "테니스연합회",
+    "manager": "송파구시설관리공단",
     "contact": null,
     "website": null,
     "indoorOutdoor": null,
@@ -2014,9 +2049,14 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "district": "송파구",
     "address": null,
     "courtCount": 3,
-    "surfaces": [],
-    "surfaceCategory": "unknown",
-    "surfaceDisplay": "",
+    "surfaces": [
+      {
+        "type": "인조잔디",
+        "count": null
+      }
+    ],
+    "surfaceCategory": "artificial_grass",
+    "surfaceDisplay": "인조잔디",
     "area": 0,
     "siteArea": 0,
     "builtYear": null,
@@ -2024,7 +2064,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "manager": null,
     "contact": null,
     "website": null,
-    "indoorOutdoor": null,
+    "indoorOutdoor": "outdoor",
     "lighting": null,
     "spectatorSeats": null,
     "renovation": null,
@@ -2036,9 +2076,14 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "district": "강남구",
     "address": null,
     "courtCount": 1,
-    "surfaces": [],
-    "surfaceCategory": "unknown",
-    "surfaceDisplay": "",
+    "surfaces": [
+      {
+        "type": "인조잔디",
+        "count": null
+      }
+    ],
+    "surfaceCategory": "artificial_grass",
+    "surfaceDisplay": "인조잔디",
     "area": 0,
     "siteArea": 0,
     "builtYear": null,
@@ -2055,17 +2100,22 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "facilityName": "남부도로사업소 테니스장",
     "normalizedName": "남부도로사업소",
     "district": "영등포구",
-    "address": null,
-    "courtCount": 1,
-    "surfaces": [],
-    "surfaceCategory": "unknown",
-    "surfaceDisplay": "",
+    "address": "도림로 145",
+    "courtCount": 2,
+    "surfaces": [
+      {
+        "type": "인조잔디",
+        "count": null
+      }
+    ],
+    "surfaceCategory": "artificial_grass",
+    "surfaceDisplay": "인조잔디",
     "area": 0,
     "siteArea": 0,
     "builtYear": null,
     "owner": "서울시",
     "manager": "남부도로사업소",
-    "contact": null,
+    "contact": "010-6451-6672",
     "website": null,
     "indoorOutdoor": "outdoor",
     "lighting": null,
