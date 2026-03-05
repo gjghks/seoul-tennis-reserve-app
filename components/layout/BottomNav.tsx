@@ -65,7 +65,7 @@ export default function BottomNav() {
     setIsMoreOpen(false);
   }, []);
 
-  const isCourtDetail = /^\/[^/]+-gu\/S/.test(pathname);
+  const isCourtDetail = /^\/[^/]+-gu\/.+/.test(pathname);
   if (isCourtDetail) return null;
 
   const isActive = (href: string) =>
