@@ -15,6 +15,7 @@ export default function NavigationProgress() {
   const timerRef = useRef<ReturnType<typeof setTimeout>>(null);
   const trickleRef = useRef<ReturnType<typeof setInterval>>(null);
   const completedAtRef = useRef(0);
+  const isPopStateRef = useRef(false);
 
   const cleanup = useCallback(() => {
     if (timerRef.current) clearTimeout(timerRef.current);
@@ -55,15 +56,29 @@ export default function NavigationProgress() {
       const timer = window.setTimeout(() => {
         complete();
       }, 0);
-      window.scrollTo(0, 0);
+
+      if (isPopStateRef.current) {
+        // Back/forward navigation — let browser restore scroll position
+        isPopStateRef.current = false;
+      } else {
+        // Forward navigation (link click, router.push) — scroll to top
+        window.scrollTo(0, 0);
+      }
+
       return () => window.clearTimeout(timer);
     }
   }, [pathname, complete]);
 
   useEffect(() => {
     if ('scrollRestoration' in window.history) {
-      window.history.scrollRestoration = 'manual';
+      window.history.scrollRestoration = 'auto';
     }
+
+    const handlePopState = () => {
+      isPopStateRef.current = true;
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
   useEffect(() => {
