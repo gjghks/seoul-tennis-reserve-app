@@ -11,11 +11,38 @@ interface MapAppSelectorProps {
   destination: MapDestination;
 }
 
-const PROVIDER_ICONS: Record<MapProvider, { emoji: string; label: string }> = {
-  tmap: { emoji: '🔴', label: 'T맵' },
-  naver: { emoji: '🟢', label: '네이버 지도' },
-  kakao: { emoji: '🟡', label: '카카오맵' },
+const PROVIDER_LABELS: Record<MapProvider, string> = {
+  tmap: 'T맵',
+  naver: '네이버 지도',
+  kakao: '카카오맵',
 };
+
+function MapProviderIcon({ provider }: { provider: MapProvider }) {
+  const iconClass = 'shrink-0 rounded-[5px]';
+  switch (provider) {
+    case 'tmap':
+      return (
+        <svg width="24" height="24" viewBox="0 0 48 48" fill="none" aria-hidden="true" className={iconClass}>
+          <rect width="48" height="48" rx="10" fill="#FF4444" />
+          <path d="M13 15h22v6h-8v14h-6V21h-8z" fill="white" />
+        </svg>
+      );
+    case 'naver':
+      return (
+        <svg width="24" height="24" viewBox="0 0 48 48" fill="none" aria-hidden="true" className={iconClass}>
+          <rect width="48" height="48" rx="10" fill="#03C75A" />
+          <path d="M14 15h5l10 13V15h5v18h-5L19 20v13H14z" fill="white" />
+        </svg>
+      );
+    case 'kakao':
+      return (
+        <svg width="24" height="24" viewBox="0 0 48 48" fill="none" aria-hidden="true" className={iconClass}>
+          <rect width="48" height="48" rx="10" fill="#FEE500" />
+          <path d="M24 11c-7.2 0-13 4.5-13 10.1 0 3.5 2.3 6.6 5.8 8.4l-1.5 5.3c-.1.2.2.4.4.3l5.8-3.8c.8.1 1.6.2 2.5.2 7.2 0 13-4.5 13-10.1C37 15.5 31.2 11 24 11z" fill="#391B1B" />
+        </svg>
+      );
+  }
+}
 
 export default function MapAppSelector({ isOpen, onClose, destination }: MapAppSelectorProps) {
   const themeClass = useThemeClass();
@@ -177,9 +204,7 @@ export default function MapAppSelector({ isOpen, onClose, destination }: MapAppS
             </div>
           ) : (
             <div className="px-5 pb-5 space-y-2">
-              {MAP_PROVIDERS.filter((p) => p.id !== 'tmap' || isMobile()).map((provider) => {
-                const icon = PROVIDER_ICONS[provider.id];
-                return (
+              {MAP_PROVIDERS.filter((p) => p.id !== 'tmap' || isMobile()).map((provider) => (
                   <button
                     type="button"
                     key={provider.id}
@@ -202,14 +227,13 @@ export default function MapAppSelector({ isOpen, onClose, destination }: MapAppS
                       ),
                     )}
                   >
-                    <span className="text-lg">{icon.emoji}</span>
-                    <span className="flex-1 text-left">{icon.label}</span>
+                    <MapProviderIcon provider={provider.id} />
+                    <span className="flex-1 text-left">{PROVIDER_LABELS[provider.id]}</span>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="opacity-50">
                       <polyline points="9 18 15 12 9 6" />
                     </svg>
                   </button>
-                );
-              })}
+                ))}
             </div>
           )}
 
