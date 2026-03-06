@@ -35,15 +35,23 @@ export default function RecordsPromoCard({ user, authLoading }: RecordsPromoCard
               <p className={`text-sm mb-3 ${themeClass('text-gray-600 font-medium', 'text-gray-500')}`}>
                 경기 결과를 기록하고 승률과 통계를 확인해보세요.
               </p>
-              <Link 
-                href="/login" 
-                className={`inline-flex items-center text-sm font-bold ${themeClass('text-blue-600 hover:underline', 'text-blue-600 hover:text-blue-700')}`}
-              >
-                로그인하고 시작하기
-                <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
+              <div className="flex items-center gap-4">
+                <Link 
+                  href="/login" 
+                  className={`inline-flex items-center text-sm font-bold ${themeClass('text-blue-600 hover:underline', 'text-blue-600 hover:text-blue-700')}`}
+                >
+                  로그인하고 시작하기
+                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+                <Link
+                  href="/guide/records"
+                  className={`text-xs ${themeClass('text-black/40 font-bold hover:text-black/60', 'text-gray-400 hover:text-gray-600')}`}
+                >
+                  사용법 보기
+                </Link>
+              </div>
             </div>
             <div className={`w-12 h-12 flex items-center justify-center rounded-full ${themeClass('bg-blue-100 border-2 border-black', 'bg-blue-50 text-blue-600')}`}>
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -69,15 +77,23 @@ export default function RecordsPromoCard({ user, authLoading }: RecordsPromoCard
               <p className={`text-sm mb-3 ${themeClass('text-gray-700 font-medium', 'text-gray-600')}`}>
                 아직 기록된 경기가 없습니다.
               </p>
-              <Link 
-                href="/records/new" 
-                className={`inline-flex items-center px-4 py-2 text-sm font-bold rounded-lg transition-colors ${themeClass('bg-black text-white hover:bg-gray-800', 'bg-yellow-500 text-white hover:bg-yellow-600 shadow-sm')}`}
-              >
-                <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                </svg>
-                기록하기
-              </Link>
+              <div className="flex items-center gap-4">
+                <Link 
+                  href="/records/new" 
+                  className={`inline-flex items-center px-4 py-2 text-sm font-bold rounded-lg transition-colors ${themeClass('bg-black text-white hover:bg-gray-800', 'bg-yellow-500 text-white hover:bg-yellow-600 shadow-sm')}`}
+                >
+                  <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  </svg>
+                  기록하기
+                </Link>
+                <Link
+                  href="/guide/records"
+                  className={`text-xs ${themeClass('text-black/40 font-bold hover:text-black/60', 'text-gray-400 hover:text-gray-600')}`}
+                >
+                  사용법 보기
+                </Link>
+              </div>
             </div>
             <div className={`hidden sm:flex w-16 h-16 items-center justify-center rounded-full ${themeClass('bg-white border-2 border-black', 'bg-white shadow-sm text-yellow-500')}`}>
               <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -136,15 +152,23 @@ export default function RecordsPromoCard({ user, authLoading }: RecordsPromoCard
             </div>
           </div>
 
-          <Link 
-            href="/records" 
-            className={`inline-flex justify-center items-center px-4 py-2 text-sm font-bold rounded-lg transition-colors ${themeClass('bg-gray-100 text-black hover:bg-gray-200', 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200')}`}
-          >
-            전체 기록 보기
-            <svg className="w-4 h-4 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </Link>
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+            <Link 
+              href="/records" 
+              className={`inline-flex justify-center items-center px-4 py-2 text-sm font-bold rounded-lg transition-colors ${themeClass('bg-gray-100 text-black hover:bg-gray-200', 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200')}`}
+            >
+              전체 기록 보기
+              <svg className="w-4 h-4 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+            <Link
+              href="/guide/records"
+              className={`inline-flex justify-center items-center px-4 py-2 text-xs transition-colors ${themeClass('text-black/40 font-bold hover:text-black/60', 'text-gray-400 hover:text-gray-600')}`}
+            >
+              사용법
+            </Link>
+          </div>
         </div>
       </div>
     </div>

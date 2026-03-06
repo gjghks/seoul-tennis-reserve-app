@@ -49,12 +49,26 @@ export default function RecordsContent() {
     <div className={cn('min-h-screen scrollbar-hide', themeClass('bg-nb-bg', 'bg-gray-50'))}>
       <div className="container mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-6">
-          <h1 className={cn(
-            'text-2xl',
-            themeClass('font-black text-black uppercase', 'font-bold text-gray-900')
-          )}>
-            {isNeoBrutalism ? '🎾 경기 기록' : '경기 기록'}
-          </h1>
+          <div className="flex items-center gap-3">
+            <h1 className={cn(
+              'text-2xl',
+              themeClass('font-black text-black uppercase', 'font-bold text-gray-900')
+            )}>
+              {isNeoBrutalism ? '🎾 경기 기록' : '경기 기록'}
+            </h1>
+            <Link
+              href="/guide/records"
+              className={cn(
+                'text-xs px-2 py-1 transition-colors',
+                themeClass(
+                  'font-bold text-black/50 border-2 border-black/20 rounded-[4px] hover:bg-gray-100 hover:text-black',
+                  'text-gray-400 border border-gray-200 rounded-md hover:bg-gray-50 hover:text-gray-600'
+                )
+              )}
+            >
+              사용법
+            </Link>
+          </div>
           <Link
             href="/records/new"
             className={cn(
@@ -73,11 +87,9 @@ export default function RecordsContent() {
         </div>
 
         <div className="max-w-2xl">
-          {total > 0 && (
-            <div className="mb-8">
-              <RecordStats />
-            </div>
-          )}
+          <div className="mb-8">
+            <RecordStats />
+          </div>
 
           {isLoading ? (
             <div className="space-y-3">
