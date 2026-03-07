@@ -2,6 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useThemeClass } from '@/lib/cn';
 
 const HeaderAuth = dynamic(
@@ -10,6 +11,7 @@ const HeaderAuth = dynamic(
 );
 
 export default function Header() {
+  const pathname = usePathname();
   const themeClass = useThemeClass();
 
   return (
@@ -29,43 +31,24 @@ export default function Header() {
             </span>
           </Link>
 
-          <nav className="flex items-center gap-2">
-            <Link
-              href="/today"
-              className={`hidden sm:block px-3 py-1.5 text-sm transition-colors ${themeClass('text-black font-bold hover:underline underline-offset-4', 'text-gray-600 hover:text-green-600')}`}
-            >
-              오늘 예약
-            </Link>
-            <Link
-              href="/map"
-              className={`hidden sm:block px-3 py-1.5 text-sm transition-colors ${themeClass('text-black font-bold hover:underline underline-offset-4', 'text-gray-600 hover:text-green-600')}`}
-            >
-              지도
-            </Link>
-            <Link
-              href="/compare"
-              className={`hidden sm:block px-3 py-1.5 text-sm transition-colors ${themeClass('text-black font-bold hover:underline underline-offset-4', 'text-gray-600 hover:text-green-600')}`}
-            >
-              구별 비교
-            </Link>
-            <Link
-              href="/trends"
-              className={`hidden sm:block px-3 py-1.5 text-sm transition-colors ${themeClass('text-black font-bold hover:underline underline-offset-4', 'text-gray-600 hover:text-green-600')}`}
-            >
-              경쟁률
-            </Link>
-            <Link
-              href="/calendar"
-              className={`hidden sm:block px-3 py-1.5 text-sm transition-colors ${themeClass('text-black font-bold hover:underline underline-offset-4', 'text-gray-600 hover:text-green-600')}`}
-            >
-              캘린더
-            </Link>
-            <Link
-              href="/records"
-              className={`hidden sm:block px-3 py-1.5 text-sm transition-colors ${themeClass('text-black font-bold hover:underline underline-offset-4', 'text-gray-600 hover:text-green-600')}`}
-            >
-              경기 기록
-            </Link>
+          <nav aria-label="주요 탐색" className="flex items-center gap-2">
+            {[
+              { href: '/today', label: '오늘 예약' },
+              { href: '/map', label: '지도' },
+              { href: '/compare', label: '구별 비교' },
+              { href: '/trends', label: '경쟁률' },
+              { href: '/calendar', label: '캘린더' },
+              { href: '/records', label: '경기 기록' },
+            ].map(({ href, label }) => (
+              <Link
+                key={href}
+                href={href}
+                aria-current={pathname.startsWith(href) ? 'page' : undefined}
+                className={`hidden sm:block px-3 py-1.5 text-sm transition-colors ${themeClass('text-black font-bold hover:underline underline-offset-4', 'text-gray-600 hover:text-green-600')}`}
+              >
+                {label}
+              </Link>
+            ))}
             <HeaderAuth />
           </nav>
         </div>

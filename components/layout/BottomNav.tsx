@@ -77,6 +77,7 @@ export default function BottomNav() {
     <>
       <MoreMenu isOpen={isMoreOpen} onClose={handleMoreClose} />
       <nav
+        aria-label="하단 탐색"
         className={`fixed bottom-0 left-0 right-0 z-50 sm:hidden ${themeClass(
           'bg-[#facc15] border-t-[3px] border-black',
           'bg-white border-t border-gray-200'
@@ -91,6 +92,7 @@ export default function BottomNav() {
                 key={item.href}
                 href={item.href}
                 onClick={handleMoreClose}
+                aria-current={active ? 'page' : undefined}
                 className={`flex flex-col items-center justify-center flex-1 h-full gap-0.5 transition-colors ${
                   active
                     ? themeClass('text-black font-bold', 'text-green-600 font-medium')
