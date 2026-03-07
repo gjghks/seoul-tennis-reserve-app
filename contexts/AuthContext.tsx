@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, useCallback, useMemo, ReactNode } from 'react';
 import { supabase } from '@/lib/supabase';
 import { User } from '@supabase/supabase-js';
 import { LOGIN_PROVIDER_KEY } from '@/lib/hooks/useReservationTip';
@@ -32,13 +32,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signOut = async () => {
+  const signOut = useCallback(async () => {
     try { localStorage.removeItem(LOGIN_PROVIDER_KEY); } catch { /* noop */ }
     await supabase.auth.signOut({ scope: 'local' });
-  };
+  }, []);
+
+  const value = useMemo(() => ({ user, loading, signOut }), [user, loading, signOut]);
 
   return (
-    <AuthContext.Provider value={{ user, loading, signOut }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );

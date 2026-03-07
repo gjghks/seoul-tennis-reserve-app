@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, useCallback, useMemo, ReactNode } from 'react';
 
 type Theme = 'default' | 'neo-brutalism';
 
@@ -26,12 +26,15 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('tennis-theme', theme);
   }, [theme]);
 
-  const toggleTheme = () => {
+  const toggleTheme = useCallback(() => {
     setTheme(prev => prev === 'default' ? 'neo-brutalism' : 'default');
-  };
+  }, []);
+
+  const isNeoBrutalism = theme === 'neo-brutalism';
+  const value = useMemo(() => ({ theme, toggleTheme, isNeoBrutalism }), [theme, toggleTheme, isNeoBrutalism]);
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, isNeoBrutalism: theme === 'neo-brutalism' }}>
+    <ThemeContext.Provider value={value}>
       {children}
     </ThemeContext.Provider>
   );
