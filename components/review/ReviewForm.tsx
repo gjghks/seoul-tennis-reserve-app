@@ -66,6 +66,7 @@ export default function ReviewForm({
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const [images, setImages] = useState<ImagePreview[]>(toExistingImagePreviews(editingReview));
   const [uploadProgress, setUploadProgress] = useState<string | null>(null);
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -197,8 +198,15 @@ export default function ReviewForm({
       return;
     }
 
+    const newErrors: Record<string, string> = {};
+    
     if (content.length < 10) {
+      newErrors.content = '후기는 10자 이상 작성해주세요.';
       setError('후기는 10자 이상 작성해주세요.');
+    }
+    
+    setValidationErrors(newErrors);
+    if (Object.keys(newErrors).length > 0) {
       return;
     }
 
@@ -267,7 +275,8 @@ export default function ReviewForm({
       className={`text-2xl transition-colors ${
         value <= rating ? 'text-yellow-400' : 'text-gray-300'
       } hover:scale-110`}
-      aria-label={`${value}점`}
+      aria-label={`${value}점 선택`}
+      aria-pressed={value <= rating}
     >
       ★
     </button>
@@ -302,13 +311,13 @@ export default function ReviewForm({
     <form onSubmit={handleSubmit} className={`p-4 ${themeClass('bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]', 'bg-white rounded-xl border border-gray-100 shadow-sm')} `}>
       <fieldset className="mb-4 border-none p-0 m-0">
         <legend className={`mb-2 ${themeClass('font-bold text-black', 'font-medium text-gray-700')} `}>
-          평점
+          평점 <span className="text-red-500">*</span>
         </legend>
         <div className="flex gap-1">
           {[1, 2, 3, 4, 5].map((value) => (
             <StarButton key={value} value={value} />
           ))}
-          <span className={`ml-2 ${themeClass('font-bold', 'text-gray-600')} `}>
+          <span className={`ml-2 ${themeClass('font-bold', 'text-gray-600')} `} aria-live="polite">
             {rating}점
           </span>
         </div>
@@ -316,7 +325,7 @@ export default function ReviewForm({
 
       <div className="mb-4">
         <label htmlFor="review-content" className={`block mb-2 ${themeClass('font-bold text-black', 'font-medium text-gray-700')} `}>
-          후기 내용
+          후기 내용 <span className="text-red-500">*</span>
         </label>
         <textarea
           id="review-content"
@@ -325,9 +334,17 @@ export default function ReviewForm({
           placeholder="이 테니스장에 대한 후기를 작성해주세요. (10자 이상)"
           maxLength={500}
           rows={4}
+          required
+          aria-invalid={!!validationErrors.content}
+          aria-describedby={validationErrors.content ? 'review-content-error' : 'review-content-count'}
           className={`w-full p-3 resize-none ${themeClass('border-2 border-black rounded-[5px] focus:outline-none focus:ring-2 focus:ring-[#22c55e] focus:ring-offset-2', 'border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent')}`}
         />
-        <div className={`text-right text-sm mt-1 ${themeClass('text-black/60', 'text-gray-400')} `}>
+        {validationErrors.content && (
+          <p id="review-content-error" className="text-red-500 text-xs mt-1" role="alert">
+            {validationErrors.content}
+          </p>
+        )}
+        <div id="review-content-count" className={`text-right text-sm mt-1 ${themeClass('text-black/60', 'text-gray-400')} `}>
           {content.length}/500
         </div>
       </div>
@@ -341,6 +358,7 @@ export default function ReviewForm({
           onDrop={handleDrop}
           onDragOver={handleDragOver}
           className={`relative block border-2 border-dashed rounded-lg p-4 text-center transition-colors ${themeClass('border-black/30 hover:border-black/60 bg-gray-50', 'border-gray-200 hover:border-gray-400 bg-gray-50')} ${images.length >= MAX_IMAGES ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+          aria-label="리뷰 사진 추가 (최대 3장, 각 5MB 이하)"
         >
           <input
             ref={fileInputRef}
@@ -350,6 +368,7 @@ export default function ReviewForm({
             onChange={(e) => handleFileSelect(e.target.files)}
             className="sr-only"
             disabled={images.length >= MAX_IMAGES}
+            aria-label="리뷰 사진 파일 선택"
           />
           <div className="flex flex-col items-center gap-2">
             <svg className={`w-8 h-8 ${themeClass('text-black/60', 'text-gray-400')}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -366,14 +385,14 @@ export default function ReviewForm({
 
         {images.length > 0 && (
           <div className="mt-3 grid grid-cols-3 gap-2">
-            {images.map((img) => (
+            {images.map((img, index) => (
               <div
                 key={img.id}
                 className={`relative aspect-square rounded-lg overflow-hidden ${themeClass('border-2 border-black', 'border border-gray-200')}`}
               >
                 <Image
                   src={img.preview}
-                  alt="업로드 미리보기"
+                  alt={`리뷰 사진 ${index + 1}`}
                   fill
                   unoptimized
                   className="object-cover"
@@ -382,7 +401,7 @@ export default function ReviewForm({
                   type="button"
                   onClick={() => handleRemoveImage(img.id)}
                   className={`absolute top-1 right-1 w-6 h-6 flex items-center justify-center rounded-full transition-colors ${themeClass('bg-black text-white hover:bg-red-600', 'bg-black/50 text-white hover:bg-red-500')}`}
-                  aria-label="이미지 삭제"
+                  aria-label={`리뷰 사진 ${index + 1} 삭제`}
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

@@ -113,6 +113,7 @@ export default function RecordForm({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [uploadProgress, setUploadProgress] = useState<string | null>(null);
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -249,19 +250,26 @@ export default function RecordForm({
     if (!user) return;
 
     // Validation
+    const newErrors: Record<string, string> = {};
+    
     if (!courtName.trim()) {
+      newErrors.courtName = '장소(코트 이름)를 입력해주세요.';
       setError('장소(코트 이름)를 입력해주세요.');
-      return;
     }
     
     const scoreValidation = validateScore(score);
     if (!scoreValidation.valid) {
+      newErrors.score = scoreValidation.error || '스코어가 올바르지 않습니다.';
       setError(scoreValidation.error || '스코어가 올바르지 않습니다.');
-      return;
     }
 
     if (!result) {
+      newErrors.result = '경기 결과를 선택해주세요.';
       setError('경기 결과를 선택해주세요.');
+    }
+    
+    setValidationErrors(newErrors);
+    if (Object.keys(newErrors).length > 0) {
       return;
     }
 
@@ -345,15 +353,24 @@ export default function RecordForm({
         
         {/* 1. Date/Time */}
         <div>
-          <label htmlFor="played_at" className={labelClass}>날짜/시간</label>
+          <label htmlFor="played_at" className={labelClass}>
+            날짜/시간 <span className="text-red-500">*</span>
+          </label>
           <input
             type="datetime-local"
             id="played_at"
             value={playedAt}
             onChange={(e) => setPlayedAt(e.target.value)}
             required
+            aria-invalid={!!validationErrors.playedAt}
+            aria-describedby={validationErrors.playedAt ? 'played_at-error' : undefined}
             className={inputClass}
           />
+          {validationErrors.playedAt && (
+            <p id="played_at-error" className="text-red-500 text-xs mt-1" role="alert">
+              {validationErrors.playedAt}
+            </p>
+          )}
         </div>
 
         {/* 2. Match Type */}
@@ -461,7 +478,9 @@ export default function RecordForm({
 
         {/* 7. Court Surface */}
         <div>
-          <label htmlFor="court_surface" className={labelClass}>코트 표면</label>
+          <label htmlFor="court_surface" className={labelClass}>
+            코트 표면 <span className="text-gray-400 text-sm">(선택)</span>
+          </label>
           <select
             id="court_surface"
             value={courtSurface}
@@ -480,7 +499,9 @@ export default function RecordForm({
         {/* 8. Opponent Info */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
-            <label htmlFor="opponent_name" className={labelClass}>상대 이름</label>
+            <label htmlFor="opponent_name" className={labelClass}>
+              상대 이름 <span className="text-gray-400 text-sm">(선택)</span>
+            </label>
             <input
               type="text"
               id="opponent_name"
@@ -491,7 +512,9 @@ export default function RecordForm({
             />
           </div>
           <div>
-            <label htmlFor="opponent_level" className={labelClass}>상대 수준</label>
+            <label htmlFor="opponent_level" className={labelClass}>
+              상대 수준 <span className="text-gray-400 text-sm">(선택)</span>
+            </label>
             <input
               type="text"
               id="opponent_level"
@@ -505,7 +528,9 @@ export default function RecordForm({
 
         {/* 9. Duration */}
         <div>
-          <label htmlFor="duration_minutes" className={labelClass}>경기 시간 (분)</label>
+          <label htmlFor="duration_minutes" className={labelClass}>
+            경기 시간 (분) <span className="text-gray-400 text-sm">(선택)</span>
+          </label>
           <input
             type="number"
             id="duration_minutes"
@@ -520,7 +545,9 @@ export default function RecordForm({
 
         {/* 10. Cost */}
         <div>
-          <label htmlFor="cost" className={labelClass}>비용 (원)</label>
+          <label htmlFor="cost" className={labelClass}>
+            비용 (원) <span className="text-gray-400 text-sm">(선택)</span>
+          </label>
           <input
             type="number"
             id="cost"
@@ -535,7 +562,7 @@ export default function RecordForm({
         {/* 11. Images */}
         <div>
           <span className={labelClass}>
-            사진 <span className="text-gray-400 font-normal text-sm">(최대 {MAX_IMAGES}장)</span>
+            사진 <span className="text-gray-400 font-normal text-sm">(선택, 최대 {MAX_IMAGES}장)</span>
           </span>
           
           <label
@@ -549,6 +576,7 @@ export default function RecordForm({
               ),
               images.length >= MAX_IMAGES && 'opacity-50 cursor-not-allowed'
             )}
+            aria-label="경기 사진 추가 (최대 5장, 각 5MB 이하)"
           >
             <input
               ref={fileInputRef}
@@ -558,6 +586,7 @@ export default function RecordForm({
               onChange={(e) => handleFileSelect(e.target.files)}
               className="sr-only"
               disabled={images.length >= MAX_IMAGES}
+              aria-label="경기 사진 파일 선택"
             />
             <div className="flex flex-col items-center gap-2">
               <svg className={themeClass('w-8 h-8 text-black/60', 'w-8 h-8 text-gray-400')} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -571,7 +600,7 @@ export default function RecordForm({
 
           {images.length > 0 && (
             <div className="mt-3 grid grid-cols-3 gap-2">
-              {images.map((img) => (
+              {images.map((img, index) => (
                 <div
                   key={img.id}
                   className={cn(
@@ -581,7 +610,7 @@ export default function RecordForm({
                 >
                   <Image
                     src={img.preview}
-                    alt="업로드 미리보기"
+                    alt={`경기 사진 ${index + 1}`}
                     fill
                     unoptimized
                     className="object-cover"
@@ -593,7 +622,7 @@ export default function RecordForm({
                       'absolute top-1 right-1 w-6 h-6 flex items-center justify-center rounded-full transition-colors',
                       themeClass('bg-black text-white hover:bg-red-600', 'bg-black/50 text-white hover:bg-red-500')
                     )}
-                    aria-label="이미지 삭제"
+                    aria-label={`경기 사진 ${index + 1} 삭제`}
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -607,7 +636,9 @@ export default function RecordForm({
 
         {/* 12. Notes */}
         <div>
-          <label htmlFor="notes" className={labelClass}>메모</label>
+          <label htmlFor="notes" className={labelClass}>
+            메모 <span className="text-gray-400 text-sm">(선택)</span>
+          </label>
           <textarea
             id="notes"
             value={notes}
@@ -616,8 +647,9 @@ export default function RecordForm({
             rows={4}
             className={cn(inputClass, 'resize-none')}
             placeholder="경기 내용이나 특이사항을 기록하세요."
+            aria-describedby="notes-count"
           />
-          <div className={themeClass('text-right text-sm mt-1 text-black/60', 'text-right text-sm mt-1 text-gray-400')}>
+          <div id="notes-count" className={themeClass('text-right text-sm mt-1 text-black/60', 'text-right text-sm mt-1 text-gray-400')}>
             {notes.length}/1000
           </div>
         </div>
