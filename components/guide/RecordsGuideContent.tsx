@@ -404,6 +404,9 @@ function ScoreDemo({ isOpen }: { isOpen: boolean }) {
     if (isOpen && !done) {
       runAnimation();
     }
+    if (!isOpen && done) {
+      setDone(false);
+    }
     return () => {
       timersRef.current.forEach(clearTimeout);
       timersRef.current = [];
