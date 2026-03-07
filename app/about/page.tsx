@@ -3,7 +3,12 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useThemeClass } from '@/lib/cn';
-import FeedbackModal from '@/components/feedback/FeedbackModal';
+import dynamic from 'next/dynamic';
+
+const FeedbackModal = dynamic(
+  () => import('@/components/feedback/FeedbackModal'),
+  { ssr: false }
+);
 
 const CORE_FEATURES = [
   { emoji: '🏠', title: '홈', desc: '자치구별 테니스장 목록, 인기 랭킹, 즐겨찾기 현황, 날씨·미세먼지를 한 화면에서' },

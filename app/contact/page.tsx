@@ -3,7 +3,12 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useThemeClass } from '@/lib/cn';
-import FeedbackModal from '@/components/feedback/FeedbackModal';
+import dynamic from 'next/dynamic';
+
+const FeedbackModal = dynamic(
+  () => import('@/components/feedback/FeedbackModal'),
+  { ssr: false }
+);
 
 export default function ContactPage() {
   const themeClass = useThemeClass();
@@ -32,6 +37,7 @@ export default function ContactPage() {
               로그인 없이 간편하게 개선 제안, 오류 신고, 기타 의견을 보낼 수 있어요.
             </p>
             <button
+              type="button"
               onClick={() => setIsFeedbackOpen(true)}
               className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold transition-all ${
                 themeClass(

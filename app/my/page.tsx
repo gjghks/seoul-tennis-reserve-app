@@ -9,8 +9,16 @@ import { supabase } from '@/lib/supabase';
 import { KOREAN_TO_SLUG } from '@/lib/constants/districts';
 import { useThemeClass } from '@/lib/cn';
 import { useRecentCourts } from '@/lib/hooks/useRecentCourts';
-import AlertSettingsSection from '@/components/alert/AlertSettingsSection';
-import TennisProfileSection from '@/components/profile/TennisProfileSection';
+import dynamic from 'next/dynamic';
+
+const AlertSettingsSection = dynamic(
+  () => import('@/components/alert/AlertSettingsSection'),
+  { ssr: false, loading: () => <div className="h-48 skeleton !rounded-xl mb-8" /> }
+);
+const TennisProfileSection = dynamic(
+  () => import('@/components/profile/TennisProfileSection'),
+  { ssr: false, loading: () => <div className="h-64 skeleton !rounded-xl mb-8" /> }
+);
 import { ProviderBadge } from '@/components/auth/ProviderBadge';
 
 interface Favorite {
