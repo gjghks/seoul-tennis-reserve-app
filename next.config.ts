@@ -32,6 +32,9 @@ function buildDistrictRedirects() {
 
 const nextConfig: NextConfig = {
   turbopack: {},
+  experimental: {
+    optimizePackageImports: ['@supabase/supabase-js', 'swr', 'canvas-confetti'],
+  },
   async redirects() {
     return [
       {

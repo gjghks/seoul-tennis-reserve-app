@@ -11,6 +11,7 @@ import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 const geist = Geist({
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const viewport: Viewport = {
