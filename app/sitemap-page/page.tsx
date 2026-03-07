@@ -15,7 +15,7 @@ export default function SitemapPage() {
     { href: '/', label: '홈', description: '서울시 전체 테니스장 예약 현황' },
     { href: '/today', label: '오늘 예약', description: '오늘 예약 가능한 테니스장' },
     { href: '/compare', label: '구별 비교', description: '자치구별 코트 수·예약률·평점 비교' },
-    { href: '/trends', label: '경쟁률', description: '시간대·요일별 예약 경쟁률 추이' },
+    { href: '/trends', label: '타이밍', description: '요일·시간대별 예약 패턴 분석' },
     { href: '/calendar', label: '캘린더', description: '날짜별 예약 현황 캘린더 뷰' },
     { href: '/map', label: '지도', description: '전체 테니스장 지도 뷰' },
     { href: '/records', label: '경기 기록', description: '테니스 경기 기록 및 통계' },

@@ -36,7 +36,7 @@ export default function Header() {
               { href: '/today', label: '오늘 예약' },
               { href: '/map', label: '지도' },
               { href: '/compare', label: '구별 비교' },
-              { href: '/trends', label: '경쟁률' },
+              { href: '/trends', label: '타이밍' },
               { href: '/calendar', label: '캘린더' },
               { href: '/records', label: '경기 기록' },
             ].map(({ href, label }) => (

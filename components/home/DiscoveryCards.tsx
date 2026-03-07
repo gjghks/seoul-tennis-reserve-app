@@ -18,8 +18,8 @@ const CARDS = [
   },
   {
     href: '/trends',
-    title: '경쟁률',
-    description: '시간대별 추이 분석',
+    title: '타이밍',
+    description: '언제 예약하면 좋을지',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6" aria-hidden="true">
         <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />

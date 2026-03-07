@@ -40,22 +40,14 @@ export async function GET(request: NextRequest) {
     rpcParams.p_district = district;
   }
 
-  const [trendsResult, ratesResult] = await Promise.all([
-    supabase.rpc('get_daily_trends', rpcParams),
-    supabase.rpc('get_latest_district_rates'),
-  ]);
+  const { data: trendsData, error: trendsError } = await supabase.rpc('get_daily_trends', rpcParams);
 
-  if (trendsResult.error) {
-    console.error('Daily trends query error:', trendsResult.error);
+  if (trendsError) {
+    console.error('Daily trends query error:', trendsError);
     return NextResponse.json({ error: 'Failed to fetch trends' }, { status: 500 });
   }
 
-  if (ratesResult.error) {
-    console.error('District rates query error:', ratesResult.error);
-    return NextResponse.json({ error: 'Failed to fetch rates' }, { status: 500 });
-  }
-
-  const dailyTrends = (trendsResult.data ?? []) as Array<{
+  const dailyTrends = (trendsData ?? []) as Array<{
     day: string;
     total_courts: number;
     available_courts: number;
@@ -63,25 +55,8 @@ export async function GET(request: NextRequest) {
     booking_rate: number;
   }>;
 
-  const currentRates = (ratesResult.data ?? [] as Array<{
-    district: string;
-    total_courts: number;
-    available_courts: number;
-    booked_courts: number;
-    booking_rate: number;
-  }>)
-    .map((r: { district: string; total_courts: number; available_courts: number; booked_courts: number; booking_rate: number }) => ({
-      district: r.district,
-      total: r.total_courts,
-      available: r.available_courts,
-      booked: r.booked_courts,
-      bookingRate: r.booking_rate,
-    }))
-    .sort((a: { bookingRate: number }, b: { bookingRate: number }) => b.bookingRate - a.bookingRate);
-
   return NextResponse.json({
     dailyTrends,
-    currentRates,
     period: { from: since.toISOString(), to: new Date().toISOString(), days },
     hasHistory: dailyTrends.length >= 2,
   }, {

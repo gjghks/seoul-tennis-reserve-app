@@ -5,19 +5,8 @@ import PullToRefresh from 'react-simple-pull-to-refresh';
 import useSWR from 'swr';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useThemeClass } from '@/lib/cn';
-import { KOREAN_TO_SLUG } from '@/lib/constants/districts';
 import { useInView } from '@/lib/hooks/useInView';
-import { useCountUp } from '@/lib/hooks/useCountUp';
-import Link from 'next/link';
 import HeatmapChart from './HeatmapChart';
-
-interface DistrictRate {
-  district: string;
-  total: number;
-  available: number;
-  booked: number;
-  bookingRate: number;
-}
 
 interface DailyTrend {
   day: string;
@@ -29,7 +18,6 @@ interface DailyTrend {
 
 interface TrendsData {
   dailyTrends: DailyTrend[];
-  currentRates: DistrictRate[];
   period: { from: string; to: string; days: number };
   hasHistory: boolean;
 }
@@ -62,23 +50,6 @@ const fetcher = (url: string) =>
     if (d.error) throw new Error(d.error);
     return d;
   });
-
-function getBarColor(rate: number, isNeo: boolean): string {
-  if (isNeo) {
-    if (rate >= 70) return 'bg-[#fca5a5] border-black';
-    if (rate >= 40) return 'bg-[#facc15] border-black';
-    return 'bg-[#a3e635] border-black';
-  }
-  if (rate >= 70) return 'bg-red-400';
-  if (rate >= 40) return 'bg-yellow-400';
-  return 'bg-green-400';
-}
-
-function getBarLabel(rate: number): string {
-  if (rate >= 70) return '치열';
-  if (rate >= 40) return '보통';
-  return '여유';
-}
 
 const PERIOD_OPTIONS = [7, 14, 30] as const;
 
@@ -129,10 +100,10 @@ export default function TrendsContent() {
       <div className="container py-8 max-w-4xl">
         <div className="mb-8">
           <h1 className={`text-2xl sm:text-3xl mb-2 ${themeClass('font-black text-black uppercase tracking-tight', 'font-bold text-gray-900')}`}>
-            {isNeoBrutalism ? '📊 경쟁률 트렌드' : '경쟁률 트렌드'}
+            {isNeoBrutalism ? '📊 예약 타이밍 가이드' : '예약 타이밍 가이드'}
           </h1>
           <p className={themeClass('text-black/60', 'text-gray-500')}>
-            서울시 테니스장 예약 경쟁률을 확인하세요
+            언제 예약하면 경쟁이 적을지 확인하세요
           </p>
         </div>
 
@@ -186,26 +157,6 @@ export default function TrendsContent() {
 
         {data && !isLoading && (
           <Fragment key={days}>
-            {(data.currentRates?.length ?? 0) > 0 && (
-              <TrendsKPI data={data} cardClass={cardClass} themeClass={themeClass} />
-            )}
-
-            <div className={`${cardClass} overflow-hidden mb-6`}>
-              <div className={isNeoBrutalism ? 'p-5 border-b-2 border-black' : 'p-5 border-b border-gray-100'}>
-                <h2 className={`font-bold flex items-center gap-2 ${themeClass('text-black font-black', 'text-gray-900')}`}>
-                  {isNeoBrutalism ? (
-                    <span className="w-6 h-6 bg-[#facc15] border-2 border-black rounded-[3px] flex items-center justify-center text-xs">📊</span>
-                  ) : (
-                    <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                    </svg>
-                  )}
-                  구별 마감률
-                </h2>
-              </div>
-              <DistrictBars rates={data.currentRates} isNeoBrutalism={isNeoBrutalism} themeClass={themeClass} />
-            </div>
-
             {heatmapData?.hasData && heatmapData.insights ? (
               <div className={`${cardClass} overflow-hidden mb-6`}>
                 <div className={isNeoBrutalism ? 'p-5 border-b-2 border-black' : 'p-5 border-b border-gray-100'}>
@@ -312,106 +263,6 @@ export default function TrendsContent() {
       </div>
     </div>
     </PullToRefresh>
-  );
-}
-
-function TrendsKPI({
-  data,
-  cardClass,
-  themeClass,
-}: {
-  data: TrendsData;
-  cardClass: string;
-  themeClass: <T>(neo: T, def: T) => T;
-}) {
-  const { ref, inView } = useInView();
-  const totals = data.currentRates.reduce(
-    (acc, r) => ({ total: acc.total + r.total, available: acc.available + r.available, booked: acc.booked + r.booked }),
-    { total: 0, available: 0, booked: 0 }
-  );
-  const overallRate = totals.total > 0 ? Math.round((totals.booked / totals.total) * 100) : 0;
-
-  const animTotal = useCountUp(totals.total, inView);
-  const animAvailable = useCountUp(totals.available, inView);
-  const animRate = useCountUp(overallRate, inView);
-
-  const items = [
-    { label: '전체 코트', value: animTotal, unit: '개' },
-    { label: '예약 가능', value: animAvailable, unit: '개' },
-    { label: '전체 마감률', value: animRate, unit: '%' },
-  ];
-
-  return (
-    <div ref={ref} className="grid grid-cols-3 gap-3 mb-6">
-      {items.map((item) => (
-        <div key={item.label} className={`${cardClass} p-4 text-center`}>
-          <p className={`text-xs mb-1 ${themeClass('text-black/60 font-bold uppercase', 'text-gray-400')}`}>{item.label}</p>
-          <p className={`text-xl ${themeClass('font-black text-black', 'font-bold text-gray-900')}`}>{item.value}{item.unit}</p>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function DistrictBars({
-  rates,
-  isNeoBrutalism,
-  themeClass,
-}: {
-  rates: DistrictRate[];
-  isNeoBrutalism: boolean;
-  themeClass: <T>(neo: T, def: T) => T;
-}) {
-  const { ref, inView } = useInView();
-
-  return (
-    <div ref={ref} className="p-5 space-y-3">
-      {rates.length === 0 ? (
-        <div className="text-center py-8">
-          <svg className={themeClass('w-16 h-16 mx-auto mb-3', 'w-14 h-14 mx-auto mb-3')} viewBox="0 0 80 80" fill="none" aria-hidden="true">
-            <g style={{ animation: 'gentle-float 3s ease-in-out infinite' }}>
-              <line x1="12" y1="68" x2="68" y2="68" className={themeClass('stroke-black stroke-[2.5]', 'stroke-gray-300 stroke-[1.5]')} />
-              <rect x="18" y="44" width="10" height="24" rx="2" className={themeClass('fill-[#a3e635]/40 stroke-black stroke-[2]', 'fill-green-100 stroke-gray-300 stroke-[1.5]')} />
-              <rect x="35" y="30" width="10" height="38" rx="2" className={themeClass('fill-[#a3e635]/60 stroke-black stroke-[2]', 'fill-green-200 stroke-gray-300 stroke-[1.5]')} />
-              <rect x="52" y="50" width="10" height="18" rx="2" className={themeClass('fill-[#facc15]/50 stroke-black stroke-[2]', 'fill-gray-100 stroke-gray-300 stroke-[1.5]')} />
-            </g>
-            <circle cx="70" cy="16" r="2.5" className={themeClass('fill-black', 'fill-gray-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0s' }} />
-            <circle cx="10" cy="30" r="2" className={themeClass('fill-black', 'fill-gray-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.5s' }} />
-          </svg>
-          <p className={themeClass('text-black/60', 'text-gray-400')}>
-            아직 수집된 데이터가 없습니다.
-          </p>
-        </div>
-      ) : (
-        rates.map((rate, i) => {
-          const slug = KOREAN_TO_SLUG[rate.district];
-          return (
-            <Link
-              key={rate.district}
-              href={slug ? `/${slug}` : '#'}
-              className="group flex items-center gap-3"
-            >
-              <span className={`w-16 text-xs text-right shrink-0 ${themeClass('font-bold text-black', 'font-medium text-gray-700')}`}>
-                {rate.district.replace(/구$/, '')}
-              </span>
-              <div className={`flex-1 h-7 rounded-full overflow-hidden ${themeClass('border border-black/15 bg-white', 'bg-gray-100')}`}>
-                <div
-                  className={`h-full rounded-full ${getBarColor(rate.bookingRate, isNeoBrutalism)} ${inView ? 'anim-bar-x' : 'scale-x-0'}`}
-                  style={{
-                    width: `${Math.max(rate.bookingRate, 2)}%`,
-                    transformOrigin: 'left center',
-                    animationDelay: `${i * 40}ms`,
-                  }}
-                />
-              </div>
-              <span className={`w-20 text-xs text-right shrink-0 ${themeClass('font-bold text-black', 'font-medium text-gray-600')}`}>
-                {rate.bookingRate}% {getBarLabel(rate.bookingRate)}
-              </span>
-            </Link>
-          );
-        })
-      )}
-    </div>
   );
 }
 

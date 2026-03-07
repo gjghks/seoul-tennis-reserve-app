@@ -33,8 +33,8 @@ const NAV_ITEMS = [
   },
   {
     href: '/trends',
-    label: '경쟁률',
-    description: '예약 경쟁률 추이 분석',
+    label: '타이밍',
+    description: '언제 예약하면 좋을지 분석',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5" aria-hidden="true">
         <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
