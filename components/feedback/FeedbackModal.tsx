@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef, useCallback, useId } from 'react';
 import { useThemeClass, cn } from '@/lib/cn';
 import { useToast } from '@/contexts/ToastContext';
 import Spinner from '@/components/ui/Spinner';
@@ -24,20 +24,64 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
   const [category, setCategory] = useState<CategoryValue | null>(null);
   const [content, setContent] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLElement | null>(null);
+  const titleId = useId();
 
   const contentLength = content.trim().length;
   const isValid = category !== null && contentLength >= 5 && contentLength <= 500;
 
-  function reset() {
+  const handleClose = useCallback(() => {
     setCategory(null);
     setContent('');
     setIsSubmitting(false);
-  }
-
-  function handleClose() {
-    reset();
     onClose();
-  }
+  }, [onClose]);
+
+  useEffect(() => {
+    if (isOpen) {
+      triggerRef.current = document.activeElement as HTMLElement | null;
+      requestAnimationFrame(() => {
+        const firstFocusable = modalRef.current?.querySelector<HTMLElement>(
+          'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        firstFocusable?.focus();
+      });
+    } else {
+      const trigger = triggerRef.current;
+      triggerRef.current = null;
+      if (trigger) {
+        requestAnimationFrame(() => trigger.focus());
+      }
+    }
+  }, [isOpen]);
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Escape') {
+      handleClose();
+      return;
+    }
+    if (e.key !== 'Tab') return;
+
+    const modal = modalRef.current;
+    if (!modal) return;
+
+    const focusableEls = modal.querySelectorAll<HTMLElement>(
+      'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    );
+    if (focusableEls.length === 0) return;
+
+    const first = focusableEls[0];
+    const last = focusableEls[focusableEls.length - 1];
+
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }, [handleClose]);
 
   async function handleSubmit() {
     if (!isValid || isSubmitting) return;
@@ -71,12 +115,14 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
     <div
       role="dialog"
       aria-modal="true"
+      aria-labelledby={titleId}
       className="fixed inset-0 z-50 flex items-center justify-center px-4"
       onClick={handleClose}
-      onKeyDown={(e) => { if (e.key === 'Escape') handleClose(); }}
+      onKeyDown={handleKeyDown}
     >
       <div className="absolute inset-0 bg-black/50" />
       <div
+        ref={modalRef}
         role="document"
         className={cn(
           'relative w-full max-w-md p-6',
@@ -89,7 +135,7 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
         onKeyDown={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-5">
-          <h2 className={cn(
+          <h2 id={titleId} className={cn(
             'text-lg font-bold',
             themeClass('uppercase tracking-wide', 'text-gray-900')
           )}>
