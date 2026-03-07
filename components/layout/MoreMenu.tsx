@@ -183,7 +183,7 @@ export default function MoreMenu({ isOpen, onClose }: MoreMenuProps) {
               <Link
                 href="/about"
                 onClick={onClose}
-                className={`flex-1 text-center px-3 py-2 text-xs transition-colors ${themeClass(
+                className={`flex-1 text-center px-3 min-h-[44px] inline-flex items-center justify-center text-xs transition-colors ${themeClass(
                   'text-black/60 hover:bg-gray-100 font-medium rounded-[8px]',
                   'text-gray-500 hover:bg-gray-50 rounded-lg'
                 )}`}
@@ -193,7 +193,7 @@ export default function MoreMenu({ isOpen, onClose }: MoreMenuProps) {
               <button
                 type="button"
                 onClick={() => { toggleTheme(); onClose(); }}
-                className={`flex-1 text-center px-3 py-2 text-xs transition-colors ${themeClass(
+                className={`flex-1 text-center px-3 min-h-[44px] inline-flex items-center justify-center text-xs transition-colors ${themeClass(
                   'text-black/60 hover:bg-gray-100 font-medium rounded-[8px]',
                   'text-gray-500 hover:bg-gray-50 rounded-lg'
                 )}`}

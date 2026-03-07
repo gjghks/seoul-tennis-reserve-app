@@ -39,7 +39,7 @@ export default function Footer() {
                   {i > 0 && <span className={themeClass('text-white/25', 'text-gray-200')}>·</span>}
                   <Link
                     href={link.href}
-                    className={`hover:underline underline-offset-2 ${themeClass('hover:text-white', 'hover:text-gray-600')}`}
+                    className={`min-h-[44px] inline-flex items-center hover:underline underline-offset-2 ${themeClass('hover:text-white', 'hover:text-gray-600')}`}
                   >
                     {link.label}
                   </Link>
@@ -49,7 +49,7 @@ export default function Footer() {
             <button
               type="button"
               onClick={() => setIsFeedbackOpen(true)}
-              className={`ml-2 px-2.5 py-0.5 text-[clamp(10px,2.5vw,11px)] font-medium transition-colors ${themeClass(
+              className={`ml-2 px-2.5 py-2 min-h-[44px] text-[clamp(10px,2.5vw,11px)] font-medium transition-colors ${themeClass(
                 'bg-white/15 text-white/80 rounded-[4px] border border-white/25 hover:bg-white/25 hover:text-white',
                 'bg-gray-100 text-gray-500 rounded-full border border-gray-200 hover:bg-gray-200 hover:text-gray-700'
               )}`}
@@ -60,7 +60,7 @@ export default function Footer() {
               type="button"
               onClick={toggleTheme}
               aria-label={isNeoBrutalism ? '미니멀 테마로 변경' : '네오브루탈 테마로 변경'}
-              className={`ml-1 px-2.5 py-0.5 text-[clamp(10px,2.5vw,11px)] font-medium transition-colors ${themeClass(
+              className={`ml-1 px-2.5 py-2 min-h-[44px] text-[clamp(10px,2.5vw,11px)] font-medium transition-colors ${themeClass(
                 'bg-white/15 text-white/80 rounded-[4px] border border-white/25 hover:bg-white/25 hover:text-white',
                 'bg-gray-100 text-gray-500 rounded-full border border-gray-200 hover:bg-gray-200 hover:text-gray-700'
               )}`}
