@@ -7,6 +7,7 @@ import { TennisDataProvider } from '@/contexts/TennisDataContext';
 import { ToastProvider } from '@/contexts/ToastContext';
 import Toast from '@/components/ui/Toast';
 import ScrollToTop from '@/components/ui/ScrollToTop';
+import UpdatePrompt from '@/components/pwa/UpdatePrompt';
 
 function useServiceWorkerRegistration() {
   useEffect(() => {
@@ -39,6 +40,7 @@ export default function Providers({ children }: ProvidersProps) {
             {children}
           </TennisDataProvider>
           <Toast />
+          <UpdatePrompt />
           <ScrollToTop />
         </ToastProvider>
       </ThemeProvider>
