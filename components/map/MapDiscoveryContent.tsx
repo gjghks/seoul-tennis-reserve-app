@@ -31,6 +31,36 @@ function getShortName(svcnm: string, placeName: string): string {
   return svcnm;
 }
 
+function computeMapBounds(targetCourts: SeoulService[]): { center: { lat: number; lng: number }; level: number } | null {
+  const valid = targetCourts.filter(c => c.X && c.Y && parseFloat(c.X) !== 0 && parseFloat(c.Y) !== 0);
+  if (valid.length === 0) return null;
+
+  const lats = valid.map(c => parseFloat(c.Y));
+  const lngs = valid.map(c => parseFloat(c.X));
+  const minLat = Math.min(...lats);
+  const maxLat = Math.max(...lats);
+  const minLng = Math.min(...lngs);
+  const maxLng = Math.max(...lngs);
+  const center = { lat: (minLat + maxLat) / 2, lng: (minLng + maxLng) / 2 };
+
+  if (valid.length === 1) return { center, level: 5 };
+
+  const latMeters = (maxLat - minLat) * 111320;
+  const lngMeters = (maxLng - minLng) * 88900;
+  const maxSpanMeters = Math.max(latMeters, lngMeters);
+  const requiredMeters = maxSpanMeters * 2.5;
+
+  let level = 1;
+  for (let l = 1; l <= 14; l++) {
+    if (Math.pow(2, l - 1) * 0.5 * 600 >= requiredMeters) {
+      level = l;
+      break;
+    }
+  }
+
+  return { center, level: Math.max(level, 4) };
+}
+
 interface MapDiscoveryContentProps {
   courts: SeoulService[];
 }
@@ -44,6 +74,7 @@ export default function MapDiscoveryContent({ courts }: MapDiscoveryContentProps
   const [selectedGroup, setSelectedGroup] = useState<CourtGroup | null>(null);
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [mapCenter, setMapCenter] = useState({ lat: 37.5665, lng: 126.978 });
+  const [mapLevel, setMapLevel] = useState(8);
   const [locating, setLocating] = useState(false);
   const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -168,6 +199,7 @@ export default function MapDiscoveryContent({ courts }: MapDiscoveryContentProps
               setSelectedDistrict('all');
               setSelectedGroup(null);
               setMapCenter({ lat: 37.5665, lng: 126.978 });
+              setMapLevel(8);
             }}
             className={`shrink-0 px-3 py-1.5 text-xs font-bold transition-all ${
               selectedDistrict === 'all'
@@ -190,6 +222,11 @@ export default function MapDiscoveryContent({ courts }: MapDiscoveryContentProps
               onClick={() => {
                 setSelectedDistrict(d.nameKo);
                 setSelectedGroup(null);
+                const bounds = computeMapBounds(courts.filter(c => c.AREANM === d.nameKo));
+                if (bounds) {
+                  setMapCenter(bounds.center);
+                  setMapLevel(bounds.level);
+                }
               }}
               className={`shrink-0 px-3 py-1.5 text-xs font-bold transition-all ${
                 selectedDistrict === d.nameKo
@@ -251,7 +288,7 @@ export default function MapDiscoveryContent({ courts }: MapDiscoveryContentProps
       <KakaoMap
         center={mapCenter}
         style={{ width: '100%', height: '100%' }}
-        level={8}
+        level={mapLevel}
         onClick={() => {
           if (hoverTimerRef.current) {
             clearTimeout(hoverTimerRef.current);
