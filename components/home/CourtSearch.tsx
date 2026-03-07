@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTennisData } from '@/contexts/TennisDataContext';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -34,10 +34,12 @@ export default function CourtSearch() {
   const { searches, addSearch, removeSearch, clearAll } = useRecentSearches();
   const searchExperiment = useMemo(() => getSearchExperiment(), []);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const itemRefs = useRef<(HTMLElement | null)[]>([]);
   const [query, setQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [isComposing, setIsComposing] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(-1);
   const noResultTrackedRef = useRef<string>('');
 
   useEffect(() => {
@@ -64,6 +66,7 @@ export default function CourtSearch() {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setIsOpen(false);
+        setActiveIndex(-1);
       }
     };
 
@@ -133,6 +136,12 @@ export default function CourtSearch() {
     noResultTrackedRef.current = normalized;
   }, [showDropdown, isComposing, debouncedQuery, filteredCourts.length, searchExperiment]);
 
+  useEffect(() => {
+    if (activeIndex >= 0) {
+      itemRefs.current[activeIndex]?.scrollIntoView({ block: 'nearest' });
+    }
+  }, [activeIndex]);
+
   const handleSelectCourt = (districtName: string, serviceId: string) => {
     const districtSlug = KOREAN_TO_SLUG[districtName];
     if (!districtSlug) return;
@@ -148,11 +157,69 @@ export default function CourtSearch() {
   const handleRecentSearchClick = (term: string) => {
     setQuery(term);
     setDebouncedQuery(term);
+    setActiveIndex(-1);
     setIsOpen(true);
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const totalItems = showResults
+      ? filteredCourts.length
+      : showRecent
+        ? searches.length
+        : 0;
+
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      if (!showDropdown) {
+        setIsOpen(true);
+        return;
+      }
+      setActiveIndex((prev) => (prev >= totalItems - 1 ? 0 : prev + 1));
+    } else if (event.key === 'ArrowUp') {
+      if (!showDropdown) return;
+      event.preventDefault();
+      setActiveIndex((prev) => (prev <= 0 ? totalItems - 1 : prev - 1));
+    } else if (event.key === 'Enter') {
+      if (activeIndex < 0 || !showDropdown) return;
+      event.preventDefault();
+      if (showResults && filteredCourts[activeIndex]) {
+        const court = filteredCourts[activeIndex];
+        trackSearchEvent('search_select', {
+          source: 'home',
+          ...buildSearchTelemetry(debouncedQuery),
+          result_count: filteredCourts.length,
+          selected_rank: activeIndex + 1,
+          district: court.AREANM,
+          court_id: court.SVCID,
+          search_variant: searchExperiment.variant,
+          ranking_profile: searchExperiment.rankingProfile,
+          algo_version: searchExperiment.algoVersion,
+        });
+        handleSelectCourt(court.AREANM, court.SVCID);
+      } else if (showRecent && searches[activeIndex]) {
+        handleRecentSearchClick(searches[activeIndex]);
+      }
+    } else if (event.key === 'Escape') {
+      setActiveIndex(-1);
+    }
+  };
+
+  const activeDescendantId =
+    activeIndex >= 0
+      ? showResults
+        ? `court-option-${activeIndex}`
+        : showRecent
+          ? `recent-option-${activeIndex}`
+          : undefined
+      : undefined;
+
   return (
     <div ref={wrapperRef} className="relative mt-4 sm:mt-5 max-w-2xl">
+      <div className="sr-only" aria-live="polite" aria-atomic="true">
+        {showResults && hasQuery && `${filteredCourts.length}개의 검색 결과`}
+        {showResults && hasQuery && filteredCourts.length === 0 && '검색 결과 없음'}
+      </div>
+
       <div
         className={themeClass(
           'flex items-center gap-2 rounded-xl border-[3px] border-black bg-white px-3 py-2 shadow-[4px_4px_0px_0px_#000]',
@@ -177,6 +244,7 @@ export default function CourtSearch() {
           value={query}
           onChange={(event) => {
             setQuery(event.target.value);
+            setActiveIndex(-1);
             setIsOpen(true);
             if (!isComposing && !event.target.value.trim()) {
               noResultTrackedRef.current = '';
@@ -199,8 +267,10 @@ export default function CourtSearch() {
             setIsComposing(false);
             setQuery(value);
             setDebouncedQuery(value.trim());
+            setActiveIndex(-1);
             setIsOpen(true);
           }}
+          onKeyDown={handleKeyDown}
           type="text"
           placeholder="테니스장 검색 (이름, 장소)"
           className={themeClass(
@@ -208,11 +278,19 @@ export default function CourtSearch() {
             'w-full bg-white text-gray-900 placeholder:text-gray-400 text-sm sm:text-base outline-none'
           )}
           aria-label="테니스장 검색"
+          role="combobox"
+          aria-expanded={showDropdown}
+          aria-controls="court-search-listbox"
+          aria-autocomplete="list"
+          aria-activedescendant={activeDescendantId}
         />
       </div>
 
       {showDropdown && (
         <div
+          id="court-search-listbox"
+          role="listbox"
+          aria-label="검색 결과"
           className={`${themeClass(
             'absolute left-0 right-0 z-30 max-h-80 overflow-y-auto rounded-xl border-[3px] border-black bg-white shadow-[5px_5px_0px_0px_#000]',
             'absolute left-0 right-0 z-30 max-h-80 overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg'
@@ -244,11 +322,16 @@ export default function CourtSearch() {
               </div>
               {filteredCourts.map((court, index) => {
                 const available = isCourtAvailable(court.SVCSTATNM);
+                const isActive = index === activeIndex;
 
                 return (
                   <button
                     key={`${court.SVCID}-${court.AREANM}`}
                     type="button"
+                    role="option"
+                    id={`court-option-${index}`}
+                    aria-selected={isActive}
+                    ref={(el) => { itemRefs.current[index] = el; }}
                     onClick={() => {
                       trackSearchEvent('search_select', {
                         source: 'home',
@@ -264,8 +347,8 @@ export default function CourtSearch() {
                       handleSelectCourt(court.AREANM, court.SVCID);
                     }}
                     className={themeClass(
-                      'w-full border-b-2 border-black/15 px-4 py-3 text-left transition-colors last:border-b-0 hover:bg-[#facc15]/30',
-                      'w-full border-b border-gray-100 px-4 py-3 text-left transition-colors last:border-b-0 hover:bg-green-50'
+                      `w-full border-b-2 border-black/15 px-4 py-3 text-left transition-colors last:border-b-0 ${isActive ? 'bg-[#facc15]/30' : 'hover:bg-[#facc15]/30'}`,
+                      `w-full border-b border-gray-100 px-4 py-3 text-left transition-colors last:border-b-0 ${isActive ? 'bg-green-50' : 'hover:bg-green-50'}`
                     )}
                   >
                     <div className="flex items-start justify-between gap-3">
@@ -314,46 +397,55 @@ export default function CourtSearch() {
                 <span className={themeClass('text-xs font-black text-black', 'text-xs font-semibold text-gray-500')}>최근 검색어</span>
               </div>
               <div>
-                {searches.map((term) => (
-                  <div
-                    key={term}
-                    className={themeClass(
-                      'w-full flex items-center justify-between border-b-2 border-black/15 px-4 py-3 text-left transition-colors last:border-b-0 hover:bg-gray-100',
-                      'w-full flex items-center justify-between border-b border-gray-100 px-4 py-3 text-left transition-colors last:border-b-0 hover:bg-gray-50'
-                    )}
-                  >
-                    <button
-                      type="button"
-                      className="flex-1 flex items-center gap-2 text-left"
-                      onClick={() => handleRecentSearchClick(term)}
-                    >
-                      {isNeoBrutalism ? (
-                        <span>🕐</span>
-                      ) : (
-                        <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                      )}
-                      <span className={themeClass('text-sm font-bold text-black', 'text-sm text-gray-700')}>{term}</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        removeSearch(term);
-                      }}
+                {searches.map((term, index) => {
+                  const isActive = index === activeIndex;
+
+                  return (
+                    <div
+                      key={term}
+                      role="option"
+                      id={`recent-option-${index}`}
+                      aria-selected={isActive}
+                      tabIndex={-1}
+                      ref={(el) => { itemRefs.current[index] = el; }}
                       className={themeClass(
-                        'p-1 text-black/60 hover:text-black hover:bg-black/5 rounded',
-                        'p-1 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full'
+                        `w-full flex items-center justify-between border-b-2 border-black/15 px-4 py-3 text-left transition-colors last:border-b-0 ${isActive ? 'bg-gray-100' : 'hover:bg-gray-100'}`,
+                        `w-full flex items-center justify-between border-b border-gray-100 px-4 py-3 text-left transition-colors last:border-b-0 ${isActive ? 'bg-gray-50' : 'hover:bg-gray-50'}`
                       )}
-                      aria-label="검색어 삭제"
                     >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
-                  </div>
-                ))}
+                      <button
+                        type="button"
+                        className="flex-1 flex items-center gap-2 text-left"
+                        onClick={() => handleRecentSearchClick(term)}
+                      >
+                        {isNeoBrutalism ? (
+                          <span>🕐</span>
+                        ) : (
+                          <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                        )}
+                        <span className={themeClass('text-sm font-bold text-black', 'text-sm text-gray-700')}>{term}</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          removeSearch(term);
+                        }}
+                        className={themeClass(
+                          'p-1 text-black/60 hover:text-black hover:bg-black/5 rounded',
+                          'p-1 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full'
+                        )}
+                        aria-label="검색어 삭제"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </div>
+                  );
+                })}
               </div>
               <div className={themeClass('border-t-[3px] border-black bg-gray-50', 'border-t border-gray-100 bg-gray-50')}>
                 <button
