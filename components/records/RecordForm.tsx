@@ -4,6 +4,7 @@ import { useState, useRef, useCallback, useEffect } from 'react';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/contexts/ToastContext';
 import { useThemeClass } from '@/lib/cn';
 import { cn } from '@/lib/cn';
 import { supabase } from '@/lib/supabase';
@@ -52,6 +53,7 @@ export default function RecordForm({
   onCancel,
 }: RecordFormProps) {
   const { user } = useAuth();
+  const { showToast } = useToast();
   const themeClass = useThemeClass();
   const searchParams = useSearchParams();
   
@@ -325,6 +327,7 @@ export default function RecordForm({
         throw new Error(data.error || '기록 저장에 실패했습니다.');
       }
 
+      showToast(mode === 'create' ? '경기 기록이 저장되었습니다.' : '경기 기록이 수정되었습니다.', 'success');
       onSuccess?.(data.record);
     } catch (err) {
       setError(err instanceof Error ? err.message : '기록 저장 중 오류가 발생했습니다.');

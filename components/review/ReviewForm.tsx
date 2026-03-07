@@ -3,6 +3,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import Image from 'next/image';
 import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/contexts/ToastContext';
 import { supabase } from '@/lib/supabase';
 import LoginPrompt from '@/components/auth/LoginPrompt';
 import { compressImage, generateImagePath, getPublicUrl } from '@/lib/imageUtils';
@@ -58,6 +59,7 @@ export default function ReviewForm({
   onCancelEdit,
 }: ReviewFormProps) {
   const { user } = useAuth();
+  const { showToast } = useToast();
   const themeClass = useThemeClass();
   const [rating, setRating] = useState(editingReview?.rating ?? 5);
   const [content, setContent] = useState(editingReview?.content ?? '');
@@ -254,8 +256,10 @@ export default function ReviewForm({
         setRating(5);
         revokeLocalPreviews(images);
         setImages([]);
+        showToast('후기가 등록되었습니다.', 'success');
       } else {
         revokeLocalPreviews(images);
+        showToast('후기가 수정되었습니다.', 'success');
       }
 
       onReviewAdded();
