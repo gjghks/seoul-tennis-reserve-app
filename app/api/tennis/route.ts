@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { fetchTennisAvailability, getCachedTennisData } from '@/lib/seoulApi';
 import { SLUG_TO_KOREAN } from '@/lib/constants/districts';
 import { isCourtAvailable } from '@/lib/utils/courtStatus';
+import { isIndependentCourt } from '@/lib/data/independentCourts';
 import type { SeoulService } from '@/lib/seoulApi';
 import { createRateLimiter } from '@/lib/rateLimit';
 import { createAnonSupabaseClient } from '@/lib/supabaseServer';
@@ -76,14 +77,17 @@ function buildTennisResponse(services: SeoulService[], district: string | null, 
   const byDistrict = services.reduce((acc, svc) => {
     const area = svc.AREANM;
     if (!acc[area]) {
-      acc[area] = { count: 0, available: 0 };
+      acc[area] = { count: 0, available: 0, externalCount: 0 };
     }
     acc[area].count++;
+    if (isIndependentCourt(svc.SVCID)) {
+      acc[area].externalCount++;
+    }
     if (isCourtAvailable(svc.SVCSTATNM)) {
       acc[area].available++;
     }
     return acc;
-  }, {} as Record<string, { count: number; available: number }>);
+  }, {} as Record<string, { count: number; available: number; externalCount: number }>);
 
   return NextResponse.json({
     total: services.length,

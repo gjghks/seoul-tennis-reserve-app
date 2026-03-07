@@ -10,6 +10,10 @@ vi.mock('@/lib/utils/courtStatus', () => ({
   isCourtAvailable: vi.fn(),
 }));
 
+vi.mock('@/lib/data/independentCourts', () => ({
+  isIndependentCourt: vi.fn((svcId: string) => svcId.startsWith('INDEP_')),
+}));
+
 const mockTennisData = [
   {
     SVCID: '1',
@@ -114,8 +118,10 @@ describe('GET /api/tennis', () => {
     expect(data.byDistrict).toBeDefined();
     expect(data.byDistrict['강남구'].count).toBe(2);
     expect(data.byDistrict['강남구'].available).toBe(1);
+    expect(data.byDistrict['강남구'].externalCount).toBe(0);
     expect(data.byDistrict['송파구'].count).toBe(1);
     expect(data.byDistrict['송파구'].available).toBe(1);
+    expect(data.byDistrict['송파구'].externalCount).toBe(0);
     expect(data.lastUpdated).toBeDefined();
   });
 
@@ -168,6 +174,54 @@ describe('GET /api/tennis', () => {
     expect(data.district).toBe('invalid-gu');
     expect(data.count).toBe(0);
     expect(data.courts).toHaveLength(0);
+  });
+
+  it('should count external courts separately in externalCount', async () => {
+    const { fetchTennisAvailability } = await import('@/lib/seoulApi');
+    const { isCourtAvailable } = await import('@/lib/utils/courtStatus');
+    const { GET } = await import('./route');
+
+    const dataWithExternal = [
+      ...mockTennisData,
+      {
+        SVCID: 'INDEP_GB001',
+        SVCNM: '오동근린공원 테니스장',
+        AREANM: '강북구',
+        SVCSTATNM: '외부예약',
+        MAXCLASSNM: '체육시설',
+        MINCLASSNM: '테니스장',
+        PAYATNM: '유료',
+        PLACENM: '오동근린공원',
+        USETGTINFO: '제한없음',
+        SVCURL: '',
+        X: '127.0435',
+        Y: '37.6227',
+        SVCOPNBGNDT: '',
+        SVCOPNENDDT: '',
+        RCPTBGNDT: '',
+        RCPTENDDT: '',
+        IMGURL: '',
+        DTLCONT: '',
+        TELNO: '',
+        V_MIN: '06:00',
+        V_MAX: '22:00',
+        REVSTDDAYNM: '',
+        REVSTDDAY: '',
+      },
+    ];
+
+    vi.mocked(fetchTennisAvailability).mockResolvedValue(dataWithExternal);
+    vi.mocked(isCourtAvailable).mockImplementation((status) =>
+      status === '접수중' || status === '예약가능'
+    );
+
+    const request = new NextRequest('http://localhost:3000/api/tennis');
+    const response = await GET(request);
+    const data = await response.json();
+
+    expect(data.byDistrict['강북구'].count).toBe(1);
+    expect(data.byDistrict['강북구'].available).toBe(0);
+    expect(data.byDistrict['강북구'].externalCount).toBe(1);
   });
 
   it('should return 500 error when fetchTennisAvailability throws', async () => {

@@ -3,6 +3,7 @@ import { fetchTennisAvailability } from '@/lib/seoulApi';
 import HomeContent from '@/components/home/HomeContent';
 import { DistrictStats } from '@/contexts/TennisDataContext';
 import { isCourtAvailable } from '@/lib/utils/courtStatus';
+import { isIndependentCourt } from '@/lib/data/independentCourts';
 
 export const revalidate = 7200;
 
@@ -19,9 +20,12 @@ async function getInitialData(): Promise<Record<string, DistrictStats>> {
     const byDistrict = services.reduce((acc, svc) => {
       const area = svc.AREANM;
       if (!acc[area]) {
-        acc[area] = { count: 0, available: 0 };
+        acc[area] = { count: 0, available: 0, externalCount: 0 };
       }
       acc[area].count++;
+      if (isIndependentCourt(svc.SVCID)) {
+        acc[area].externalCount++;
+      }
       if (isCourtAvailable(svc.SVCSTATNM)) {
         acc[area].available++;
       }

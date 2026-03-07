@@ -8,6 +8,7 @@ import { sortByAvailability } from '@/lib/utils/courtStatus';
 export interface DistrictStats {
   count: number;
   available: number;
+  externalCount: number;
 }
 
 export interface TennisApiResponse {
