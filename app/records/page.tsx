@@ -1,10 +1,15 @@
 'use client';
 
 import { useAuth } from '@/contexts/AuthContext';
-import { useThemeClass } from '@/lib/cn';
+import { useThemeClass, cn } from '@/lib/cn';
+import Link from 'next/link';
 import RecordsContent from '@/components/records/RecordsContent';
 import LoginPrompt from '@/components/auth/LoginPrompt';
 import { useState } from 'react';
+import { useInView } from '@/lib/hooks/useInView';
+import { useCountUp } from '@/lib/hooks/useCountUp';
+import { DEMO_STATS } from '@/lib/mockData/guideExamples';
+import type { MatchResult } from '@/lib/constants/tennis';
 
 export default function RecordsPage() {
   const { user, loading: authLoading } = useAuth();
@@ -33,6 +38,8 @@ export default function RecordsPage() {
               경기 스코어부터 승률 분석까지, 더 나은 플레이를 위한 데이터 파트너
             </p>
           </div>
+
+          <StatsPreview />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
             <div className={themeClass(
@@ -125,6 +132,18 @@ export default function RecordsPage() {
             <p className={`mt-4 text-sm ${themeClass('text-black/60 font-bold', 'text-gray-400')}`}>
               * 카카오 또는 구글 계정으로 3초 만에 시작할 수 있습니다
             </p>
+            <Link
+              href="/guide/records"
+              className={cn(
+                'inline-flex items-center gap-1 mt-3 text-sm transition-colors',
+                themeClass(
+                  'text-black/40 font-bold hover:text-black/70 underline decoration-1 underline-offset-4',
+                  'text-gray-400 hover:text-gray-600'
+                )
+              )}
+            >
+              먼저 기능을 자세히 알아보고 싶다면?
+            </Link>
           </div>
         </div>
         
@@ -138,4 +157,122 @@ export default function RecordsPage() {
   }
 
   return <RecordsContent />;
+}
+
+function StatsPreview() {
+  const themeClass = useThemeClass();
+  const { ref, inView } = useInView();
+  const animTotal = useCountUp(DEMO_STATS.total_matches, inView);
+  const animWinRate = useCountUp(DEMO_STATS.win_rate, inView);
+  const animAvgCost = useCountUp(DEMO_STATS.avg_cost, inView, 1000);
+
+  const getResultColor = (result: MatchResult) => {
+    switch (result) {
+      case 'win':
+        return 'bg-green-500';
+      case 'loss':
+        return 'bg-red-500';
+      default:
+        return 'bg-gray-400';
+    }
+  };
+
+  const resultCounts: Partial<Record<string, number>> = {};
+  const recentFormItems = DEMO_STATS.recent_form.map((result) => {
+    resultCounts[result] = (resultCounts[result] || 0) + 1;
+    return { result, key: `preview-${result}-${resultCounts[result]}` };
+  });
+
+  return (
+    <div ref={ref} className="mb-10">
+      <div className={cn(
+        'overflow-hidden p-5',
+        themeClass(
+          'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
+          'bg-white rounded-2xl border border-gray-100 shadow-sm'
+        )
+      )}>
+        <div className="flex items-center gap-2 mb-4">
+          <span className={cn(
+            'text-xs font-bold px-2 py-1 rounded',
+            themeClass('bg-black text-white', 'bg-green-100 text-green-700')
+          )}>
+            예시 데이터
+          </span>
+          {DEMO_STATS.current_streak && (
+            <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-bold text-green-700">
+              🔥 {DEMO_STATS.current_streak.count}연승 중!
+            </span>
+          )}
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+          {[
+            { label: '전체 경기', value: `${animTotal}전` },
+            { label: '승률', value: `${animWinRate}%`, valueClass: 'text-green-600' },
+            { label: '승/패', value: `${DEMO_STATS.wins}승 ${DEMO_STATS.losses}패 ${DEMO_STATS.draws}무`, valueClass: 'text-sm' },
+            { label: '평균 비용', value: `${animAvgCost.toLocaleString('ko-KR')}원` },
+          ].map((item, i) => (
+            <div
+              key={item.label}
+              className={cn(
+                'flex flex-col items-center justify-center p-3',
+                inView ? 'anim-fade-up' : 'opacity-0',
+                themeClass(
+                  'rounded-[5px] border-2 border-black bg-gray-50',
+                  'rounded-xl border border-gray-200 bg-gray-50'
+                )
+              )}
+              style={{ animationDelay: `${i * 80}ms` }}
+            >
+              <span className="mb-1 text-[10px] font-bold text-gray-500">{item.label}</span>
+              <span className={cn('text-base font-bold', item.valueClass)}>{item.value}</span>
+            </div>
+          ))}
+        </div>
+
+        <div>
+          <div className="text-xs font-bold text-gray-500 mb-1.5">최근 전적</div>
+          <div className="flex gap-2">
+            {recentFormItems.map(({ result, key }, i) => (
+              <div
+                key={key}
+                className={cn(
+                  'h-7 w-7 rounded-full border-2 border-white shadow-sm',
+                  getResultColor(result),
+                  inView ? 'anim-pop-in' : 'opacity-0 scale-0'
+                )}
+                style={{ animationDelay: `${i * 60}ms` }}
+                title={result === 'win' ? '승리' : result === 'loss' ? '패배' : '무승부'}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div className={cn(
+          'flex items-center justify-between mt-4 pt-3 border-t',
+          themeClass('border-black/10', 'border-gray-100')
+        )}>
+          <p className={cn(
+            'text-xs',
+            themeClass('text-black/40 font-bold', 'text-gray-400')
+          )}>
+            로그인하면 나만의 통계를 확인할 수 있어요
+          </p>
+          <Link
+            href="/guide/records"
+            className={cn(
+              'inline-flex items-center gap-1 text-xs font-bold shrink-0 transition-colors',
+              themeClass('text-black/50 hover:text-black', 'text-green-600 hover:text-green-700')
+            )}
+          >
+            모든 기능 체험
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
 }
