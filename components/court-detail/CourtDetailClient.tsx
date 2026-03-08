@@ -313,7 +313,7 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
               src={court.IMGURL}
               alt={court.SVCNM}
               fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 60vw"
+              sizes="(max-width: 1200px) 100vw, 1200px"
               className="object-cover"
               onError={() => setImageError(true)}
               priority
@@ -330,9 +330,9 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
                src="/images/court-placeholder.svg"
                alt={`${court.SVCNM} 기본 이미지`}
                fill
-               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 60vw"
-               className="object-contain"
-               priority
+                sizes="(max-width: 1200px) 100vw, 1200px"
+                className="object-contain"
+                priority
              />
           )}
         </div>
