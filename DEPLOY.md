@@ -51,8 +51,15 @@ Vercel Dashboard > Project > Settings > Environment Variables에서 설정:
 | `NEXT_PUBLIC_KAKAO_MAP_KEY` | 카카오 지도 SDK 키 | ✅ |
 | `NEXT_PUBLIC_VAPID_PUBLIC_KEY` | Web Push VAPID 공개 키 | ✅ |
 | `VAPID_PRIVATE_KEY` | Web Push VAPID 비밀 키 | ✅ |
+| `CRON_SECRET` | Cron 엔드포인트 인증 Bearer 토큰 | ✅ |
 | `NEXT_PUBLIC_GA_ID` | Google Analytics ID | ❌ |
 | `NEXT_PUBLIC_ADSENSE_CLIENT_ID` | Google AdSense 클라이언트 ID | ❌ |
+| `NEXT_PUBLIC_AD_SLOT_HOME_TOP` | AdSense 슬롯: 홈 상단 | ❌ |
+| `NEXT_PUBLIC_AD_SLOT_HOME_BOTTOM` | AdSense 슬롯: 홈 하단 | ❌ |
+| `NEXT_PUBLIC_AD_SLOT_DISTRICT_TOP` | AdSense 슬롯: 자치구 상단 | ❌ |
+| `NEXT_PUBLIC_AD_SLOT_COURT_MIDDLE` | AdSense 슬롯: 코트 상세 중간 | ❌ |
+| `NEXT_PUBLIC_AD_SLOT_COURT_BOTTOM` | AdSense 슬롯: 코트 상세 하단 | ❌ |
+| `NEXT_PUBLIC_AD_SLOT_SIDEBAR` | AdSense 슬롯: 사이드바 | ❌ |
 | `NEXT_PUBLIC_SEARCH_V2_ROLLOUT_PERCENT` | v2 검색 롤아웃 비율 (0~100, 기본 100) | ❌ |
 | `NEXT_PUBLIC_SEARCH_V2_FORCE` | 검색 변형 강제 (`v2` 또는 `legacy`) | ❌ |
 | `NEXT_PUBLIC_SEARCH_V2_PROFILE` | v2 랭킹 프로파일 (`balanced`/`precision`/`recall`) | ❌ |

@@ -58,6 +58,8 @@ To skip in emergencies: `git push --no-verify` (use with caution)
 - **Analytics**: Google Analytics, Google AdSense
 - **Formatting**: Biome (`@biomejs/biome`)
 - **Sanitization**: DOMPurify (XSS prevention)
+- **Image Optimization**: sharp
+- **Linting (Korean comments)**: `@code-yeongyu/comment-checker`
 - **UI Libraries**: canvas-confetti (animations), react-simple-pull-to-refresh (mobile UX), classnames
 
 ### Middleware
@@ -157,7 +159,7 @@ components/
                    #   ScrollToTop, Skeleton
   icons/           # weather/ (AnimatedWeatherIcon, SunnyIcon, CloudyIcon, PartlyCloudyIcon,
                    #   RainyIcon, SnowyIcon)
-  pwa/             # InstallPrompt
+  pwa/             # InstallPrompt, UpdatePrompt
   feedback/        # FeedbackModal
   ads/             # AdBanner
   city-data/       # CongestionBadge
@@ -176,8 +178,9 @@ components/
     - `facilityEnrichment.ts` - Enrichment lookup functions (getEnrichment, getEnrichmentOperatingHours, getEnrichmentImageUrl, getMapPOIName)
     - `independentCourts.ts` - Courts not in Seoul API (Gangbuk, Nowon, Dongdaemun, Eunpyeong, Jungnang)
   - `lib/hooks/` - Custom hooks (useAlertSettings, useCountUp, useGameRecords, useInView, useKakaoLoaderWithHttps, usePushSubscription, useRecentCourts, useRecentSearches, useRecordStats, useReservationTip, useScrollFade, useTennisProfile)
-  - `lib/utils/` - Utilities (courtSearch, courtStatus, districtStats, facilityTags, inAppBrowser, mapNavigation, phoneLink, sanitizeRedirect, searchAnalytics, searchExperiment, searchHighlight, tennis, weatherGrid, contentParser/)
+  - `lib/utils/` - Utilities (courtSearch, courtStatus, districtStats, facilityTags, inAppBrowser, mapNavigation, phoneLink, sanitizeRedirect, searchAnalytics, searchExperiment, searchHighlight, svgPath, tennis, weatherGrid, contentParser/)
   - `lib/scrapers/` - External facility data scrapers (`fmcsScraper.ts`, `jungrangScraper.ts`)
+  - `lib/mockData/` - Mock/sample data for guides (`guideExamples.ts`)
 - `components/` - React components (organized by feature domain)
 - `contexts/` - React context providers (AuthContext, ThemeContext, TennisDataContext, ToastContext)
 - `hooks/` - Legacy hooks directory (useFavorites)
@@ -213,7 +216,7 @@ components/
 | `player_profiles` | Tennis player profile (NTRP rating, career years, skill level, preferred hand, age group) |
 | `game_records` | Match records (date, location, match type/format, score, result, opponent, cost, notes, images) |
 | `feedback` | Anonymous user feedback (feature/bug/other) |
-| `reservation_snapshots` | Historical court availability per district (for trends) |
+| `reservation_snapshots` | Historical court availability per district with time_slot (for trends + heatmap) |
 | `push_subscriptions` | Web push endpoint + keys per user |
 | `alert_settings` | User alert preferences (favorite_available, district_available) |
 | `court_status_cache` | Court status change detection (service role only) |
@@ -221,6 +224,14 @@ components/
 | `popular_courts_cache` | Pre-computed TOP 5 ranking (single-row, cron-updated) |
 
 All tables use Row Level Security (RLS). Storage buckets: `review-images` for review photos, `record-images` for game record photos.
+
+**RPC Functions** (PostgreSQL server-side aggregation):
+| Function | Purpose |
+|----------|---------|
+| `increment_site_visit()` | Atomic daily visit counter with KST timezone |
+| `get_daily_trends()` | Daily booking rate aggregation (bypasses PostgREST row limit) |
+| `get_latest_district_rates()` | Latest reservation rates per district |
+| `get_heatmap_data()` | Day-of-week × time-slot booking rate for heatmap |
 
 Schema is maintained in two places:
 - `supabase/schema.sql` — Base schema (may lag behind migrations)
@@ -244,7 +255,7 @@ SUPABASE_SERVICE_ROLE_KEY      # Supabase service role (server-side only)
 
 # Seoul Open Data
 SEOUL_OPEN_DATA_KEY            # Seoul Open Data API key (court reservations)
-SEOUL_AIR_QUALITY_KEY          # Seoul air quality API key
+SEOUL_AIR_QUALITY_KEY          # Seoul air quality API key (falls back to SEOUL_OPEN_DATA_KEY)
 
 # Weather
 WEATHER_API_KEY                # Korea Meteorological Administration API key
@@ -258,9 +269,20 @@ NEXT_PUBLIC_KAKAO_MAP_KEY      # Kakao Maps SDK key (client-side)
 NEXT_PUBLIC_VAPID_PUBLIC_KEY   # VAPID public key (client-side)
 VAPID_PRIVATE_KEY              # VAPID private key (server-side only)
 
+# Cron Jobs
+CRON_SECRET                    # Bearer token for cron endpoint auth (server-side only)
+
 # Analytics (optional)
 NEXT_PUBLIC_GA_ID              # Google Analytics ID
 NEXT_PUBLIC_ADSENSE_CLIENT_ID  # Google AdSense client ID
+
+# AdSense Slot IDs (optional)
+NEXT_PUBLIC_AD_SLOT_HOME_TOP       # Ad slot: home page top
+NEXT_PUBLIC_AD_SLOT_HOME_BOTTOM    # Ad slot: home page bottom
+NEXT_PUBLIC_AD_SLOT_DISTRICT_TOP   # Ad slot: district page top
+NEXT_PUBLIC_AD_SLOT_COURT_MIDDLE   # Ad slot: court detail middle
+NEXT_PUBLIC_AD_SLOT_COURT_BOTTOM   # Ad slot: court detail bottom
+NEXT_PUBLIC_AD_SLOT_SIDEBAR        # Ad slot: sidebar
 
 # Search v2 (optional)
 NEXT_PUBLIC_SEARCH_V2_ROLLOUT_PERCENT  # v2 search rollout percentage (0-100, default 100)
@@ -275,4 +297,4 @@ NEXT_PUBLIC_SEARCH_V2_PROFILE          # v2 ranking profile ('balanced'/'precisi
 Service worker via Serwist (`@serwist/next`). Manifest at `public/manifest.json`. Install prompt component at `components/pwa/InstallPrompt.tsx`.
 
 ### Cron Jobs
-Scheduled via [cron-job.org](https://cron-job.org) (external cron service). Cron routes at `app/api/cron/` are triggered by HTTP GET from cron-job.org on configured schedules. `vercel.json` contains only region config (`icn1`), not cron entries.
+Scheduled via [cron-job.org](https://cron-job.org) (external cron service). Cron routes at `app/api/cron/` are triggered by HTTP GET from cron-job.org on configured schedules. All cron endpoints require `Authorization: Bearer ${CRON_SECRET}` header. `vercel.json` contains only region config (`icn1`), not cron entries.

@@ -52,3 +52,9 @@ next-env.d.ts
 
 # AI agent work state
 /.sisyphus/
+
+# Duplicate skills archive (actual skills are in .claude/skills/)
+/skills/
+
+# Temporary investigation files
+/tmp/
