@@ -629,6 +629,38 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "mapPOIName": "다락원체육공원"
   },
   {
+    "facilityName": "창골테니스장",
+    "normalizedName": "창골",
+    "district": "도봉구",
+    "address": "서울 도봉구 창동 산 48-3",
+    "courtCount": 3,
+    "surfaces": [
+      {
+        "type": "인조잔디",
+        "count": null
+      }
+    ],
+    "surfaceCategory": "artificial_grass",
+    "surfaceDisplay": "인조잔디",
+    "area": 1500,
+    "siteArea": 1500,
+    "builtYear": null,
+    "owner": "도봉구",
+    "manager": "도봉구테니스협회",
+    "contact": "010-8776-7333",
+    "website": "https://dbgta.or.kr",
+    "indoorOutdoor": "outdoor",
+    "lighting": null,
+    "spectatorSeats": null,
+    "renovation": null,
+    "longitude": 127.0418,
+    "latitude": 37.6491,
+    "operatingHoursStart": "09:00",
+    "operatingHoursEnd": "18:00",
+    "imageUrl": "/images/courts/dobong-changgol.webp",
+    "mapPOIName": "창골테니스장"
+  },
+  {
     "facilityName": "마들스포츠타운 테니스장",
     "normalizedName": "마들스포츠타운",
     "district": "노원구",

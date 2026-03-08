@@ -179,6 +179,51 @@ const INDEPENDENT_COURTS: SeoulService[] = [
     REVSTDDAY: '',
   },
   {
+    SVCID: 'INDEP_DB002',
+    MAXCLASSNM: '체육시설',
+    MINCLASSNM: '테니스장',
+    SVCSTATNM: '외부예약',
+    SVCNM: '창골테니스장 (초안산근린공원)',
+    PAYATNM: '무료',
+    PLACENM: '초안산근린공원',
+    USETGTINFO: '도봉구민',
+    SVCURL: 'https://dbgta.or.kr/m/sub01_07_01.html',
+    X: '127.0418',
+    Y: '37.6491',
+    SVCOPNBGNDT: '',
+    SVCOPNENDDT: '',
+    RCPTBGNDT: '',
+    RCPTENDDT: '',
+    AREANM: '도봉구',
+    IMGURL: '/images/courts/dobong-changgol.webp',
+    DTLCONT:
+      '◎ 시설현황\r\n' +
+      '- 인조잔디 코트 3면\r\n' +
+      '- 초안산근린공원 내 위치\r\n' +
+      '- 도봉구테니스협회 운영\r\n\r\n' +
+      '◎ 이용요금\r\n' +
+      '- 무료\r\n\r\n' +
+      '◎ 이용대상\r\n' +
+      '- 도봉구민 누구나\r\n\r\n' +
+      '◎ 운영시간\r\n' +
+      '- 09:00~18:00\r\n\r\n' +
+      '◎ 예약방법\r\n' +
+      '- 도봉구테니스협회 홈페이지 (dbgta.or.kr)\r\n' +
+      '- 사무국장(010-8776-7333)에게 전화로 도봉구민 ID 발급 후 온라인 예약\r\n' +
+      '- 참석자 전원 온라인 회원가입 필수\r\n\r\n' +
+      '◎ 이용규칙\r\n' +
+      '- 1일 1회 예약 가능 (최대 2시간)\r\n' +
+      '- 7일 이내 중복 예약 불가\r\n' +
+      '- 참석자 전원 명단 제출 의무\r\n\r\n' +
+      '◎ 주차\r\n' +
+      '- 창골근린공원 주차장 이용 (유료)',
+    TELNO: '010-8776-7333',
+    V_MIN: '09:00',
+    V_MAX: '18:00',
+    REVSTDDAYNM: '',
+    REVSTDDAY: '',
+  },
+  {
     SVCID: 'INDEP_DD002',
     MAXCLASSNM: '체육시설',
     MINCLASSNM: '테니스장',
