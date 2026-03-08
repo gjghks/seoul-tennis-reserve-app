@@ -594,29 +594,39 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "facilityName": "다락원체육공원 테니스장",
     "normalizedName": "다락원체육공원",
     "district": "도봉구",
-    "address": "서울시 도봉구 창포원로 45 다락원체육공원",
+    "address": "서울특별시 도봉구 창포원로 45 다락원체육공원",
     "courtCount": 8,
     "surfaces": [
       {
         "type": "케미칼",
-        "count": null
+        "count": 3
+      },
+      {
+        "type": "케미칼",
+        "count": 5
       }
     ],
     "surfaceCategory": "hard",
-    "surfaceDisplay": "케미칼",
+    "surfaceDisplay": "케미칼 (실내 3면 + 실외 5면)",
     "area": 3120,
     "siteArea": 49830,
     "builtYear": 2018,
     "owner": "서울시",
     "manager": "도봉구시설관리공단",
-    "contact": null,
-    "website": null,
+    "contact": "02-901-5198",
+    "website": "https://www.dobongsiseol.or.kr/darak_sport/",
     "indoorOutdoor": null,
-    "lighting": null,
+    "lighting": {
+      "count": 0,
+      "lux": null
+    },
     "spectatorSeats": null,
     "renovation": null,
     "operatingHoursStart": "06:00",
-    "operatingHoursEnd": "22:00"
+    "operatingHoursEnd": "22:00",
+    "longitude": 127.0446,
+    "latitude": 37.6893,
+    "mapPOIName": "다락원체육공원"
   },
   {
     "facilityName": "마들스포츠타운 테니스장",
