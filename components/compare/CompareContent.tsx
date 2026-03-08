@@ -177,7 +177,7 @@ export default function CompareContent({ stats }: CompareContentProps) {
                     </span>
                     {d.externalCourts > 0 && (
                       <span className={`ml-1 text-xs ${themeClass('font-bold text-[#2563eb]', 'text-blue-600')}`}>
-                        +{d.externalCourts} 외부
+                        (외부 {d.externalCourts})
                       </span>
                     )}
                   </td>
