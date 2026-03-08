@@ -55,10 +55,6 @@ export default function CourtLocationInput({ locationType, courtId, courtName, d
   const noResultTrackedRef = useRef<string>('');
 
   useEffect(() => {
-    if (isComposing) {
-      return;
-    }
-
     const timer = window.setTimeout(() => {
       setDebouncedSearch(searchTerm.trim());
     }, 300);
@@ -66,7 +62,7 @@ export default function CourtLocationInput({ locationType, courtId, courtName, d
     return () => {
       window.clearTimeout(timer);
     };
-  }, [searchTerm, isComposing]);
+  }, [searchTerm]);
 
   const canSearch = locationType === 'seoul_court' && debouncedSearch.length >= 1;
 
@@ -231,11 +227,8 @@ export default function CourtLocationInput({ locationType, courtId, courtName, d
                   setIsComposing(true);
                 }}
                 onCompositionEnd={(event) => {
-                  const value = event.currentTarget.value;
                   setIsComposing(false);
-                  setSearchTerm(value);
-                  setDebouncedSearch(value.trim());
-                  setShowDropdown(true);
+                  setSearchTerm(event.currentTarget.value);
                 }}
                 placeholder="코트 이름으로 검색"
                 className={inputClass}

@@ -43,10 +43,6 @@ export default function CourtSearch() {
   const noResultTrackedRef = useRef<string>('');
 
   useEffect(() => {
-    if (isComposing) {
-      return;
-    }
-
     const timer = window.setTimeout(() => {
       setDebouncedQuery(query.trim());
     }, 300);
@@ -54,7 +50,7 @@ export default function CourtSearch() {
     return () => {
       window.clearTimeout(timer);
     };
-  }, [query, isComposing]);
+  }, [query]);
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
@@ -263,12 +259,8 @@ export default function CourtSearch() {
             setIsComposing(true);
           }}
           onCompositionEnd={(event) => {
-            const value = event.currentTarget.value;
             setIsComposing(false);
-            setQuery(value);
-            setDebouncedQuery(value.trim());
-            setActiveIndex(-1);
-            setIsOpen(true);
+            setQuery(event.currentTarget.value);
           }}
           onKeyDown={handleKeyDown}
           type="text"
