@@ -136,14 +136,14 @@ const INDEPENDENT_COURTS: SeoulService[] = [
     PLACENM: '다락원체육공원',
     USETGTINFO: '제한없음',
     SVCURL: 'https://yeyak.dobongsiseol.or.kr/rent/index.php?c_id=05&page_info=index&n_type=rent',
-    X: '127.0446',
-    Y: '37.6893',
+    X: '127.0470',
+    Y: '37.6915',
     SVCOPNBGNDT: '',
     SVCOPNENDDT: '',
     RCPTBGNDT: '',
     RCPTENDDT: '',
     AREANM: '도봉구',
-    IMGURL: '',
+    IMGURL: '/images/courts/dobong-darakwon.png',
     DTLCONT:
       '◎ 시설현황\r\n' +
       '- 실내 케미칼코트 3면 + 실외 케미칼코트 5면 = 총 8면\r\n' +

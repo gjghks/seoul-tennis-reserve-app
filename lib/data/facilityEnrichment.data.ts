@@ -624,8 +624,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "renovation": null,
     "operatingHoursStart": "06:00",
     "operatingHoursEnd": "22:00",
-    "longitude": 127.0446,
-    "latitude": 37.6893,
+    "longitude": 127.0470,
+    "latitude": 37.6915,
     "mapPOIName": "다락원체육공원"
   },
   {
