@@ -22,20 +22,30 @@ export default function VisitorCounter() {
     const alreadyVisited = sessionStorage.getItem(SESSION_KEY);
 
     if (alreadyVisited) {
-      fetch('/api/visit')
-        .then(res => res.json())
-        .then((data: VisitCounts) => setCounts(data))
-        .catch(() => {});
+      (async () => {
+        try {
+          const res = await fetch('/api/visit');
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const data: VisitCounts = await res.json();
+          setCounts(data);
+        } catch {
+          // Silently fail for analytics
+        }
+      })();
       return;
     }
 
-    fetch('/api/visit', { method: 'POST' })
-      .then(res => res.json())
-      .then((data: VisitCounts) => {
+    (async () => {
+      try {
+        const res = await fetch('/api/visit', { method: 'POST' });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data: VisitCounts = await res.json();
         setCounts(data);
         sessionStorage.setItem(SESSION_KEY, '1');
-      })
-      .catch(() => {});
+      } catch {
+        // Silently fail for analytics
+      }
+    })();
   }, []);
 
   if (!counts) return null;

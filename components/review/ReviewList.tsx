@@ -227,16 +227,17 @@ export default function ReviewList({ reviews, onReviewDeleted }: ReviewListProps
           </button>
         )}
 
-        <div className="relative max-w-4xl max-h-[90vh] w-full h-full mx-16">
-          <Image
-            src={currentImage}
-            alt={`후기 이미지 ${currentIndex + 1}`}
-            fill
-            unoptimized
-            className="object-contain"
-            priority
-          />
-        </div>
+         <div className="relative max-w-4xl max-h-[90vh] w-full h-full mx-16">
+           <Image
+             src={currentImage}
+             alt={`후기 이미지 ${currentIndex + 1}`}
+             fill
+             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 60vw"
+             unoptimized
+             className="object-contain"
+             priority
+           />
+         </div>
 
         {hasMultipleImages && (
           <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-4 py-2 bg-black/50 rounded-full text-white text-sm font-medium">

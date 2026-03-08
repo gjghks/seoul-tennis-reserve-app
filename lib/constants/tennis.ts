@@ -170,6 +170,15 @@ export const PREFERRED_HAND_OPTIONS = (Object.keys(PREFERRED_HAND_LABELS) as Pre
   label: PREFERRED_HAND_LABELS[k],
 }));
 
+export const VALID_MATCH_TYPES: MatchType[] = Object.keys(MATCH_TYPE_LABELS) as MatchType[];
+export const VALID_MATCH_FORMATS: MatchFormat[] = Object.keys(MATCH_FORMAT_LABELS) as MatchFormat[];
+export const VALID_RESULTS: MatchResult[] = Object.keys(MATCH_RESULT_LABELS) as MatchResult[];
+export const VALID_COURT_SURFACES: CourtSurface[] = Object.keys(COURT_SURFACE_LABELS) as CourtSurface[];
+export const VALID_LOCATION_TYPES: LocationType[] = ['seoul_court', 'custom'];
+export const VALID_SKILL_LEVELS: SkillLevel[] = Object.keys(SKILL_LEVEL_LABELS) as SkillLevel[];
+export const VALID_PREFERRED_HANDS: PreferredHand[] = Object.keys(PREFERRED_HAND_LABELS) as PreferredHand[];
+export const VALID_AGE_GROUPS: AgeGroup[] = Object.keys(AGE_GROUP_LABELS) as AgeGroup[];
+
 export const CAREER_YEARS_OPTIONS = [
   ...Array.from({ length: 21 }, (_, i) => ({
     value: i,

@@ -21,22 +21,22 @@ const SEOUL_WEATHER_GRID = convertToWeatherGrid(126.978, 37.5665);
 
 const FavoriteCourtSection = dynamic(
   () => import('@/components/favorite/FavoriteCourtSection'),
-  { ssr: false }
+  { ssr: false, loading: () => <div className="h-24" /> }
 );
 
 const RecordsPromoCard = dynamic(
   () => import('@/components/home/RecordsPromoCard'),
-  { ssr: false }
+  { ssr: false, loading: () => <div className="h-16" /> }
 );
 
 const PopularCourts = dynamic(
   () => import('@/components/home/PopularCourts'),
-  { ssr: false }
+  { ssr: false, loading: () => <div className="container"><div className="h-48 skeleton rounded-xl" /></div> }
 );
 
 const DiscoveryCards = dynamic(
   () => import('@/components/home/DiscoveryCards'),
-  { ssr: false }
+  { ssr: false, loading: () => <div className="container"><div className="h-32 skeleton rounded-xl" /></div> }
 );
 
 const InstallPrompt = dynamic(

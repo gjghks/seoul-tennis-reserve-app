@@ -113,16 +113,6 @@ export default function RecordsGuideContent() {
     []
   );
 
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent, id: DemoId) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        toggleDemo(id);
-      }
-    },
-    [toggleDemo]
-  );
-
   return (
     <div className="container py-8 scrollbar-hide">
       <div
@@ -401,18 +391,19 @@ function ScoreDemo({ isOpen }: { isOpen: boolean }) {
     });
   }, []);
 
-  useEffect(() => {
-    if (isOpen && !done) {
-      runAnimation();
-    }
-    if (!isOpen && done) {
-      setDone(false);
-    }
-    return () => {
-      timersRef.current.forEach(clearTimeout);
-      timersRef.current = [];
-    };
-  }, [isOpen, done, runAnimation]);
+   useEffect(() => {
+     if (isOpen && !done) {
+       // eslint-disable-next-line react-hooks/set-state-in-effect
+       runAnimation();
+     }
+     if (!isOpen && done) {
+       setDone(false);
+     }
+     return () => {
+       timersRef.current.forEach(clearTimeout);
+       timersRef.current = [];
+     };
+   }, [isOpen, done, runAnimation]);
 
   return (
     <div className="space-y-3">

@@ -58,6 +58,12 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  alternates: {
+    canonical: 'https://seoul-tennis.com',
+    languages: {
+      'ko-KR': 'https://seoul-tennis.com',
+    },
+  },
   verification: {
     google: "KhPvMRs7o6viKGnlXAESgPhUuUZmtd5p8Z_gEOOyyI8",
   },

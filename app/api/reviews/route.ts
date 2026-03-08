@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerSupabaseClient, createAnonSupabaseClient } from '@/lib/supabaseServer';
 import { createRateLimiter } from '@/lib/rateLimit';
+import { sanitizeText, validateTextLength, sanitizeImageUrls } from '@/lib/utils/sanitize';
 
 const limiter = createRateLimiter({ windowMs: 60_000, maxRequests: 10 });
 
@@ -73,40 +74,45 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { court_id, court_name, district, rating, content, images } = body;
+    const { court_id, court_name, district, rating, images } = body;
 
-    if (!court_id || !court_name || !district || !rating || !content) {
+    const sanitizedContent = sanitizeText(body.content);
+    const sanitizedCourtName = sanitizeText(court_name);
+    const sanitizedDistrict = sanitizeText(district);
+
+    if (!court_id || !sanitizedCourtName || !sanitizedDistrict || !rating || !sanitizedContent) {
       return NextResponse.json(
         { error: '필수 정보가 누락되었습니다.' },
         { status: 400 }
       );
     }
 
-    if (rating < 1 || rating > 5) {
+    if (typeof rating !== 'number' || rating < 1 || rating > 5) {
       return NextResponse.json(
         { error: '평점은 1~5 사이여야 합니다.' },
         { status: 400 }
       );
     }
 
-    if (content.length < 10 || content.length > 500) {
+    if (!validateTextLength(sanitizedContent, 10, 500)) {
       return NextResponse.json(
         { error: '후기는 10자 이상 500자 이하로 작성해주세요.' },
         { status: 400 }
       );
     }
 
-    const imageUrls = Array.isArray(images) ? images.slice(0, 3) : [];
+    const supabaseHost = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co').hostname;
+    const imageUrls = sanitizeImageUrls(images, 3, [supabaseHost]) ?? [];
 
     const { data, error } = await supabase
       .from('reviews')
       .insert([{
         user_id: user.id,
         court_id,
-        court_name,
-        district,
+        court_name: sanitizedCourtName,
+        district: sanitizedDistrict,
         rating,
-        content,
+        content: sanitizedContent,
         images: imageUrls,
       }])
       .select()

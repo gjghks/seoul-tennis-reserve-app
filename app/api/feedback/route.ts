@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createAnonSupabaseClient } from '@/lib/supabaseServer';
 import { createRateLimiter } from '@/lib/rateLimit';
+import { sanitizeText, validateTextLength } from '@/lib/utils/sanitize';
 
 const VALID_CATEGORIES = ['feature', 'bug', 'other'] as const;
 type FeedbackCategory = (typeof VALID_CATEGORIES)[number];
@@ -35,7 +36,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (typeof content !== 'string' || content.length < 5 || content.length > 500) {
+    const sanitizedContent = sanitizeText(content);
+    if (!sanitizedContent || !validateTextLength(sanitizedContent, 5, 500)) {
       return NextResponse.json(
         { error: '의견은 5자 이상 500자 이하로 작성해주세요.' },
         { status: 400 }
@@ -46,7 +48,7 @@ export async function POST(request: NextRequest) {
 
     const { error } = await supabase
       .from('feedback')
-      .insert([{ category, content: content.trim() }]);
+      .insert([{ category, content: sanitizedContent }]);
 
     if (error) {
       console.error('Feedback insert error:', error);

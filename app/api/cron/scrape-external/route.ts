@@ -3,6 +3,7 @@ import { getIndependentCourts } from '@/lib/data/independentCourts';
 import { SCRAPE_TARGETS, scrapeJungrangCourt } from '@/lib/scrapers/jungrangScraper';
 import { FMCS_SCRAPE_TARGETS, scrapeFmcsCourt } from '@/lib/scrapers/fmcsScraper';
 import { createServiceRoleClient } from '@/lib/supabaseServer';
+import { verifyCronSecret } from '@/lib/cronAuth';
 import type { ScrapedCourtStatus } from '@/lib/scrapers/jungrangScraper';
 
 export const dynamic = 'force-dynamic';
@@ -16,8 +17,7 @@ function getErrorMessage(error: unknown): string {
 }
 
 export async function GET(request: Request) {
-  const authHeader = request.headers.get('authorization');
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+  if (!verifyCronSecret(request.headers.get('authorization'))) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 

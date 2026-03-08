@@ -60,8 +60,8 @@ for (const c of courts) {
   const x = parseFloat(c.X);
   const y = parseFloat(c.Y);
   
-  let enrichLng = enrichment ? (enrichment.longitude ? String(enrichment.longitude) : 'none') : 'NO MATCH';
-  let enrichLat = enrichment ? (enrichment.latitude ? String(enrichment.latitude) : 'none') : 'NO MATCH';
+   const enrichLng = enrichment ? (enrichment.longitude ? String(enrichment.longitude) : 'none') : 'NO MATCH';
+   const enrichLat = enrichment ? (enrichment.latitude ? String(enrichment.latitude) : 'none') : 'NO MATCH';
   let distance = '-';
   
   if (enrichCoords) {

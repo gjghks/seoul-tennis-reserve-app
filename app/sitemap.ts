@@ -1,11 +1,10 @@
 import { MetadataRoute } from 'next';
-import { DISTRICTS } from '@/lib/constants/districts';
+import { DISTRICTS, KOREAN_TO_SLUG } from '@/lib/constants/districts';
+import { fetchTennisAvailability } from '@/lib/seoulApi';
 
-// WARN: new Date() here causes ISR writes on EVERY revalidation (non-deterministic output).
-// See: vercel.com/docs/incremental-static-regeneration/limits-and-pricing
 const LAST_MODIFIED = new Date('2026-03-01T00:00:00Z');
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://seoul-tennis.com';
 
   const staticPages: MetadataRoute.Sitemap = [
@@ -118,5 +117,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  return [...staticPages, ...districtPages, ...guidePages, ...standaloneGuidePages];
+  let courtPages: MetadataRoute.Sitemap = [];
+  try {
+    const courts = await fetchTennisAvailability();
+    courtPages = courts
+      .map((court) => {
+        const slug = KOREAN_TO_SLUG[court.AREANM];
+        if (!slug) return null;
+        return {
+          url: `${baseUrl}/${slug}/${court.SVCID}`,
+          lastModified: LAST_MODIFIED,
+          changeFrequency: 'daily' as const,
+          priority: 0.6,
+        };
+      })
+      .filter((entry): entry is NonNullable<typeof entry> => entry !== null);
+  } catch {
+    // Seoul API unavailable — proceed without court pages
+  }
+
+  return [...staticPages, ...districtPages, ...guidePages, ...standaloneGuidePages, ...courtPages];
 }

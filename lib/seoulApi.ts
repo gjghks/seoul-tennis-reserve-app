@@ -61,14 +61,33 @@ interface TennisDataCache {
 
 let tennisDataCache: TennisDataCache | null = null;
 
+/**
+ * Courts that Seoul API still lists but whose reservations actually use
+ * independent (non-Seoul) systems.  The Seoul API entries show misleading
+ * statuses like "접수중" even though yeyak.seoul.go.kr cannot accept bookings.
+ * These are replaced by corrected entries in independentCourts.ts.
+ */
+const SEOUL_API_EXCLUDED_COURTS: ReadonlyArray<{ areanm: string; keyword: string }> = [
+    { areanm: '도봉구', keyword: '다락원' },
+];
+
+function isExcludedSeoulApiCourt(court: SeoulService): boolean {
+    return SEOUL_API_EXCLUDED_COURTS.some(
+        excluded =>
+            court.AREANM === excluded.areanm &&
+            (court.PLACENM.includes(excluded.keyword) || court.SVCNM.includes(excluded.keyword))
+    );
+}
+
 function mergeIndependentCourts(courts: SeoulService[]): SeoulService[] {
     if (!INCLUDE_INDEPENDENT_COURTS) {
         return courts;
     }
 
+    const filtered = courts.filter(court => !isExcludedSeoulApiCourt(court));
     const independentCourts = getIndependentCourts();
-    const existingIds = new Set(courts.map(court => court.SVCID));
-    return [...courts, ...independentCourts.filter(court => !existingIds.has(court.SVCID))];
+    const existingIds = new Set(filtered.map(court => court.SVCID));
+    return [...filtered, ...independentCourts.filter(court => !existingIds.has(court.SVCID))];
 }
 
 function wait(ms: number): Promise<void> {
@@ -156,13 +175,15 @@ export async function fetchTennisAvailability(startIndex = 1, endIndex = 1000): 
                 }
             }
 
-            // Apply enrichment image URL for courts with empty IMGURL
             for (const court of allCourts) {
                 if (!court.IMGURL) {
                     const imageUrl = getEnrichmentImageUrl(court.SVCNM, court.AREANM, court.PLACENM);
                     if (imageUrl) {
                         court.IMGURL = imageUrl;
                     }
+                }
+                if (court.IMGURL && court.IMGURL.startsWith('http://')) {
+                    court.IMGURL = court.IMGURL.replace('http://', 'https://');
                 }
             }
 

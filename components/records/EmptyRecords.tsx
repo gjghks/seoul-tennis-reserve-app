@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { useThemeClass } from '@/lib/cn';
-import { useTheme } from '@/contexts/ThemeContext';
 
 interface EmptyRecordsProps {
   showCreateButton?: boolean;
@@ -10,7 +9,6 @@ interface EmptyRecordsProps {
 
 export default function EmptyRecords({ showCreateButton = true }: EmptyRecordsProps) {
   const themeClass = useThemeClass();
-  const { isNeoBrutalism } = useTheme();
 
   return (
     <div className={themeClass(

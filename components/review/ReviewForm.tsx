@@ -395,12 +395,13 @@ export default function ReviewForm({
                 className={`relative aspect-square rounded-lg overflow-hidden ${themeClass('border-2 border-black', 'border border-gray-200')}`}
               >
                 <Image
-                  src={img.preview}
-                  alt={`리뷰 사진 ${index + 1}`}
-                  fill
-                  unoptimized
-                  className="object-cover"
-                />
+                   src={img.preview}
+                   alt={`리뷰 사진 ${index + 1}`}
+                   fill
+                   sizes="(max-width: 768px) 100vw, 33vw"
+                   unoptimized
+                   className="object-cover"
+                 />
                 <button
                   type="button"
                   onClick={() => handleRemoveImage(img.id)}

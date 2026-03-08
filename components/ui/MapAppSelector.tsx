@@ -51,6 +51,7 @@ export default function MapAppSelector({ isOpen, onClose, destination }: MapAppS
   const titleId = useId();
   const [mounted, setMounted] = useState(false);
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { setMounted(true); }, []);
 
   useEffect(() => {

@@ -34,9 +34,13 @@ interface ParkingResponse {
 }
 
 const fetcher = async (url: string): Promise<ParkingResponse> => {
-  const response = await fetch(url);
-  if (!response.ok) throw new Error('Failed to fetch parking');
-  return response.json();
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return response.json();
+  } catch (error) {
+    throw error instanceof Error ? error : new Error('Failed to fetch parking');
+  }
 };
 
 function haversineDistance(lat1: number, lng1: number, lat2: number, lng2: number): number {

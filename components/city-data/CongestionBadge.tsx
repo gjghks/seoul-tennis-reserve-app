@@ -35,9 +35,13 @@ interface CongestionResponse {
 }
 
 const fetcher = async (url: string): Promise<CongestionResponse> => {
-  const response = await fetch(url);
-  if (!response.ok) throw new Error('Failed to fetch congestion');
-  return response.json();
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return response.json();
+  } catch (error) {
+    throw error instanceof Error ? error : new Error('Failed to fetch congestion');
+  }
 };
 
 function resolveCongestionColor(level: string) {

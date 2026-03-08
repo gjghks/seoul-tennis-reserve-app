@@ -4,6 +4,7 @@ import { createServiceRoleClient } from '@/lib/supabaseServer';
 import { isCourtAvailable } from '@/lib/utils/courtStatus';
 import { KOREAN_TO_SLUG, SLUG_TO_KOREAN } from '@/lib/constants/districts';
 import { getWebPush } from '@/lib/webPush';
+import { verifyCronSecret } from '@/lib/cronAuth';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 30;
@@ -47,8 +48,7 @@ function getStatusCode(error: unknown): number | null {
 }
 
 export async function GET(request: Request) {
-  const authHeader = request.headers.get('authorization');
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+  if (!verifyCronSecret(request.headers.get('authorization'))) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 

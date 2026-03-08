@@ -1,16 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerSupabaseClient } from '@/lib/supabaseServer';
 import { createRateLimiter } from '@/lib/rateLimit';
+import { VALID_MATCH_TYPES, VALID_MATCH_FORMATS, VALID_RESULTS, VALID_LOCATION_TYPES, VALID_COURT_SURFACES } from '@/lib/constants/tennis';
 import type { MatchType, MatchResult } from '@/lib/constants/tennis';
 import { validateScore } from '@/lib/utils/tennis';
 
 const limiter = createRateLimiter({ windowMs: 60_000, maxRequests: 10 });
-
-const VALID_MATCH_TYPES: MatchType[] = ['singles', 'mens_doubles', 'womens_doubles', 'mixed_doubles'];
-const VALID_MATCH_FORMATS = ['4game_nodeuce', '6game_1set', '3set_match', '8game_proset', 'tiebreak', 'custom'];
-const VALID_RESULTS: MatchResult[] = ['win', 'loss', 'draw', 'retired'];
-const VALID_LOCATION_TYPES = ['seoul_court', 'custom'];
-const VALID_SURFACES = ['hard', 'clay', 'artificial_grass', 'grass', 'indoor', 'other'];
 
 type RouteContext = {
   params: Promise<{
@@ -151,7 +146,7 @@ export async function PUT(request: NextRequest, context: RouteContext) {
       );
     }
 
-    if (court_surface && !VALID_SURFACES.includes(court_surface)) {
+    if (court_surface && !VALID_COURT_SURFACES.includes(court_surface)) {
       return NextResponse.json(
         { error: '올바르지 않은 코트 표면 유형입니다.' },
         { status: 400 }

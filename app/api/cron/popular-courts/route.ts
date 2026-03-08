@@ -1,13 +1,13 @@
 import { NextResponse } from 'next/server';
 import { computePopularCourts } from '@/lib/popularCourts';
 import { createServiceRoleClient } from '@/lib/supabaseServer';
+import { verifyCronSecret } from '@/lib/cronAuth';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 30;
 
 export async function GET(request: Request) {
-  const authHeader = request.headers.get('authorization');
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+  if (!verifyCronSecret(request.headers.get('authorization'))) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 

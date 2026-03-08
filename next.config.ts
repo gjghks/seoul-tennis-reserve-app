@@ -93,6 +93,10 @@ const nextConfig: NextConfig = {
         hostname: '**.seoul.go.kr',
       },
       {
+        protocol: 'http',
+        hostname: '**.seoul.go.kr',
+      },
+      {
         protocol: 'https',
         hostname: '**.supabase.co',
       },

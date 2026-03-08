@@ -45,11 +45,17 @@ const TIME_SLOT_KOREAN: Record<string, string> = {
   night: '밤',
 };
 
-const fetcher = (url: string) =>
-  fetch(url).then(r => r.json()).then(d => {
+const fetcher = async (url: string) => {
+  try {
+    const r = await fetch(url);
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const d = await r.json();
     if (d.error) throw new Error(d.error);
     return d;
-  });
+  } catch (error) {
+    throw error instanceof Error ? error : new Error('Failed to fetch trends data');
+  }
+};
 
 const PERIOD_OPTIONS = [7, 14, 30] as const;
 

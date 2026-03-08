@@ -1,12 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerSupabaseClient } from '@/lib/supabaseServer';
 import { createRateLimiter } from '@/lib/rateLimit';
+import { VALID_SKILL_LEVELS, VALID_PREFERRED_HANDS, VALID_AGE_GROUPS } from '@/lib/constants/tennis';
 
 const limiter = createRateLimiter({ windowMs: 60_000, maxRequests: 10 });
-
-const VALID_SKILL_LEVELS = ['beginner', 'intermediate', 'advanced', 'pro'];
-const VALID_HANDS = ['right', 'left', 'both'];
-const VALID_AGE_GROUPS = ['10s', '20s', '30s', '40s', '50s', '60s_plus'];
 
 export async function GET() {
   const supabase = await createServerSupabaseClient();
@@ -66,7 +63,7 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: '올바르지 않은 실력 수준입니다.' }, { status: 400 });
     }
 
-    if (preferred_hand && !VALID_HANDS.includes(preferred_hand)) {
+    if (preferred_hand && !VALID_PREFERRED_HANDS.includes(preferred_hand)) {
       return NextResponse.json({ error: '올바르지 않은 주사용 손 정보입니다.' }, { status: 400 });
     }
 

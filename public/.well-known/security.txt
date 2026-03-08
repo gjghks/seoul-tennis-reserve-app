@@ -1,0 +1,3 @@
+Contact: https://seoul-tennis.com/contact
+Preferred-Languages: ko, en
+Canonical: https://seoul-tennis.com/.well-known/security.txt
