@@ -1,6 +1,5 @@
 'use client';
 
-import { useTheme } from '@/contexts/ThemeContext';
 import { useThemeClass } from '@/lib/cn';
 
 export default function Error({
@@ -9,7 +8,6 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-  const { isNeoBrutalism } = useTheme();
   const themeClass = useThemeClass();
 
   return (

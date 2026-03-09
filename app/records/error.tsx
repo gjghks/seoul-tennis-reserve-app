@@ -1,6 +1,5 @@
 'use client';
 
-import { useTheme } from '@/contexts/ThemeContext';
 import { useThemeClass } from '@/lib/cn';
 import Link from 'next/link';
 
@@ -10,7 +9,6 @@ export default function ErrorBoundary({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-  const { isNeoBrutalism } = useTheme();
   const themeClass = useThemeClass();
 
   return (
