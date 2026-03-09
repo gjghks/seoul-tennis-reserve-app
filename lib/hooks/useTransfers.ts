@@ -8,16 +8,18 @@ interface UseTransfersOptions {
   offset?: number;
   district?: string;
   status?: TransferStatus;
+  my?: boolean;
 }
 
 export function useTransfers(options: UseTransfersOptions = {}) {
-  const { limit = 20, offset = 0, district, status = 'available' } = options;
+  const { limit = 20, offset = 0, district, status = 'available', my } = options;
 
   const params = new URLSearchParams({
     limit: String(limit),
     offset: String(offset),
     status,
   });
+  if (my) params.set('my', 'true');
   if (district) params.set('district', district);
 
   const { data, error, isLoading, mutate } = useSWR<{ transfers: CourtTransfer[]; total: number }>(

@@ -4,6 +4,7 @@ import { useState, useCallback } from 'react';
 import Link from 'next/link';
 import PullToRefresh from 'react-simple-pull-to-refresh';
 import { useThemeClass, cn } from '@/lib/cn';
+import { useAuth } from '@/contexts/AuthContext';
 import { useMatchingPosts } from '@/lib/hooks/useMatchingPosts';
 import MatchingPostCard from '@/components/matching/MatchingPostCard';
 import Skeleton from '@/components/ui/Skeleton';
@@ -16,18 +17,21 @@ const PAGE_SIZE = 20;
 
 export default function MatchingContent() {
   const themeClass = useThemeClass();
+  const { user } = useAuth();
   
   const [offset, setOffset] = useState(0);
   const [district, setDistrict] = useState<string>('');
   const [matchType, setMatchType] = useState<string>('');
   const [status, setStatus] = useState<string>('open');
+  const [myMode, setMyMode] = useState(false);
 
   const { posts, total, isLoading, error, mutate } = useMatchingPosts({
     limit: PAGE_SIZE,
     offset,
-    district: district || undefined,
-    matchType: (matchType as MatchType) || undefined,
-    status: (status as MatchPostStatus) || undefined,
+    my: myMode || undefined,
+    district: myMode ? undefined : (district || undefined),
+    matchType: myMode ? undefined : ((matchType as MatchType) || undefined),
+    status: myMode ? undefined : ((status as MatchPostStatus) || undefined),
   });
 
   const totalPages = Math.ceil(total / PAGE_SIZE);
@@ -60,6 +64,36 @@ export default function MatchingContent() {
       refreshingContent={RefreshIndicator}
     >
       <div className="container mx-auto px-4 py-6">
+        {user && (
+          <div className="flex gap-2 mb-4">
+            <button
+              type="button"
+              onClick={() => { setMyMode(false); setOffset(0); }}
+              className={cn(
+                'px-4 py-2 rounded-full text-sm font-bold transition-colors',
+                !myMode
+                  ? themeClass('bg-black text-white', 'bg-gray-900 text-white')
+                  : themeClass('bg-white border-2 border-black hover:bg-gray-100', 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50')
+              )}
+            >
+              전체 매칭
+            </button>
+            <button
+              type="button"
+              onClick={() => { setMyMode(true); setOffset(0); }}
+              className={cn(
+                'px-4 py-2 rounded-full text-sm font-bold transition-colors',
+                myMode
+                  ? themeClass('bg-black text-white', 'bg-gray-900 text-white')
+                  : themeClass('bg-white border-2 border-black hover:bg-gray-100', 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50')
+              )}
+            >
+              내 매칭
+            </button>
+          </div>
+        )}
+
+        {!myMode && (
         <div className={cn(
           'mb-6 p-4 rounded-xl flex flex-wrap gap-3',
           themeClass(
@@ -118,6 +152,7 @@ export default function MatchingContent() {
             ))}
           </select>
         </div>
+        )}
 
         {error ? (
           <div className={cn(
@@ -150,8 +185,12 @@ export default function MatchingContent() {
             themeClass('bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]', 'bg-white rounded-2xl border border-gray-100 shadow-sm')
           )}>
             <div className="text-4xl mb-4">🎾</div>
-            <div className={cn('text-xl mb-2', themeClass('font-black text-black', 'font-bold text-gray-900'))}>조건에 맞는 매칭이 없습니다</div>
-            <p className={themeClass('text-black/60 font-bold', 'text-gray-500')}>다른 필터를 선택하거나 직접 모집글을 올려보세요.</p>
+            <div className={cn('text-xl mb-2', themeClass('font-black text-black', 'font-bold text-gray-900'))}>
+              {myMode ? '참여한 매칭이 없습니다' : '조건에 맞는 매칭이 없습니다'}
+            </div>
+            <p className={themeClass('text-black/60 font-bold', 'text-gray-500')}>
+              {myMode ? '매칭글을 작성하거나 다른 매칭에 신청해보세요.' : '다른 필터를 선택하거나 직접 모집글을 올려보세요.'}
+            </p>
           </div>
         ) : (
           <>

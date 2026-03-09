@@ -12,11 +12,54 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const district = searchParams.get('district');
   const status = searchParams.get('status');
+  const myPosts = searchParams.get('my') === 'true';
   const limitParam = searchParams.get('limit');
   const offsetParam = searchParams.get('offset');
 
   const limit = Math.min(Math.max(1, Number(limitParam) || TRANSFER_PAGE_SIZE), 100);
   const offset = Math.max(0, Number(offsetParam) || 0);
+
+  if (myPosts) {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      return NextResponse.json({ error: '로그인이 필요합니다.' }, { status: 401 });
+    }
+
+    const { data: interests } = await supabase
+      .from('transfer_interests')
+      .select('transfer_id')
+      .eq('user_id', user.id);
+    const interestedIds = (interests || []).map((i: { transfer_id: string }) => i.transfer_id);
+
+    let myQuery = supabase
+      .from('court_transfers')
+      .select('*', { count: 'exact' })
+      .order('created_at', { ascending: false });
+
+    if (interestedIds.length > 0) {
+      myQuery = myQuery.or(`seller_id.eq.${user.id},id.in.(${interestedIds.join(',')})`);
+    } else {
+      myQuery = myQuery.eq('seller_id', user.id);
+    }
+
+    const { data, count, error } = await myQuery.range(offset, offset + limit - 1);
+
+    if (error) {
+      console.error('Error fetching my transfers:', error);
+      return NextResponse.json({ error: '내 양도를 불러오는데 실패했습니다.' }, { status: 500 });
+    }
+
+    const transfers = (data || []).map((transfer: Record<string, unknown>) => {
+      const { contact_info: _, ...rest } = transfer;
+      return {
+        ...rest,
+        is_seller: (transfer as { seller_id: string }).seller_id === user.id,
+        has_interest: interestedIds.includes((transfer as { id: string }).id),
+      };
+    });
+
+    return NextResponse.json({ transfers, total: count ?? 0 });
+  }
 
   let query = supabase
     .from('court_transfers')

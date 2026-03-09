@@ -7,8 +7,10 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { useToast } from '@/contexts/ToastContext';
 import { supabase } from '@/lib/supabase';
 import { KOREAN_TO_SLUG } from '@/lib/constants/districts';
-import { useThemeClass } from '@/lib/cn';
+import { useThemeClass, cn } from '@/lib/cn';
 import { useRecentCourts } from '@/lib/hooks/useRecentCourts';
+import { useMatchingPosts } from '@/lib/hooks/useMatchingPosts';
+import { useTransfers } from '@/lib/hooks/useTransfers';
 import dynamic from 'next/dynamic';
 
 const AlertSettingsSection = dynamic(
@@ -39,6 +41,8 @@ export default function MyPage() {
   const [favorites, setFavorites] = useState<Favorite[]>([]);
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState(false);
+  const { total: myMatchingTotal } = useMatchingPosts({ my: user ? true : undefined, limit: 1 });
+  const { total: myTransfersTotal } = useTransfers({ my: user ? true : undefined, limit: 1 });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -191,6 +195,69 @@ export default function MyPage() {
       {user && (
         <div className="max-w-2xl">
         <UnifiedProfileSection />
+
+        {(myMatchingTotal > 0 || myTransfersTotal > 0) && (
+          <div className="mb-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Link
+              href="/matching"
+              className={cn(
+                'p-4 flex items-center gap-4 transition-all',
+                themeClass(
+                  'bg-white border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[1px_1px_0px_0px_#000]',
+                  'bg-white rounded-xl border border-gray-200 hover:border-green-300 hover:shadow-sm'
+                )
+              )}
+            >
+              <div className={cn(
+                'w-10 h-10 rounded-full flex items-center justify-center text-lg shrink-0',
+                themeClass('bg-[#ff90e8] border-2 border-black', 'bg-green-50')
+              )}>
+                🤝
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className={cn('text-sm', themeClass('font-black text-black', 'font-semibold text-gray-900'))}>
+                  내 매칭
+                </div>
+                <div className={cn('text-xs', themeClass('text-black/60 font-bold', 'text-gray-500'))}>
+                  {myMatchingTotal}건 참여 중
+                </div>
+              </div>
+              <svg className={cn('w-4 h-4 shrink-0', themeClass('text-black', 'text-gray-400'))} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+
+            <Link
+              href="/transfers"
+              className={cn(
+                'p-4 flex items-center gap-4 transition-all',
+                themeClass(
+                  'bg-white border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[1px_1px_0px_0px_#000]',
+                  'bg-white rounded-xl border border-gray-200 hover:border-green-300 hover:shadow-sm'
+                )
+              )}
+            >
+              <div className={cn(
+                'w-10 h-10 rounded-full flex items-center justify-center text-lg shrink-0',
+                themeClass('bg-[#facc15] border-2 border-black', 'bg-orange-50')
+              )}>
+                🔄
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className={cn('text-sm', themeClass('font-black text-black', 'font-semibold text-gray-900'))}>
+                  내 양도
+                </div>
+                <div className={cn('text-xs', themeClass('text-black/60 font-bold', 'text-gray-500'))}>
+                  {myTransfersTotal}건 참여 중
+                </div>
+              </div>
+              <svg className={cn('w-4 h-4 shrink-0', themeClass('text-black', 'text-gray-400'))} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          </div>
+        )}
+
         <AlertSettingsSection />
 
         <h2 className={`text-lg mb-4 flex items-center gap-2 ${themeClass('font-black text-black uppercase', 'font-semibold text-gray-900')} `}>

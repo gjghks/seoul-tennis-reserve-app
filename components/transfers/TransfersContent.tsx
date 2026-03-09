@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import PullToRefresh from 'react-simple-pull-to-refresh';
 import { useThemeClass, cn } from '@/lib/cn';
+import { useAuth } from '@/contexts/AuthContext';
 import { useTransfers } from '@/lib/hooks/useTransfers';
 import { DISTRICTS } from '@/lib/constants/districts';
 import type { TransferStatus } from '@/lib/constants/transfers';
@@ -13,10 +14,16 @@ import ProfileGate from '@/components/profile/ProfileGate';
 
 export default function TransfersContent() {
   const themeClass = useThemeClass();
+  const { user } = useAuth();
   const [district, setDistrict] = useState<string>('');
   const [status, setStatus] = useState<TransferStatus>('available');
+  const [myMode, setMyMode] = useState(false);
 
-  const { transfers, isLoading, mutate } = useTransfers({ district, status });
+  const { transfers, isLoading, mutate } = useTransfers({
+    district: myMode ? undefined : district,
+    status: myMode ? undefined : status,
+    my: myMode || undefined,
+  });
 
   const handleRefresh = async () => {
     await mutate();
@@ -32,7 +39,37 @@ export default function TransfersContent() {
               양도 마켓
             </h1>
           </div>
-          
+
+          {user && (
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => setMyMode(false)}
+                className={cn(
+                  'px-4 py-2 rounded-full text-sm font-bold transition-colors',
+                  !myMode
+                    ? themeClass('bg-black text-white', 'bg-gray-900 text-white')
+                    : themeClass('bg-white border-2 border-black hover:bg-gray-100', 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50')
+                )}
+              >
+                전체 양도
+              </button>
+              <button
+                type="button"
+                onClick={() => setMyMode(true)}
+                className={cn(
+                  'px-4 py-2 rounded-full text-sm font-bold transition-colors',
+                  myMode
+                    ? themeClass('bg-black text-white', 'bg-gray-900 text-white')
+                    : themeClass('bg-white border-2 border-black hover:bg-gray-100', 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50')
+                )}
+              >
+                내 양도
+              </button>
+            </div>
+          )}
+
+          {!myMode && (<>
           <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
             <button
               type="button"
@@ -125,10 +162,11 @@ export default function TransfersContent() {
               기간 만료
             </button>
           </div>
+          </>)}
         </div>
       </div>
 
-      <div className="h-[calc(100vh-280px)] overflow-y-auto">
+      <div className={cn(myMode ? 'h-[calc(100vh-220px)]' : 'h-[calc(100vh-280px)]', 'overflow-y-auto')}>
         <PullToRefresh onRefresh={handleRefresh} pullingContent="" refreshingContent="">
           <div className="container pb-24">
             {isLoading ? (
@@ -141,10 +179,10 @@ export default function TransfersContent() {
               <div className="py-20 text-center">
                 <div className="text-4xl mb-4">🎾</div>
                 <h3 className={cn('text-lg font-bold mb-2', themeClass('text-black', 'text-gray-900'))}>
-                  등록된 양도글이 없습니다
+                  {myMode ? '참여한 양도가 없습니다' : '등록된 양도글이 없습니다'}
                 </h3>
                 <p className="text-gray-500 text-sm">
-                  첫 양도글을 등록해보세요!
+                  {myMode ? '양도글을 등록하거나 관심 표시를 해보세요.' : '첫 양도글을 등록해보세요!'}
                 </p>
               </div>
             ) : (

@@ -9,6 +9,7 @@ interface UseMatchingPostsParams {
   matchType?: MatchType;
   status?: MatchPostStatus;
   date?: string;
+  my?: boolean;
   limit?: number;
   offset?: number;
 }
@@ -25,6 +26,7 @@ const fetcher = (url: string) => fetch(url).then(r => {
 
 export function useMatchingPosts(params: UseMatchingPostsParams = {}) {
   const searchParams = new URLSearchParams();
+  if (params.my) searchParams.set('my', 'true');
   if (params.district) searchParams.set('district', params.district);
   if (params.matchType) searchParams.set('match_type', params.matchType);
   if (params.status) searchParams.set('status', params.status);

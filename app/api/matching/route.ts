@@ -16,11 +16,54 @@ export async function GET(request: NextRequest) {
   const matchType = searchParams.get('match_type');
   const date = searchParams.get('date');
   const status = (searchParams.get('status') || 'open') as MatchPostStatus;
+  const myPosts = searchParams.get('my') === 'true';
   const limitParam = searchParams.get('limit');
   const offsetParam = searchParams.get('offset');
 
   const limit = Math.min(Math.max(1, Number(limitParam) || 20), 50);
   const offset = Math.max(0, Number(offsetParam) || 0);
+
+  if (myPosts) {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      return NextResponse.json({ error: '로그인이 필요합니다.' }, { status: 401 });
+    }
+
+    const { data: apps } = await supabase
+      .from('match_applications')
+      .select('post_id')
+      .eq('applicant_id', user.id);
+    const appliedIds = (apps || []).map((a: { post_id: string }) => a.post_id);
+
+    let myQuery = supabase
+      .from('match_posts')
+      .select('*', { count: 'exact' })
+      .order('created_at', { ascending: false });
+
+    if (appliedIds.length > 0) {
+      myQuery = myQuery.or(`author_id.eq.${user.id},id.in.(${appliedIds.join(',')})`);
+    } else {
+      myQuery = myQuery.eq('author_id', user.id);
+    }
+
+    const { data, count, error } = await myQuery.range(offset, offset + limit - 1);
+
+    if (error) {
+      console.error('Error fetching my match posts:', error);
+      return NextResponse.json({ error: '내 매칭을 불러오는데 실패했습니다.' }, { status: 500 });
+    }
+
+    const posts = (data || []).map((post: { id: string; contact_info?: string; author_id: string }) => {
+      const { contact_info: _, ...rest } = post;
+      return {
+        ...rest,
+        has_applied: appliedIds.includes(post.id),
+        is_author: post.author_id === user.id,
+      };
+    });
+
+    return NextResponse.json({ posts, total: count ?? 0 });
+  }
 
   let query = supabase
     .from('match_posts')
