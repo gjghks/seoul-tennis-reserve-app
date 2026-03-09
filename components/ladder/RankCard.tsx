@@ -1,0 +1,78 @@
+import { useThemeClass, cn } from '@/lib/cn';
+import type { LeaderboardPlayer } from '@/lib/constants/ladder';
+import { getEloTier } from '@/lib/constants/ladder';
+
+interface RankCardProps {
+  player: LeaderboardPlayer;
+  isCurrentUser?: boolean;
+}
+
+export default function RankCard({ player, isCurrentUser = false }: RankCardProps) {
+  const themeClass = useThemeClass();
+  const tier = getEloTier(player.elo);
+
+  let rankDisplay: React.ReactNode = player.rank === 0 ? '-' : player.rank;
+  if (player.rank === 1) rankDisplay = '🥇';
+  else if (player.rank === 2) rankDisplay = '🥈';
+  else if (player.rank === 3) rankDisplay = '🥉';
+
+  return (
+    <div
+      className={cn(
+        'flex items-center gap-4 p-4 transition-all',
+        themeClass(
+          'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
+          'bg-white border border-gray-100 rounded-xl shadow-sm'
+        ),
+        isCurrentUser && themeClass('bg-[#facc15] border-black', 'bg-yellow-50 border-yellow-200')
+      )}
+    >
+      <div className={cn(
+        'flex items-center justify-center w-12 h-12 shrink-0 font-black text-xl',
+        typeof rankDisplay === 'string' ? 'text-2xl' : themeClass('text-black', 'text-gray-900')
+      )}>
+        {rankDisplay}
+      </div>
+
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-2 mb-1">
+          <span className={cn('font-bold truncate', themeClass('text-black', 'text-gray-900'))}>
+            {player.full_name || '익명 플레이어'}
+          </span>
+          {player.is_provisional && (
+            <span className={cn(
+              'text-[10px] font-bold px-1.5 py-0.5 rounded',
+              themeClass('bg-black text-white', 'bg-gray-100 text-gray-600')
+            )}>
+              잠정
+            </span>
+          )}
+        </div>
+        <div className="flex items-center gap-3 text-sm">
+          <span 
+            className="font-bold flex items-center gap-1"
+            style={{ color: themeClass('inherit', tier.color) }}
+          >
+            <span className="w-2 h-2 rounded-full" style={{ backgroundColor: tier.color }} />
+            {tier.label}
+          </span>
+          <span className={themeClass('text-black/60 font-bold', 'text-gray-500')}>
+            {player.elo}점
+          </span>
+        </div>
+      </div>
+
+      <div className={cn(
+        'shrink-0 text-right',
+        themeClass('text-black/80 font-bold', 'text-gray-600')
+      )}>
+        <div className="text-sm">
+          {player.matches_played}전
+        </div>
+        <div className="text-xs mt-1">
+          최고 {player.peak_elo}
+        </div>
+      </div>
+    </div>
+  );
+}
