@@ -1,18 +1,57 @@
 'use client';
 
+import { useState, useRef, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useThemeClass } from '@/lib/cn';
+import { useThemeClass, cn } from '@/lib/cn';
 
 const HeaderAuth = dynamic(
   () => import('@/components/layout/HeaderAuth'),
   { ssr: false, loading: () => <div className="w-16 h-8 skeleton rounded" /> }
 );
 
+const PRIMARY_NAV = [
+  { href: '/matching', label: '매칭' },
+  { href: '/transfers', label: '양도' },
+  { href: '/map', label: '지도' },
+  { href: '/records', label: '경기 기록' },
+] as const;
+
+const SECONDARY_NAV = [
+  { href: '/ladder', label: '래더' },
+  { href: '/today', label: '오늘 예약' },
+  { href: '/compare', label: '구별 비교' },
+  { href: '/trends', label: '타이밍' },
+  { href: '/calendar', label: '캘린더' },
+] as const;
+
 export default function Header() {
   const pathname = usePathname();
   const themeClass = useThemeClass();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const isSecondaryActive = SECONDARY_NAV.some(({ href }) => pathname.startsWith(href));
+
+  useEffect(() => {
+    if (!isDropdownOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isDropdownOpen]);
+
+  const prevPathname = useRef(pathname);
+  useEffect(() => {
+    if (prevPathname.current !== pathname) {
+      setIsDropdownOpen(false);
+      prevPathname.current = pathname;
+    }
+  }, [pathname]);
 
   return (
     <header className={`shrink-0 sticky top-0 z-50 ${themeClass('bg-[#facc15] border-b-[3px] border-black', 'bg-white border-b border-gray-100')}`}>
@@ -32,14 +71,7 @@ export default function Header() {
           </Link>
 
           <nav aria-label="주요 탐색" className="flex items-center gap-2">
-            {[
-              { href: '/today', label: '오늘 예약' },
-              { href: '/map', label: '지도' },
-              { href: '/compare', label: '구별 비교' },
-              { href: '/trends', label: '타이밍' },
-              { href: '/calendar', label: '캘린더' },
-              { href: '/records', label: '경기 기록' },
-            ].map(({ href, label }) => (
+            {PRIMARY_NAV.map(({ href, label }) => (
               <Link
                 key={href}
                 href={href}
@@ -49,6 +81,53 @@ export default function Header() {
                 {label}
               </Link>
             ))}
+
+            <div ref={dropdownRef} className="relative hidden sm:block">
+              <button
+                type="button"
+                onClick={() => setIsDropdownOpen(prev => !prev)}
+                className={cn(
+                  'flex items-center gap-1 px-3 py-1.5 text-sm transition-colors',
+                  themeClass('text-black font-bold hover:underline underline-offset-4', 'text-gray-600 hover:text-green-600'),
+                  isSecondaryActive && themeClass('underline', 'text-green-600')
+                )}
+              >
+                더보기
+                <svg className={cn('w-3.5 h-3.5 transition-transform', isDropdownOpen && 'rotate-180')} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </button>
+
+              {isDropdownOpen && (
+                <div className={cn(
+                  'absolute right-0 top-full mt-2 w-44 py-1 z-50',
+                  themeClass(
+                    'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
+                    'bg-white border border-gray-200 rounded-xl shadow-lg'
+                  )
+                )}>
+                  {SECONDARY_NAV.map(({ href, label }) => {
+                    const active = pathname.startsWith(href);
+                    return (
+                      <Link
+                        key={href}
+                        href={href}
+                        className={cn(
+                          'block px-4 py-2.5 text-sm transition-colors',
+                          themeClass(
+                            `font-bold ${active ? 'bg-[#facc15]/30' : 'hover:bg-gray-100'}`,
+                            `${active ? 'text-green-600 bg-green-50' : 'text-gray-700 hover:bg-gray-50'}`
+                          )
+                        )}
+                      >
+                        {label}
+                      </Link>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
             <HeaderAuth />
           </nav>
         </div>
