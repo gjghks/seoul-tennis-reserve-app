@@ -86,7 +86,7 @@ export default function LadderPromoCard({ user, authLoading }: LadderPromoCardPr
               </p>
               <div className="flex items-center gap-4">
                 <Link
-                  href="/my"
+                  href="/ladder"
                   className={cn(
                     'inline-flex justify-center items-center px-4 py-2 text-sm font-bold rounded-lg transition-colors',
                     themeClass('bg-black text-white hover:bg-gray-800', 'bg-purple-600 text-white hover:bg-purple-700 shadow-sm')
