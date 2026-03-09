@@ -14,6 +14,7 @@ import {
   APPLICATION_STATUS_LABELS 
 } from '@/lib/constants/matching';
 import { MATCH_TYPE_LABELS } from '@/lib/constants/tennis';
+import { CONTACT_TYPE_LABELS } from '@/lib/constants/transfers';
 
 export default function MatchingPostDetail({ id }: { id: string }) {
   const { user } = useAuth();
@@ -247,6 +248,42 @@ export default function MatchingPostDetail({ id }: { id: string }) {
               {post.description || '상세 내용이 없습니다.'}
             </div>
           </div>
+
+          {post.contact_info && post.contact_type && (
+            <div className={cn('pt-6 border-t', themeClass('border-black', 'border-gray-100'))}>
+              <div className={cn(
+                'p-4 rounded-xl',
+                themeClass('bg-green-50 border-2 border-black', 'bg-green-50 border border-green-200')
+              )}>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-xl">🔓</span>
+                  <h3 className={cn('text-base', themeClass('font-black text-black', 'font-bold text-gray-900'))}>
+                    작성자 연락처
+                  </h3>
+                </div>
+                <div className={cn('text-sm', themeClass('font-bold text-black/60', 'text-gray-500'))}>
+                  {CONTACT_TYPE_LABELS[post.contact_type]}
+                </div>
+                <div className={cn('text-lg mt-1', themeClass('font-black text-black', 'font-bold text-gray-900'))}>
+                  {post.contact_info}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {!post.contact_info && post.has_applied && !isAuthor && (
+            <div className={cn('pt-6 border-t', themeClass('border-black', 'border-gray-100'))}>
+              <div className={cn(
+                'p-4 rounded-xl text-center',
+                themeClass('bg-gray-50 border-2 border-black', 'bg-gray-50 border border-gray-200')
+              )}>
+                <span className="text-xl">🔒</span>
+                <p className={cn('text-sm mt-1', themeClass('font-bold text-black/60', 'text-gray-500'))}>
+                  신청이 수락되면 작성자의 연락처가 공개됩니다.
+                </p>
+              </div>
+            </div>
+          )}
         </div>
 
         {isAuthor && (

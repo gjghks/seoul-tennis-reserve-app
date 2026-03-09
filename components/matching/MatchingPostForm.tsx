@@ -27,6 +27,8 @@ export default function MatchingPostForm() {
   const [ntrpMax, setNtrpMax] = useState('');
   const [maxParticipants, setMaxParticipants] = useState('1');
   const [costPerPerson, setCostPerPerson] = useState('');
+  const [contactType, setContactType] = useState<string>('');
+  const [contactInfo, setContactInfo] = useState('');
 
   const TIME_OPTIONS = Array.from({ length: 24 * 2 }, (_, i) => {
     const hours = Math.floor(i / 2).toString().padStart(2, '0');
@@ -65,6 +67,8 @@ export default function MatchingPostForm() {
         ntrp_max: ntrpMax ? Number(ntrpMax) : null,
         max_participants: Number(maxParticipants),
         cost_per_person: costPerPerson ? Number(costPerPerson) : null,
+        contact_type: contactType || null,
+        contact_info: contactInfo.trim() || null,
       };
 
       const res = await fetch('/api/matching', {
@@ -239,12 +243,40 @@ export default function MatchingPostForm() {
         </div>
 
         <div>
+          <label htmlFor="contactType" className={labelClass}>연락처 (선택)</label>
+          <p className={cn('text-xs mb-2', themeClass('text-black/50 font-bold', 'text-gray-400'))}>
+            수락된 신청자에게만 공개됩니다.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <select
+              id="contactType"
+              value={contactType}
+              onChange={(e) => setContactType(e.target.value)}
+              className={inputClass}
+            >
+              <option value="">연락 방법 선택</option>
+              <option value="kakao">카카오톡 ID</option>
+              <option value="phone">전화번호</option>
+            </select>
+            {contactType && (
+              <input
+                type="text"
+                value={contactInfo}
+                onChange={(e) => setContactInfo(e.target.value)}
+                placeholder={contactType === 'kakao' ? '카카오톡 ID' : '010-0000-0000'}
+                className={inputClass}
+              />
+            )}
+          </div>
+        </div>
+
+        <div>
           <label htmlFor="description" className={labelClass}>상세 설명</label>
           <textarea
             id="description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="추가적인 설명이나 조건을 자유롭게 적어주세요."
+            placeholder="추가적인 설명이나 조건을 적어주세요. (연락처, 계좌 등 개인정보는 위 연락처 필드를 이용해주세요)"
             className={cn(inputClass, 'min-h-[120px] resize-y')}
             maxLength={1000}
           />

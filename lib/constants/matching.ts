@@ -1,4 +1,5 @@
 import type { MatchType, LocationType } from './tennis';
+import type { ContactType } from './transfers';
 
 export type MatchPostStatus = 'open' | 'closed' | 'completed' | 'cancelled';
 export type ApplicationStatus = 'pending' | 'accepted' | 'rejected' | 'withdrawn';
@@ -24,6 +25,8 @@ export interface MatchPost {
   cost_per_person: number | null;
   title: string;
   description: string | null;
+  contact_type: ContactType | null;
+  contact_info: string | null;
   status: MatchPostStatus;
   created_at: string;
   updated_at: string;

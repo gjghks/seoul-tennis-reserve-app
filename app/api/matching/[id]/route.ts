@@ -44,6 +44,7 @@ export async function GET(_: Request, context: RouteContext) {
   const { data: { user } } = await supabase.auth.getUser();
   let applications = null;
   let hasApplied = false;
+  let showContact = false;
 
   if (user) {
     if (user.id === post.author_id) {
@@ -53,20 +54,25 @@ export async function GET(_: Request, context: RouteContext) {
         .eq('post_id', id)
         .order('created_at', { ascending: true });
       applications = apps;
+      showContact = true;
     } else {
       const { data: myApp } = await supabase
         .from('match_applications')
-        .select('id')
+        .select('id, status')
         .eq('post_id', id)
         .eq('applicant_id', user.id)
         .maybeSingle();
       hasApplied = !!myApp;
+      showContact = myApp?.status === 'accepted';
     }
   }
 
+  const { contact_info: contactValue, ...publicData } = post;
+
   return NextResponse.json({
     post: {
-      ...post,
+      ...publicData,
+      contact_info: showContact ? contactValue : null,
       has_applied: hasApplied,
       applications,
     },
@@ -123,6 +129,8 @@ export async function PUT(request: NextRequest, context: RouteContext) {
       cost_per_person,
       title,
       description,
+      contact_type,
+      contact_info,
       status,
     } = body;
 
@@ -185,6 +193,8 @@ export async function PUT(request: NextRequest, context: RouteContext) {
       cost_per_person: cost_per_person ?? null,
       title,
       description: description ?? null,
+      contact_type: contact_type || null,
+      contact_info: contact_info || null,
       updated_at: new Date().toISOString(),
     };
 

@@ -69,10 +69,10 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  const posts = (data || []).map((post: { id: string }) => ({
-    ...post,
-    has_applied: appliedPostIds.has(post.id),
-  }));
+  const posts = (data || []).map((post: { id: string; contact_info?: string }) => {
+    const { contact_info: _, ...rest } = post;
+    return { ...rest, has_applied: appliedPostIds.has(post.id) };
+  });
 
   return NextResponse.json({ posts, total: count ?? 0 });
 }
@@ -119,6 +119,8 @@ export async function POST(request: NextRequest) {
       cost_per_person,
       title,
       description,
+      contact_type,
+      contact_info,
     } = body;
 
     if (!play_date || !play_time_start || !court_name || !district || !match_type || !title) {
@@ -206,6 +208,8 @@ export async function POST(request: NextRequest) {
         cost_per_person: cost_per_person ?? null,
         title,
         description: description ?? null,
+        contact_type: contact_type || null,
+        contact_info: contact_info || null,
       }])
       .select()
       .single();
