@@ -1,5 +1,4 @@
 import { getIndependentCourts } from './lib/data/independentCourts';
-import FACILITY_DATA from './lib/data/facilityEnrichment.data';
 import { findEnrichment } from './lib/data/facilityEnrichment';
 
 const NEW_PREFIXES = ['GN', 'GD', 'GS', 'GJ', 'GA', 'SC', 'SD', 'SP', 'YC', 'MP', 'GR'];

@@ -18,7 +18,7 @@ import { AD_SLOTS } from '@/lib/adConfig';
 import { useThemeClass } from '@/lib/cn';
 import FacilityTags from '@/components/ui/FacilityTags';
 import { extractFacilityTags } from '@/lib/utils/facilityTags';
-import { findEnrichment, getEnrichmentCoordinates, getMapPOIName } from '@/lib/data/facilityEnrichment';
+import { findEnrichment, getEnrichmentCoordinates } from '@/lib/data/facilityEnrichment';
 import { convertToWeatherGrid } from '@/lib/utils/weatherGrid';
 import WeatherInfoCard from '@/components/weather/WeatherInfoCard';
 import { useRecentCourts } from '@/lib/hooks/useRecentCourts';

@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createServerSupabaseClient } from '@/lib/supabaseServer';
 import { createRateLimiter } from '@/lib/rateLimit';
 import { VALID_MATCH_TYPES, VALID_MATCH_FORMATS, VALID_RESULTS, VALID_LOCATION_TYPES, VALID_COURT_SURFACES } from '@/lib/constants/tennis';
-import type { MatchType, MatchResult } from '@/lib/constants/tennis';
 import { validateScore } from '@/lib/utils/tennis';
 
 const limiter = createRateLimiter({ windowMs: 60_000, maxRequests: 10 });
