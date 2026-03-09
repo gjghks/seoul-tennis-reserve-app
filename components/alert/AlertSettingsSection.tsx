@@ -27,7 +27,7 @@ export default function AlertSettingsSection() {
   const themeClass = useThemeClass();
   const { showToast } = useToast();
   const { alerts, isLoading, removeAlert } = useAlertSettings();
-  const { isSubscribed, permission, subscribe, unsubscribe } = usePushSubscription();
+  const { isSubscribed, permission, isLoading: pushLoading, subscribe, unsubscribe } = usePushSubscription();
 
   const handleTogglePush = async () => {
     if (isSubscribed) {
@@ -80,7 +80,7 @@ export default function AlertSettingsSection() {
           <button
             type="button"
             onClick={handleTogglePush}
-            disabled={permission === 'denied'}
+            disabled={permission === 'denied' || pushLoading}
             className={themeClass(
               `px-4 py-2 border-2 border-black rounded-[5px] font-bold transition-all ${
                 isSubscribed
@@ -94,7 +94,7 @@ export default function AlertSettingsSection() {
               } disabled:opacity-50 disabled:cursor-not-allowed`
             )}
           >
-            {isSubscribed ? '해제' : '활성화'}
+            {pushLoading ? '처리중...' : isSubscribed ? '해제' : '활성화'}
           </button>
         </div>
       )}

@@ -33,19 +33,52 @@ function urlBase64ToUint8Array(base64String: string): Uint8Array {
   return outputArray;
 }
 
-async function waitForServiceWorker(timeoutMs = 10000): Promise<ServiceWorkerRegistration> {
+function waitForActive(
+  reg: ServiceWorkerRegistration,
+  timeoutMs: number,
+): Promise<ServiceWorkerRegistration> {
+  if (reg.active) return Promise.resolve(reg);
+
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(
+      () => reject(new Error('SW activation timeout')),
+      timeoutMs,
+    );
+
+    const sw = reg.installing ?? reg.waiting;
+    if (!sw) {
+      clearTimeout(timer);
+      reject(new Error('No SW to wait on'));
+      return;
+    }
+
+    sw.addEventListener('statechange', () => {
+      if (sw.state === 'activated') {
+        clearTimeout(timer);
+        resolve(reg);
+      }
+    });
+  });
+}
+
+async function waitForServiceWorker(): Promise<ServiceWorkerRegistration> {
   const existing = await navigator.serviceWorker.getRegistration('/');
-  if (!existing) {
-    await navigator.serviceWorker.register('/sw.js', { scope: '/' });
+
+  if (existing?.active) {
+    const url = existing.active.scriptURL;
+    if (url.endsWith('/sw-push.js')) return existing;
+    if (url.endsWith('/sw.js') && process.env.NODE_ENV === 'production')
+      return existing;
   }
 
-  const registration = await Promise.race([
-    navigator.serviceWorker.ready,
-    new Promise<never>((_, reject) =>
-      setTimeout(() => reject(new Error('SW registration timeout')), timeoutMs)
-    ),
-  ]);
-  return registration;
+  const registrations = await navigator.serviceWorker.getRegistrations();
+  await Promise.all(registrations.map((r) => r.unregister()));
+
+  const reg = await navigator.serviceWorker.register('/sw-push.js', {
+    scope: '/',
+  });
+
+  return waitForActive(reg, 5000);
 }
 
 async function getExistingSubscription(): Promise<PushSubscription | null> {
@@ -68,7 +101,12 @@ export function usePushSubscription(): UsePushSubscriptionReturn {
 
     setPermission(Notification.permission as PushPermissionState);
 
-    getExistingSubscription()
+    navigator.serviceWorker.getRegistration('/').then((reg) => {
+      if (reg?.active) {
+        return reg.pushManager.getSubscription();
+      }
+      return null;
+    })
       .then((sub) => setIsSubscribed(!!sub))
       .catch(() => setIsSubscribed(false))
       .finally(() => setIsLoading(false));
