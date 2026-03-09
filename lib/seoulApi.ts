@@ -8,6 +8,8 @@ const REQUEST_TIMEOUT_MS = 8_000;
 const MAX_RETRIES = 2;
 const RETRY_DELAYS_MS = [1_000, 2_000] as const;
 const CACHE_TTL_MS = 30 * 60 * 1000; // 30 minutes (matches ISR revalidate interval)
+const PAGE_SIZE = 1000;
+const MAX_FETCHABLE_ROWS = 5000;
 const INCLUDE_INDEPENDENT_COURTS = process.env.NODE_ENV !== 'test';
 
 // 서울시 25개 구
@@ -124,7 +126,7 @@ function httpGet(url: string, timeoutMs: number): Promise<string> {
     });
 }
 
-export async function fetchTennisAvailability(startIndex = 1, endIndex = 1000): Promise<SeoulService[]> {
+export async function fetchTennisAvailability(): Promise<SeoulService[]> {
     if (isCacheFresh()) {
         return tennisDataCache!.data;
     }
@@ -134,15 +136,14 @@ export async function fetchTennisAvailability(startIndex = 1, endIndex = 1000): 
         return INCLUDE_INDEPENDENT_COURTS ? getIndependentCourts() : [];
     }
 
-    const url = `${BASE_URL}/${API_KEY}/json/ListPublicReservationSport/${startIndex}/${endIndex}/`;
-
     let lastError: unknown;
 
     for (let retryCount = 0; retryCount <= MAX_RETRIES; retryCount++) {
         const attempt = retryCount + 1;
 
         try {
-            const text = await httpGet(url, REQUEST_TIMEOUT_MS);
+            const firstUrl = `${BASE_URL}/${API_KEY}/json/ListPublicReservationSport/1/${PAGE_SIZE}/`;
+            const text = await httpGet(firstUrl, REQUEST_TIMEOUT_MS);
 
             let data: SeoulApiResponse;
             try {
@@ -155,7 +156,36 @@ export async function fetchTennisAvailability(startIndex = 1, endIndex = 1000): 
                 throw new Error('Seoul API response missing ListPublicReservationSport (possible error code or maintenance)');
             }
 
-            const allServices = data.ListPublicReservationSport.row;
+            const totalCount = data.ListPublicReservationSport.list_total_count;
+            const allServices = [...data.ListPublicReservationSport.row];
+
+            if (totalCount > PAGE_SIZE) {
+                const cappedTotal = Math.min(totalCount, MAX_FETCHABLE_ROWS);
+                const pagePromises: Promise<string>[] = [];
+
+                for (let start = PAGE_SIZE + 1; start <= cappedTotal; start += PAGE_SIZE) {
+                    const end = Math.min(start + PAGE_SIZE - 1, cappedTotal);
+                    const pageUrl = `${BASE_URL}/${API_KEY}/json/ListPublicReservationSport/${start}/${end}/`;
+                    pagePromises.push(httpGet(pageUrl, REQUEST_TIMEOUT_MS));
+                }
+
+                const results = await Promise.allSettled(pagePromises);
+
+                for (const result of results) {
+                    if (result.status === 'fulfilled') {
+                        try {
+                            const pageData: SeoulApiResponse = JSON.parse(result.value);
+                            if (pageData.ListPublicReservationSport?.row) {
+                                allServices.push(...pageData.ListPublicReservationSport.row);
+                            }
+                        } catch {
+                            console.warn('Seoul API: failed to parse additional page');
+                        }
+                    } else {
+                        console.warn('Seoul API: additional page fetch failed:', result.reason);
+                    }
+                }
+            }
 
             const tennisServices = allServices.filter(svc =>
                 (svc.MINCLASSNM === '테니스장' || svc.SVCNM.includes('테니스')) &&

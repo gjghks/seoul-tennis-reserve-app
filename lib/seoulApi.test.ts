@@ -168,6 +168,61 @@ describe('seoulApi', () => {
       expect(mockGet).toHaveBeenCalledTimes(3);
     });
 
+    it('should fetch additional pages when list_total_count exceeds page size', async () => {
+      vi.stubEnv('SEOUL_OPEN_DATA_KEY', 'test-api-key');
+
+      mockSuccess({
+        ListPublicReservationSport: {
+          list_total_count: 1500,
+          RESULT: { CODE: 'INFO-000', MESSAGE: '정상 처리되었습니다.' },
+          row: [
+            { SVCID: '1', MINCLASSNM: '테니스장', SVCNM: '강남 테니스장', AREANM: '강남구' },
+          ],
+        },
+      });
+
+      mockSuccess({
+        ListPublicReservationSport: {
+          list_total_count: 1500,
+          RESULT: { CODE: 'INFO-000', MESSAGE: '정상 처리되었습니다.' },
+          row: [
+            { SVCID: '10', MINCLASSNM: '테니스장', SVCNM: '송파 테니스장', AREANM: '송파구' },
+          ],
+        },
+      });
+
+      const { fetchTennisAvailability } = await import('./seoulApi');
+      const result = await fetchTennisAvailability();
+
+      expect(mockGet).toHaveBeenCalledTimes(2);
+      expect(result).toHaveLength(2);
+      expect(result.map(r => r.SVCID)).toContain('1');
+      expect(result.map(r => r.SVCID)).toContain('10');
+    });
+
+    it('should still return first page data when additional pages fail', async () => {
+      vi.stubEnv('SEOUL_OPEN_DATA_KEY', 'test-api-key');
+
+      mockSuccess({
+        ListPublicReservationSport: {
+          list_total_count: 1500,
+          RESULT: { CODE: 'INFO-000', MESSAGE: '정상 처리되었습니다.' },
+          row: [
+            { SVCID: '1', MINCLASSNM: '테니스장', SVCNM: '강남 테니스장', AREANM: '강남구' },
+          ],
+        },
+      });
+
+      mockError(new Error('Page 2 network error'));
+
+      const { fetchTennisAvailability } = await import('./seoulApi');
+      const result = await fetchTennisAvailability();
+
+      expect(mockGet).toHaveBeenCalledTimes(2);
+      expect(result).toHaveLength(1);
+      expect(result[0].SVCID).toBe('1');
+    });
+
     it('should return stale cached data when all retries fail', async () => {
       vi.useFakeTimers();
       vi.stubEnv('SEOUL_OPEN_DATA_KEY', 'test-api-key');
