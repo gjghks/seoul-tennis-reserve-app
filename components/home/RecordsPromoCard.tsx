@@ -166,7 +166,7 @@ export default function RecordsPromoCard({ user, authLoading }: RecordsPromoCard
               href="/guide/records"
               className={`inline-flex justify-center items-center px-4 py-2 text-xs transition-colors ${themeClass('text-black/40 font-bold hover:text-black/60', 'text-gray-400 hover:text-gray-600')}`}
             >
-              사용법
+              사용법 보기
             </Link>
           </div>
         </div>

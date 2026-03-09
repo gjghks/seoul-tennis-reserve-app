@@ -1,4 +1,7 @@
 import type { MatchScore, MatchResult } from '@/lib/constants/tennis';
+import type { MatchPost } from '@/lib/constants/matching';
+import type { CourtTransfer } from '@/lib/constants/transfers';
+import { getEloTier } from '@/lib/constants/ladder';
 
 export const DEMO_SCORE_INITIAL: MatchScore = {
   sets: [{ my: 0, opp: 0 }],
@@ -113,3 +116,109 @@ export const DEMO_TREND = [
   { month: '2026-02', winRate: 63, total: 6 },
   { month: '2026-03', winRate: 65, total: 3 },
 ];
+
+export const DEMO_MATCHING_POSTS: MatchPost[] = [
+  {
+    id: 'demo-1',
+    author_id: 'user-1',
+    author_name: '테린이구함',
+    play_date: '2026-03-15',
+    play_time_start: '10:00',
+    play_time_end: '12:00',
+    location_type: 'seoul_court',
+    court_id: null,
+    court_name: '보라매공원 테니스장',
+    district: '동작구',
+    match_type: 'mens_doubles',
+    ntrp_min: 2.0,
+    ntrp_max: 3.5,
+    skill_level: 'beginner',
+    max_participants: 3,
+    accepted_count: 1,
+    cost_per_person: 5000,
+    title: '주말 오전 즐겁게 치실 초보분들 모십니다',
+    description: '서브 넣고 랠리 조금 되시는 분들이면 좋겠습니다.',
+    status: 'open',
+    created_at: '2026-03-09T10:00:00Z',
+    updated_at: '2026-03-09T10:00:00Z',
+  },
+  {
+    id: 'demo-2',
+    author_id: 'user-2',
+    author_name: '강스매시',
+    play_date: '2026-03-16',
+    play_time_start: '19:00',
+    play_time_end: '21:00',
+    location_type: 'custom',
+    court_id: null,
+    court_name: '장충테니스장',
+    district: '중구',
+    match_type: 'singles',
+    ntrp_min: 3.5,
+    ntrp_max: 4.5,
+    skill_level: 'intermediate',
+    max_participants: 1,
+    accepted_count: 1,
+    cost_per_person: 10000,
+    title: '평일 저녁 단식 빡겜하실 분',
+    description: '진지하게 단식 매치하실 중급자 1분 모십니다.',
+    status: 'closed',
+    created_at: '2026-03-08T10:00:00Z',
+    updated_at: '2026-03-08T10:00:00Z',
+  },
+];
+
+export const DEMO_ELO_TIERS = [
+  getEloTier(900),
+  getEloTier(1100),
+  getEloTier(1300),
+  getEloTier(1500),
+  getEloTier(1700),
+  getEloTier(1900),
+];
+
+export const DEMO_TRANSFERS: CourtTransfer[] = [
+  {
+    id: 'trans-1',
+    seller_id: 'user-1',
+    seller_name: '테니스러버',
+    court_id: null,
+    court_name: '양재시민의숲 테니스장',
+    district: '서초구',
+    play_date: '2026-03-20',
+    play_time_start: '18:00',
+    play_time_end: '20:00',
+    original_price: 16000,
+    asking_price: 16000,
+    is_free: false,
+    title: '양재 시민의숲 저녁시간 원가양도',
+    description: '갑자기 야근이 잡혀서 원가 양도합니다.',
+    status: 'available',
+    buyer_id: null,
+    buyer_name: null,
+    created_at: '2026-03-09T08:00:00Z',
+    updated_at: '2026-03-09T08:00:00Z',
+  },
+  {
+    id: 'trans-2',
+    seller_id: 'user-2',
+    seller_name: '마음씨좋은분',
+    court_id: null,
+    court_name: '응봉공원 테니스장',
+    district: '성동구',
+    play_date: '2026-03-12',
+    play_time_start: '08:00',
+    play_time_end: '10:00',
+    original_price: 8000,
+    asking_price: 0,
+    is_free: true,
+    title: '응봉공원 아침 코트 무료나눔',
+    description: '비가 올거같아서 그냥 무료로 나눔합니다 ㅠㅠ 칠수있으신분 가져가세요',
+    status: 'completed',
+    buyer_id: 'user-3',
+    buyer_name: '행운아',
+    created_at: '2026-03-08T15:00:00Z',
+    updated_at: '2026-03-08T18:00:00Z',
+  },
+];
+

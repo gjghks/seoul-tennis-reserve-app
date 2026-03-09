@@ -29,6 +29,21 @@ const RecordsPromoCard = dynamic(
   { ssr: false, loading: () => <div className="h-16" /> }
 );
 
+const MatchingPromoCard = dynamic(
+  () => import('@/components/home/MatchingPromoCard'),
+  { ssr: false, loading: () => <div className="h-16" /> }
+);
+
+const LadderPromoCard = dynamic(
+  () => import('@/components/home/LadderPromoCard'),
+  { ssr: false, loading: () => <div className="h-16" /> }
+);
+
+const TransferPromoCard = dynamic(
+  () => import('@/components/home/TransferPromoCard'),
+  { ssr: false, loading: () => <div className="h-16" /> }
+);
+
 const PopularCourts = dynamic(
   () => import('@/components/home/PopularCourts'),
   { ssr: false, loading: () => <div className="container"><div className="h-48 skeleton rounded-xl" /></div> }
@@ -154,7 +169,10 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
         </div>
       </section>
 
+      <MatchingPromoCard user={user} authLoading={authLoading} />
+      <TransferPromoCard />
       <RecordsPromoCard user={user} authLoading={authLoading} />
+      <LadderPromoCard user={user} authLoading={authLoading} />
 
       {showFavoritesAbove && (
         <div className="pt-4 pb-2 lg:pt-3 lg:pb-1">
