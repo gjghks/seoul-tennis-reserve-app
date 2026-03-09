@@ -15,9 +15,9 @@ const AlertSettingsSection = dynamic(
   () => import('@/components/alert/AlertSettingsSection'),
   { ssr: false, loading: () => <div className="h-48 skeleton !rounded-xl mb-8" /> }
 );
-const TennisProfileSection = dynamic(
-  () => import('@/components/profile/TennisProfileSection'),
-  { ssr: false, loading: () => <div className="h-64 skeleton !rounded-xl mb-8" /> }
+const UnifiedProfileSection = dynamic(
+  () => import('@/components/profile/UnifiedProfileSection'),
+  { ssr: false, loading: () => <div className="h-80 skeleton !rounded-xl mb-8" /> }
 );
 import { ProviderBadge } from '@/components/auth/ProviderBadge';
 
@@ -190,7 +190,7 @@ export default function MyPage() {
 
       {user && (
         <div className="max-w-2xl">
-        <TennisProfileSection />
+        <UnifiedProfileSection />
         <AlertSettingsSection />
 
         <h2 className={`text-lg mb-4 flex items-center gap-2 ${themeClass('font-black text-black uppercase', 'font-semibold text-gray-900')} `}>

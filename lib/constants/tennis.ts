@@ -186,3 +186,20 @@ export const CAREER_YEARS_OPTIONS = [
   })),
   { value: 25, label: '20년 이상' },
 ];
+
+export const NTRP_OPTIONS: { value: number; label: string; description: string }[] = [
+  { value: 2.0, label: '초보', description: '느린 공은 넘기지만 방향 조절이 어려움' },
+  { value: 2.5, label: '입문', description: '짧은 랠리 가능, 동호회 참가 시작 단계' },
+  { value: 3.0, label: '초급', description: '10회 이상 랠리, 기본 게임 진행 가능' },
+  { value: 3.5, label: '초중급', description: '방향 조절·스핀 구사, 복식 경기 가능' },
+  { value: 4.0, label: '중급', description: '안정적 랠리, 서브 코스 조절, 네트 플레이' },
+  { value: 4.5, label: '중상급', description: '지역 대회 수준, 스핀·전술 활용 능숙' },
+  { value: 5.0, label: '상급 이상', description: '전국 대회 수준 이상' },
+];
+
+export function ntrpToSkillLevel(ntrp: number): SkillLevel {
+  if (ntrp <= 2.5) return 'beginner';
+  if (ntrp <= 3.5) return 'intermediate';
+  if (ntrp <= 4.5) return 'advanced';
+  return 'pro';
+}

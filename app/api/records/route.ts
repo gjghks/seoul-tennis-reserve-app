@@ -220,7 +220,37 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    return NextResponse.json({ record: data }, { status: 201 });
+    let eloResult = null;
+    if (result !== 'retired') {
+      const { data: profile } = await supabase
+        .from('player_profiles')
+        .select('ladder_opt_in, singles_elo, doubles_elo')
+        .eq('user_id', user.id)
+        .single();
+
+      if (profile?.ladder_opt_in) {
+        const eloMatchType = match_type === 'singles' ? 'singles' : 'doubles';
+        const opponentElo = eloMatchType === 'singles'
+          ? (profile.singles_elo ?? 1200)
+          : (profile.doubles_elo ?? 1200);
+
+        const { data: eloData, error: eloError } = await supabase.rpc('calculate_elo', {
+          p_user_id: user.id,
+          p_opponent_elo: opponentElo,
+          p_result: result === 'draw' ? 'draw' : result,
+          p_match_type: eloMatchType,
+          p_game_record_id: data.id,
+        });
+
+        if (eloError) {
+          console.error('ELO calculation failed (non-blocking):', eloError);
+        } else {
+          eloResult = eloData;
+        }
+      }
+    }
+
+    return NextResponse.json({ record: data, elo: eloResult }, { status: 201 });
   } catch {
     return NextResponse.json(
       { error: '잘못된 요청입니다.' },
