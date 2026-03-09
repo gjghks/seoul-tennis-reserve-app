@@ -22,6 +22,9 @@
 | **경쟁률** | 시간대/요일별 예약 경쟁률 추이 분석 |
 | **캘린더** | 날짜별 예약 현황을 달력 뷰로 확인 |
 | **경기 기록** | 테니스 경기 기록 관리 (승패, 스코어, 상대, 코트, 비용, 사진) |
+| **매칭** | 같이 테니스 칠 파트너를 모집하거나 참여하는 오픈 매칭 게시판 |
+| **래더** | ELO 기반 랭킹 시스템으로 실력 증명 및 순위 경쟁 |
+| **양도 마켓** | 코트 예약을 양도하거나 원하는 시간대의 코트를 구하는 마켓 |
 
 ### 코트 상세 정보
 
@@ -39,6 +42,13 @@
 - **통계 분석** -- 승률, 매치 수, 코트별/매치 타입별 통계
 - **테니스 프로필** -- NTRP 레이팅, 구력, 실력 레벨, 선호 손 등 프로필 관리
 - **이미지 첨부** -- 경기 사진 업로드 (최대 3장)
+
+### 커뮤니티
+
+- **오픈 매칭** -- 날짜·장소·실력 수준을 지정해 테니스 파트너를 모집하고 신청
+- **ELO 래더** -- 단식/복식 ELO 랭킹 시스템, 티어별 리더보드
+- **양도 마켓** -- 코트 예약 양도 등록, 관심 표시, 연락처 비공개(관심 표시 후 공개)
+- **유저 프로필** -- 닉네임·성별 아바타·NTRP 레이팅으로 커뮤니티 프로필 구성
 
 ### 편의 기능
 
@@ -148,10 +158,16 @@ app/
   trends/                   # 경쟁률 추이
   calendar/                 # 캘린더 뷰
   records/                  # 경기 기록 (목록, 작성, 상세, 수정)
+  matching/                 # 매칭 (게시판, 글쓰기, 상세)
+  ladder/                   # 래더 (ELO 리더보드)
+  transfers/                # 양도 마켓 (목록, 등록, 상세)
   [district]/               # 자치구별 코트 목록
     [courtId]/              # 코트 상세 (리뷰, 날씨, 지도)
   my/                       # 마이페이지 (즐겨찾기, 알림, 테니스 프로필)
   guide/[district]/         # 자치구 가이드
+  guide/matching/           # 매칭 기능 가이드
+  guide/ladder/             # 래더 시스템 가이드
+  guide/transfers/          # 양도 마켓 가이드
   login/                    # 로그인 (Kakao, Google)
   about/                    # 서비스 소개
   api/
@@ -160,6 +176,10 @@ app/
     air-quality/            # 실시간 대기질
     records/                # 경기 기록 CRUD + 통계
     profile/tennis/         # 테니스 프로필
+    profile/me/             # 유저 프로필 (닉네임, 아바타)
+    matching/               # 매칭 게시판 CRUD + 신청
+    ladder/                 # 래더 리더보드 + 프로필 + 히스토리
+    transfers/              # 양도 마켓 CRUD + 관심 표시
     reviews/                # 리뷰 CRUD
     favorites/              # 즐겨찾기 CRUD
     trends/                 # 경쟁률 데이터
@@ -167,7 +187,7 @@ app/
     push/                   # 푸시 알림 구독
     alerts/                 # 알림 설정
     feedback/               # 피드백 제출
-    cron/                   # 스케줄 작업 (스냅샷, 랭킹, 알림, 정리)
+    cron/                   # 스케줄 작업 (스냅샷, 랭킹, 알림, 정리, 양도 만료)
 
 components/                 # React 컴포넌트
   layout/                   # Header, Footer, BottomNav
@@ -178,7 +198,10 @@ components/                 # React 컴포넌트
   favorite/                 # 즐겨찾기 버튼, 섹션
   alert/                    # 알림 설정
   records/                  # 경기 기록 (폼, 카드, 상세, 통계)
-  profile/                  # 테니스 프로필
+  matching/                 # 매칭 (게시판, 카드, 폼, 상세)
+  ladder/                   # 래더 (리더보드, 랭크 카드, ELO 차트)
+  transfers/                # 양도 (목록, 카드, 폼, 상세)
+  profile/                  # 프로필 (테니스, 유저, 아바타, ProfileGate)
   ui/                       # 공통 UI (Toast, Spinner, ShareButton 등)
   pwa/                      # PWA 설치 프롬프트
 
@@ -187,7 +210,7 @@ lib/                        # 유틸리티
   supabase.ts               # Supabase 브라우저 클라이언트
   supabaseServer.ts         # Supabase 서버 클라이언트
   hooks/                    # 커스텀 훅 (즐겨찾기, 기록, 프로필 등)
-  constants/                # 상수 (자치구, 테니스)
+  constants/                # 상수 (자치구, 테니스, 매칭, 래더, 양도, 프로필)
   utils/                    # 유틸리티 (상태, 통계, 날씨 등)
 
 contexts/                   # React Context (Auth, Theme, TennisData, Toast)

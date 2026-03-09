@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { DISTRICTS, KOREAN_TO_SLUG } from '@/lib/constants/districts';
 import { fetchTennisAvailability } from '@/lib/seoulApi';
 
-const LAST_MODIFIED = new Date('2026-03-01T00:00:00Z');
+const LAST_MODIFIED = new Date('2026-03-09T00:00:00Z');
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://seoul-tennis.com';
@@ -75,6 +75,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
     {
+      url: `${baseUrl}/matching`,
+      lastModified: LAST_MODIFIED,
+      changeFrequency: 'daily',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/ladder`,
+      lastModified: LAST_MODIFIED,
+      changeFrequency: 'daily',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/transfers`,
+      lastModified: LAST_MODIFIED,
+      changeFrequency: 'daily',
+      priority: 0.8,
+    },
+    {
       url: `${baseUrl}/contact`,
       lastModified: LAST_MODIFIED,
       changeFrequency: 'monthly',
@@ -111,6 +129,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${baseUrl}/guide/records`,
+      lastModified: LAST_MODIFIED,
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/guide/matching`,
+      lastModified: LAST_MODIFIED,
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/guide/ladder`,
+      lastModified: LAST_MODIFIED,
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/guide/transfers`,
       lastModified: LAST_MODIFIED,
       changeFrequency: 'monthly' as const,
       priority: 0.6,

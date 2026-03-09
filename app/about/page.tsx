@@ -17,6 +17,9 @@ const CORE_FEATURES = [
   { emoji: '📈', title: '타이밍', desc: '요일·시간대별 예약 패턴으로 경쟁 적은 타이밍 공략' },
   { emoji: '🗓️', title: '캘린더', desc: '날짜별 예약 현황을 캘린더에서 직관적으로 확인' },
   { emoji: '🎾', title: '경기 기록', desc: '나의 테니스 경기를 기록하고 통계로 실력 변화를 추적' },
+  { emoji: '🤝', title: '매칭', desc: '같이 테니스 칠 파트너를 직접 모집하거나 참여' },
+  { emoji: '🏆', title: '래더', desc: 'ELO 랭킹 시스템으로 실력을 증명하고 순위를 올리기' },
+  { emoji: '🔄', title: '양도 마켓', desc: '코트 예약을 양도하거나 원하는 시간대의 코트를 구하기' },
 ] as const;
 
 const COURT_DETAIL_FEATURES = [
@@ -39,6 +42,7 @@ const CONVENIENCE_FEATURES = [
   { title: '카카오 공유', desc: '코트 정보를 카카오톡으로 간편하게 공유' },
   { title: '테마 전환', desc: '미니멀·네오브루탈리즘 두 가지 디자인 테마 지원' },
   { title: '경기 통계', desc: '승률, 세트 스코어, 코트별 전적 등 자동 분석' },
+  { title: '유저 프로필', desc: '닉네임·아바타·NTRP 레이팅으로 나만의 테니스 프로필 구성' },
 ] as const;
 
 export default function AboutPage() {
@@ -156,7 +160,8 @@ export default function AboutPage() {
                <li>실제 예약은 서울시 공공서비스예약 시스템에서 진행됩니다.</li>
                <li>데이터는 실시간으로 업데이트되지만, 실제 예약 가능 여부와 차이가 있을 수 있습니다.</li>
                <li>카카오 또는 구글 계정으로 로그인하면 즐겨찾기·후기 기능을 이용할 수 있습니다.</li>
-               <li>로그인하면 경기 기록 및 통계 기능을 이용할 수 있습니다.</li>
+                <li>로그인하면 경기 기록 및 통계 기능을 이용할 수 있습니다.</li>
+                <li>매칭·래더·양도 등 커뮤니티 기능은 프로필 설정 후 이용할 수 있습니다.</li>
              </ul>
            </section>
 

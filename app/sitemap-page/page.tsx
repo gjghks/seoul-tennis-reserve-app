@@ -19,6 +19,9 @@ export default function SitemapPage() {
     { href: '/calendar', label: '캘린더', description: '날짜별 예약 현황 캘린더 뷰' },
     { href: '/map', label: '지도', description: '전체 테니스장 지도 뷰' },
     { href: '/records', label: '경기 기록', description: '테니스 경기 기록 및 통계' },
+    { href: '/matching', label: '매칭', description: '테니스 파트너 매칭 게시판' },
+    { href: '/ladder', label: '래더', description: 'ELO 기반 테니스 래더 랭킹' },
+    { href: '/transfers', label: '양도 마켓', description: '코트 예약 양도 거래' },
     { href: '/about', label: '서비스 소개', description: '서울 테니스 서비스 안내' },
     { href: '/contact', label: '문의하기', description: '서비스 문의 및 건의' },
     { href: '/privacy', label: '개인정보처리방침', description: '개인정보 보호 정책' },
@@ -33,6 +36,9 @@ export default function SitemapPage() {
   const guidePages = [
     { href: '/guide/reservation', label: '예약 가이드', description: '통합회원 가입 및 예약 방법 안내' },
     { href: '/guide/records', label: '경기 기록 가이드', description: '테니스 경기 기록 기능 안내' },
+    { href: '/guide/matching', label: '매칭 가이드', description: '테니스 파트너 매칭 기능 안내' },
+    { href: '/guide/ladder', label: '래더 가이드', description: 'ELO 래더 시스템 안내' },
+    { href: '/guide/transfers', label: '양도 가이드', description: '코트 양도 마켓 기능 안내' },
   ];
 
   return (

@@ -83,12 +83,22 @@ To skip in emergencies: `git push --no-verify` (use with caution)
 | `/records/new` | `app/records/new/page.tsx` | Create new game record |
 | `/records/[id]` | `app/records/[id]/page.tsx` | Game record detail view |
 | `/records/[id]/edit` | `app/records/[id]/edit/page.tsx` | Edit game record |
+| `/matching` | `app/matching/page.tsx` | Open matching board - find tennis partners |
+| `/matching/new` | `app/matching/new/page.tsx` | Create matching post |
+| `/matching/[id]` | `app/matching/[id]/page.tsx` | Matching post detail (applicants, status) |
+| `/ladder` | `app/ladder/page.tsx` | ELO ladder/ranking leaderboard |
+| `/transfers` | `app/transfers/page.tsx` | Court transfer market |
+| `/transfers/new` | `app/transfers/new/page.tsx` | Create transfer listing |
+| `/transfers/[id]` | `app/transfers/[id]/page.tsx` | Transfer detail (interest, contact reveal) |
 | `/[district]` | `app/[district]/page.tsx` | District court listing with real-time status |
 | `/[district]/[courtId]` | `app/[district]/[courtId]/page.tsx` | Court detail (reviews, weather, map, similar courts) |
 | `/my` | `app/my/page.tsx` | User dashboard (favorites, recent courts, alert settings, tennis profile) |
 | `/guide/[district]` | `app/guide/[district]/page.tsx` | District guide (tips, parking, accessibility) |
 | `/guide/reservation` | `app/guide/reservation/page.tsx` | Step-by-step Seoul public reservation guide |
 | `/guide/records` | `app/guide/records/page.tsx` | Match records usage guide |
+| `/guide/matching` | `app/guide/matching/page.tsx` | Matching feature guide |
+| `/guide/ladder` | `app/guide/ladder/page.tsx` | Ladder system guide |
+| `/guide/transfers` | `app/guide/transfers/page.tsx` | Transfer market guide |
 | `/login` | `app/login/page.tsx` | OAuth login (Kakao, Google) |
 | `/about` | `app/about/page.tsx` | Service introduction |
 | `/contact` | `app/contact/page.tsx` | Contact info and feedback |
@@ -113,6 +123,16 @@ To skip in emergencies: `git push --no-verify` (use with caution)
 | `/api/records/[id]` | GET, PUT, DELETE | Individual game record operations |
 | `/api/records/stats` | GET | Game record statistics (win rate, match count, etc.) |
 | `/api/profile/tennis` | GET, PUT | Tennis player profile (NTRP, career years, skill level) |
+| `/api/profile/me` | GET, PUT | User profile (nickname, avatar_type, gender) |
+| `/api/matching` | GET, POST | Matching posts (list, create) |
+| `/api/matching/[id]` | GET, PUT, DELETE | Individual matching post operations |
+| `/api/matching/[id]/apply` | POST, DELETE | Apply/cancel to matching post |
+| `/api/ladder` | GET | Leaderboard (filterable by match type, district) |
+| `/api/ladder/profile` | GET, PUT | Ladder profile (opt-in, ELO ratings) |
+| `/api/ladder/history` | GET | ELO rating change history |
+| `/api/transfers` | GET, POST | Transfer listings (list, create) |
+| `/api/transfers/[id]` | GET, PUT, DELETE | Individual transfer operations |
+| `/api/transfers/[id]/interest` | POST, DELETE | Express/cancel interest in transfer |
 | `/api/reviews` | GET, POST, PUT, DELETE | User reviews with ratings and images |
 | `/api/favorites` | GET, POST, DELETE | User favorite courts |
 | `/api/visit` | GET, POST | Recent court visit tracking |
@@ -126,6 +146,7 @@ To skip in emergencies: `git push --no-verify` (use with caution)
 | `/api/cron/check-alerts` | GET | Scheduled: check and send push alerts |
 | `/api/cron/cleanup` | GET | Scheduled: database cleanup |
 | `/api/cron/scrape-external` | GET | Scheduled: scrape external facility data (non-Seoul API courts) |
+| `/api/cron/expire-transfers` | GET | Scheduled: auto-expire past-date transfer listings |
 | `/auth/callback` | GET | OAuth callback handler |
 
 ### Component Structure
@@ -133,7 +154,8 @@ To skip in emergencies: `git push --no-verify` (use with caution)
 ```
 components/
   layout/          # Header, HeaderAuth, Footer, BottomNav, MoreMenu, VisitorCounter
-  home/            # HomeContent, CourtSearch, PopularCourts, RecordsPromoCard, DiscoveryCards
+  home/            # HomeContent, CourtSearch, PopularCourts, RecordsPromoCard, DiscoveryCards,
+                   #   MatchingPromoCard, LadderPromoCard, TransferPromoCard
   district/        # DistrictContent, DistrictGrid
   court-detail/    # CourtDetailClient, StickyHeader, DetailContent, FeeTable,
                    #   ParkingSection, CourtDetailMap, SimilarCourts, CourtDetailFallback,
@@ -145,12 +167,16 @@ components/
   records/         # RecordsContent, RecordCard, RecordDetail, RecordForm,
                    #   RecordStats, ScoreInput, MatchTypeSelect,
                    #   CourtLocationInput, EmptyRecords, OpponentHistory, SkillProgressChart
-  profile/         # TennisProfileSection
+  matching/        # MatchingContent, MatchingCard, MatchingForm, MatchingDetail, MatchingApplyButton
+  ladder/          # LadderContent, RankCard, EloChart
+  transfers/       # TransfersContent, TransferCard, TransferForm, TransferDetail
+  profile/         # TennisProfileSection, ProfileAvatar, ProfileGate, UnifiedProfileSection, UserProfileSection
   today/           # TodayContent
   compare/         # CompareContent
   trends/          # TrendsContent, HeatmapChart
   calendar/        # CalendarContent
-  guide/           # GuideContent, RecordsGuideContent, ReservationGuideContent
+  guide/           # GuideContent, RecordsGuideContent, ReservationGuideContent,
+                   #   MatchingGuideContent, LadderGuideContent, TransfersGuideContent
   auth/            # LoginPrompt, ProviderBadge
   map/             # KakaoMapView, MapDiscoveryContent
   reservation/     # ReservationNotice
@@ -171,13 +197,13 @@ components/
 ### Key Directories
 - `app/` - Next.js App Router pages and API routes
 - `lib/` - Core utilities, API clients, hooks, constants, data, utils
-  - `lib/constants/` - District data (`districts.ts`), tennis constants (`tennis.ts`)
+  - `lib/constants/` - District data (`districts.ts`), tennis constants (`tennis.ts`), matching (`matching.ts`), ladder (`ladder.ts`), transfers (`transfers.ts`), profile (`profile.ts`)
   - `lib/data/` - Facility enrichment data and types
     - `facilityEnrichment.data.ts` - Per-court enrichment (court count, surface, lighting, coordinates, operating hours, images, mapPOIName)
     - `facilityEnrichment.types.ts` - Enrichment type definitions (includes mapPOIName for map navigation)
     - `facilityEnrichment.ts` - Enrichment lookup functions (getEnrichment, getEnrichmentOperatingHours, getEnrichmentImageUrl, getMapPOIName)
     - `independentCourts.ts` - Courts not in Seoul API (Gangbuk, Nowon, Dongdaemun, Eunpyeong, Jungnang)
-  - `lib/hooks/` - Custom hooks (useAlertSettings, useCountUp, useGameRecords, useInView, useKakaoLoaderWithHttps, usePushSubscription, useRecentCourts, useRecentSearches, useRecordStats, useReservationTip, useScrollFade, useTennisProfile)
+  - `lib/hooks/` - Custom hooks (useAlertSettings, useCountUp, useGameRecords, useInView, useKakaoLoaderWithHttps, usePushSubscription, useRecentCourts, useRecentSearches, useRecordStats, useReservationTip, useScrollFade, useTennisProfile, useMatchingPosts, useMatchingPost, useLeaderboard, useEloHistory, useLadderProfile, useTransfers, useTransferInterest, useUserProfile)
   - `lib/utils/` - Utilities (courtSearch, courtStatus, districtStats, facilityTags, inAppBrowser, mapNavigation, phoneLink, sanitizeRedirect, searchAnalytics, searchExperiment, searchHighlight, svgPath, tennis, weatherGrid, contentParser/)
   - `lib/scrapers/` - External facility data scrapers (`fmcsScraper.ts`, `jungrangScraper.ts`)
   - `lib/mockData/` - Mock/sample data for guides (`guideExamples.ts`)
@@ -222,6 +248,13 @@ components/
 | `court_status_cache` | Court status change detection (service role only) |
 | `site_visits` | Daily visit counter with atomic increment function |
 | `popular_courts_cache` | Pre-computed TOP 5 ranking (single-row, cron-updated) |
+| `matching_posts` | Open matching posts (date, location, match type, skill level, capacity, status) |
+| `matching_applications` | Applications to matching posts (user_id, post_id, message) |
+| `ladder_profiles` | Ladder opt-in, singles/doubles ELO ratings, match counts |
+| `ladder_match_history` | ELO rating change log per match |
+| `transfers` | Court transfer listings (court info, play date, price, status, contact) |
+| `transfer_interests` | Interest expressions on transfer listings |
+| `user_profiles` | User profile (nickname, avatar_type, gender) |
 
 All tables use Row Level Security (RLS). Storage buckets: `review-images` for review photos, `record-images` for game record photos.
 

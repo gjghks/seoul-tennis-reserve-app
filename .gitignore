@@ -58,3 +58,7 @@ next-env.d.ts
 
 # Temporary investigation files
 /tmp/
+
+# Scratch/snapshot files
+kakao-search-*.md
+court*-search-snapshot.md
