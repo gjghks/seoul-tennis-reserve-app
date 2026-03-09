@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -38,6 +38,13 @@ export default function MyPage() {
   const themeClass = useThemeClass();
   const { showToast } = useToast();
   const { recentCourts, clearRecentCourts, isHydrated } = useRecentCourts();
+  const [showAllRecent, setShowAllRecent] = useState(false);
+  const RECENT_INITIAL_COUNT = 5;
+  const visibleRecentCourts = useMemo(
+    () => showAllRecent ? recentCourts : recentCourts.slice(0, RECENT_INITIAL_COUNT),
+    [recentCourts, showAllRecent]
+  );
+  const hiddenCount = recentCourts.length - RECENT_INITIAL_COUNT;
   const [favorites, setFavorites] = useState<Favorite[]>([]);
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState(false);
@@ -132,7 +139,7 @@ export default function MyPage() {
             </button>
           </div>
           <div className="space-y-3">
-            {recentCourts.map((court) => (
+            {visibleRecentCourts.map((court) => (
               <div
                 key={court.svcId}
                 className={isNeoBrutalism
@@ -153,6 +160,18 @@ export default function MyPage() {
                 </Link>
               </div>
             ))}
+            {hiddenCount > 0 && (
+              <button
+                type="button"
+                onClick={() => setShowAllRecent(!showAllRecent)}
+                className={`w-full py-2.5 text-sm transition-colors ${themeClass(
+                  'font-bold text-black/70 hover:text-black bg-white border-2 border-black rounded-[5px] shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all',
+                  'font-medium text-gray-500 hover:text-green-600 bg-gray-50 rounded-xl hover:bg-gray-100'
+                )}`}
+              >
+                {showAllRecent ? '접기' : `더보기 (${hiddenCount}개)`}
+              </button>
+            )}
           </div>
         </div>
       )}
