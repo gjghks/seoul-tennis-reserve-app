@@ -220,9 +220,11 @@ export async function PUT(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { id, rating, content, images } = body;
+    const { id, rating, images } = body;
 
-    if (!id || !rating || !content) {
+    const sanitizedContent = sanitizeText(body.content);
+
+    if (!id || !rating || !sanitizedContent) {
       return NextResponse.json(
         { error: '필수 정보가 누락되었습니다.' },
         { status: 400 }
@@ -236,20 +238,21 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    if (content.length < 10 || content.length > 500) {
+    if (!validateTextLength(sanitizedContent, 10, 500)) {
       return NextResponse.json(
         { error: '후기는 10자 이상 500자 이하로 작성해주세요.' },
         { status: 400 }
       );
     }
 
-    const imageUrls = Array.isArray(images) ? images.slice(0, 3) : [];
+    const supabaseHost = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co').hostname;
+    const imageUrls = sanitizeImageUrls(images, 3, [supabaseHost]) ?? [];
 
     const { data, error } = await supabase
       .from('reviews')
       .update({
         rating,
-        content,
+        content: sanitizedContent,
         images: imageUrls,
         updated_at: new Date().toISOString(),
       })
