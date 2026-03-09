@@ -96,7 +96,7 @@ export default function DistrictContent({
     }
   };
 
-  const handleNavClick = useCallback((court: SeoulService) => {
+  const handleNavClick = (court: SeoulService) => {
     const coords = getCourtCoords(court);
     if (!coords) return;
     const poiName = getMapPOIName(court.SVCNM, court.AREANM, court.PLACENM);
@@ -105,7 +105,7 @@ export default function DistrictContent({
       : (court.PLACENM || court.SVCNM);
     const name = poiName || cleanCourtNameForMap(placeName);
     setNavDestination({ lat: coords.lat, lng: coords.lng, name });
-  }, []);
+  };
 
   const koreanDistrict = SLUG_TO_KOREAN[district] || district;
   
