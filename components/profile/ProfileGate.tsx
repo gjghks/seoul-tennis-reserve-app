@@ -11,18 +11,15 @@ import { NTRP_OPTIONS } from '@/lib/constants/tennis';
 import { useToast } from '@/contexts/ToastContext';
 import Spinner from '@/components/ui/Spinner';
 
-type GateFeature = 'matching' | 'ladder' | 'transfers';
+type GateFeature = 'matching' | 'ladder' | 'transfers' | 'tournament';
 
-const FEATURE_GUIDE: Record<GateFeature, { href: string; label: string }> = {
-  matching: { href: '/guide/matching', label: '매칭 기능 미리보기' },
-  ladder: { href: '/guide/ladder', label: '래더 시스템 미리보기' },
-  transfers: { href: '/guide/transfers', label: '양도 마켓 미리보기' },
-};
+
 
 const FEATURE_CONFIG = {
   matching: { color: 'blue', bgClass: 'bg-blue-50', minimalBg: 'bg-blue-50', minimalColor: 'blue', label: '매칭', description: '같이 테니스 칠 파트너를 찾아보세요' },
   ladder: { color: 'purple', bgClass: 'bg-purple-50', minimalBg: 'bg-purple-50', minimalColor: 'purple', label: '래더', description: 'ELO 랭킹으로 실력을 증명하세요' },
   transfers: { color: 'orange', bgClass: 'bg-orange-50', minimalBg: 'bg-orange-50', minimalColor: 'orange', label: '양도 마켓', description: '코트 예약을 양도하거나 구해보세요' },
+  tournament: { color: 'red', bgClass: 'bg-red-50', minimalBg: 'bg-red-50', minimalColor: 'red', label: '대진표', description: '동호회 대진표를 만들고 경기를 진행하세요' },
 };
 
 interface ProfileGateProps {
@@ -108,7 +105,6 @@ export default function ProfileGate({ children, feature }: ProfileGateProps) {
 
   const f = feature || 'matching';
   const config = FEATURE_CONFIG[f];
-  const guide = FEATURE_GUIDE[f];
 
   const getFeatureSVG = () => {
     if (f === 'matching') {
@@ -164,7 +160,7 @@ export default function ProfileGate({ children, feature }: ProfileGateProps) {
   if (!user) {
     return (
       <div className={cn(
-        'mx-4 my-8 p-6 text-center',
+        'mt-2 mb-4 p-6 text-center',
         themeClass(
           `border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] ${config.bgClass}`,
           `border border-${config.minimalColor}-200 rounded-xl shadow-sm ${config.minimalBg}`
@@ -187,17 +183,6 @@ export default function ProfileGate({ children, feature }: ProfileGateProps) {
           >
             로그인하기
           </Link>
-          {guide && (
-            <Link
-              href={guide.href}
-              className={themeClass(
-                'text-sm text-black/60 font-bold hover:text-black transition-colors underline underline-offset-2',
-                `text-sm text-${config.minimalColor}-600 hover:text-${config.minimalColor}-800 transition-colors underline underline-offset-2`
-              )}
-            >
-              사용법 보기 →
-            </Link>
-          )}
         </div>
       </div>
     );
@@ -209,7 +194,7 @@ export default function ProfileGate({ children, feature }: ProfileGateProps) {
 
     return (
       <div className={cn(
-        'mx-4 my-8 p-6',
+        'mt-2 mb-4 p-6',
         themeClass(
           `border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] ${config.bgClass}`,
           `border border-${config.minimalColor}-200 rounded-xl shadow-sm ${config.minimalBg}`
@@ -330,19 +315,6 @@ export default function ProfileGate({ children, feature }: ProfileGateProps) {
           </div>
         </div>
         
-        {guide && (
-          <div className="text-center">
-            <Link
-              href={guide.href}
-              className={themeClass(
-                'text-sm text-black/60 font-bold hover:text-black transition-colors underline underline-offset-2',
-                `text-sm text-${config.minimalColor}-600 hover:text-${config.minimalColor}-800 transition-colors underline underline-offset-2`
-              )}
-            >
-              사용법 보기 →
-            </Link>
-          </div>
-        )}
       </div>
     );
   }
