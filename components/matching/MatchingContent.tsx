@@ -24,6 +24,7 @@ export default function MatchingContent() {
   const [matchType, setMatchType] = useState<string>('');
   const [status, setStatus] = useState<string>('open');
   const [myMode, setMyMode] = useState(false);
+  const [exampleOpen, setExampleOpen] = useState(false);
 
   const { posts, total, isLoading, error, mutate } = useMatchingPosts({
     limit: PAGE_SIZE,
@@ -52,6 +53,26 @@ export default function MatchingContent() {
   );
 
   return (
+    <div className="container mx-auto px-4 py-6">
+      <div className="flex items-center justify-between mb-4">
+        <h1 className={cn('text-xl', themeClass('font-black text-black', 'font-bold text-gray-900'))}>매칭</h1>
+        <Link
+          href="/guide/matching"
+          className={cn(
+            'flex items-center gap-1.5 text-sm px-3.5 py-2 rounded-lg transition-all',
+            themeClass(
+              'bg-[#facc15] border-2 border-black font-bold text-black shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none',
+              'bg-green-50 text-green-700 font-semibold border border-green-200 hover:bg-green-100'
+            )
+          )}
+        >
+          <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0" aria-hidden="true">
+            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM8.94 6.94a.75.75 0 11-1.061-1.061 3 3 0 112.871 5.026v.345a.75.75 0 01-1.5 0v-.5c0-.72.57-1.172 1.081-1.287A1.5 1.5 0 108.94 6.94zM10 15a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+          </svg>
+          <span>사용법</span>
+        </Link>
+      </div>
+
     <ProfileGate feature="matching">
       <>
       <PullToRefresh
@@ -63,7 +84,8 @@ export default function MatchingContent() {
       }
       refreshingContent={RefreshIndicator}
     >
-      <div className="container mx-auto px-4 py-6">
+      <div>
+
         {user && (
           <div className="flex gap-2 mb-4">
             <button
@@ -153,6 +175,105 @@ export default function MatchingContent() {
           </select>
         </div>
         )}
+
+        <div className={cn(
+          'relative mb-6 transition-all',
+          themeClass(
+            'bg-white border-2 border-dashed border-black/30 rounded-[5px] overflow-hidden',
+            'bg-gray-50/80 border border-dashed border-gray-300 rounded-2xl overflow-hidden'
+          )
+        )}>
+          <button
+            type="button"
+            onClick={() => setExampleOpen(!exampleOpen)}
+            className={cn(
+              'w-full p-5 text-left cursor-pointer transition-colors',
+              themeClass('hover:bg-black/[0.02]', 'hover:bg-gray-50')
+            )}
+          >
+            <span className={cn(
+              'absolute top-3 right-3 flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold rounded z-10',
+              themeClass('bg-black/10 text-black/50', 'bg-gray-200 text-gray-500')
+            )}>
+              예시 {exampleOpen ? '▲' : '▼'}
+            </span>
+            <div className="flex justify-between items-start mb-3">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className={cn('px-2 py-0.5 text-xs font-bold rounded', themeClass('bg-[#22c55e]/50 text-black/50 border border-black/20', 'bg-green-100/70 text-green-700/60 border border-green-200'))}>모집중</span>
+                <span className={cn('px-2 py-0.5 text-xs font-bold rounded', themeClass('bg-black/10 text-black/50', 'bg-gray-100 text-gray-500'))}>송파구</span>
+                <span className={cn('px-2 py-0.5 text-xs font-bold rounded', themeClass('bg-[#88aaee]/40 text-black/50 border border-black/20', 'bg-blue-50/70 text-blue-700/60 border border-blue-100'))}>남복</span>
+              </div>
+            </div>
+            <h3 className={cn('text-lg mb-4 line-clamp-1', themeClass('font-black text-black/50', 'font-bold text-gray-400'))}>잠실 테니스장 주말 남복 한 게임 하실 분</h3>
+            <div className="grid grid-cols-2 gap-y-3 mb-4">
+              <div className="flex items-center gap-2">
+                <span className="text-lg opacity-50">📅</span>
+                <span className={cn('text-sm', themeClass('font-bold text-black/50', 'font-medium text-gray-400'))}>3.22(토) 14:00</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-lg opacity-50">🏟️</span>
+                <span className={cn('text-sm', themeClass('font-bold text-black/50', 'font-medium text-gray-400'))}>잠실 테니스장</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-lg opacity-50">👥</span>
+                <span className={cn('text-sm', themeClass('font-bold text-black/50', 'font-medium text-gray-400'))}>중급 (NTRP 3.0~4.0)</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-lg opacity-50">💰</span>
+                <span className={cn('text-sm', themeClass('font-bold text-black/50', 'font-medium text-gray-400'))}>10,000원</span>
+              </div>
+            </div>
+            <div className={cn('pt-3 border-t flex justify-between items-center', themeClass('border-black/10', 'border-gray-100'))}>
+              <span className={cn('text-sm', themeClass('font-bold text-black/30', 'text-gray-300'))}>테니스매니아</span>
+              <span className={cn('text-sm font-bold', themeClass('text-[#22c55e]/50', 'text-green-600/50'))}>2 / 4명</span>
+            </div>
+            {!exampleOpen && (
+              <p className={cn('mt-3 text-xs text-center', themeClass('text-black/40 font-bold', 'text-gray-400'))}>눌러서 예시 상세 보기</p>
+            )}
+          </button>
+          <div className={cn(
+            'transition-all duration-300 ease-in-out overflow-hidden',
+            exampleOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+          )}>
+            <div className={cn('px-5 pb-5 pt-0 space-y-4', themeClass('border-t border-dashed border-black/20', 'border-t border-dashed border-gray-200'))}>
+              <div className={cn('pt-4 text-sm leading-relaxed', themeClass('text-black/50', 'text-gray-400'))}>
+                <p className="mb-2">안녕하세요! 주말 오후에 잠실에서 남복 한 게임 같이 하실 분 모집합니다.</p>
+                <p>NTRP 3.0~4.0 수준이면 좋겠습니다. 4게임 노애드로 가볍게 즐겁게 치실 분 환영합니다. 코트비는 1/n 입니다.</p>
+              </div>
+              <div className={cn('p-3 rounded-lg', themeClass('bg-black/5', 'bg-gray-100'))}>
+                <p className={cn('text-[10px] mb-2 text-center', themeClass('font-bold text-black/40', 'font-semibold text-gray-400'))}>매칭 진행 과정</p>
+                <div className="flex items-center justify-between gap-1">
+                  {[
+                    { step: '모집중', icon: '✍️', active: true },
+                    { step: '신청', icon: '🤝', active: false },
+                    { step: '수락', icon: '✅', active: false },
+                    { step: '경기', icon: '🎾', active: false },
+                  ].map((s, i) => (
+                    <div key={s.step} className="flex items-center gap-1 flex-1">
+                      <div className={cn(
+                        'flex flex-col items-center flex-1',
+                        s.active ? themeClass('text-black/60', 'text-green-600/70') : themeClass('text-black/25', 'text-gray-300')
+                      )}>
+                        <span className="text-base">{s.icon}</span>
+                        <span className={cn('text-[9px] mt-0.5', s.active ? 'font-bold' : 'font-medium')}>{s.step}</span>
+                      </div>
+                      {i < 3 && <span className={cn('text-[10px] -mt-3', themeClass('text-black/20', 'text-gray-300'))}>→</span>}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <Link
+                href="/matching/new"
+                className={cn(
+                  'block w-full py-2.5 text-center text-sm font-bold rounded-lg transition-all',
+                  themeClass('bg-black/10 text-black/60 hover:bg-black/20', 'bg-gray-200 text-gray-600 hover:bg-gray-300')
+                )}
+              >
+                나도 매칭글 작성하기 →
+              </Link>
+            </div>
+          </div>
+        </div>
 
         {error ? (
           <div className={cn(
@@ -256,5 +377,6 @@ export default function MatchingContent() {
       </Link>
       </>
     </ProfileGate>
+    </div>
   );
 }

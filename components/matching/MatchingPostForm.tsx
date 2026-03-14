@@ -27,6 +27,7 @@ export default function MatchingPostForm() {
   const [ntrpMax, setNtrpMax] = useState('');
   const [maxParticipants, setMaxParticipants] = useState('1');
   const [costPerPerson, setCostPerPerson] = useState('');
+  const [isFree, setIsFree] = useState(false);
   const [contactType, setContactType] = useState<string>('');
   const [contactInfo, setContactInfo] = useState('');
 
@@ -39,8 +40,8 @@ export default function MatchingPostForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!title.trim() || !playDate || !courtName.trim()) {
-      showToast('필수 항목을 모두 입력해주세요.', 'error');
+    if (!title.trim() || !playDate || !courtName.trim() || !contactType || !contactInfo.trim()) {
+      showToast('필수 항목을 모두 입력해주세요. (연락처 포함)', 'error');
       return;
     }
 
@@ -66,7 +67,7 @@ export default function MatchingPostForm() {
         ntrp_min: ntrpMin ? Number(ntrpMin) : null,
         ntrp_max: ntrpMax ? Number(ntrpMax) : null,
         max_participants: Number(maxParticipants),
-        cost_per_person: costPerPerson ? Number(costPerPerson) : null,
+        cost_per_person: isFree ? 0 : (costPerPerson ? Number(costPerPerson) : null),
         contact_type: contactType || null,
         contact_info: contactInfo.trim() || null,
       };
@@ -226,24 +227,35 @@ export default function MatchingPostForm() {
         </div>
 
         <div>
-          <label htmlFor="costPerPerson" className={labelClass}>1인당 비용 (선택)</label>
-          <div className="relative">
+          <label htmlFor="costPerPerson" className={labelClass}>1인당 비용</label>
+          <label className="flex items-center gap-2 mb-2 cursor-pointer">
             <input
-              id="costPerPerson"
-              type="number"
-              min="0"
-              step="1000"
-              value={costPerPerson}
-              onChange={(e) => setCostPerPerson(e.target.value)}
-              placeholder="예: 10000"
-              className={inputClass}
+              type="checkbox"
+              checked={isFree}
+              onChange={(e) => { setIsFree(e.target.checked); if (e.target.checked) setCostPerPerson(''); }}
+              className={cn('w-4 h-4 rounded', themeClass('border-2 border-black text-black focus:ring-0 checked:bg-black', 'border-gray-300 text-green-600'))}
             />
-            <span className={cn('absolute right-4 top-3', themeClass('font-black text-black', 'font-bold text-gray-500'))}>원</span>
-          </div>
+            <span className={cn('text-sm', themeClass('font-bold text-black', 'font-medium text-gray-700'))}>무료</span>
+          </label>
+          {!isFree && (
+            <div className="relative">
+              <input
+                id="costPerPerson"
+                type="number"
+                min="0"
+                step="1000"
+                value={costPerPerson}
+                onChange={(e) => setCostPerPerson(e.target.value)}
+                placeholder="예: 10000"
+                className={inputClass}
+              />
+              <span className={cn('absolute right-4 top-3', themeClass('font-black text-black', 'font-bold text-gray-500'))}>원</span>
+            </div>
+          )}
         </div>
 
         <div>
-          <label htmlFor="contactType" className={labelClass}>연락처 (선택)</label>
+          <label htmlFor="contactType" className={labelClass}>연락처 <span className="text-red-500">*</span></label>
           <p className={cn('text-xs mb-2', themeClass('text-black/50 font-bold', 'text-gray-400'))}>
             수락된 신청자에게만 공개됩니다.
           </p>
@@ -254,19 +266,18 @@ export default function MatchingPostForm() {
               onChange={(e) => setContactType(e.target.value)}
               className={inputClass}
             >
-              <option value="">연락 방법 선택</option>
+              <option value="">연락 방법 선택 (필수)</option>
               <option value="kakao">카카오톡 ID</option>
               <option value="phone">전화번호</option>
             </select>
-            {contactType && (
-              <input
-                type="text"
-                value={contactInfo}
-                onChange={(e) => setContactInfo(e.target.value)}
-                placeholder={contactType === 'kakao' ? '카카오톡 ID' : '010-0000-0000'}
-                className={inputClass}
-              />
-            )}
+            <input
+              type="text"
+              value={contactInfo}
+              onChange={(e) => setContactInfo(e.target.value)}
+              placeholder={contactType === 'kakao' ? '카카오톡 ID' : contactType === 'phone' ? '010-0000-0000' : '연락 방법을 먼저 선택해주세요'}
+              disabled={!contactType}
+              className={cn(inputClass, !contactType && 'opacity-50 cursor-not-allowed')}
+            />
           </div>
         </div>
 
