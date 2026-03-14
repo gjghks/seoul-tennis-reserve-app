@@ -96,7 +96,7 @@ export default function MyPage() {
 
   if (authLoading) {
     return (
-      <div className={`container mx-auto px-4 py-8 scrollbar-hide ${themeClass('bg-nb-bg min-h-screen', '')}`}>
+      <div className={`container mx-auto px-4 py-6 scrollbar-hide ${themeClass('bg-nb-bg min-h-screen', '')}`}>
         <div className="flex items-center justify-center min-h-[400px]">
           <div className={themeClass('text-black font-bold', 'text-gray-400')}>로딩중...</div>
         </div>
@@ -105,8 +105,8 @@ export default function MyPage() {
   }
 
   return (
-    <div className={`container mx-auto px-4 py-8 min-h-screen scrollbar-hide ${themeClass('bg-nb-bg', '')}`}>
-      <div className="mb-8">
+    <div className={`container mx-auto px-4 py-6 min-h-screen scrollbar-hide ${themeClass('bg-nb-bg', '')}`}>
+      <div className="mb-6">
         <h1 className={`text-2xl mb-2 ${themeClass('font-black text-black uppercase', 'font-bold text-gray-900')} `}>
           {isNeoBrutalism ? '👤 마이페이지' : '마이페이지'}
         </h1>

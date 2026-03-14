@@ -18,7 +18,7 @@ export default function RecordsPage() {
 
   if (authLoading) {
     return (
-      <div className={`container mx-auto px-4 py-8 min-h-screen scrollbar-hide ${themeClass('bg-nb-bg', '')}`}>
+      <div className={`container mx-auto px-4 py-6 min-h-screen scrollbar-hide ${themeClass('bg-nb-bg', '')}`}>
         <div className="flex items-center justify-center min-h-[400px]">
           <div className={themeClass('text-black font-bold', 'text-gray-400')}>로딩중...</div>
         </div>
@@ -28,7 +28,7 @@ export default function RecordsPage() {
 
   if (!user) {
     return (
-      <div className={`container mx-auto px-4 py-8 min-h-screen scrollbar-hide ${themeClass('bg-nb-bg', '')}`}>
+      <div className={`container mx-auto px-4 py-6 min-h-screen scrollbar-hide ${themeClass('bg-nb-bg', '')}`}>
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h1 className={`text-3xl md:text-4xl mb-4 ${themeClass('font-black text-black uppercase', 'font-bold text-gray-900')}`}>

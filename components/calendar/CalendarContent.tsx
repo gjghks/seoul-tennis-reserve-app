@@ -195,10 +195,9 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
       }
     >
     <div className={`min-h-screen ${themeClass('bg-nb-bg', 'bg-gray-50')}`}>
-      <div className="container py-8 max-w-4xl">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className={`text-2xl sm:text-3xl mb-2 ${themeClass('font-black text-black uppercase tracking-tight', 'font-bold text-gray-900')}`}>
+      <div className="container mx-auto px-4 py-6 max-w-4xl">
+        <div className="mb-6">
+          <h1 className={`text-2xl mb-2 ${themeClass('font-black text-black uppercase tracking-tight', 'font-bold text-gray-900')}`}>
             {isNeoBrutalism ? '📅 예약 캘린더' : '예약 캘린더'}
           </h1>
           <p className={themeClass('text-black/60', 'text-gray-500')}>

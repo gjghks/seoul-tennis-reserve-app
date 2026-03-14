@@ -115,7 +115,7 @@ export default function LadderContent() {
       <div className="container mx-auto px-4 py-6 min-h-[80vh]">
         <div className="mb-6 text-center">
           <div className="text-4xl mb-2">🏆</div>
-          <h1 className={cn('text-3xl font-black mb-2', themeClass('text-black', 'text-gray-900'))}>
+          <h1 className={cn('text-2xl font-black mb-2', themeClass('text-black', 'text-gray-900'))}>
             테니스 래더
           </h1>
           <p className={themeClass('text-black/80 font-bold', 'text-gray-600')}>

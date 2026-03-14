@@ -47,7 +47,7 @@ export default function RecordsContent() {
       refreshingContent={RefreshIndicator}
     >
     <div className={cn('min-h-screen scrollbar-hide', themeClass('bg-nb-bg', 'bg-gray-50'))}>
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-6">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <h1 className={cn(
