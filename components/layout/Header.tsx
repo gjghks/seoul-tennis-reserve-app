@@ -14,12 +14,13 @@ const HeaderAuth = dynamic(
 const PRIMARY_NAV = [
   { href: '/matching', label: '매칭' },
   { href: '/transfers', label: '양도' },
-  { href: '/map', label: '지도' },
+  { href: '/tournaments', label: '대진표' },
   { href: '/records', label: '경기 기록' },
 ] as const;
 
 const SECONDARY_NAV = [
   { href: '/ladder', label: '래더' },
+  { href: '/map', label: '지도' },
   { href: '/today', label: '오늘 예약' },
   { href: '/compare', label: '구별 비교' },
   { href: '/trends', label: '타이밍' },

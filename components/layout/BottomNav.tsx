@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useThemeClass } from '@/lib/cn';
 import MoreMenu from '@/components/layout/MoreMenu';
 
-const MORE_PATHS = ['/records', '/ladder', '/today', '/compare', '/trends', '/calendar', '/my', '/about'];
+const MORE_PATHS = ['/records', '/map', '/ladder', '/today', '/compare', '/trends', '/calendar', '/my', '/about'];
 
 const NAV_ITEMS = [
   {
@@ -41,12 +41,11 @@ const NAV_ITEMS = [
     ),
   },
   {
-    href: '/map',
-    label: '지도',
+    href: '/tournaments',
+    label: '대진표',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5" aria-hidden="true">
-        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-        <circle cx="12" cy="10" r="3" />
+        <path d="M6 3v4" /><path d="M18 3v4" /><path d="M6 7h4" /><path d="M14 7h4" /><path d="M10 7v5" /><path d="M14 7v5" /><path d="M10 12h4" /><path d="M12 12v5" /><path d="M12 17v4" />
       </svg>
     ),
   },

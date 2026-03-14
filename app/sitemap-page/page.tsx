@@ -39,6 +39,7 @@ export default function SitemapPage() {
     { href: '/guide/matching', label: '매칭 가이드', description: '테니스 파트너 매칭 기능 안내' },
     { href: '/guide/ladder', label: '래더 가이드', description: 'ELO 래더 시스템 안내' },
     { href: '/guide/transfers', label: '양도 가이드', description: '코트 양도 마켓 기능 안내' },
+    { href: '/guide/tournaments', label: '대진표 가이드', description: '동호회 대진표 생성 및 관리 안내' },
   ];
 
   return (

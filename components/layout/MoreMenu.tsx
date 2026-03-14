@@ -33,6 +33,17 @@ const NAV_ITEMS = [
     ),
   },
   {
+    href: '/map',
+    label: '지도',
+    description: '서울 전체 테니스장 지도',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5" aria-hidden="true">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+        <circle cx="12" cy="10" r="3" />
+      </svg>
+    ),
+  },
+  {
     href: '/ladder',
     label: '래더',
     description: 'ELO 랭킹과 리더보드',
