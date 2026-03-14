@@ -68,6 +68,9 @@ function LoginContent() {
       options: {
         redirectTo: callbackUrl.toString(),
         scopes: scopes,
+        ...(supabaseProvider === 'kakao' && {
+          queryParams: { prompt: 'login' },
+        }),
       },
     });
 
