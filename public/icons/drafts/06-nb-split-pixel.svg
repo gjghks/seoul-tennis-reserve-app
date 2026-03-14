@@ -1,0 +1,213 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" shape-rendering="crispEdges">
+  <!-- Design 06: Pixel Game Style — 32x32 grid upscaled to 512 (16px per cell) -->
+  <defs>
+    <clipPath id="rc">
+      <rect width="512" height="512" rx="64"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#rc)">
+    <!-- Background: diagonal split yellow/lime -->
+    <!-- Fill entire background yellow first -->
+    <rect width="512" height="512" fill="#facc15"/>
+    <!-- Lime triangle (bottom-right) using staircase pixel pattern -->
+    <!-- Each step is 16px (one grid cell). Diagonal from top-right to bottom-left -->
+    <rect x="496" y="0" width="16" height="16" fill="#a3e635"/>
+    <rect x="480" y="0" width="32" height="32" fill="#a3e635"/>
+    <rect x="448" y="0" width="64" height="48" fill="#a3e635"/>
+    <!-- Simplified: just use a polygon with crispEdges for the staircase effect -->
+    <polygon points="512,0 512,512 0,512" fill="#a3e635"/>
+
+    <!-- Pixel-style diagonal border (staircase line from top-right to bottom-left) -->
+    <!-- 32 steps of 16px each -->
+    <rect x="496" y="0" width="16" height="16" fill="#000"/>
+    <rect x="480" y="16" width="16" height="16" fill="#000"/>
+    <rect x="464" y="32" width="16" height="16" fill="#000"/>
+    <rect x="448" y="48" width="16" height="16" fill="#000"/>
+    <rect x="432" y="64" width="16" height="16" fill="#000"/>
+    <rect x="416" y="80" width="16" height="16" fill="#000"/>
+    <rect x="400" y="96" width="16" height="16" fill="#000"/>
+    <rect x="384" y="112" width="16" height="16" fill="#000"/>
+    <rect x="368" y="128" width="16" height="16" fill="#000"/>
+    <rect x="352" y="144" width="16" height="16" fill="#000"/>
+    <rect x="336" y="160" width="16" height="16" fill="#000"/>
+    <rect x="320" y="176" width="16" height="16" fill="#000"/>
+    <rect x="304" y="192" width="16" height="16" fill="#000"/>
+    <rect x="288" y="208" width="16" height="16" fill="#000"/>
+    <rect x="272" y="224" width="16" height="16" fill="#000"/>
+    <rect x="256" y="240" width="16" height="16" fill="#000"/>
+    <rect x="240" y="256" width="16" height="16" fill="#000"/>
+    <rect x="224" y="272" width="16" height="16" fill="#000"/>
+    <rect x="208" y="288" width="16" height="16" fill="#000"/>
+    <rect x="192" y="304" width="16" height="16" fill="#000"/>
+    <rect x="176" y="320" width="16" height="16" fill="#000"/>
+    <rect x="160" y="336" width="16" height="16" fill="#000"/>
+    <rect x="144" y="352" width="16" height="16" fill="#000"/>
+    <rect x="128" y="368" width="16" height="16" fill="#000"/>
+    <rect x="112" y="384" width="16" height="16" fill="#000"/>
+    <rect x="96" y="400" width="16" height="16" fill="#000"/>
+    <rect x="80" y="416" width="16" height="16" fill="#000"/>
+    <rect x="64" y="432" width="16" height="16" fill="#000"/>
+    <rect x="48" y="448" width="16" height="16" fill="#000"/>
+    <rect x="32" y="464" width="16" height="16" fill="#000"/>
+    <rect x="16" y="480" width="16" height="16" fill="#000"/>
+    <rect x="0" y="496" width="16" height="16" fill="#000"/>
+
+    <!-- NB Shadow offset (4px right, 4px down from ball) - pixelated circle -->
+    <!-- Ball shadow: center (260,260), radius ~11 cells = 176px, in black -->
+    <!-- Pixelated circle outline approximation for shadow at offset (260,260) -->
+    <g opacity="1">
+      <!-- Shadow fill: pixelated circle at (272, 272) r=11 cells -->
+      <!-- Row by row pixel fill for shadow (16px grid) -->
+      <!-- Row 6 (y=112+272-176=108) to Row 26 (y=108+352=460) offset by +16,+16 -->
+      <rect x="192" y="112" width="176" height="16" fill="#000"/>
+      <rect x="160" y="128" width="240" height="16" fill="#000"/>
+      <rect x="144" y="144" width="272" height="16" fill="#000"/>
+      <rect x="128" y="160" width="304" height="16" fill="#000"/>
+      <rect x="112" y="176" width="336" height="16" fill="#000"/>
+      <rect x="112" y="192" width="336" height="16" fill="#000"/>
+      <rect x="96" y="208" width="352" height="16" fill="#000"/>
+      <rect x="96" y="224" width="368" height="16" fill="#000"/>
+      <rect x="96" y="240" width="368" height="16" fill="#000"/>
+      <rect x="96" y="256" width="368" height="16" fill="#000"/>
+      <rect x="96" y="272" width="368" height="16" fill="#000"/>
+      <rect x="96" y="288" width="368" height="16" fill="#000"/>
+      <rect x="96" y="304" width="352" height="16" fill="#000"/>
+      <rect x="112" y="320" width="336" height="16" fill="#000"/>
+      <rect x="112" y="336" width="336" height="16" fill="#000"/>
+      <rect x="128" y="352" width="304" height="16" fill="#000"/>
+      <rect x="144" y="368" width="272" height="16" fill="#000"/>
+      <rect x="160" y="384" width="240" height="16" fill="#000"/>
+      <rect x="192" y="400" width="176" height="16" fill="#000"/>
+    </g>
+
+    <!-- Tennis ball: pixelated circle, center (256,256), r~11 cells -->
+    <!-- Base green-yellow fill -->
+    <!-- Row 0: y=80 -->
+    <rect x="176" y="80" width="176" height="16" fill="#c8e030"/>
+    <rect x="144" y="96" width="240" height="16" fill="#c8e030"/>
+    <rect x="128" y="112" width="272" height="16" fill="#c8e030"/>
+    <rect x="112" y="128" width="304" height="16" fill="#c8e030"/>
+    <rect x="96" y="144" width="336" height="16" fill="#c8e030"/>
+    <rect x="96" y="160" width="336" height="16" fill="#c8e030"/>
+    <rect x="80" y="176" width="352" height="16" fill="#c8e030"/>
+    <rect x="80" y="192" width="368" height="16" fill="#c8e030"/>
+    <rect x="80" y="208" width="368" height="16" fill="#c8e030"/>
+    <rect x="80" y="224" width="368" height="16" fill="#c8e030"/>
+    <rect x="80" y="240" width="368" height="16" fill="#c8e030"/>
+    <rect x="80" y="256" width="368" height="16" fill="#c8e030"/>
+    <rect x="80" y="272" width="368" height="16" fill="#c8e030"/>
+    <rect x="80" y="288" width="352" height="16" fill="#c8e030"/>
+    <rect x="96" y="304" width="336" height="16" fill="#c8e030"/>
+    <rect x="96" y="320" width="336" height="16" fill="#c8e030"/>
+    <rect x="112" y="336" width="304" height="16" fill="#c8e030"/>
+    <rect x="128" y="352" width="272" height="16" fill="#c8e030"/>
+    <rect x="144" y="368" width="240" height="16" fill="#c8e030"/>
+    <rect x="176" y="384" width="176" height="16" fill="#c8e030"/>
+
+    <!-- Highlight: lighter zone upper-left (pixel blocks) -->
+    <rect x="176" y="80" width="128" height="16" fill="#e8f890"/>
+    <rect x="144" y="96" width="176" height="16" fill="#e8f890"/>
+    <rect x="128" y="112" width="176" height="16" fill="#e8f890"/>
+    <rect x="112" y="128" width="176" height="16" fill="#e8f890"/>
+    <rect x="96" y="144" width="176" height="16" fill="#e8f890"/>
+    <rect x="96" y="160" width="160" height="16" fill="#e8f890"/>
+    <rect x="80" y="176" width="160" height="16" fill="#e8f890"/>
+    <rect x="80" y="192" width="144" height="16" fill="#e8f890"/>
+    <rect x="80" y="208" width="128" height="16" fill="#d4e868"/>
+    <rect x="80" y="224" width="112" height="16" fill="#d4e868"/>
+    <rect x="80" y="240" width="96" height="16" fill="#d4e868"/>
+
+    <!-- Shadow: darker zone lower-right (pixel blocks) -->
+    <rect x="336" y="272" width="112" height="16" fill="#9ab820"/>
+    <rect x="352" y="288" width="80" height="16" fill="#9ab820"/>
+    <rect x="304" y="304" width="128" height="16" fill="#9ab820"/>
+    <rect x="320" y="320" width="112" height="16" fill="#8aaa18"/>
+    <rect x="304" y="336" width="112" height="16" fill="#8aaa18"/>
+    <rect x="288" y="352" width="112" height="16" fill="#7a9a10"/>
+    <rect x="288" y="368" width="96" height="16" fill="#7a9a10"/>
+    <rect x="256" y="384" width="96" height="16" fill="#7a9a10"/>
+
+    <!-- SEAM CURVE 1: left-middle to top-middle (staircase approximation) -->
+    <!-- From (80,256) curving through upper-left to (256,80) -->
+    <rect x="80" y="240" width="16" height="16" fill="#4a6e10"/>
+    <rect x="80" y="224" width="16" height="16" fill="#4a6e10"/>
+    <rect x="96" y="208" width="16" height="16" fill="#4a6e10"/>
+    <rect x="96" y="192" width="16" height="16" fill="#4a6e10"/>
+    <rect x="112" y="176" width="16" height="16" fill="#4a6e10"/>
+    <rect x="128" y="160" width="16" height="16" fill="#4a6e10"/>
+    <rect x="144" y="144" width="16" height="16" fill="#4a6e10"/>
+    <rect x="160" y="128" width="16" height="16" fill="#4a6e10"/>
+    <rect x="176" y="112" width="16" height="16" fill="#4a6e10"/>
+    <rect x="192" y="112" width="16" height="16" fill="#4a6e10"/>
+    <rect x="208" y="96" width="16" height="16" fill="#4a6e10"/>
+    <rect x="224" y="96" width="16" height="16" fill="#4a6e10"/>
+    <rect x="240" y="80" width="16" height="16" fill="#4a6e10"/>
+
+    <!-- SEAM CURVE 2: right-middle to bottom-middle (staircase approximation) -->
+    <!-- From (432,256) curving through lower-right to (256,432) — mirrored -->
+    <rect x="432" y="256" width="16" height="16" fill="#4a6e10"/>
+    <rect x="416" y="272" width="16" height="16" fill="#4a6e10"/>
+    <rect x="416" y="288" width="16" height="16" fill="#4a6e10"/>
+    <rect x="400" y="304" width="16" height="16" fill="#4a6e10"/>
+    <rect x="384" y="320" width="16" height="16" fill="#4a6e10"/>
+    <rect x="368" y="336" width="16" height="16" fill="#4a6e10"/>
+    <rect x="352" y="352" width="16" height="16" fill="#4a6e10"/>
+    <rect x="336" y="368" width="16" height="16" fill="#4a6e10"/>
+    <rect x="320" y="368" width="16" height="16" fill="#4a6e10"/>
+    <rect x="304" y="384" width="16" height="16" fill="#4a6e10"/>
+    <rect x="288" y="384" width="16" height="16" fill="#4a6e10"/>
+    <rect x="272" y="400" width="16" height="16" fill="#4a6e10"/>
+    <rect x="256" y="400" width="16" height="16" fill="#4a6e10"/>
+
+    <!-- Ball outline: pixelated circle border (black, 1-cell thick) -->
+    <!-- Top edge -->
+    <rect x="176" y="64" width="176" height="16" fill="#000"/>
+    <rect x="160" y="80" width="16" height="16" fill="#000"/>
+    <rect x="352" y="80" width="16" height="16" fill="#000"/>
+    <rect x="128" y="96" width="16" height="16" fill="#000"/>
+    <rect x="384" y="96" width="16" height="16" fill="#000"/>
+    <rect x="112" y="112" width="16" height="16" fill="#000"/>
+    <rect x="400" y="112" width="16" height="16" fill="#000"/>
+    <rect x="96" y="128" width="16" height="16" fill="#000"/>
+    <rect x="416" y="128" width="16" height="16" fill="#000"/>
+    <rect x="80" y="144" width="16" height="16" fill="#000"/>
+    <rect x="432" y="144" width="16" height="16" fill="#000"/>
+    <rect x="80" y="160" width="16" height="16" fill="#000"/>
+    <rect x="432" y="160" width="16" height="16" fill="#000"/>
+    <!-- Left/right edges -->
+    <rect x="64" y="176" width="16" height="16" fill="#000"/>
+    <rect x="448" y="176" width="16" height="16" fill="#000"/>
+    <rect x="64" y="192" width="16" height="16" fill="#000"/>
+    <rect x="448" y="192" width="16" height="16" fill="#000"/>
+    <rect x="64" y="208" width="16" height="16" fill="#000"/>
+    <rect x="448" y="208" width="16" height="16" fill="#000"/>
+    <rect x="64" y="224" width="16" height="16" fill="#000"/>
+    <rect x="448" y="224" width="16" height="16" fill="#000"/>
+    <rect x="64" y="240" width="16" height="16" fill="#000"/>
+    <rect x="448" y="240" width="16" height="16" fill="#000"/>
+    <rect x="64" y="256" width="16" height="16" fill="#000"/>
+    <rect x="448" y="256" width="16" height="16" fill="#000"/>
+    <rect x="64" y="272" width="16" height="16" fill="#000"/>
+    <rect x="448" y="272" width="16" height="16" fill="#000"/>
+    <rect x="64" y="288" width="16" height="16" fill="#000"/>
+    <rect x="448" y="288" width="16" height="16" fill="#000"/>
+    <!-- Bottom edge -->
+    <rect x="80" y="304" width="16" height="16" fill="#000"/>
+    <rect x="432" y="304" width="16" height="16" fill="#000"/>
+    <rect x="80" y="320" width="16" height="16" fill="#000"/>
+    <rect x="432" y="320" width="16" height="16" fill="#000"/>
+    <rect x="96" y="336" width="16" height="16" fill="#000"/>
+    <rect x="416" y="336" width="16" height="16" fill="#000"/>
+    <rect x="112" y="352" width="16" height="16" fill="#000"/>
+    <rect x="400" y="352" width="16" height="16" fill="#000"/>
+    <rect x="128" y="368" width="16" height="16" fill="#000"/>
+    <rect x="384" y="368" width="16" height="16" fill="#000"/>
+    <rect x="160" y="384" width="16" height="16" fill="#000"/>
+    <rect x="352" y="384" width="16" height="16" fill="#000"/>
+    <rect x="176" y="400" width="176" height="16" fill="#000"/>
+  </g>
+
+  <!-- Outer border (NB style) -->
+  <rect x="4" y="4" width="504" height="504" fill="none" stroke="#000" stroke-width="8" rx="60"/>
+</svg>
