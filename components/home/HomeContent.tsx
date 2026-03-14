@@ -44,6 +44,11 @@ const TransferPromoCard = dynamic(
   { ssr: false, loading: () => <div className="h-16" /> }
 );
 
+const TournamentPromoCard = dynamic(
+  () => import('@/components/home/TournamentPromoCard'),
+  { ssr: false, loading: () => <div className="h-16" /> }
+);
+
 const PopularCourts = dynamic(
   () => import('@/components/home/PopularCourts'),
   { ssr: false, loading: () => <div className="container"><div className="h-48 skeleton rounded-xl" /></div> }
@@ -171,6 +176,7 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
 
       <MatchingPromoCard user={user} authLoading={authLoading} />
       <TransferPromoCard />
+      <TournamentPromoCard />
       <RecordsPromoCard user={user} authLoading={authLoading} />
       <LadderPromoCard user={user} authLoading={authLoading} />
 

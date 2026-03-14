@@ -155,7 +155,7 @@ export default function RecordsPromoCard({ user, authLoading }: RecordsPromoCard
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
             <Link 
               href="/records" 
-              className={`inline-flex justify-center items-center px-4 py-2 text-sm font-bold rounded-lg transition-colors ${themeClass('bg-gray-100 text-black hover:bg-gray-200', 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200')}`}
+               className={`inline-flex justify-center items-center px-4 py-2 text-sm font-bold rounded-lg transition-colors ${themeClass('bg-black text-white hover:bg-gray-800', 'bg-green-600 text-white hover:bg-green-700 shadow-sm')}`}
             >
               전체 기록 보기
               <svg className="w-4 h-4 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

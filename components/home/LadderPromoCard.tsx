@@ -76,31 +76,37 @@ export default function LadderPromoCard({ user, authLoading }: LadderPromoCardPr
           'relative overflow-hidden rounded-xl p-5',
           themeClass('bg-purple-50 border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]', 'bg-purple-50 border border-purple-100 shadow-sm')
         )}>
-          <div className="flex items-center justify-between relative z-10">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
             <div>
-              <h3 className={cn('text-lg font-bold mb-1', themeClass('text-black', 'text-gray-900'))}>
-                래더에 참여하세요
-              </h3>
-              <p className={cn('text-sm mb-3', themeClass('text-gray-700 font-medium', 'text-gray-600'))}>
+              <div className="flex items-center gap-2 mb-1">
+                <h3 className={cn('text-lg font-bold', themeClass('text-black', 'text-gray-900'))}>
+                  래더에 참여하세요
+                </h3>
+              </div>
+              <p className={cn('text-sm mb-2 sm:mb-0', themeClass('text-gray-700 font-medium', 'text-gray-600'))}>
                 내 실력은 어느 정도일까요? 지금 바로 확인해보세요.
               </p>
-              <div className="flex items-center gap-4">
-                <Link
-                  href="/ladder"
-                  className={cn(
-                    'inline-flex justify-center items-center px-4 py-2 text-sm font-bold rounded-lg transition-colors',
-                    themeClass('bg-black text-white hover:bg-gray-800', 'bg-purple-600 text-white hover:bg-purple-700 shadow-sm')
-                  )}
-                >
-                  참여 설정하기
-                </Link>
-                <Link
-                  href="/guide/ladder"
-                  className={cn('text-xs', themeClass('text-black/40 font-bold hover:text-black/60', 'text-gray-400 hover:text-gray-600'))}
-                >
-                  사용법 보기
-                </Link>
-              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+              <Link
+                href="/ladder"
+                className={cn(
+                  'inline-flex justify-center items-center px-4 py-2 text-sm font-bold rounded-lg transition-colors',
+                  themeClass('bg-black text-white hover:bg-gray-800', 'bg-purple-600 text-white hover:bg-purple-700 shadow-sm')
+                )}
+              >
+                참여 설정하기
+                <svg className="w-4 h-4 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+              <Link
+                href="/guide/ladder"
+                className={cn('inline-flex justify-center items-center px-4 py-2 text-xs transition-colors', themeClass('text-black/40 font-bold hover:text-black/60', 'text-gray-400 hover:text-gray-600'))}
+              >
+                사용법 보기
+              </Link>
             </div>
           </div>
         </div>
