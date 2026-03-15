@@ -97,7 +97,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" data-scroll-behavior="smooth">
+    <html lang="ko" data-scroll-behavior="smooth" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{ __html: `(function(){try{localStorage.removeItem("tennis-season");var s=localStorage.getItem("tennis-season-manual");if(s==="cherry-blossom"||s==="default"){document.documentElement.setAttribute("data-season",s)}else{var m=new Date().getMonth()+1,d=new Date().getDate();document.documentElement.setAttribute("data-season",(m===3&&d>=15)||(m===4&&d<=20)?"cherry-blossom":"default")}}catch(e){}})()` }}
+        />
+      </head>
       <body className={geist.className}>
         <script
           type="application/ld+json"

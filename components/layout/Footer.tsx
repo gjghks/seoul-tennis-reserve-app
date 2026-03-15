@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useSeason } from '@/contexts/SeasonalContext';
 import { useThemeClass } from '@/lib/cn';
 import FeedbackModal from '@/components/feedback/FeedbackModal';
 import VisitorCounter from '@/components/layout/VisitorCounter';
@@ -17,6 +18,7 @@ const NAV_LINKS = [
 export default function Footer() {
   const themeClass = useThemeClass();
   const { toggleTheme, isNeoBrutalism } = useTheme();
+  const { isCherryBlossom, toggleSeason } = useSeason();
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
 
   return (
@@ -66,6 +68,17 @@ export default function Footer() {
               )}`}
             >
               {isNeoBrutalism ? '🎨 Minimal' : '🎨 Neo-Brutal'}
+            </button>
+            <button
+              type="button"
+              onClick={toggleSeason}
+              aria-label={isCherryBlossom ? '기본 테마로 변경' : '벚꽃 시즌 테마로 변경'}
+              className={`ml-1 px-2.5 py-2 min-h-[44px] text-[clamp(10px,2.5vw,11px)] font-medium transition-colors ${themeClass(
+                'bg-white/15 text-white/80 rounded-[4px] border border-white/25 hover:bg-white/25 hover:text-white',
+                'bg-gray-100 text-gray-500 rounded-full border border-gray-200 hover:bg-gray-200 hover:text-gray-700'
+              )}`}
+            >
+              {isCherryBlossom ? '🌿 기본 테마' : '🌸 벚꽃 시즌'}
             </button>
           </div>
         </div>

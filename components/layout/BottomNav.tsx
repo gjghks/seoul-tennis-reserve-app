@@ -74,7 +74,7 @@ export default function BottomNav() {
       <nav
         aria-label="하단 탐색"
         className={`fixed bottom-0 left-0 right-0 z-50 sm:hidden ${themeClass(
-          'bg-[#facc15] border-t-[3px] border-black',
+          'bg-[var(--nb-accent-bg)] border-t-[3px] border-black',
           'bg-white border-t border-gray-200'
         )}`}
         style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}

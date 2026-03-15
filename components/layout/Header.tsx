@@ -55,7 +55,7 @@ export default function Header() {
   }, [pathname]);
 
   return (
-    <header className={`shrink-0 sticky top-0 z-50 ${themeClass('bg-[#facc15] border-b-[3px] border-black', 'bg-white border-b border-gray-100')}`}>
+    <header className={`shrink-0 sticky top-0 z-50 ${themeClass('bg-[var(--nb-accent-bg)] border-b-[3px] border-black', 'bg-white border-b border-gray-100')}`}>
       <div className="container">
         <div className="flex items-center justify-between h-14">
           <Link href="/" className="flex items-center gap-2">

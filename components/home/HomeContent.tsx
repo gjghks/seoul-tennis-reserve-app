@@ -16,6 +16,7 @@ import { convertToWeatherGrid } from '@/lib/utils/weatherGrid';
 import HomeWeatherCard from '@/components/weather/HomeWeatherCard';
 import CourtSearch from '@/components/home/CourtSearch';
 import DustAlertBanner from '@/components/weather/DustAlertBanner';
+import CherryBlossomBanner from '@/components/seasonal/CherryBlossomBanner';
 
 const SEOUL_WEATHER_GRID = convertToWeatherGrid(126.978, 37.5665);
 
@@ -120,6 +121,7 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
       refreshingContent={RefreshIndicator}
       className={`min-h-[var(--main-height)] flex flex-col ${themeClass('bg-nb-bg', '')}`}
     >
+      <CherryBlossomBanner />
       <DustAlertBanner />
       <section className={themeClass('relative z-20 court-pattern-nb text-white py-4 lg:py-3', 'relative z-20 court-pattern text-white py-4 lg:py-3')}>
         <div className="container relative">
@@ -142,7 +144,7 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
             {!showLoading && !error && (
               <div className={`flex gap-3 sm:gap-6 md:gap-8 shrink-0 ${themeClass('bg-black/20 backdrop-blur-sm px-3 sm:px-5 py-2 sm:py-3 rounded-[5px] border-2 border-white/30', '')}`}>
                 <div className="text-center">
-                  <div className={`font-bold ${themeClass('text-2xl sm:text-3xl md:text-4xl text-[#facc15]', 'text-2xl sm:text-3xl md:text-4xl')}`}>{animAvailable}</div>
+                  <div className={`font-bold ${themeClass('text-2xl sm:text-3xl md:text-4xl text-[var(--nb-accent-text)]', 'text-2xl sm:text-3xl md:text-4xl')}`}>{animAvailable}</div>
                   <div className={`text-[10px] sm:text-xs mt-0.5 sm:mt-1 ${themeClass('text-white/70 font-semibold uppercase', 'text-green-200')}`}>예약 가능</div>
                 </div>
                 <div className={themeClass('w-[2px] bg-white/30', 'w-px bg-green-400/30')} />

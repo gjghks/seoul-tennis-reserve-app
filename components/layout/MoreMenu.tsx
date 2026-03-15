@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useSeason } from '@/contexts/SeasonalContext';
 import { useThemeClass } from '@/lib/cn';
 
 const NAV_ITEMS = [
@@ -118,6 +119,7 @@ export default function MoreMenu({ isOpen, onClose }: MoreMenuProps) {
   const themeClass = useThemeClass();
   const { user } = useAuth();
   const { toggleTheme, isNeoBrutalism } = useTheme();
+  const { isCherryBlossom, toggleSeason } = useSeason();
 
   useEffect(() => {
     if (!isOpen) return;
@@ -173,13 +175,13 @@ export default function MoreMenu({ isOpen, onClose }: MoreMenuProps) {
             href={user ? myPageItem.href : loginUrl}
             onClick={onClose}
             className={`flex items-center gap-3 p-3 mb-3 transition-colors ${themeClass(
-              'bg-[#facc15]/15 border-2 border-black rounded-[10px] hover:bg-[#facc15]/25',
+              'bg-[var(--nb-accent-bg-muted)] hover:bg-[var(--nb-accent-bg-hover)] border-2 border-black rounded-[10px]',
               'bg-gray-50 rounded-xl hover:bg-gray-100'
             )}`}
           >
             <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${themeClass(
-              'bg-black text-[#facc15]',
-              'bg-green-100 text-green-600'
+              'bg-black text-[var(--nb-icon-accent)]',
+              'bg-[var(--minimal-icon-accent-bg)] text-[var(--minimal-icon-accent-text)]'
             )}`}>
               {myPageItem.icon}
             </div>
@@ -205,8 +207,8 @@ export default function MoreMenu({ isOpen, onClose }: MoreMenuProps) {
                   href={item.href}
                   onClick={onClose}
                   className={`flex items-center gap-3 p-3 transition-colors ${themeClass(
-                    `rounded-[10px] ${active ? 'bg-[#facc15]/20 font-bold' : 'hover:bg-gray-100'}`,
-                    `rounded-xl ${active ? 'bg-green-50 text-green-700' : 'hover:bg-gray-50'}`
+                    `rounded-[10px] ${active ? 'bg-[var(--nb-accent-bg-active)] font-bold' : 'hover:bg-gray-100'}`,
+                    `rounded-xl ${active ? 'bg-[var(--minimal-active-bg)] text-[var(--minimal-active-text)]' : 'hover:bg-gray-50'}`
                   )}`}
                 >
                   <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${themeClass(
@@ -249,6 +251,16 @@ export default function MoreMenu({ isOpen, onClose }: MoreMenuProps) {
                 )}`}
               >
                 {isNeoBrutalism ? '🎨 Minimal' : '🎨 Neo-Brutal'}
+              </button>
+              <button
+                type="button"
+                onClick={() => { toggleSeason(); onClose(); }}
+                className={`flex-1 text-center px-3 min-h-[44px] inline-flex items-center justify-center text-xs transition-colors ${themeClass(
+                  'text-black/60 hover:bg-gray-100 font-medium rounded-[8px]',
+                  'text-gray-500 hover:bg-gray-50 rounded-lg'
+                )}`}
+              >
+                {isCherryBlossom ? '🌿 기본 테마' : '🌸 벚꽃 시즌'}
               </button>
             </div>
           </div>
