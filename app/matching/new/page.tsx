@@ -5,13 +5,11 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useThemeClass, cn } from '@/lib/cn';
 import LoginPrompt from '@/components/auth/LoginPrompt';
 import MatchingPostForm from '@/components/matching/MatchingPostForm';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 export default function NewMatchingPage() {
   const { user, loading: authLoading } = useAuth();
   const themeClass = useThemeClass();
-  const router = useRouter();
   const [showLogin, setShowLogin] = useState(false);
 
   if (authLoading) {

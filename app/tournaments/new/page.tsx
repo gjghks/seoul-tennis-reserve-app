@@ -6,13 +6,11 @@ import { useThemeClass, cn } from '@/lib/cn';
 import LoginPrompt from '@/components/auth/LoginPrompt';
 import ProfileGate from '@/components/profile/ProfileGate';
 import TournamentForm from '@/components/tournament/TournamentForm';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 export default function NewTournamentPage() {
   const { user, loading: authLoading } = useAuth();
   const themeClass = useThemeClass();
-  const router = useRouter();
   const [showLogin, setShowLogin] = useState(false);
 
   if (authLoading) {
