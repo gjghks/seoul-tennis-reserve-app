@@ -112,7 +112,7 @@ export default function LadderContent() {
       }
       refreshingContent={RefreshIndicator}
     >
-      <div className="container mx-auto px-4 py-6 min-h-[80vh]">
+      <div className="container mx-auto px-4 py-6 min-h-screen scrollbar-hide">
         <div className="mb-6 text-center">
           <div className="text-4xl mb-2">🏆</div>
           <h1 className={cn('text-2xl font-black mb-2', themeClass('text-black', 'text-gray-900'))}>
