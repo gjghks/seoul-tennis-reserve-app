@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useThemeClass, cn } from '@/lib/cn';
+import { useSeason } from '@/contexts/SeasonalContext';
 import { User } from '@supabase/supabase-js';
 import { useLadderProfile } from '@/lib/hooks/useLadderProfile';
 import { getEloTier } from '@/lib/constants/ladder';
@@ -13,7 +14,21 @@ interface LadderPromoCardProps {
 
 export default function LadderPromoCard({ user, authLoading }: LadderPromoCardProps) {
   const themeClass = useThemeClass();
+  const { isCherryBlossom: s } = useSeason();
   const { profile, isLoading: profileLoading } = useLadderProfile({ enabled: !!user });
+
+  const bg = s ? 'bg-fuchsia-50' : 'bg-purple-50';
+  const border = s ? 'border-fuchsia-100' : 'border-purple-100';
+  const text = s ? 'text-fuchsia-600' : 'text-purple-600';
+  const textDark = s ? 'text-fuchsia-700' : 'text-purple-700';
+  const hoverText = s ? 'hover:text-fuchsia-700' : 'hover:text-purple-700';
+  const hoverBg = s ? 'hover:bg-fuchsia-100' : 'hover:bg-purple-100';
+  const iconBg = s ? 'bg-fuchsia-200' : 'bg-purple-200';
+  const iconMinimal = s ? 'bg-fuchsia-100 text-fuchsia-600' : 'bg-purple-100 text-purple-600';
+  const deco = s ? 'bg-fuchsia-600' : 'bg-purple-600';
+  const statText = s ? 'text-fuchsia-600' : 'text-purple-600';
+  const divider = s ? 'bg-fuchsia-200' : 'bg-purple-200';
+  const dividerMinimal = s ? 'bg-fuchsia-100' : 'bg-purple-100';
 
   if (authLoading || (user && profileLoading)) {
     return (
@@ -28,7 +43,7 @@ export default function LadderPromoCard({ user, authLoading }: LadderPromoCardPr
       <div className="container my-6 lg:my-4">
         <div className={cn(
           'relative overflow-hidden rounded-xl p-5',
-          themeClass('bg-purple-50 border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]', 'bg-purple-50 border border-purple-100 shadow-sm')
+          themeClass(`${bg} border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]`, `${bg} border ${border} shadow-sm`)
         )}>
           <div className="flex items-center justify-between relative z-10">
             <div>
@@ -43,7 +58,7 @@ export default function LadderPromoCard({ user, authLoading }: LadderPromoCardPr
                   href="/login"
                   className={cn(
                     'inline-flex items-center text-sm font-bold',
-                    themeClass('text-purple-600 hover:underline', 'text-purple-600 hover:text-purple-700')
+                    themeClass(`${text} hover:underline`, `${text} ${hoverText}`)
                   )}
                 >
                   로그인하고 시작하기
@@ -59,11 +74,11 @@ export default function LadderPromoCard({ user, authLoading }: LadderPromoCardPr
                 </Link>
               </div>
             </div>
-            <div className={cn('w-12 h-12 flex items-center justify-center rounded-full', themeClass('bg-purple-200 border-2 border-black', 'bg-purple-100 text-purple-600'))}>
+            <div className={cn('w-12 h-12 flex items-center justify-center rounded-full', themeClass(`${iconBg} border-2 border-black`, iconMinimal))}>
               <span className="text-xl">🏆</span>
             </div>
           </div>
-          <div className={cn('absolute -right-4 -bottom-8 w-24 h-24 rounded-full opacity-10', themeClass('bg-purple-600', 'bg-purple-600'))} />
+          <div className={cn(`absolute -right-4 -bottom-8 w-24 h-24 rounded-full opacity-10 ${deco}`)} />
         </div>
       </div>
     );
@@ -74,7 +89,7 @@ export default function LadderPromoCard({ user, authLoading }: LadderPromoCardPr
       <div className="container my-6 lg:my-4">
         <div className={cn(
           'relative overflow-hidden rounded-xl p-5',
-          themeClass('bg-purple-50 border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]', 'bg-purple-50 border border-purple-100 shadow-sm')
+          themeClass(`${bg} border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]`, `${bg} border ${border} shadow-sm`)
         )}>
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
             <div>
@@ -93,7 +108,7 @@ export default function LadderPromoCard({ user, authLoading }: LadderPromoCardPr
                 href="/ladder"
                 className={cn(
                   'inline-flex justify-center items-center px-4 py-2 text-sm font-bold rounded-lg transition-colors',
-                  themeClass('bg-black text-white hover:bg-gray-800', 'bg-purple-600 text-white hover:bg-purple-700 shadow-sm')
+                  themeClass(`${bg} ${textDark} border-2 border-black ${hoverBg}`, `${bg} ${text} ${hoverBg}`)
                 )}
               >
                 참여 설정하기
@@ -120,7 +135,7 @@ export default function LadderPromoCard({ user, authLoading }: LadderPromoCardPr
     <div className="container my-6 lg:my-4">
       <div className={cn(
         'relative overflow-hidden rounded-xl p-5',
-        themeClass('bg-purple-50 border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]', 'bg-purple-50 border border-purple-100 shadow-sm')
+        themeClass(`${bg} border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]`, `${bg} border ${border} shadow-sm`)
       )}>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
           <div>
@@ -136,14 +151,14 @@ export default function LadderPromoCard({ user, authLoading }: LadderPromoCardPr
             <div className="flex items-center gap-4 mt-2">
               <div>
                 <div className={cn('text-xs font-bold uppercase', themeClass('text-gray-500', 'text-gray-500'))}>단식 ELO</div>
-                <div className={cn('text-xl font-black', themeClass('text-purple-600', 'text-purple-600'))}>
+                <div className={cn(`text-xl font-black ${statText}`)}>
                   {profile.singles_elo}
                 </div>
               </div>
-              <div className={cn('w-px h-8', themeClass('bg-purple-200', 'bg-purple-100'))} />
+              <div className={cn('w-px h-8', themeClass(divider, dividerMinimal))} />
               <div>
                 <div className={cn('text-xs font-bold uppercase', themeClass('text-gray-500', 'text-gray-500'))}>복식 ELO</div>
-                <div className={cn('text-xl font-black', themeClass('text-purple-600', 'text-purple-600'))}>
+                <div className={cn(`text-xl font-black ${statText}`)}>
                   {profile.doubles_elo}
                 </div>
               </div>
@@ -155,7 +170,7 @@ export default function LadderPromoCard({ user, authLoading }: LadderPromoCardPr
               href="/ladder"
               className={cn(
                 'inline-flex justify-center items-center px-4 py-2 text-sm font-bold rounded-lg transition-colors',
-                themeClass('bg-black text-white hover:bg-gray-800', 'bg-purple-600 text-white hover:bg-purple-700 shadow-sm')
+                themeClass(`${bg} ${textDark} border-2 border-black ${hoverBg}`, `${bg} ${text} ${hoverBg}`)
               )}
             >
               리더보드 보기

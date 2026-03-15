@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useThemeClass, cn } from '@/lib/cn';
+import { useSeason } from '@/contexts/SeasonalContext';
 import { User } from '@supabase/supabase-js';
 
 interface MatchingPromoCardProps {
@@ -11,6 +12,17 @@ interface MatchingPromoCardProps {
 
 export default function MatchingPromoCard({ user, authLoading }: MatchingPromoCardProps) {
   const themeClass = useThemeClass();
+  const { isCherryBlossom: s } = useSeason();
+
+  const bg = s ? 'bg-pink-50' : 'bg-blue-50';
+  const border = s ? 'border-pink-100' : 'border-blue-100';
+  const text = s ? 'text-pink-600' : 'text-blue-600';
+  const textDark = s ? 'text-pink-700' : 'text-blue-700';
+  const hoverText = s ? 'hover:text-pink-700' : 'hover:text-blue-700';
+  const hoverBg = s ? 'hover:bg-pink-100' : 'hover:bg-blue-100';
+  const iconBg = s ? 'bg-pink-200' : 'bg-blue-200';
+  const iconMinimal = s ? 'bg-pink-100 text-pink-600' : 'bg-blue-100 text-blue-600';
+  const deco = s ? 'bg-pink-600' : 'bg-blue-600';
 
   if (authLoading) {
     return (
@@ -25,7 +37,7 @@ export default function MatchingPromoCard({ user, authLoading }: MatchingPromoCa
       <div className="container my-6 lg:my-4">
         <div className={cn(
           'relative overflow-hidden rounded-xl p-5',
-          themeClass('bg-blue-50 border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]', 'bg-blue-50 border border-blue-100 shadow-sm')
+          themeClass(`${bg} border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]`, `${bg} border ${border} shadow-sm`)
         )}>
           <div className="flex items-center justify-between relative z-10">
             <div>
@@ -40,7 +52,7 @@ export default function MatchingPromoCard({ user, authLoading }: MatchingPromoCa
                   href="/login"
                   className={cn(
                     'inline-flex items-center text-sm font-bold',
-                    themeClass('text-blue-600 hover:underline', 'text-blue-600 hover:text-blue-700')
+                    themeClass(`${text} hover:underline`, `${text} ${hoverText}`)
                   )}
                 >
                   로그인하고 시작하기
@@ -56,11 +68,11 @@ export default function MatchingPromoCard({ user, authLoading }: MatchingPromoCa
                 </Link>
               </div>
             </div>
-            <div className={cn('w-12 h-12 flex items-center justify-center rounded-full', themeClass('bg-blue-200 border-2 border-black', 'bg-blue-100 text-blue-600'))}>
+            <div className={cn('w-12 h-12 flex items-center justify-center rounded-full', themeClass(`${iconBg} border-2 border-black`, iconMinimal))}>
               <span className="text-xl">🤝</span>
             </div>
           </div>
-          <div className={cn('absolute -right-4 -bottom-8 w-24 h-24 rounded-full opacity-10', themeClass('bg-blue-600', 'bg-blue-600'))} />
+          <div className={cn(`absolute -right-4 -bottom-8 w-24 h-24 rounded-full opacity-10 ${deco}`)} />
         </div>
       </div>
     );
@@ -70,7 +82,7 @@ export default function MatchingPromoCard({ user, authLoading }: MatchingPromoCa
     <div className="container my-6 lg:my-4">
       <div className={cn(
         'relative overflow-hidden rounded-xl p-5',
-        themeClass('bg-blue-50 border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]', 'bg-blue-50 border border-blue-100 shadow-sm')
+        themeClass(`${bg} border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]`, `${bg} border ${border} shadow-sm`)
       )}>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
           <div>
@@ -89,7 +101,7 @@ export default function MatchingPromoCard({ user, authLoading }: MatchingPromoCa
               href="/matching"
               className={cn(
                 'inline-flex justify-center items-center px-4 py-2 text-sm font-bold rounded-lg transition-colors',
-                themeClass('bg-black text-white hover:bg-gray-800', 'bg-blue-600 text-white hover:bg-blue-700 shadow-sm')
+                themeClass(`${bg} ${textDark} border-2 border-black ${hoverBg}`, `${bg} ${text} ${hoverBg}`)
               )}
             >
               매칭 바로가기

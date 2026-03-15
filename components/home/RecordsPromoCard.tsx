@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useThemeClass } from '@/lib/cn';
+import { useSeason } from '@/contexts/SeasonalContext';
 import { useRecordStats } from '@/lib/hooks/useRecordStats';
 import { User } from '@supabase/supabase-js';
 
@@ -12,8 +13,19 @@ interface RecordsPromoCardProps {
 
 export default function RecordsPromoCard({ user, authLoading }: RecordsPromoCardProps) {
   const themeClass = useThemeClass();
+  const { isCherryBlossom: s } = useSeason();
   
   const { stats, isLoading: statsLoading } = useRecordStats({ enabled: !!user });
+
+  const bg = s ? 'bg-pink-50' : 'bg-blue-50';
+  const text = s ? 'text-pink-600' : 'text-blue-600';
+  const textDark = s ? 'text-pink-700' : 'text-blue-700';
+  const hoverText = s ? 'hover:text-pink-700' : 'hover:text-blue-700';
+  const hoverBg = s ? 'hover:bg-pink-100' : 'hover:bg-blue-100';
+  const iconBg = s ? 'bg-pink-100' : 'bg-blue-100';
+  const iconMinimal = s ? 'bg-pink-50 text-pink-600' : 'bg-blue-50 text-blue-600';
+  const deco = s ? 'bg-pink-500' : 'bg-blue-500';
+  const statText = s ? 'text-pink-600' : 'text-blue-600';
 
   if (authLoading || (user && statsLoading)) {
     return (
@@ -38,7 +50,7 @@ export default function RecordsPromoCard({ user, authLoading }: RecordsPromoCard
               <div className="flex items-center gap-4">
                 <Link 
                   href="/login" 
-                  className={`inline-flex items-center text-sm font-bold ${themeClass('text-blue-600 hover:underline', 'text-blue-600 hover:text-blue-700')}`}
+                  className={`inline-flex items-center text-sm font-bold ${themeClass(`${text} hover:underline`, `${text} ${hoverText}`)}`}
                 >
                   로그인하고 시작하기
                   <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -53,13 +65,13 @@ export default function RecordsPromoCard({ user, authLoading }: RecordsPromoCard
                 </Link>
               </div>
             </div>
-            <div className={`w-12 h-12 flex items-center justify-center rounded-full ${themeClass('bg-blue-100 border-2 border-black', 'bg-blue-50 text-blue-600')}`}>
+            <div className={`w-12 h-12 flex items-center justify-center rounded-full ${themeClass(`${iconBg} border-2 border-black`, iconMinimal)}`}>
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
             </div>
           </div>
-          <div className={`absolute -right-4 -bottom-8 w-24 h-24 rounded-full opacity-10 ${themeClass('bg-blue-500', 'bg-blue-500')}`} />
+          <div className={`absolute -right-4 -bottom-8 w-24 h-24 rounded-full opacity-10 ${deco}`} />
         </div>
       </div>
     );
@@ -68,7 +80,10 @@ export default function RecordsPromoCard({ user, authLoading }: RecordsPromoCard
   if (!stats || stats.total_matches === 0) {
     return (
       <div className="container my-6 lg:my-4">
-        <div className={`relative overflow-hidden rounded-xl p-5 ${themeClass('bg-yellow-50 border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]', 'bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-100')}`}>
+        <div className={`relative overflow-hidden rounded-xl p-5 ${themeClass(
+          s ? 'bg-pink-50 border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]' : 'bg-yellow-50 border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]',
+          s ? 'bg-gradient-to-r from-pink-50 to-rose-50 border border-pink-100' : 'bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-100'
+        )}`}>
           <div className="flex items-center justify-between relative z-10">
             <div>
               <h3 className={`text-lg font-bold mb-1 ${themeClass('text-black', 'text-gray-900')}`}>
@@ -80,7 +95,7 @@ export default function RecordsPromoCard({ user, authLoading }: RecordsPromoCard
               <div className="flex items-center gap-4">
                 <Link 
                   href="/records/new" 
-                  className={`inline-flex items-center px-4 py-2 text-sm font-bold rounded-lg transition-colors ${themeClass('bg-black text-white hover:bg-gray-800', 'bg-yellow-500 text-white hover:bg-yellow-600 shadow-sm')}`}
+                  className={`inline-flex items-center px-4 py-2 text-sm font-bold rounded-lg transition-colors ${themeClass(`${bg} ${textDark} border-2 border-black ${hoverBg}`, `${bg} ${text} ${hoverBg}`)}`}
                 >
                   <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -95,7 +110,10 @@ export default function RecordsPromoCard({ user, authLoading }: RecordsPromoCard
                 </Link>
               </div>
             </div>
-            <div className={`hidden sm:flex w-16 h-16 items-center justify-center rounded-full ${themeClass('bg-white border-2 border-black', 'bg-white shadow-sm text-yellow-500')}`}>
+            <div className={`hidden sm:flex w-16 h-16 items-center justify-center rounded-full ${themeClass(
+              s ? 'bg-white border-2 border-black' : 'bg-white border-2 border-black',
+              s ? 'bg-white shadow-sm text-pink-500' : 'bg-white shadow-sm text-yellow-500'
+            )}`}>
               <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
               </svg>
@@ -123,7 +141,7 @@ export default function RecordsPromoCard({ user, authLoading }: RecordsPromoCard
             <div className="flex items-center gap-4 mt-2">
               <div>
                 <div className={`text-xs ${themeClass('text-gray-500 font-bold uppercase', 'text-gray-500')}`}>승률</div>
-                <div className={`text-xl font-black ${themeClass('text-blue-600', 'text-blue-600')}`}>
+                <div className={`text-xl font-black ${statText}`}>
                   {stats.win_rate}%
                 </div>
               </div>
@@ -140,7 +158,7 @@ export default function RecordsPromoCard({ user, authLoading }: RecordsPromoCard
                     <div 
                       key={`${result}-${occurrence}`}
                       className={`w-2 h-2 rounded-full ${
-                        result === 'win' ? 'bg-blue-500' : 
+                        result === 'win' ? (s ? 'bg-pink-500' : 'bg-blue-500') : 
                         result === 'loss' ? 'bg-red-500' : 'bg-gray-300'
                       }`}
                     />
@@ -155,7 +173,7 @@ export default function RecordsPromoCard({ user, authLoading }: RecordsPromoCard
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
             <Link 
               href="/records" 
-               className={`inline-flex justify-center items-center px-4 py-2 text-sm font-bold rounded-lg transition-colors ${themeClass('bg-black text-white hover:bg-gray-800', 'bg-green-600 text-white hover:bg-green-700 shadow-sm')}`}
+               className={`inline-flex justify-center items-center px-4 py-2 text-sm font-bold rounded-lg transition-colors ${themeClass(`${bg} ${textDark} border-2 border-black ${hoverBg}`, `${bg} ${text} ${hoverBg}`)}`}
             >
               전체 기록 보기
               <svg className="w-4 h-4 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

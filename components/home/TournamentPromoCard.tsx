@@ -2,11 +2,23 @@
 
 import Link from 'next/link';
 import { useThemeClass, cn } from '@/lib/cn';
+import { useSeason } from '@/contexts/SeasonalContext';
 import { useAuth } from '@/contexts/AuthContext';
 
 export default function TournamentPromoCard() {
   const themeClass = useThemeClass();
   const { user, loading: authLoading } = useAuth();
+  const { isCherryBlossom: s } = useSeason();
+
+  const bg = s ? 'bg-fuchsia-50' : 'bg-amber-50';
+  const border = s ? 'border-fuchsia-100' : 'border-amber-100';
+  const text = s ? 'text-fuchsia-600' : 'text-amber-600';
+  const textDark = s ? 'text-fuchsia-700' : 'text-amber-700';
+  const hoverText = s ? 'hover:text-fuchsia-700' : 'hover:text-amber-700';
+  const hoverBg = s ? 'hover:bg-fuchsia-100' : 'hover:bg-amber-100';
+  const iconBg = s ? 'bg-fuchsia-200' : 'bg-amber-200';
+  const iconMinimal = s ? 'bg-fuchsia-100 text-fuchsia-600' : 'bg-amber-100 text-amber-600';
+  const deco = s ? 'bg-fuchsia-600' : 'bg-amber-600';
 
   if (authLoading) {
     return (
@@ -21,7 +33,7 @@ export default function TournamentPromoCard() {
       <div className="container my-6 lg:my-4">
         <div className={cn(
           'relative overflow-hidden rounded-xl p-5',
-          themeClass('bg-amber-50 border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]', 'bg-amber-50 border border-amber-100 shadow-sm')
+          themeClass(`${bg} border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]`, `${bg} border ${border} shadow-sm`)
         )}>
           <div className="flex items-center justify-between relative z-10">
             <div>
@@ -36,7 +48,7 @@ export default function TournamentPromoCard() {
                   href="/login"
                   className={cn(
                     'inline-flex items-center text-sm font-bold',
-                    themeClass('text-amber-600 hover:underline', 'text-amber-600 hover:text-amber-700')
+                    themeClass(`${text} hover:underline`, `${text} ${hoverText}`)
                   )}
                 >
                   로그인하고 시작하기
@@ -52,11 +64,11 @@ export default function TournamentPromoCard() {
                 </Link>
               </div>
             </div>
-            <div className={cn('w-12 h-12 flex items-center justify-center rounded-full', themeClass('bg-amber-200 border-2 border-black', 'bg-amber-100 text-amber-600'))}>
+            <div className={cn('w-12 h-12 flex items-center justify-center rounded-full', themeClass(`${iconBg} border-2 border-black`, iconMinimal))}>
               <span className="text-xl">🏆</span>
             </div>
           </div>
-          <div className={cn('absolute -right-4 -bottom-8 w-24 h-24 rounded-full opacity-10', themeClass('bg-amber-600', 'bg-amber-600'))} />
+          <div className={cn(`absolute -right-4 -bottom-8 w-24 h-24 rounded-full opacity-10 ${deco}`)} />
         </div>
       </div>
     );
@@ -66,7 +78,7 @@ export default function TournamentPromoCard() {
     <div className="container my-6 lg:my-4">
       <div className={cn(
         'relative overflow-hidden rounded-xl p-5',
-        themeClass('bg-amber-50 border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]', 'bg-amber-50 border border-amber-100 shadow-sm')
+        themeClass(`${bg} border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]`, `${bg} border ${border} shadow-sm`)
       )}>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
           <div>
@@ -85,7 +97,7 @@ export default function TournamentPromoCard() {
               href="/tournaments"
               className={cn(
                 'inline-flex justify-center items-center px-4 py-2 text-sm font-bold rounded-lg transition-colors',
-                themeClass('bg-black text-white hover:bg-gray-800', 'bg-amber-600 text-white hover:bg-amber-700 shadow-sm')
+                themeClass(`${bg} ${textDark} border-2 border-black ${hoverBg}`, `${bg} ${text} ${hoverBg}`)
               )}
             >
               대진표 바로가기
