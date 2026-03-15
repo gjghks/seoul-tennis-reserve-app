@@ -25,6 +25,7 @@
 | **매칭** | 같이 테니스 칠 파트너를 모집하거나 참여하는 오픈 매칭 게시판 |
 | **래더** | ELO 기반 랭킹 시스템으로 실력 증명 및 순위 경쟁 |
 | **양도 마켓** | 코트 예약을 양도하거나 원하는 시간대의 코트를 구하는 마켓 |
+| **대진표** | 동호회 대진표 생성·관리 (단식/복식, 토너먼트/라운드로빈, 실시간 스코어) |
 
 ### 코트 상세 정보
 
@@ -48,6 +49,7 @@
 - **오픈 매칭** -- 날짜·장소·실력 수준을 지정해 테니스 파트너를 모집하고 신청
 - **ELO 래더** -- 단식/복식 ELO 랭킹 시스템, 티어별 리더보드
 - **양도 마켓** -- 코트 예약 양도 등록, 관심 표시, 연락처 비공개(관심 표시 후 공개)
+- **대진표** -- 동호회 친선경기부터 클럽 대회까지 대진표 생성, 실시간 스코어 입력, 공유 링크
 - **유저 프로필** -- 닉네임·성별 아바타·NTRP 레이팅으로 커뮤니티 프로필 구성
 
 ### 편의 기능
@@ -59,6 +61,7 @@
 - **PWA 설치** -- 홈 화면에 추가하여 앱처럼 사용
 - **테마 전환** -- 미니멀 / 네오브루탈리즘 두 가지 디자인 테마
 - **카카오 공유** -- 코트 정보를 카카오톡으로 공유
+- **벚꽃 시즌 테마** -- 계절 테마로 벚꽃 배너/오버레이 토글
 
 ## 기술 스택
 
@@ -73,6 +76,7 @@
 | **PWA** | Serwist |
 | **테스트** | Vitest + Testing Library |
 | **배포** | Vercel (ICN 리전) |
+| **애니메이션** | Framer Motion |
 | **분석** | Google Analytics, AdSense |
 
 ## 데이터 출처
@@ -161,6 +165,7 @@ app/
   matching/                 # 매칭 (게시판, 글쓰기, 상세)
   ladder/                   # 래더 (ELO 리더보드)
   transfers/                # 양도 마켓 (목록, 등록, 상세)
+  tournaments/              # 대진표 (목록, 생성, 상세/대진표/실시간 스코어)
   [district]/               # 자치구별 코트 목록
     [courtId]/              # 코트 상세 (리뷰, 날씨, 지도)
   my/                       # 마이페이지 (즐겨찾기, 알림, 테니스 프로필)
@@ -168,6 +173,7 @@ app/
   guide/matching/           # 매칭 기능 가이드
   guide/ladder/             # 래더 시스템 가이드
   guide/transfers/          # 양도 마켓 가이드
+  guide/tournaments/        # 대진표 가이드
   login/                    # 로그인 (Kakao, Google)
   about/                    # 서비스 소개
   api/
@@ -180,6 +186,7 @@ app/
     matching/               # 매칭 게시판 CRUD + 신청
     ladder/                 # 래더 리더보드 + 프로필 + 히스토리
     transfers/              # 양도 마켓 CRUD + 관심 표시
+    tournaments/            # 대진표 CRUD + 대진 추첨 + 경기 관리
     reviews/                # 리뷰 CRUD
     favorites/              # 즐겨찾기 CRUD
     trends/                 # 경쟁률 데이터
@@ -201,7 +208,9 @@ components/                 # React 컴포넌트
   matching/                 # 매칭 (게시판, 카드, 폼, 상세)
   ladder/                   # 래더 (리더보드, 랭크 카드, ELO 차트)
   transfers/                # 양도 (목록, 카드, 폼, 상세)
+  tournament/               # 대진표 (목록, 카드, 폼, 상세, 대진표 뷰, 실시간 스코어)
   profile/                  # 프로필 (테니스, 유저, 아바타, ProfileGate)
+  seasonal/                 # 시즌 테마 (벚꽃 배너, 사쿠라 오버레이)
   ui/                       # 공통 UI (Toast, Spinner, ShareButton 등)
   pwa/                      # PWA 설치 프롬프트
 
@@ -210,10 +219,10 @@ lib/                        # 유틸리티
   supabase.ts               # Supabase 브라우저 클라이언트
   supabaseServer.ts         # Supabase 서버 클라이언트
   hooks/                    # 커스텀 훅 (즐겨찾기, 기록, 프로필 등)
-  constants/                # 상수 (자치구, 테니스, 매칭, 래더, 양도, 프로필)
+  constants/                # 상수 (자치구, 테니스, 매칭, 래더, 양도, 프로필, 대진표)
   utils/                    # 유틸리티 (상태, 통계, 날씨 등)
 
-contexts/                   # React Context (Auth, Theme, TennisData, Toast)
+contexts/                   # React Context (Auth, Theme, TennisData, Toast, Seasonal)
 
 supabase/
   schema.sql                # DB 스키마
