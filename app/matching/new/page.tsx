@@ -74,22 +74,39 @@ export default function NewMatchingPage() {
   return (
     <div className={cn('min-h-screen py-8', themeClass('bg-nb-bg', 'bg-gray-50'))}>
       <div className="container mx-auto px-4 max-w-2xl">
-        <div className="mb-6 flex items-center">
+        <div className="mb-6 flex items-center justify-between">
+          <div className="flex items-center">
+            <Link
+              href="/matching"
+              className={themeClass(
+                'mr-4 p-2 hover:bg-gray-200 transition-colors rounded-[5px]',
+                'mr-4 p-2 hover:bg-gray-100 transition-colors rounded-full'
+              )}
+              aria-label="뒤로 가기"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="m15 18-6-6 6-6"/>
+              </svg>
+            </Link>
+            <h1 className={cn('text-2xl', themeClass('font-black text-black uppercase', 'font-bold text-gray-900'))}>
+              새 매칭 모집글 작성
+            </h1>
+          </div>
           <Link
-            href="/matching"
-            className={themeClass(
-              'mr-4 p-2 hover:bg-gray-200 transition-colors rounded-[5px]',
-              'mr-4 p-2 hover:bg-gray-100 transition-colors rounded-full'
+            href="/guide/matching"
+            className={cn(
+              'flex items-center gap-1.5 text-sm px-3.5 py-2 rounded-lg transition-all',
+              themeClass(
+                'bg-[#facc15] border-2 border-black font-bold text-black shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none',
+                'bg-green-50 text-green-700 font-semibold border border-green-200 hover:bg-green-100'
+              )
             )}
-            aria-label="뒤로 가기"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="m15 18-6-6 6-6"/>
+            <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0" aria-hidden="true">
+              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM8.94 6.94a.75.75 0 11-1.061-1.061 3 3 0 112.871 5.026v.345a.75.75 0 01-1.5 0v-.5c0-.72.57-1.172 1.081-1.287A1.5 1.5 0 108.94 6.94zM10 15a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
             </svg>
+            <span>사용법</span>
           </Link>
-          <h1 className={cn('text-2xl', themeClass('font-black text-black uppercase', 'font-bold text-gray-900'))}>
-            새 매칭 모집글 작성
-          </h1>
         </div>
         <MatchingPostForm />
       </div>

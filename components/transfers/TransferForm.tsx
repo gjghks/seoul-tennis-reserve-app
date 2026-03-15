@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useThemeClass, cn } from '@/lib/cn';
 import { DISTRICTS } from '@/lib/constants/districts';
 import { useAuth } from '@/contexts/AuthContext';
@@ -16,7 +17,7 @@ export default function TransferForm() {
     title: '',
     court_name: '',
     district: DISTRICTS[0].nameKo,
-    play_date: '',
+    play_date: new Date().toISOString().split('T')[0],
     play_time_start: '',
     play_time_end: '',
     original_price: '',
@@ -93,9 +94,26 @@ export default function TransferForm() {
   return (
     <div className="container py-6">
       <div className="max-w-2xl mx-auto">
-        <h1 className={cn('text-2xl font-black mb-6', themeClass('text-black', 'text-gray-900'))}>
-          양도글 작성
-        </h1>
+        <div className="mb-6 flex items-center justify-between">
+          <h1 className={cn('text-2xl font-black', themeClass('text-black', 'text-gray-900'))}>
+            양도글 작성
+          </h1>
+          <Link
+            href="/guide/transfers"
+            className={cn(
+              'flex items-center gap-1.5 text-sm px-3.5 py-2 rounded-lg transition-all',
+              themeClass(
+                'bg-[#facc15] border-2 border-black font-bold text-black shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none',
+                'bg-green-50 text-green-700 font-semibold border border-green-200 hover:bg-green-100'
+              )
+            )}
+          >
+            <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0" aria-hidden="true">
+              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM8.94 6.94a.75.75 0 11-1.061-1.061 3 3 0 112.871 5.026v.345a.75.75 0 01-1.5 0v-.5c0-.72.57-1.172 1.081-1.287A1.5 1.5 0 108.94 6.94zM10 15a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+            </svg>
+            <span>사용법</span>
+          </Link>
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-4">
