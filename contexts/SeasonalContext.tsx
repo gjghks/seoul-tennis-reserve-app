@@ -35,7 +35,7 @@ export function SeasonalProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     localStorage.removeItem(LEGACY_KEY);
     const resolved = detectSeason();
-    setSeason(resolved);
+    requestAnimationFrame(() => setSeason(resolved));
     document.documentElement.setAttribute('data-season', resolved);
   }, []);
 

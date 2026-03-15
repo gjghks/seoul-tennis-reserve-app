@@ -49,7 +49,7 @@ export default function Header() {
   const prevPathname = useRef(pathname);
   useEffect(() => {
     if (prevPathname.current !== pathname) {
-      setIsDropdownOpen(false);
+      requestAnimationFrame(() => setIsDropdownOpen(false));
       prevPathname.current = pathname;
     }
   }, [pathname]);

@@ -36,12 +36,13 @@ export default function EloChart({ history, enabled = true }: EloChartProps) {
   
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
-    setMounted(true);
+    // hydration guard: enable chart rendering after mount
+    requestAnimationFrame(() => setMounted(true));
   }, []);
 
-  const { plotPoints, areaPath, linePath, isRising, paddedMin, paddedMax } = useMemo(() => {
+  const { plotPoints, areaPath, linePath, isRising } = useMemo(() => {
     if (!history || history.length === 0) {
-      return { plotPoints: [], areaPath: '', linePath: '', isRising: true, paddedMin: 0, paddedMax: 0 };
+      return { plotPoints: [], areaPath: '', linePath: '', isRising: true };
     }
 
     const reversedHistory = [...history].reverse();
@@ -70,8 +71,6 @@ export default function EloChart({ history, enabled = true }: EloChartProps) {
       areaPath: aPath, 
       linePath: lPath, 
       isRising: rising,
-      paddedMin: minV,
-      paddedMax: maxV
     };
   }, [history]);
 

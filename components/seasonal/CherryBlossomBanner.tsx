@@ -22,7 +22,7 @@ export default function CherryBlossomBanner() {
   const [dismissed, setDismissed] = useState(true);
 
   useEffect(() => {
-    setDismissed(isDismissed());
+    requestAnimationFrame(() => setDismissed(isDismissed()));
   }, []);
 
   if (!isCherryBlossom || dismissed) return null;
