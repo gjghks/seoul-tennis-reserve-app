@@ -20,6 +20,7 @@ const CORE_FEATURES = [
   { emoji: '🤝', title: '매칭', desc: '같이 테니스 칠 파트너를 직접 모집하거나 참여' },
   { emoji: '🏆', title: '래더', desc: 'ELO 랭킹 시스템으로 실력을 증명하고 순위를 올리기' },
   { emoji: '🔄', title: '양도 마켓', desc: '코트 예약을 양도하거나 원하는 시간대의 코트를 구하기' },
+  { emoji: '🏅', title: '대진표', desc: '동호회 대진표 생성·관리, 실시간 스코어 입력, 공유 링크' },
 ] as const;
 
 const COURT_DETAIL_FEATURES = [
@@ -43,6 +44,7 @@ const CONVENIENCE_FEATURES = [
   { title: '테마 전환', desc: '미니멀·네오브루탈리즘 두 가지 디자인 테마 지원' },
   { title: '경기 통계', desc: '승률, 세트 스코어, 코트별 전적 등 자동 분석' },
   { title: '유저 프로필', desc: '닉네임·아바타·NTRP 레이팅으로 나만의 테니스 프로필 구성' },
+  { title: '벚꽃 시즌 테마', desc: '계절 테마로 벚꽃 배너와 오버레이를 즐겨보세요' },
 ] as const;
 
 export default function AboutPage() {
@@ -161,7 +163,7 @@ export default function AboutPage() {
                <li>데이터는 실시간으로 업데이트되지만, 실제 예약 가능 여부와 차이가 있을 수 있습니다.</li>
                <li>카카오 또는 구글 계정으로 로그인하면 즐겨찾기·후기 기능을 이용할 수 있습니다.</li>
                 <li>로그인하면 경기 기록 및 통계 기능을 이용할 수 있습니다.</li>
-                <li>매칭·래더·양도 등 커뮤니티 기능은 프로필 설정 후 이용할 수 있습니다.</li>
+                <li>매칭·래더·양도·대진표 등 커뮤니티 기능은 프로필 설정 후 이용할 수 있습니다.</li>
              </ul>
            </section>
 

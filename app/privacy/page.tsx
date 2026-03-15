@@ -27,6 +27,7 @@ export default function PrivacyPage() {
               <li>즐겨찾기, 이용 후기 등 개인화 기능 제공</li>
               <li>경기 기록 관리 및 통계 분석</li>
               <li>테니스 프로필 관리</li>
+              <li>매칭·래더·양도·대진표 등 커뮤니티 기능 제공</li>
               <li>서비스 이용 통계 분석 및 서비스 개선</li>
             </ul>
           </section>
@@ -58,6 +59,7 @@ export default function PrivacyPage() {
               <li>회원 정보: 회원 탈퇴 시까지</li>
               <li>이용 후기 및 즐겨찾기 데이터: 회원 탈퇴 시까지</li>
               <li>경기 기록 및 테니스 프로필 데이터: 회원 탈퇴 시까지</li>
+              <li>매칭 게시글, 래더 프로필, 양도 목록, 대진표 데이터: 회원 탈퇴 시까지</li>
               <li>경기 기록 이미지 및 리뷰 이미지: 회원 탈퇴 시 또는 게시물 삭제 시 즉시 삭제</li>
               <li>서비스 이용 기록: 3년</li>
               <li>익명 피드백 데이터: 서비스 개선 목적으로 보관 (개인 식별 정보 미포함)</li>
@@ -73,7 +75,7 @@ export default function PrivacyPage() {
               다만, 서비스 운영을 위해 다음과 같이 개인정보 처리를 위탁하고 있습니다.
             </p>
             <ul className="list-disc list-inside space-y-1">
-              <li><strong>Supabase</strong>: 회원 인증 및 데이터 저장 (후기, 즐겨찾기, 경기 기록, 테니스 프로필, 리뷰 이미지, 경기 기록 이미지)</li>
+              <li><strong>Supabase</strong>: 회원 인증 및 데이터 저장 (후기, 즐겨찾기, 경기 기록, 테니스 프로필, 유저 프로필, 매칭 게시글, 래더 프로필, 양도 목록, 대진표, 리뷰 이미지, 경기 기록 이미지)</li>
               <li><strong>Google Analytics</strong>: 서비스 이용 통계 분석</li>
               <li><strong>Google AdSense</strong>: 광고 제공 (쿠키 기반)</li>
               <li><strong>Vercel</strong>: 웹 서비스 호스팅</li>

@@ -22,6 +22,7 @@ export default function SitemapPage() {
     { href: '/matching', label: '매칭', description: '테니스 파트너 매칭 게시판' },
     { href: '/ladder', label: '래더', description: 'ELO 기반 테니스 래더 랭킹' },
     { href: '/transfers', label: '양도 마켓', description: '코트 예약 양도 거래' },
+    { href: '/tournaments', label: '대진표', description: '동호회 대진표 생성 및 관리' },
     { href: '/about', label: '서비스 소개', description: '서울 테니스 서비스 안내' },
     { href: '/contact', label: '문의하기', description: '서비스 문의 및 건의' },
     { href: '/privacy', label: '개인정보처리방침', description: '개인정보 보호 정책' },
