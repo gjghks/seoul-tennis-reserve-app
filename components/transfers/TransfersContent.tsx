@@ -31,7 +31,7 @@ export default function TransfersContent() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-6">
+    <div className={cn('container mx-auto px-4 py-6 min-h-screen scrollbar-hide', themeClass('bg-nb-bg', 'bg-gray-50'))}>
       <div className="flex items-center justify-between mb-4">
         <h1 className={cn('text-xl', themeClass('font-black text-black', 'font-bold text-gray-900'))}>
           양도 마켓
@@ -186,7 +186,7 @@ export default function TransfersContent() {
 
       <div className={cn(myMode ? 'h-[calc(100vh-220px)]' : 'h-[calc(100vh-280px)]', 'overflow-y-auto')}>
         <PullToRefresh onRefresh={handleRefresh} pullingContent="" refreshingContent="">
-          <div className="container pb-24">
+          <div className="container pb-6">
             <div className={cn(
               'relative mb-4 transition-all',
               themeClass(
@@ -299,30 +299,16 @@ export default function TransfersContent() {
 
       <Link
         href="/transfers/new"
-        aria-label="양도글 작성하기"
         className={cn(
-          'fixed bottom-20 right-6 z-50 flex items-center justify-center w-14 h-14 rounded-full transition-transform hover:scale-105 active:scale-95',
+          'fixed bottom-20 right-4 sm:bottom-6 sm:right-6 px-6 py-3 flex items-center justify-center z-40 transition-all gap-2',
           themeClass(
-            'bg-black text-white border-2 border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)]',
-            'bg-green-600 text-white shadow-lg hover:bg-green-700'
+            'bg-[#22c55e] text-black border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] font-black uppercase',
+            'bg-green-600 text-white rounded-full shadow-lg hover:bg-green-700 hover:shadow-xl font-bold'
           )
         )}
       >
-        <svg
-          className="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <title>양도글 작성</title>
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M12 4v16m8-8H4"
-          />
-        </svg>
+        <span className="text-xl leading-none">+</span>
+        <span>글쓰기</span>
       </Link>
     </div>
     </ProfileGate>

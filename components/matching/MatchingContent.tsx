@@ -53,7 +53,7 @@ export default function MatchingContent() {
   );
 
   return (
-    <div className="container mx-auto px-4 py-6">
+    <div className={cn('container mx-auto px-4 py-6 min-h-screen scrollbar-hide', themeClass('bg-nb-bg', 'bg-gray-50'))}>
       <div className="flex items-center justify-between mb-4">
         <h1 className={cn('text-xl', themeClass('font-black text-black', 'font-bold text-gray-900'))}>매칭</h1>
         <Link
