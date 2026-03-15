@@ -103,10 +103,10 @@ function getInitialState(initialData?: Partial<Tournament>): TournamentFormState
     format: initialData?.format ?? FORMAT_OPTIONS[0].value,
     match_type: initialData?.match_type ?? MATCH_TYPE_OPTIONS[0].value,
     scoring_format: initialData?.scoring_format ?? SCORING_FORMAT_OPTIONS[1].value,
-    no_ad_scoring: initialData?.no_ad_scoring ?? false,
+    no_ad_scoring: initialData?.no_ad_scoring ?? true,
     max_participants: initialData?.max_participants ?? PARTICIPANTS_OPTIONS[1].value,
     draw_type: initialData?.draw_type ?? DRAW_TYPE_OPTIONS[0].value,
-    play_date: initialData?.play_date ? initialData.play_date.split('T')[0] : '',
+    play_date: initialData?.play_date ? initialData.play_date.split('T')[0] : new Date().toISOString().split('T')[0],
     location: initialData?.location ?? '',
     district: initialData?.district ?? DISTRICTS[0].nameKo,
     court_name: initialData?.court_name ?? '',
@@ -462,7 +462,7 @@ export default function TournamentForm({ mode = 'create', initialData }: Tournam
                 <span className="text-lg shrink-0">{option.emoji}</span>
                 <div className="min-w-0">
                   <div className={cn('text-sm', themeClass('font-black text-black', 'font-bold text-gray-900'))}>{option.label}</div>
-                  <div className={cn('text-xs mt-0.5 hidden sm:block', themeClass('text-black/60', 'text-gray-500'))}>{option.desc}</div>
+                  <div className={cn('text-xs mt-0.5', themeClass('text-black/60', 'text-gray-500'))}>{option.desc}</div>
                 </div>
                 {state.draw_type === option.value && (
                   <span className={cn('ml-auto text-sm shrink-0', themeClass('text-black font-black', 'text-green-600 font-bold'))}>✓</span>

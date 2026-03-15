@@ -16,7 +16,7 @@ export default function MatchingPostForm() {
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [playDate, setPlayDate] = useState('');
+  const [playDate, setPlayDate] = useState(new Date().toISOString().split('T')[0]);
   const [playTimeStart, setPlayTimeStart] = useState('09:00');
   const [playTimeEnd, setPlayTimeEnd] = useState('11:00');
   const [district, setDistrict] = useState(DISTRICTS[0].nameKo);
