@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useThemeClass, cn } from '@/lib/cn';
 import { DEMO_ELO_TIERS } from '@/lib/mockData/guideExamples';
+import { getEloTier } from '@/lib/constants/ladder';
 
 const LADDER_STEPS = [
   {
@@ -44,7 +45,7 @@ export default function LadderGuideContent() {
   
   const baseElo = 1200;
   const currentElo = baseElo + (demoWins * 25) - (demoLosses * 15);
-  const currentTier = DEMO_ELO_TIERS.slice().reverse().find(t => currentElo >= (t as any).minElo) || DEMO_ELO_TIERS[0];
+  const currentTier = getEloTier(currentElo);
 
   return (
     <div className="container py-8 scrollbar-hide">
@@ -115,7 +116,7 @@ export default function LadderGuideContent() {
               <span className="text-2xl">🎖️</span> 티어 소개
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              {DEMO_ELO_TIERS.map((tier: any) => (
+              {DEMO_ELO_TIERS.map((tier) => (
                 <div
                   key={tier.key}
                   className={cn(

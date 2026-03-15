@@ -212,7 +212,7 @@ export default function MatchingGuideContent() {
                                 <div className={cn('w-10 h-10 rounded-full flex items-center justify-center font-bold', themeClass('bg-yellow-200 border-2 border-black', 'bg-blue-100 text-blue-700'))}>테</div>
                                 <div>
                                   <div className={cn('font-bold text-sm', themeClass('text-black', 'text-gray-900'))}>테린이 (NTRP 2.0)</div>
-                                  <div className="text-xs text-gray-500">"안녕하세요! 즐테 원합니다."</div>
+                                  <div className="text-xs text-gray-500">&ldquo;안녕하세요! 즐테 원합니다.&rdquo;</div>
                                 </div>
                               </div>
                               <div className="flex gap-2">
