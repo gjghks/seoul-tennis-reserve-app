@@ -54,7 +54,7 @@ export async function GET(request: NextRequest) {
     }
 
     const posts = (data || []).map((post: { id: string; contact_info?: string; author_id: string }) => {
-      const { contact_info: _, ...rest } = post;
+      const { contact_info: _contact, ...rest } = post;
       return {
         ...rest,
         has_applied: appliedIds.includes(post.id),
@@ -113,7 +113,7 @@ export async function GET(request: NextRequest) {
   }
 
   const posts = (data || []).map((post: { id: string; contact_info?: string }) => {
-    const { contact_info: _, ...rest } = post;
+    const { contact_info: _contact, ...rest } = post;
     return { ...rest, has_applied: appliedPostIds.has(post.id) };
   });
 

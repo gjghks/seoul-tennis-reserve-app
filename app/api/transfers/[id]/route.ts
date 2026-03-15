@@ -45,7 +45,7 @@ export async function GET(_request: NextRequest, context: RouteContext) {
     }
   }
 
-  const { contact_info: contactValue, ...publicData } = data;
+  const { contact_info: _contactValue, ...publicData } = data;
   const transfer = showContact ? data : publicData;
 
   return NextResponse.json({ transfer, myInterestStatus });

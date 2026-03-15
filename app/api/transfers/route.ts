@@ -50,7 +50,7 @@ export async function GET(request: NextRequest) {
     }
 
     const transfers = (data || []).map((transfer: Record<string, unknown>) => {
-      const { contact_info: _, ...rest } = transfer;
+      const { contact_info: _contact, ...rest } = transfer;
       return {
         ...rest,
         is_seller: (transfer as { seller_id: string }).seller_id === user.id,
@@ -87,7 +87,7 @@ export async function GET(request: NextRequest) {
   }
 
   const sanitized = (data || []).map((transfer: Record<string, unknown>) => {
-    const { contact_info: _, ...rest } = transfer;
+    const { contact_info: _contact, ...rest } = transfer;
     return rest;
   });
 
