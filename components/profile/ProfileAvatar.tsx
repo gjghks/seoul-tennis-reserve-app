@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { cn } from '@/lib/cn';
 import type { Gender } from '@/lib/constants/profile';
 
@@ -26,11 +27,15 @@ export default function ProfileAvatar({
 }: ProfileAvatarProps) {
   const sizeClass = SIZE_MAP[size];
 
+  const SIZE_PX = { sm: 32, md: 48, lg: 64 } as const;
+
   if (avatarUrl) {
     return (
-      <img
+      <Image
         src={avatarUrl}
         alt={nickname ? `${nickname}의 프로필` : '프로필 사진'}
+        width={SIZE_PX[size]}
+        height={SIZE_PX[size]}
         className={cn(sizeClass, 'rounded-full object-cover', className)}
       />
     );

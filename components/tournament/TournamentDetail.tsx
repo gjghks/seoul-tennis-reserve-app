@@ -155,7 +155,7 @@ export default function TournamentDetail({ id }: { id: string }) {
 
   const isCreator = user?.id && tournament?.creator_id === user.id;
   const participants = tournament?.participants || [];
-  const matches = tournament?.matches || [];
+  const matches = useMemo(() => tournament?.matches || [], [tournament?.matches]);
   const hasDraw = matches.length > 0;
 
   const shareUrl = useMemo(() => {

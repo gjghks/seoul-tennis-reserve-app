@@ -60,7 +60,7 @@ export default function LadderContent() {
       } else {
         alert('설정 변경에 실패했습니다.');
       }
-    } catch (e) {
+    } catch {
       alert('오류가 발생했습니다.');
     }
   };
