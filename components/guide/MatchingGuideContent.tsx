@@ -25,6 +25,12 @@ const FEATURE_DEMOS = [
     title: '신청 관리',
     desc: '신청자를 확인하고 수락/거절을 관리하세요.',
   },
+  {
+    id: 'notify',
+    emoji: '🔔',
+    title: '실시간 알림',
+    desc: '매칭 신청, 수락, 거절 시 상대방에게 푸시 알림이 즉시 전달됩니다.',
+  },
 ] as const;
 
 type DemoId = (typeof FEATURE_DEMOS)[number]['id'];
@@ -39,7 +45,7 @@ const MATCHING_STEPS = [
   {
     step: 2,
     title: '신청자 확인',
-    desc: '신청 메시지와 프로필을 확인합니다.',
+    desc: '누군가 신청하면 푸시 알림으로 바로 알려드립니다. 메시지와 프로필을 확인하세요.',
     icon: '👀',
   },
   {
@@ -62,6 +68,10 @@ const TIPS = [
   {
     title: '매너 있는 소통',
     desc: '수락/거절 시 매너 있는 메시지를 남겨주세요.',
+  },
+  {
+    title: '푸시 알림 활용',
+    desc: '마이페이지에서 푸시 알림을 활성화하면 매칭 신청/수락/거절 시 즉시 알림을 받을 수 있습니다.',
   },
 ];
 
@@ -219,6 +229,34 @@ export default function MatchingGuideContent() {
                                 <button type="button" className={cn('px-3 py-1.5 text-xs font-bold rounded-md', themeClass('bg-black text-white border-2 border-black', 'bg-blue-600 text-white'))}>수락</button>
                                 <button type="button" className={cn('px-3 py-1.5 text-xs font-bold rounded-md', themeClass('bg-white text-black border-2 border-black', 'bg-gray-100 text-gray-700'))}>거절</button>
                               </div>
+                            </div>
+                          </div>
+                        )}
+                        {feature.id === 'notify' && (
+                          <div className="space-y-4">
+                            <span className={cn('inline-block text-xs font-bold px-2 py-1 rounded', themeClass('bg-black text-white', 'bg-blue-100 text-blue-700'))}>알림 예시</span>
+                            <div className="space-y-2">
+                              {[
+                                { icon: '🎾', title: '매칭 신청', body: '테린이님이 매칭에 신청했습니다' },
+                                { icon: '✅', title: '매칭 수락', body: '매칭 신청이 수락되었습니다!' },
+                              ].map((notif) => (
+                                <div
+                                  key={notif.title}
+                                  className={cn(
+                                    'flex items-center gap-3 p-3 rounded-lg',
+                                    themeClass(
+                                      'bg-white border-2 border-black shadow-[2px_2px_0px_0px_#000]',
+                                      'bg-white border border-gray-200 shadow-sm'
+                                    )
+                                  )}
+                                >
+                                  <span className="text-xl shrink-0">{notif.icon}</span>
+                                  <div className="min-w-0">
+                                    <div className={cn('font-bold text-sm', themeClass('text-black', 'text-gray-900'))}>{notif.title}</div>
+                                    <div className="text-xs text-gray-500">{notif.body}</div>
+                                  </div>
+                                </div>
+                              ))}
                             </div>
                           </div>
                         )}

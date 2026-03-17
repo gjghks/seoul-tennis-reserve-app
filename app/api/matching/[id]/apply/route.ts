@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerSupabaseClient } from '@/lib/supabaseServer';
 import { createRateLimiter } from '@/lib/rateLimit';
+import { sendPushToUser } from '@/lib/pushNotification';
 
 const limiter = createRateLimiter({ windowMs: 60_000, maxRequests: 10 });
 
@@ -110,6 +111,12 @@ export async function POST(request: NextRequest, context: RouteContext) {
         { status: 500 }
       );
     }
+
+    sendPushToUser(post.author_id, {
+      title: '🎾 매칭 신청',
+      body: `${applicantName}님이 매칭에 신청했습니다`,
+      url: `/matching/${postId}`,
+    });
 
     return NextResponse.json({ application: data }, { status: 201 });
   } catch {
@@ -262,6 +269,20 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
     }
 
     await supabase.rpc('update_match_accepted_count', { post_uuid: postId });
+
+    if (data.applicant_id) {
+      const notifTitle = status === 'accepted' ? '✅ 매칭 수락' : '매칭 거절';
+      const notifBody =
+        status === 'accepted'
+          ? '매칭 신청이 수락되었습니다!'
+          : '매칭 신청이 거절되었습니다';
+
+      sendPushToUser(data.applicant_id, {
+        title: notifTitle,
+        body: notifBody,
+        url: `/matching/${postId}`,
+      });
+    }
 
     return NextResponse.json({ application: data });
   } catch {

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerSupabaseClient } from '@/lib/supabaseServer';
 import { createRateLimiter } from '@/lib/rateLimit';
+import { sendPushToUser } from '@/lib/pushNotification';
 
 const limiter = createRateLimiter({ windowMs: 60_000, maxRequests: 15 });
 
@@ -125,6 +126,12 @@ export async function POST(request: NextRequest, context: RouteContext) {
       return NextResponse.json({ error: '관심 표시에 실패했습니다.' }, { status: 500 });
     }
 
+    sendPushToUser(transfer.seller_id, {
+      title: '🏷️ 양도 관심 표시',
+      body: `${buyerName}님이 양도에 관심을 표시했습니다`,
+      url: `/transfers/${transferId}`,
+    });
+
     return NextResponse.json({ interest: data }, { status: 201 });
   } catch {
     return NextResponse.json({ error: '잘못된 요청입니다.' }, { status: 400 });
@@ -184,6 +191,20 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
       }
       console.error('Error updating interest:', error);
       return NextResponse.json({ error: '상태 변경에 실패했습니다.' }, { status: 500 });
+    }
+
+    if (data.buyer_id) {
+      const notifTitle = status === 'accepted' ? '✅ 양도 수락' : '양도 거절';
+      const notifBody =
+        status === 'accepted'
+          ? '양도가 수락되었습니다! 연락처를 확인하세요'
+          : '양도 요청이 거절되었습니다';
+
+      sendPushToUser(data.buyer_id, {
+        title: notifTitle,
+        body: notifBody,
+        url: `/transfers/${transferId}`,
+      });
     }
 
     return NextResponse.json({ interest: data });
