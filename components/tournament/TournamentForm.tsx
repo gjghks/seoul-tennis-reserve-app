@@ -27,6 +27,7 @@ interface Tournament {
   location: string | null;
   district: string | null;
   court_name: string | null;
+  court_count: number | null;
   created_at: string;
   updated_at: string;
 }
@@ -79,6 +80,7 @@ interface TournamentFormState {
   location: string;
   district: string;
   court_name: string;
+  court_count: number;
 }
 
 type TournamentFormAction =
@@ -110,6 +112,7 @@ function getInitialState(initialData?: Partial<Tournament>): TournamentFormState
     location: initialData?.location ?? '',
     district: initialData?.district ?? DISTRICTS[0].nameKo,
     court_name: initialData?.court_name ?? '',
+    court_count: initialData?.court_count ?? 0,
   };
 }
 
@@ -187,6 +190,7 @@ export default function TournamentForm({ mode = 'create', initialData }: Tournam
           location: state.location.trim() || null,
           district: state.district || null,
           court_name: state.court_name.trim() || null,
+          court_count: state.court_count > 0 ? state.court_count : null,
         };
 
         const endpoint = mode === 'edit' && initialData?.id ? `/api/tournaments/${initialData.id}` : '/api/tournaments';
@@ -546,6 +550,46 @@ export default function TournamentForm({ mode = 'create', initialData }: Tournam
               className={inputClass}
               placeholder="예: 올림픽공원 3번 코트"
             />
+          </div>
+        </div>
+
+        <div>
+          <label htmlFor="court_count" className={labelClass}>
+            사용 코트 수
+          </label>
+          <p className={cn('text-xs mb-2', themeClass('text-black/50', 'text-gray-400'))}>
+            입력하면 대진 추첨 시 매치별로 코트 번호가 자동 배정됩니다.
+          </p>
+          <div className="grid grid-cols-5 sm:grid-cols-6 gap-2">
+            {[0, 1, 2, 3, 4, 5, 6, 8, 10].map((count) => (
+              <label
+                key={count}
+                className={cn(
+                  'flex items-center justify-center px-3 py-2.5 cursor-pointer transition-all text-center',
+                  state.court_count === count
+                    ? themeClass(
+                        'bg-[#22c55e]/10 border-2 border-black rounded-[5px] shadow-[2px_2px_0px_0px_#000]',
+                        'bg-green-50 border-2 border-green-600 rounded-xl'
+                      )
+                    : themeClass(
+                        'bg-white border-2 border-black/20 rounded-[5px] hover:border-black',
+                        'bg-white border border-gray-200 rounded-xl hover:border-gray-300'
+                      )
+                )}
+              >
+                <input
+                  type="radio"
+                  name="court_count"
+                  value={count}
+                  checked={state.court_count === count}
+                  onChange={() => setField('court_count', count)}
+                  className="sr-only"
+                />
+                <span className={cn('text-sm', themeClass('font-black text-black', 'font-bold text-gray-900'))}>
+                  {count === 0 ? '미지정' : `${count}면`}
+                </span>
+              </label>
+            ))}
           </div>
         </div>
       </div>

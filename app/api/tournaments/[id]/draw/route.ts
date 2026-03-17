@@ -102,6 +102,25 @@ export async function POST(request: NextRequest, context: RouteContext) {
     }
   }
 
+  const courtCount = tournament.court_count as number | null;
+  if (courtCount && courtCount >= 1 && insertedMatches && insertedMatches.length > 0) {
+    const courtUpdates = insertedMatches
+      .filter((m) => {
+        const original = matches.find(
+          (om) => om.round === m.round && om.matchNumber === m.match_number
+        );
+        return original && original.status !== 'bye';
+      })
+      .map((m) => {
+        const courtNumber = ((m.match_number - 1) % courtCount) + 1;
+        return supabase
+          .from('tournament_matches')
+          .update({ court_number: courtNumber })
+          .eq('id', m.id);
+      });
+    await Promise.all(courtUpdates);
+  }
+
   await supabase
     .from('tournaments')
     .update({ status: 'in_progress', updated_at: new Date().toISOString() })

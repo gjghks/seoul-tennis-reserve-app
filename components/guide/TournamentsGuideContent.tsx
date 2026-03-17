@@ -50,7 +50,7 @@ const GUIDE_STEPS = [
   {
     step: 3,
     title: '대진 추첨',
-    desc: '랜덤 또는 시드 방식으로 대진표를 생성합니다. 참가자 수에 맞게 bye가 자동 배치됩니다.',
+    desc: '랜덤 또는 시드 방식으로 대진표를 생성합니다. 참가자 수에 맞게 bye가 자동 배치되며, 코트 수를 설정했다면 각 매치에 코트 번호가 자동 배정됩니다.',
     icon: '🎯',
   },
   {
@@ -99,6 +99,10 @@ const TIPS = [
   {
     title: '대진표 공유',
     desc: '대회 시작 전에 대진표를 카카오톡으로 공유하면 참가자들이 미리 자신의 경기 순서를 확인할 수 있습니다.',
+  },
+  {
+    title: '코트 번호 배정',
+    desc: '사용 코트 수를 설정하면 대진 추첨 시 각 매치에 코트 번호가 자동 배정됩니다. 참가자들이 자신의 코트를 바로 확인할 수 있습니다.',
   },
 ];
 
@@ -243,6 +247,7 @@ export default function TournamentsGuideContent() {
                               <div className="flex justify-between"><span className="text-gray-500">종목</span><span>남복 (남자 복식)</span></div>
                               <div className="flex justify-between"><span className="text-gray-500">스코어</span><span>4게임 (노애드)</span></div>
                               <div className="flex justify-between"><span className="text-gray-500">참가자</span><span>8팀</span></div>
+                              <div className="flex justify-between"><span className="text-gray-500">사용 코트</span><span>3면 (자동 배정)</span></div>
                             </div>
                           </div>
                         )}

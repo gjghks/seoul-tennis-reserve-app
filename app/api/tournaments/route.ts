@@ -117,6 +117,7 @@ export async function POST(request: NextRequest) {
       location,
       district,
       court_name,
+      court_count,
     } = body;
 
     if (!title || typeof title !== 'string' || title.length > 100) {
@@ -170,6 +171,9 @@ export async function POST(request: NextRequest) {
         location: location ?? null,
         district: district ?? null,
         court_name: court_name ?? null,
+        court_count: court_count && Number(court_count) >= 1 && Number(court_count) <= 20
+          ? Number(court_count)
+          : null,
       }])
       .select()
       .single();

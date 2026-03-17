@@ -28,6 +28,7 @@ export interface Tournament {
   location: string | null;
   district: string | null;
   court_name: string | null;
+  court_count: number | null;
   created_at: string;
   updated_at: string;
 }

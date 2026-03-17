@@ -18,6 +18,7 @@ interface BracketMatch {
   score: { p1: number; p2: number }[] | null;
   status: 'pending' | 'in_progress' | 'completed' | 'bye';
   nextMatchId: string | null;
+  courtNumber?: number | null;
 }
 
 interface MatchCardProps {
@@ -144,6 +145,7 @@ export default function MatchCard({
   const isActive = match.status === 'in_progress';
   const isBye = match.status === 'bye';
   const isCompleted = match.status === 'completed';
+  const courtNum = match.courtNumber ?? (match as unknown as Record<string, unknown>).court_number as number | undefined;
 
   const p1Score = match.score;
   const p2Score = match.score;
@@ -195,6 +197,20 @@ export default function MatchCard({
           >
             <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-current" />
             진행 중
+          </div>
+        )}
+
+        {courtNum && !isBye && (
+          <div
+            className={cn(
+              'flex items-center gap-1 px-2 py-[2px] text-[9px] font-bold',
+              themeClass(
+                'bg-[#facc15] text-black',
+                'bg-yellow-50 text-yellow-700'
+              )
+            )}
+          >
+            {courtNum}번 코트
           </div>
         )}
 

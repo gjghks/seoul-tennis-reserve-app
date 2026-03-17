@@ -32,6 +32,7 @@ interface Tournament {
   location: string | null;
   district: string | null;
   court_name: string | null;
+  court_count: number | null;
   created_at: string;
   updated_at: string;
   participants?: TournamentParticipant[];
@@ -293,6 +294,12 @@ export default function TournamentDetail({ id }: { id: string }) {
                 {[tournament.location, tournament.district, tournament.court_name].filter(Boolean).join(' / ') || '미정'}
               </p>
             </div>
+            {tournament.court_count && (
+              <div>
+                <span className={themeClass('font-black text-black/60', 'font-bold text-gray-500')}>사용 코트</span>
+                <p className={themeClass('font-bold text-black', 'text-gray-800')}>{tournament.court_count}면</p>
+              </div>
+            )}
           </div>
         </section>
 

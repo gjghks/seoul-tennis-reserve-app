@@ -194,6 +194,14 @@ export async function PUT(request: NextRequest, context: RouteContext) {
       updateData.max_participants = participantLimit;
     }
 
+    if (body.court_count !== undefined) {
+      const courtCount = body.court_count === null ? null : Number(body.court_count);
+      if (courtCount !== null && (!Number.isInteger(courtCount) || courtCount < 1 || courtCount > 20)) {
+        return NextResponse.json({ error: '코트 수는 1~20 사이여야 합니다.' }, { status: 400 });
+      }
+      updateData.court_count = courtCount;
+    }
+
     const allowedDirectFields = ['no_ad_scoring', 'is_public', 'play_date', 'location', 'district', 'court_name'];
     for (const field of allowedDirectFields) {
       if (body[field] !== undefined) {
