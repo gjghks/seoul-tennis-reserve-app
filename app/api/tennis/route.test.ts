@@ -2,7 +2,8 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { NextRequest } from 'next/server';
 
 vi.mock('@/lib/seoulApi', () => ({
-  fetchTennisAvailability: vi.fn(),
+  fetchTennisDataWithStatuses: vi.fn(),
+  applyScrapedStatuses: vi.fn((services: unknown[]) => Promise.resolve(services)),
   getCachedTennisData: vi.fn(),
 }));
 
@@ -99,11 +100,11 @@ describe('GET /api/tennis', () => {
   });
 
   it('should return all courts when no district filter is provided', async () => {
-    const { fetchTennisAvailability } = await import('@/lib/seoulApi');
+    const { fetchTennisDataWithStatuses } = await import('@/lib/seoulApi');
     const { isCourtAvailable } = await import('@/lib/utils/courtStatus');
     const { GET } = await import('./route');
 
-    vi.mocked(fetchTennisAvailability).mockResolvedValue(mockTennisData);
+    vi.mocked(fetchTennisDataWithStatuses).mockResolvedValue(mockTennisData);
     vi.mocked(isCourtAvailable).mockImplementation((status) => 
       status === '접수중' || status === '예약가능'
     );
@@ -126,10 +127,10 @@ describe('GET /api/tennis', () => {
   });
 
   it('should filter courts by district slug', async () => {
-    const { fetchTennisAvailability } = await import('@/lib/seoulApi');
+    const { fetchTennisDataWithStatuses } = await import('@/lib/seoulApi');
     const { GET } = await import('./route');
 
-    vi.mocked(fetchTennisAvailability).mockResolvedValue(mockTennisData);
+    vi.mocked(fetchTennisDataWithStatuses).mockResolvedValue(mockTennisData);
 
     const request = new NextRequest('http://localhost:3000/api/tennis?district=gangnam-gu');
     const response = await GET(request);
@@ -144,10 +145,10 @@ describe('GET /api/tennis', () => {
   });
 
   it('should filter courts by Korean district name', async () => {
-    const { fetchTennisAvailability } = await import('@/lib/seoulApi');
+    const { fetchTennisDataWithStatuses } = await import('@/lib/seoulApi');
     const { GET } = await import('./route');
 
-    vi.mocked(fetchTennisAvailability).mockResolvedValue(mockTennisData);
+    vi.mocked(fetchTennisDataWithStatuses).mockResolvedValue(mockTennisData);
 
     const request = new NextRequest('http://localhost:3000/api/tennis?district=송파구');
     const response = await GET(request);
@@ -161,10 +162,10 @@ describe('GET /api/tennis', () => {
   });
 
   it('should return empty array for non-existent district', async () => {
-    const { fetchTennisAvailability } = await import('@/lib/seoulApi');
+    const { fetchTennisDataWithStatuses } = await import('@/lib/seoulApi');
     const { GET } = await import('./route');
 
-    vi.mocked(fetchTennisAvailability).mockResolvedValue(mockTennisData);
+    vi.mocked(fetchTennisDataWithStatuses).mockResolvedValue(mockTennisData);
 
     const request = new NextRequest('http://localhost:3000/api/tennis?district=invalid-gu');
     const response = await GET(request);
@@ -177,7 +178,7 @@ describe('GET /api/tennis', () => {
   });
 
   it('should count external courts separately in externalCount', async () => {
-    const { fetchTennisAvailability } = await import('@/lib/seoulApi');
+    const { fetchTennisDataWithStatuses } = await import('@/lib/seoulApi');
     const { isCourtAvailable } = await import('@/lib/utils/courtStatus');
     const { GET } = await import('./route');
 
@@ -210,7 +211,7 @@ describe('GET /api/tennis', () => {
       },
     ];
 
-    vi.mocked(fetchTennisAvailability).mockResolvedValue(dataWithExternal);
+    vi.mocked(fetchTennisDataWithStatuses).mockResolvedValue(dataWithExternal);
     vi.mocked(isCourtAvailable).mockImplementation((status) =>
       status === '접수중' || status === '예약가능'
     );
@@ -224,12 +225,12 @@ describe('GET /api/tennis', () => {
     expect(data.byDistrict['강북구'].externalCount).toBe(1);
   });
 
-  it('should return 500 error when fetchTennisAvailability throws', async () => {
-    const { fetchTennisAvailability } = await import('@/lib/seoulApi');
+  it('should return 500 error when fetchTennisDataWithStatuses throws', async () => {
+    const { fetchTennisDataWithStatuses } = await import('@/lib/seoulApi');
     const { getCachedTennisData } = await import('@/lib/seoulApi');
     const { GET } = await import('./route');
 
-    vi.mocked(fetchTennisAvailability).mockRejectedValue(new Error('API Error'));
+    vi.mocked(fetchTennisDataWithStatuses).mockRejectedValue(new Error('API Error'));
     vi.mocked(getCachedTennisData).mockReturnValue(null);
 
     const request = new NextRequest('http://localhost:3000/api/tennis');
@@ -240,12 +241,12 @@ describe('GET /api/tennis', () => {
     expect(data.error).toBe('Failed to fetch tennis data');
   });
 
-  it('should return 200 with stale data when fetchTennisAvailability throws and cache exists', async () => {
-    const { fetchTennisAvailability, getCachedTennisData } = await import('@/lib/seoulApi');
+  it('should return 200 with stale data when fetchTennisDataWithStatuses throws and cache exists', async () => {
+    const { fetchTennisDataWithStatuses, getCachedTennisData } = await import('@/lib/seoulApi');
     const { isCourtAvailable } = await import('@/lib/utils/courtStatus');
     const { GET } = await import('./route');
 
-    vi.mocked(fetchTennisAvailability).mockRejectedValue(new Error('API Error'));
+    vi.mocked(fetchTennisDataWithStatuses).mockRejectedValue(new Error('API Error'));
     vi.mocked(getCachedTennisData).mockReturnValue({
       data: mockTennisData,
       timestamp: Date.now() - 60_000,

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { fetchTennisAvailability } from '@/lib/seoulApi';
+import { fetchTennisDataWithStatuses } from '@/lib/seoulApi';
 import { isIndependentCourt } from '@/lib/data/independentCourts';
 import { isCourtAvailable } from '@/lib/utils/courtStatus';
 import TodayContent from '@/components/today/TodayContent';
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
 };
 
 export default async function TodayPage() {
-  const services = await fetchTennisAvailability();
+  const services = await fetchTennisDataWithStatuses();
 
   const availableCourts = services.filter((court) =>
     isCourtAvailable(court.SVCSTATNM)

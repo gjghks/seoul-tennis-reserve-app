@@ -1,63 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { fetchTennisAvailability, getCachedTennisData } from '@/lib/seoulApi';
+import { fetchTennisDataWithStatuses, applyScrapedStatuses, getCachedTennisData } from '@/lib/seoulApi';
 import { SLUG_TO_KOREAN } from '@/lib/constants/districts';
 import { isCourtAvailable } from '@/lib/utils/courtStatus';
 import { isIndependentCourt } from '@/lib/data/independentCourts';
 import type { SeoulService } from '@/lib/seoulApi';
 import { createRateLimiter } from '@/lib/rateLimit';
-import { createAnonSupabaseClient } from '@/lib/supabaseServer';
 
 const limiter = createRateLimiter({ windowMs: 60_000, maxRequests: 60 });
-
-type CachedIndependentStatusRow = {
-  svc_id: string;
-  status: string;
-  updated_at: string;
-};
-
-async function applyScrapedStatuses(services: SeoulService[]): Promise<SeoulService[]> {
-  try {
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-      return services;
-    }
-
-    const twoHoursAgoIso = new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString();
-    const supabase = createAnonSupabaseClient();
-
-    const { data, error } = await supabase
-      .from('court_status_cache')
-      .select('svc_id, status, updated_at')
-      .like('svc_id', 'INDEP_%')
-      .gte('updated_at', twoHoursAgoIso);
-
-    if (error) {
-      console.error('Failed to read scraped external statuses:', error);
-      return services;
-    }
-
-    const rows = (data ?? []) as CachedIndependentStatusRow[];
-    if (rows.length === 0) {
-      return services;
-    }
-
-    const statusMap = new Map(rows.map((row) => [row.svc_id, row.status]));
-
-    return services.map((service) => {
-      const cachedStatus = statusMap.get(service.SVCID);
-      if (!cachedStatus) {
-        return service;
-      }
-
-      return {
-        ...service,
-        SVCSTATNM: cachedStatus,
-      };
-    });
-  } catch (error) {
-    console.error('Unexpected scraped status apply error:', error);
-    return services;
-  }
-}
 
 function buildTennisResponse(services: SeoulService[], district: string | null, stale = false) {
   const cacheHeaders = { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=3600' };
@@ -116,9 +65,8 @@ export async function GET(request: NextRequest) {
   const district = searchParams.get('district'); // slug 또는 한글
 
   try {
-    const services = await fetchTennisAvailability();
-    const enhancedServices = await applyScrapedStatuses(services);
-    return buildTennisResponse(enhancedServices, district);
+    const services = await fetchTennisDataWithStatuses();
+    return buildTennisResponse(services, district);
   } catch (error) {
     console.error('Error fetching tennis data:', error);
 

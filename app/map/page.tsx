@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { fetchTennisAvailability } from '@/lib/seoulApi';
+import { fetchTennisDataWithStatuses } from '@/lib/seoulApi';
 import MapDiscoveryContent from '@/components/map/MapDiscoveryContent';
 
 export const revalidate = 7200;
@@ -28,6 +28,6 @@ export const metadata: Metadata = {
 };
 
 export default async function MapPage() {
-  const courts = await fetchTennisAvailability();
+  const courts = await fetchTennisDataWithStatuses();
   return <MapDiscoveryContent courts={courts} />;
 }

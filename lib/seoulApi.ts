@@ -1,4 +1,5 @@
 import http from 'node:http';
+import { createClient } from '@supabase/supabase-js';
 import { getIndependentCourts } from '@/lib/data/independentCourts';
 import { getEnrichmentOperatingHours, getEnrichmentImageUrl } from '@/lib/data/facilityEnrichment';
 
@@ -240,4 +241,71 @@ export async function fetchTennisAvailability(): Promise<SeoulService[]> {
 
     console.error('Seoul API failed with no cache fallback. Returning empty array:', lastError);
     return INCLUDE_INDEPENDENT_COURTS ? getIndependentCourts() : [];
+}
+
+type CachedIndependentStatusRow = {
+    svc_id: string;
+    status: string;
+    updated_at: string;
+};
+
+/**
+ * Apply scraped statuses from court_status_cache to independent courts.
+ * Gracefully returns original services if Supabase is unavailable.
+ */
+export async function applyScrapedStatuses(services: SeoulService[]): Promise<SeoulService[]> {
+    try {
+        if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+            return services;
+        }
+
+        const twoHoursAgoIso = new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString();
+        const supabase = createClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL,
+            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+        );
+
+        const { data, error } = await supabase
+            .from('court_status_cache')
+            .select('svc_id, status, updated_at')
+            .like('svc_id', 'INDEP_%')
+            .gte('updated_at', twoHoursAgoIso);
+
+        if (error) {
+            console.error('Failed to read scraped external statuses:', error);
+            return services;
+        }
+
+        const rows = (data ?? []) as CachedIndependentStatusRow[];
+        if (rows.length === 0) {
+            return services;
+        }
+
+        const statusMap = new Map(rows.map((row) => [row.svc_id, row.status]));
+
+        return services.map((service) => {
+            const cachedStatus = statusMap.get(service.SVCID);
+            if (!cachedStatus) {
+                return service;
+            }
+
+            return {
+                ...service,
+                SVCSTATNM: cachedStatus,
+            };
+        });
+    } catch (error) {
+        console.error('Unexpected scraped status apply error:', error);
+        return services;
+    }
+}
+
+/**
+ * Fetch tennis courts with scraped statuses applied.
+ * Use this instead of fetchTennisAvailability() for all server components
+ * and API routes that need accurate independent court statuses.
+ */
+export async function fetchTennisDataWithStatuses(): Promise<SeoulService[]> {
+    const services = await fetchTennisAvailability();
+    return applyScrapedStatuses(services);
 }

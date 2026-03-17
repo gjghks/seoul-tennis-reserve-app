@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { fetchTennisAvailability } from '@/lib/seoulApi';
+import { fetchTennisDataWithStatuses } from '@/lib/seoulApi';
 import HomeContent from '@/components/home/HomeContent';
 import { DistrictStats } from '@/contexts/TennisDataContext';
 import { isCourtAvailable } from '@/lib/utils/courtStatus';
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 async function getInitialData(): Promise<Record<string, DistrictStats>> {
   try {
-    const services = await fetchTennisAvailability();
+    const services = await fetchTennisDataWithStatuses();
     
     const byDistrict = services.reduce((acc, svc) => {
       const area = svc.AREANM;

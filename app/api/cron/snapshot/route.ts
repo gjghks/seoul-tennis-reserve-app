@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { fetchTennisAvailability } from '@/lib/seoulApi';
+import { fetchTennisDataWithStatuses } from '@/lib/seoulApi';
 import { createServiceRoleClient } from '@/lib/supabaseServer';
 import { verifyCronSecret } from '@/lib/cronAuth';
 
@@ -20,7 +20,7 @@ export async function GET(request: Request) {
   }
 
   try {
-    const services = await fetchTennisAvailability();
+    const services = await fetchTennisDataWithStatuses();
     if (services.length === 0) {
       return NextResponse.json({ error: 'No data from Seoul API' }, { status: 502 });
     }

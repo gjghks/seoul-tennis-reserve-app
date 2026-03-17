@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { fetchTennisAvailability } from '@/lib/seoulApi';
+import { fetchTennisDataWithStatuses } from '@/lib/seoulApi';
 import { SLUG_TO_KOREAN, getDistrictBySlug, DISTRICTS } from '@/lib/constants/districts';
 import { computeAllDistrictStats, getDistrictRank } from '@/lib/utils/districtStats';
 import { notFound } from 'next/navigation';
@@ -109,7 +109,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
     notFound();
   }
 
-  const services = await fetchTennisAvailability();
+  const services = await fetchTennisDataWithStatuses();
   const allStats = computeAllDistrictStats(services);
   const districtStat = allStats.districts.find((d) => d.nameKo === koreanName);
 

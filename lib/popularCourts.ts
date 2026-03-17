@@ -1,4 +1,4 @@
-import { fetchTennisAvailability, SeoulService } from '@/lib/seoulApi';
+import { fetchTennisDataWithStatuses, SeoulService } from '@/lib/seoulApi';
 import { createAnonSupabaseClient, createServiceRoleClient } from '@/lib/supabaseServer';
 import { KOREAN_TO_SLUG } from '@/lib/constants/districts';
 
@@ -135,7 +135,7 @@ export async function computePopularCourts(): Promise<PopularCourt[]> {
   const anonClient = createAnonSupabaseClient();
   const serviceClient = createServiceRoleClient();
   const [services, reviewResult, favoriteResult] = await Promise.all([
-    fetchTennisAvailability().catch(() => [] as SeoulService[]),
+    fetchTennisDataWithStatuses().catch(() => [] as SeoulService[]),
     anonClient.from('reviews').select('court_id, court_name, district, rating'),
     serviceClient.from('favorites').select('svc_id'),
   ]);

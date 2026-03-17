@@ -1,4 +1,4 @@
-import { fetchTennisAvailability, SeoulService } from '@/lib/seoulApi';
+import { fetchTennisDataWithStatuses, SeoulService } from '@/lib/seoulApi';
 import { getDistrictBySlug, SLUG_TO_KOREAN, District } from '@/lib/constants/districts';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: CourtDetailPageProps): Promis
   }
 
   try {
-    const services = await fetchTennisAvailability();
+    const services = await fetchTennisDataWithStatuses();
     const court = services.find(s => s.SVCID === decodedCourtId);
     
     if (!court) {
@@ -63,7 +63,7 @@ async function getCourtData(districtSlug: string, courtId: string): Promise<Cour
   }
 
   try {
-    const services = await fetchTennisAvailability();
+    const services = await fetchTennisDataWithStatuses();
     const decodedCourtId = decodeURIComponent(courtId);
     const court = services.find(s => s.SVCID === decodedCourtId);
     

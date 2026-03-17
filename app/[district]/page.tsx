@@ -1,4 +1,4 @@
-import { fetchTennisAvailability, SeoulService } from '@/lib/seoulApi';
+import { fetchTennisDataWithStatuses, SeoulService } from '@/lib/seoulApi';
 import { SLUG_TO_KOREAN, getDistrictBySlug } from '@/lib/constants/districts';
 import DistrictContent from '@/components/district/DistrictContent';
 import { notFound } from 'next/navigation';
@@ -53,7 +53,7 @@ async function getDistrictCourts(district: string): Promise<{ courts: SeoulServi
   }
 
   try {
-    const services = await fetchTennisAvailability();
+    const services = await fetchTennisDataWithStatuses();
     const filtered = services.filter(s => s.AREANM === koreanDistrict);
     
     const sorted = sortByAvailability(filtered);

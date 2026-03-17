@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { fetchTennisAvailability } from '@/lib/seoulApi';
+import { fetchTennisDataWithStatuses } from '@/lib/seoulApi';
 import { computeAllDistrictStats } from '@/lib/utils/districtStats';
 import CompareContent from '@/components/compare/CompareContent';
 
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ComparePage() {
-  const services = await fetchTennisAvailability();
+  const services = await fetchTennisDataWithStatuses();
   const stats = computeAllDistrictStats(services);
 
   const jsonLd = {
