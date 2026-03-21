@@ -16,6 +16,23 @@ export function isExternalReservation(status: string | undefined | null): boolea
 export const isCourtAccepting = (status: string): boolean =>
   status === '접수중';
 
+/** Get contextually appropriate reservation button label for a given status */
+export function getReservationButtonLabel(status: string | undefined | null): string {
+  if (!status) return '예약 불가';
+
+  switch (status) {
+    case '예약마감':
+    case '접수마감':
+      return '예약 마감';
+    case '안내중':
+      return '예약 준비중';
+    case '예약일시중지':
+      return '예약 일시중지';
+    default:
+      return '예약 불가';
+  }
+}
+
 /** Sort courts with accepting courts first */
 export const sortByAvailability = <T extends { SVCSTATNM: string }>(courts: T[]): T[] =>
   [...courts].sort((a, b) => {

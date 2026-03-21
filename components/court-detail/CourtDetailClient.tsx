@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { SeoulService } from '@/lib/seoulApi';
 import { District } from '@/lib/constants/districts';
 import { useTheme } from '@/contexts/ThemeContext';
-import { isCourtAvailable } from '@/lib/utils/courtStatus';
+import { isCourtAvailable, getReservationButtonLabel } from '@/lib/utils/courtStatus';
 import { isIndependentCourt } from '@/lib/data/independentCourts';
 import FavoriteButton from '@/components/favorite/FavoriteButton';
 import ShareButton from '@/components/ui/ShareButton';
@@ -299,7 +299,7 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  예약 마감
+                  {getReservationButtonLabel(court.SVCSTATNM)}
                 </>
               )}
             </a>

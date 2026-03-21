@@ -135,7 +135,8 @@ function getWebFallback(provider: MapProvider, dest: MapDestination, origin: Geo
     }
 
     case 'tmap':
-      return `https://tmap.life/route?goalname=${encoded}&goalx=${lng}&goaly=${lat}`;
+      // T-Map has no web navigation — fall back to app store
+      return getStoreFallback('tmap');
   }
 }
 
