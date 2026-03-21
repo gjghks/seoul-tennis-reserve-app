@@ -222,6 +222,15 @@ export default function ReservationGuideContent() {
               >
                 코트 둘러보기
               </Link>
+              <Link
+                href="/guide/school-courts"
+                className={`px-6 py-3 rounded-lg text-center font-bold transition-all ${themeClass(
+                  'bg-white text-black border-2 border-black hover:bg-gray-100 shadow-[4px_4px_0px_0px_#000] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000]',
+                  'bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-md hover:shadow-lg'
+                )}`}
+              >
+                학교 테니스장 안내
+              </Link>
             </div>
           </section>
         </div>

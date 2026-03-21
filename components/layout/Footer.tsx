@@ -10,6 +10,7 @@ import VisitorCounter from '@/components/layout/VisitorCounter';
 
 const NAV_LINKS = [
   { href: '/about', label: '서비스 소개' },
+  { href: '/guide', label: '이용 가이드' },
   { href: '/privacy', label: '개인정보처리방침' },
   { href: '/terms', label: '이용약관' },
   { href: '/contact', label: '문의하기' },

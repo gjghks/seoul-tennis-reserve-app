@@ -242,6 +242,16 @@ export default function MoreMenu({ isOpen, onClose }: MoreMenuProps) {
               >
                 서비스 소개
               </Link>
+              <Link
+                href="/guide"
+                onClick={onClose}
+                className={`flex-1 text-center px-3 min-h-[44px] inline-flex items-center justify-center text-xs transition-colors ${themeClass(
+                  'text-black/60 hover:bg-gray-100 font-medium rounded-[8px]',
+                  'text-gray-500 hover:bg-gray-50 rounded-lg'
+                )}`}
+              >
+                이용 가이드
+              </Link>
               <button
                 type="button"
                 onClick={() => { toggleTheme(); onClose(); }}
