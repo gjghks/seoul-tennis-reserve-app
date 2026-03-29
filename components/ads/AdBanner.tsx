@@ -58,6 +58,27 @@ export default function AdBanner({
     }
   }, [pushAd]);
 
+  useEffect(() => {
+    const handlePageShow = (e: PageTransitionEvent) => {
+      if (e.persisted && adRef.current) {
+        const ins = adRef.current.querySelector('.adsbygoogle');
+        if (ins) {
+          ins.removeAttribute('data-adsbygoogle-status');
+          ins.innerHTML = '';
+          isLoaded.current = false;
+          try {
+            window.adsbygoogle.push({});
+            isLoaded.current = true;
+          } catch {
+          }
+        }
+      }
+    };
+
+    window.addEventListener('pageshow', handlePageShow);
+    return () => window.removeEventListener('pageshow', handlePageShow);
+  }, []);
+
   if (!process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID) {
     return null;
   }
