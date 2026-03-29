@@ -106,7 +106,7 @@ body {
   border-radius: 12px;
   box-shadow: var(--shadow-sm);
   border: 1px solid #E5E5E5;
-  transition: all 0.2s ease;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .card:hover {
@@ -124,7 +124,7 @@ body {
   border-radius: 8px;
   font-weight: 500;
   font-size: 14px;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
   cursor: pointer;
   border: none;
 }
@@ -193,7 +193,7 @@ input:focus, select:focus {
   border-radius: 8px;
   font-size: 14px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 .calendar-day:hover:not(.disabled) {
@@ -388,32 +388,55 @@ html, body {
   }
 }
 
-/* Skeleton Loading */
+/* Skeleton Loading — GPU-composited shimmer via transform */
+.skeleton,
+.skeleton-neo,
+.skeleton-light {
+  position: relative;
+  overflow: hidden;
+}
+
 .skeleton {
-  background: linear-gradient(90deg, #F0F0F0 25%, #E0E0E0 50%, #F0F0F0 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
+  background: #F0F0F0;
   border-radius: 4px;
 }
 
 .skeleton-neo {
-  background: linear-gradient(90deg, #e5e5e5 25%, #d4d4d4 50%, #e5e5e5 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
+  background: #e5e5e5;
   border-radius: 5px;
   border: 2px solid rgba(0, 0, 0, 0.15);
 }
 
 .skeleton-light {
-  background: linear-gradient(90deg, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.1) 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
+  background: rgba(255,255,255,0.1);
   border-radius: 4px;
 }
 
+.skeleton::after,
+.skeleton-neo::after,
+.skeleton-light::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  animation: shimmer 1.5s infinite;
+  will-change: transform;
+}
+
+.skeleton::after {
+  background: linear-gradient(90deg, transparent, #E0E0E0 50%, transparent);
+}
+
+.skeleton-neo::after {
+  background: linear-gradient(90deg, transparent, #d4d4d4 50%, transparent);
+}
+
+.skeleton-light::after {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15) 50%, transparent);
+}
+
 @keyframes shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  100% { transform: translateX(100%); }
 }
 
 /* ============================================
@@ -510,7 +533,7 @@ html, body {
   }
 
   .interact-nb-press {
-    transition: all 150ms ease;
+    transition: transform 150ms ease, box-shadow 150ms ease;
   }
   .interact-nb-press:active {
     transform: translate(4px, 4px);
@@ -550,7 +573,7 @@ html, body {
   border-radius: 5px;
   box-shadow: 4px 4px 0px 0px #000;
   border: 2px solid #000;
-  transition: all 0.15s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 [data-theme="neo-brutalism"] .card-nb:hover {
@@ -569,7 +592,7 @@ html, body {
   font-size: 14px;
   border: 2px solid #000;
   box-shadow: 4px 4px 0px 0px #000;
-  transition: all 0.15s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
   cursor: pointer;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -641,7 +664,7 @@ html, body {
   border-radius: 5px;
   font-size: 14px;
   font-weight: 500;
-  transition: all 0.15s ease;
+  transition: box-shadow 0.15s ease;
   box-shadow: 2px 2px 0px 0px #000;
 }
 

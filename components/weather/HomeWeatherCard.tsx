@@ -130,11 +130,12 @@ export default function HomeWeatherCard({ nx, ny }: HomeWeatherCardProps) {
 
   if (isLoading && !data) {
     return (
-      <div className="mt-3">
-        <div className={themeClass(
-          'h-5 w-48 rounded bg-white/20',
-          'h-5 w-48 rounded bg-white/20'
-        )} />
+      <div className={themeClass(
+        'mt-3 bg-black/15 backdrop-blur-sm rounded-[5px] border border-white/20 px-3 py-2.5 min-h-[68px]',
+        'mt-3 bg-white/15 backdrop-blur-sm rounded-lg border border-white/20 px-3 py-2.5 min-h-[68px]'
+      )}>
+        <div className="h-5 w-48 rounded skeleton-light" />
+        <div className="h-3 w-64 rounded skeleton-light mt-2" />
       </div>
     );
   }

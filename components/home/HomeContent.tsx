@@ -52,7 +52,7 @@ const TournamentPromoCard = dynamic(
 
 const PopularCourts = dynamic(
   () => import('@/components/home/PopularCourts'),
-  { ssr: false, loading: () => <div className="container"><div className="h-48 skeleton rounded-xl" /></div> }
+  { ssr: false, loading: () => <div className="container"><div className="min-h-[460px] skeleton rounded-xl" /></div> }
 );
 
 const DiscoveryCards = dynamic(
