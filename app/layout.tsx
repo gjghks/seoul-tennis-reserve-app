@@ -121,6 +121,7 @@ export default function RootLayout({
                       { not: { href_matches: "/api/*" } },
                       { not: { href_matches: "/auth/*" } },
                       { not: { href_matches: "/login" } },
+                      { not: { href_matches: "/my" } },
                     ],
                   },
                   eagerness: "moderate",
