@@ -1195,34 +1195,12 @@ html, body {
 .tennis-ball {
   position: absolute;
   top: -30px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #E8FF6B 0%, #C8E020 55%, #9CB016 100%);
-  box-shadow:
-    inset 0 -2px 4px rgba(0, 0, 0, 0.18),
-    inset 0 2px 3px rgba(255, 255, 255, 0.4),
-    0 1px 3px rgba(0, 0, 0, 0.15);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><radialGradient id='g' cx='35%25' cy='28%25' r='78%25'><stop offset='0%25' stop-color='%23F8FF9C'/><stop offset='30%25' stop-color='%23E0FF40'/><stop offset='68%25' stop-color='%23B8D420'/><stop offset='100%25' stop-color='%23798E12'/></radialGradient></defs><circle cx='50' cy='50' r='48' fill='url(%23g)'/><path d='M50 3 C80 19 80 43 50 53' stroke='%235E7008' stroke-width='6.5' fill='none' stroke-linecap='round' opacity='0.35'/><path d='M50 53 C20 63 20 87 50 97' stroke='%235E7008' stroke-width='6.5' fill='none' stroke-linecap='round' opacity='0.35'/><path d='M50 3 C80 19 80 43 50 53' stroke='white' stroke-width='4.5' fill='none' stroke-linecap='round'/><path d='M50 53 C20 63 20 87 50 97' stroke='white' stroke-width='4.5' fill='none' stroke-linecap='round'/><circle cx='34' cy='28' r='8' fill='white' opacity='0.22'/></svg>");
+  background-size: cover;
+  background-repeat: no-repeat;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.22));
   animation: tennis-float linear infinite, tennis-bounce ease-in-out infinite;
   will-change: transform, opacity;
-}
-
-.tennis-ball::before,
-.tennis-ball::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  pointer-events: none;
-}
-
-.tennis-ball::before {
-  clip-path: inset(0 0 50% 0);
-  transform: rotate(15deg) scale(1.05) translateY(-1px);
-}
-
-.tennis-ball::after {
-  clip-path: inset(50% 0 0 0);
-  transform: rotate(15deg) scale(1.05) translateY(1px);
 }
 
 @media (prefers-reduced-motion: reduce) {
