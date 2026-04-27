@@ -71,7 +71,7 @@ export default function MapAppSelector({ isOpen, onClose, destination }: MapAppS
         requestAnimationFrame(() => { trigger.focus(); });
       }
     }
-  }, [isOpen]);
+  }, [isOpen, mounted]);
 
   const handleCancel = useCallback((e: React.SyntheticEvent<HTMLDialogElement>) => {
     e.preventDefault();
