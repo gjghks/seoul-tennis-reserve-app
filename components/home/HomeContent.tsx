@@ -17,6 +17,7 @@ import HomeWeatherCard from '@/components/weather/HomeWeatherCard';
 import CourtSearch from '@/components/home/CourtSearch';
 import DustAlertBanner from '@/components/weather/DustAlertBanner';
 import CherryBlossomBanner from '@/components/seasonal/CherryBlossomBanner';
+import TennisSeasonBanner from '@/components/seasonal/TennisSeasonBanner';
 
 const SEOUL_WEATHER_GRID = convertToWeatherGrid(126.978, 37.5665);
 
@@ -122,6 +123,7 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
       className={`min-h-[var(--main-height)] flex flex-col ${themeClass('bg-nb-bg', '')}`}
     >
       <CherryBlossomBanner />
+      <TennisSeasonBanner />
       <DustAlertBanner />
       <section className={themeClass('relative z-20 court-pattern-nb text-white py-4 lg:py-3', 'relative z-20 court-pattern text-white py-4 lg:py-3')}>
         <div className="container relative">

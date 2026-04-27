@@ -10,6 +10,7 @@ import Toast from '@/components/ui/Toast';
 import ScrollToTop from '@/components/ui/ScrollToTop';
 import UpdatePrompt from '@/components/pwa/UpdatePrompt';
 import SakuraOverlay from '@/components/seasonal/SakuraOverlay';
+import TennisBallOverlay from '@/components/seasonal/TennisBallOverlay';
 
 function useServiceWorkerRegistration() {
   useEffect(() => {
@@ -46,6 +47,7 @@ export default function Providers({ children }: ProvidersProps) {
             <UpdatePrompt />
             <ScrollToTop />
             <SakuraOverlay />
+            <TennisBallOverlay />
           </ToastProvider>
         </SeasonalProvider>
       </ThemeProvider>

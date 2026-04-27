@@ -8,17 +8,15 @@ import { useAuth } from '@/contexts/AuthContext';
 export default function TournamentPromoCard() {
   const themeClass = useThemeClass();
   const { user, loading: authLoading } = useAuth();
-  const { isCherryBlossom: s } = useSeason();
+  const { season } = useSeason();
 
-  const bg = s ? 'bg-fuchsia-50' : 'bg-amber-50';
-  const border = s ? 'border-fuchsia-100' : 'border-amber-100';
-  const text = s ? 'text-fuchsia-600' : 'text-amber-600';
-  const textDark = s ? 'text-fuchsia-700' : 'text-amber-700';
-  const hoverText = s ? 'hover:text-fuchsia-700' : 'hover:text-amber-700';
-  const hoverBg = s ? 'hover:bg-fuchsia-100' : 'hover:bg-amber-100';
-  const iconBg = s ? 'bg-fuchsia-200' : 'bg-amber-200';
-  const iconMinimal = s ? 'bg-fuchsia-100 text-fuchsia-600' : 'bg-amber-100 text-amber-600';
-  const deco = s ? 'bg-fuchsia-600' : 'bg-amber-600';
+  const palette = {
+    'default':        { bg: 'bg-amber-50',   border: 'border-amber-100',   text: 'text-amber-600',   textDark: 'text-amber-700',   hoverText: 'hover:text-amber-700',   hoverBg: 'hover:bg-amber-100',   iconBg: 'bg-amber-200',   iconMinimal: 'bg-amber-100 text-amber-600',     deco: 'bg-amber-600' },
+    'cherry-blossom': { bg: 'bg-fuchsia-50', border: 'border-fuchsia-100', text: 'text-fuchsia-600', textDark: 'text-fuchsia-700', hoverText: 'hover:text-fuchsia-700', hoverBg: 'hover:bg-fuchsia-100', iconBg: 'bg-fuchsia-200', iconMinimal: 'bg-fuchsia-100 text-fuchsia-600', deco: 'bg-fuchsia-600' },
+    'tennis-spring':  { bg: 'bg-lime-50',    border: 'border-lime-100',    text: 'text-lime-700',    textDark: 'text-lime-800',    hoverText: 'hover:text-lime-800',    hoverBg: 'hover:bg-lime-100',    iconBg: 'bg-lime-200',    iconMinimal: 'bg-lime-100 text-lime-700',       deco: 'bg-lime-600' },
+    'tennis-autumn':  { bg: 'bg-orange-50',  border: 'border-orange-100',  text: 'text-orange-600',  textDark: 'text-orange-700',  hoverText: 'hover:text-orange-700',  hoverBg: 'hover:bg-orange-100',  iconBg: 'bg-orange-200',  iconMinimal: 'bg-orange-100 text-orange-600',   deco: 'bg-orange-600' },
+  } as const;
+  const { bg, border, text, textDark, hoverText, hoverBg, iconBg, iconMinimal, deco } = palette[season];
 
   if (authLoading) {
     return (

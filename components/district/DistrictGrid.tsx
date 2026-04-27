@@ -5,7 +5,15 @@ import Link from 'next/link';
 import { DISTRICTS, District } from '@/lib/constants/districts';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useSeason } from '@/contexts/SeasonalContext';
+import type { Season } from '@/contexts/SeasonalContext';
 import { useThemeClass } from '@/lib/cn';
+
+const SEASON_PALETTE = {
+  'default':        { neoAvailBg: 'bg-[#a3e635]', neoAvailText: 'text-[#a3e635]', minHover: 'group-hover:text-green-600',   minDot: 'bg-green-500'   },
+  'cherry-blossom': { neoAvailBg: 'bg-[#FFB7C5]', neoAvailText: 'text-[#FFB7C5]', minHover: 'group-hover:text-pink-600',    minDot: 'bg-pink-500'    },
+  'tennis-spring':  { neoAvailBg: 'bg-[#A8D49A]', neoAvailText: 'text-[#A8D49A]', minHover: 'group-hover:text-emerald-600', minDot: 'bg-emerald-500' },
+  'tennis-autumn':  { neoAvailBg: 'bg-[#FCD34D]', neoAvailText: 'text-[#FCD34D]', minHover: 'group-hover:text-amber-600',   minDot: 'bg-amber-500'   },
+} as const;
 
 interface DistrictStats {
   count: number;
@@ -23,14 +31,14 @@ const DistrictCard = memo(function DistrictCard({
   stats,
   loading,
   isNeoBrutalism,
-  isCherryBlossom: s,
+  season,
   index,
 }: {
   district: District;
   stats?: DistrictStats;
   loading?: boolean;
   isNeoBrutalism: boolean;
-  isCherryBlossom: boolean;
+  season: Season;
   index: number;
 }) {
   const available = stats?.available || 0;
@@ -38,10 +46,10 @@ const DistrictCard = memo(function DistrictCard({
   const externalCount = stats?.externalCount || 0;
   const hasAvailable = available > 0;
   const isExternalOnly = total > 0 && externalCount === total;
+  const tone = SEASON_PALETTE[season];
 
   if (isNeoBrutalism) {
-    const availBg = s ? 'bg-[#FFB7C5]' : 'bg-[#a3e635]';
-    const bgColor = hasAvailable ? availBg : isExternalOnly ? 'bg-amber-50' : total > 0 ? 'bg-white' : 'bg-gray-200';
+    const bgColor = hasAvailable ? tone.neoAvailBg : isExternalOnly ? 'bg-amber-50' : total > 0 ? 'bg-white' : 'bg-gray-200';
     return (
       <Link
         href={`/${district.slug}`}
@@ -63,8 +71,8 @@ const DistrictCard = memo(function DistrictCard({
             <div className="w-10 h-5 skeleton-neo !border-0 shrink-0" />
           ) : hasAvailable ? (
             <span className="relative shrink-0">
-              <span className={`absolute inset-0 ${s ? 'bg-[#FFB7C5]' : 'bg-[#a3e635]'} rounded-[3px] animate-pulse opacity-40`} />
-              <span className={`relative bg-black ${s ? 'text-[#FFB7C5]' : 'text-[#a3e635]'} px-1.5 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-black rounded-[3px] uppercase`}>
+              <span className={`absolute inset-0 ${tone.neoAvailBg} rounded-[3px] animate-pulse opacity-40`} />
+              <span className={`relative bg-black ${tone.neoAvailText} px-1.5 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-black rounded-[3px] uppercase`}>
                 {available}
               </span>
             </span>
@@ -93,14 +101,14 @@ const DistrictCard = memo(function DistrictCard({
       style={{ animationDelay: `${index * 30}ms` } as React.CSSProperties}
     >
       <div className="w-full flex items-center justify-between gap-2">
-        <h3 className={`font-medium text-sm sm:text-base transition-colors truncate ${total === 0 ? 'text-gray-400' : `text-gray-900 ${s ? 'group-hover:text-pink-600' : 'group-hover:text-green-600'}`}`}>
+        <h3 className={`font-medium text-sm sm:text-base transition-colors truncate ${total === 0 ? 'text-gray-400' : `text-gray-900 ${tone.minHover}`}`}>
           {district.nameKo}
         </h3>
         {loading ? (
           <div className="w-10 h-5 skeleton shrink-0" />
         ) : hasAvailable ? (
           <span className="badge badge-available text-[10px] sm:text-xs shrink-0 flex items-center gap-1">
-            <span className={`w-1.5 h-1.5 rounded-full ${s ? 'bg-pink-500' : 'bg-green-500'} animate-pulse`} />
+            <span className={`w-1.5 h-1.5 rounded-full ${tone.minDot} animate-pulse`} />
             {available}개
           </span>
         ) : isExternalOnly ? (
@@ -123,7 +131,7 @@ const DistrictCard = memo(function DistrictCard({
 
 export default function DistrictGrid({ stats, loading }: DistrictGridProps) {
   const { isNeoBrutalism } = useTheme();
-  const { isCherryBlossom } = useSeason();
+  const { season } = useSeason();
   const themeClass = useThemeClass();
   
   const sortedDistricts = useMemo(() => {
@@ -181,7 +189,7 @@ export default function DistrictGrid({ stats, loading }: DistrictGridProps) {
           stats={stats?.[district.nameKo]}
           loading={false}
           isNeoBrutalism={isNeoBrutalism}
-          isCherryBlossom={isCherryBlossom}
+          season={season}
           index={index}
         />
       ))}

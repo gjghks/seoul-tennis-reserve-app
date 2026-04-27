@@ -119,7 +119,12 @@ export default function MoreMenu({ isOpen, onClose }: MoreMenuProps) {
   const themeClass = useThemeClass();
   const { user } = useAuth();
   const { toggleTheme, isNeoBrutalism } = useTheme();
-  const { isCherryBlossom, toggleSeason } = useSeason();
+  const { season, toggleSeason } = useSeason();
+  const seasonLabel =
+    season === 'default' ? '🌸 벚꽃 시즌'
+    : season === 'cherry-blossom' ? '🎾 테니스 봄'
+    : season === 'tennis-spring' ? '🍂 테니스 가을'
+    : '✨ 기본 테마';
 
   useEffect(() => {
     if (!isOpen) return;
@@ -270,7 +275,7 @@ export default function MoreMenu({ isOpen, onClose }: MoreMenuProps) {
                   'text-gray-500 hover:bg-gray-50 rounded-lg'
                 )}`}
               >
-                {isCherryBlossom ? '🌿 기본 테마' : '🌸 벚꽃 시즌'}
+                {seasonLabel}
               </button>
             </div>
           </div>

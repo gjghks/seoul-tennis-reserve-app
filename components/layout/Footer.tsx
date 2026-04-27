@@ -19,8 +19,19 @@ const NAV_LINKS = [
 export default function Footer() {
   const themeClass = useThemeClass();
   const { toggleTheme, isNeoBrutalism } = useTheme();
-  const { isCherryBlossom, toggleSeason } = useSeason();
+  const { season, toggleSeason } = useSeason();
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
+
+  const seasonLabel =
+    season === 'default' ? '🌸 벚꽃 시즌'
+    : season === 'cherry-blossom' ? '🎾 테니스 봄'
+    : season === 'tennis-spring' ? '🍂 테니스 가을'
+    : '✨ 기본 테마';
+  const seasonAria =
+    season === 'default' ? '벚꽃 시즌으로 변경'
+    : season === 'cherry-blossom' ? '테니스 봄 시즌으로 변경'
+    : season === 'tennis-spring' ? '테니스 가을 시즌으로 변경'
+    : '기본 테마로 변경';
 
   return (
     <>
@@ -73,13 +84,13 @@ export default function Footer() {
             <button
               type="button"
               onClick={toggleSeason}
-              aria-label={isCherryBlossom ? '기본 테마로 변경' : '벚꽃 시즌 테마로 변경'}
+              aria-label={seasonAria}
               className={`ml-1 px-2.5 py-2 min-h-[44px] text-[clamp(10px,2.5vw,11px)] font-medium transition-colors ${themeClass(
                 'bg-white/15 text-white/80 rounded-[4px] border border-white/25 hover:bg-white/25 hover:text-white',
                 'bg-gray-100 text-gray-500 rounded-full border border-gray-200 hover:bg-gray-200 hover:text-gray-700'
               )}`}
             >
-              {isCherryBlossom ? '🌿 기본 테마' : '🌸 벚꽃 시즌'}
+              {seasonLabel}
             </button>
           </div>
         </div>

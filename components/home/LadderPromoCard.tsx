@@ -14,21 +14,16 @@ interface LadderPromoCardProps {
 
 export default function LadderPromoCard({ user, authLoading }: LadderPromoCardProps) {
   const themeClass = useThemeClass();
-  const { isCherryBlossom: s } = useSeason();
+  const { season } = useSeason();
   const { profile, isLoading: profileLoading } = useLadderProfile({ enabled: !!user });
 
-  const bg = s ? 'bg-fuchsia-50' : 'bg-purple-50';
-  const border = s ? 'border-fuchsia-100' : 'border-purple-100';
-  const text = s ? 'text-fuchsia-600' : 'text-purple-600';
-  const textDark = s ? 'text-fuchsia-700' : 'text-purple-700';
-  const hoverText = s ? 'hover:text-fuchsia-700' : 'hover:text-purple-700';
-  const hoverBg = s ? 'hover:bg-fuchsia-100' : 'hover:bg-purple-100';
-  const iconBg = s ? 'bg-fuchsia-200' : 'bg-purple-200';
-  const iconMinimal = s ? 'bg-fuchsia-100 text-fuchsia-600' : 'bg-purple-100 text-purple-600';
-  const deco = s ? 'bg-fuchsia-600' : 'bg-purple-600';
-  const statText = s ? 'text-fuchsia-600' : 'text-purple-600';
-  const divider = s ? 'bg-fuchsia-200' : 'bg-purple-200';
-  const dividerMinimal = s ? 'bg-fuchsia-100' : 'bg-purple-100';
+  const palette = {
+    'default':        { bg: 'bg-purple-50',  border: 'border-purple-100',  text: 'text-purple-600',  textDark: 'text-purple-700',  hoverText: 'hover:text-purple-700',  hoverBg: 'hover:bg-purple-100',  iconBg: 'bg-purple-200',  iconMinimal: 'bg-purple-100 text-purple-600',   deco: 'bg-purple-600',  statText: 'text-purple-600',  divider: 'bg-purple-200',  dividerMinimal: 'bg-purple-100' },
+    'cherry-blossom': { bg: 'bg-fuchsia-50', border: 'border-fuchsia-100', text: 'text-fuchsia-600', textDark: 'text-fuchsia-700', hoverText: 'hover:text-fuchsia-700', hoverBg: 'hover:bg-fuchsia-100', iconBg: 'bg-fuchsia-200', iconMinimal: 'bg-fuchsia-100 text-fuchsia-600', deco: 'bg-fuchsia-600', statText: 'text-fuchsia-600', divider: 'bg-fuchsia-200', dividerMinimal: 'bg-fuchsia-100' },
+    'tennis-spring':  { bg: 'bg-teal-50',    border: 'border-teal-100',    text: 'text-teal-600',    textDark: 'text-teal-700',    hoverText: 'hover:text-teal-700',    hoverBg: 'hover:bg-teal-100',    iconBg: 'bg-teal-200',    iconMinimal: 'bg-teal-100 text-teal-600',       deco: 'bg-teal-600',    statText: 'text-teal-600',    divider: 'bg-teal-200',    dividerMinimal: 'bg-teal-100' },
+    'tennis-autumn':  { bg: 'bg-amber-50',   border: 'border-amber-100',   text: 'text-amber-600',   textDark: 'text-amber-700',   hoverText: 'hover:text-amber-700',   hoverBg: 'hover:bg-amber-100',   iconBg: 'bg-amber-200',   iconMinimal: 'bg-amber-100 text-amber-600',     deco: 'bg-amber-600',   statText: 'text-amber-600',   divider: 'bg-amber-200',   dividerMinimal: 'bg-amber-100' },
+  } as const;
+  const { bg, border, text, textDark, hoverText, hoverBg, iconBg, iconMinimal, deco, statText, divider, dividerMinimal } = palette[season];
 
   if (authLoading || (user && profileLoading)) {
     return (

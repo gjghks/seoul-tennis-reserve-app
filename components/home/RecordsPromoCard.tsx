@@ -13,19 +13,17 @@ interface RecordsPromoCardProps {
 
 export default function RecordsPromoCard({ user, authLoading }: RecordsPromoCardProps) {
   const themeClass = useThemeClass();
-  const { isCherryBlossom: s } = useSeason();
-  
+  const { season } = useSeason();
+
   const { stats, isLoading: statsLoading } = useRecordStats({ enabled: !!user });
 
-  const bg = s ? 'bg-pink-50' : 'bg-blue-50';
-  const text = s ? 'text-pink-600' : 'text-blue-600';
-  const textDark = s ? 'text-pink-700' : 'text-blue-700';
-  const hoverText = s ? 'hover:text-pink-700' : 'hover:text-blue-700';
-  const hoverBg = s ? 'hover:bg-pink-100' : 'hover:bg-blue-100';
-  const iconBg = s ? 'bg-pink-100' : 'bg-blue-100';
-  const iconMinimal = s ? 'bg-pink-50 text-pink-600' : 'bg-blue-50 text-blue-600';
-  const deco = s ? 'bg-pink-500' : 'bg-blue-500';
-  const statText = s ? 'text-pink-600' : 'text-blue-600';
+  const palette = {
+    'default':         { bg: 'bg-blue-50',    text: 'text-blue-600',    textDark: 'text-blue-700',    hoverText: 'hover:text-blue-700',    hoverBg: 'hover:bg-blue-100',    iconBg: 'bg-blue-100',    iconMinimal: 'bg-blue-50 text-blue-600',       deco: 'bg-blue-500',    statText: 'text-blue-600',    winDot: 'bg-blue-500',    emptyNeoBg: 'bg-yellow-50', emptyMinBg: 'bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-100', emptyIconText: 'text-yellow-500'  },
+    'cherry-blossom':  { bg: 'bg-pink-50',    text: 'text-pink-600',    textDark: 'text-pink-700',    hoverText: 'hover:text-pink-700',    hoverBg: 'hover:bg-pink-100',    iconBg: 'bg-pink-100',    iconMinimal: 'bg-pink-50 text-pink-600',       deco: 'bg-pink-500',    statText: 'text-pink-600',    winDot: 'bg-pink-500',    emptyNeoBg: 'bg-pink-50',   emptyMinBg: 'bg-gradient-to-r from-pink-50 to-rose-50 border border-pink-100',     emptyIconText: 'text-pink-500'    },
+    'tennis-spring':   { bg: 'bg-emerald-50', text: 'text-emerald-600', textDark: 'text-emerald-700', hoverText: 'hover:text-emerald-700', hoverBg: 'hover:bg-emerald-100', iconBg: 'bg-emerald-100', iconMinimal: 'bg-emerald-50 text-emerald-600', deco: 'bg-emerald-500', statText: 'text-emerald-600', winDot: 'bg-emerald-500', emptyNeoBg: 'bg-emerald-50', emptyMinBg: 'bg-gradient-to-r from-emerald-50 to-lime-50 border border-emerald-100', emptyIconText: 'text-emerald-500' },
+    'tennis-autumn':   { bg: 'bg-orange-50',  text: 'text-orange-600',  textDark: 'text-orange-700',  hoverText: 'hover:text-orange-700',  hoverBg: 'hover:bg-orange-100',  iconBg: 'bg-orange-100',  iconMinimal: 'bg-orange-50 text-orange-600',   deco: 'bg-orange-500',  statText: 'text-orange-600',  winDot: 'bg-orange-500',  emptyNeoBg: 'bg-orange-50', emptyMinBg: 'bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-100', emptyIconText: 'text-orange-500' },
+  } as const;
+  const { bg, text, textDark, hoverText, hoverBg, iconBg, iconMinimal, deco, statText, winDot, emptyNeoBg, emptyMinBg, emptyIconText } = palette[season];
 
   if (authLoading || (user && statsLoading)) {
     return (
@@ -81,8 +79,8 @@ export default function RecordsPromoCard({ user, authLoading }: RecordsPromoCard
     return (
       <div className="container my-6 lg:my-4">
         <div className={`relative overflow-hidden rounded-xl p-5 ${themeClass(
-          s ? 'bg-pink-50 border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]' : 'bg-yellow-50 border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]',
-          s ? 'bg-gradient-to-r from-pink-50 to-rose-50 border border-pink-100' : 'bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-100'
+          `${emptyNeoBg} border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]`,
+          emptyMinBg
         )}`}>
           <div className="flex items-center justify-between relative z-10">
             <div>
@@ -111,8 +109,8 @@ export default function RecordsPromoCard({ user, authLoading }: RecordsPromoCard
               </div>
             </div>
             <div className={`hidden sm:flex w-16 h-16 items-center justify-center rounded-full ${themeClass(
-              s ? 'bg-white border-2 border-black' : 'bg-white border-2 border-black',
-              s ? 'bg-white shadow-sm text-pink-500' : 'bg-white shadow-sm text-yellow-500'
+              'bg-white border-2 border-black',
+              `bg-white shadow-sm ${emptyIconText}`
             )}`}>
               <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -158,7 +156,7 @@ export default function RecordsPromoCard({ user, authLoading }: RecordsPromoCard
                     <div 
                       key={`${result}-${occurrence}`}
                       className={`w-2 h-2 rounded-full ${
-                        result === 'win' ? (s ? 'bg-pink-500' : 'bg-blue-500') : 
+                        result === 'win' ? winDot :
                         result === 'loss' ? 'bg-red-500' : 'bg-gray-300'
                       }`}
                     />

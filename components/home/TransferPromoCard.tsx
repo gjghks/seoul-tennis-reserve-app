@@ -8,17 +8,15 @@ import { useAuth } from '@/contexts/AuthContext';
 export default function TransferPromoCard() {
   const themeClass = useThemeClass();
   const { user, loading: authLoading } = useAuth();
-  const { isCherryBlossom: s } = useSeason();
+  const { season } = useSeason();
 
-  const bg = s ? 'bg-rose-50' : 'bg-red-50';
-  const border = s ? 'border-rose-100' : 'border-red-100';
-  const text = s ? 'text-rose-600' : 'text-red-600';
-  const textDark = s ? 'text-rose-700' : 'text-red-700';
-  const hoverText = s ? 'hover:text-rose-700' : 'hover:text-red-700';
-  const hoverBg = s ? 'hover:bg-rose-100' : 'hover:bg-red-100';
-  const iconBg = s ? 'bg-rose-200' : 'bg-red-200';
-  const iconMinimal = s ? 'bg-rose-100 text-rose-600' : 'bg-red-100 text-red-600';
-  const deco = s ? 'bg-rose-600' : 'bg-red-600';
+  const palette = {
+    'default':        { bg: 'bg-red-50',   border: 'border-red-100',   text: 'text-red-600',   textDark: 'text-red-700',   hoverText: 'hover:text-red-700',   hoverBg: 'hover:bg-red-100',   iconBg: 'bg-red-200',   iconMinimal: 'bg-red-100 text-red-600',     deco: 'bg-red-600' },
+    'cherry-blossom': { bg: 'bg-rose-50',  border: 'border-rose-100',  text: 'text-rose-600',  textDark: 'text-rose-700',  hoverText: 'hover:text-rose-700',  hoverBg: 'hover:bg-rose-100',  iconBg: 'bg-rose-200',  iconMinimal: 'bg-rose-100 text-rose-600',   deco: 'bg-rose-600' },
+    'tennis-spring':  { bg: 'bg-lime-50',  border: 'border-lime-100',  text: 'text-lime-700',  textDark: 'text-lime-800',  hoverText: 'hover:text-lime-800',  hoverBg: 'hover:bg-lime-100',  iconBg: 'bg-lime-200',  iconMinimal: 'bg-lime-100 text-lime-700',   deco: 'bg-lime-600' },
+    'tennis-autumn':  { bg: 'bg-rose-50',  border: 'border-rose-100',  text: 'text-rose-700',  textDark: 'text-rose-800',  hoverText: 'hover:text-rose-800',  hoverBg: 'hover:bg-rose-100',  iconBg: 'bg-rose-200',  iconMinimal: 'bg-rose-100 text-rose-700',   deco: 'bg-rose-700' },
+  } as const;
+  const { bg, border, text, textDark, hoverText, hoverBg, iconBg, iconMinimal, deco } = palette[season];
 
   if (authLoading) {
     return (
