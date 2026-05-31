@@ -32,10 +32,11 @@ interface Tournament {
   updated_at: string;
 }
 
+// NOTE: Only single-elimination is currently supported by the draw engine
+// (lib/bracket-engine.ts). Round-robin formats are gated until their generators exist;
+// re-add them here once the draw route handles tournament.format.
 const FORMAT_OPTIONS = [
   { value: 'single_elimination', label: '싱글 엘리미네이션', emoji: '🏆', desc: '지면 탈락. 가장 일반적인 토너먼트 방식' },
-  { value: 'round_robin', label: '라운드 로빈 (리그전)', emoji: '🔄', desc: '모든 참가자가 서로 한 번씩 대결' },
-  { value: 'round_robin_playoff', label: '라운드 로빈 + 토너먼트', emoji: '🎯', desc: '조별 리그 후 상위자끼리 토너먼트 진행' },
 ];
 
 const MATCH_TYPE_OPTIONS = [

@@ -4,6 +4,7 @@ import { createRateLimiter } from '@/lib/rateLimit';
 import { VALID_MATCH_TYPES, VALID_MATCH_FORMATS, VALID_RESULTS, VALID_LOCATION_TYPES, VALID_COURT_SURFACES } from '@/lib/constants/tennis';
 import type { MatchType, MatchResult } from '@/lib/constants/tennis';
 import { validateScore } from '@/lib/utils/tennis';
+import { estimateOpponentElo } from '@/lib/utils/elo';
 
 const limiter = createRateLimiter({ windowMs: 60_000, maxRequests: 10 });
 
@@ -230,9 +231,9 @@ export async function POST(request: NextRequest) {
 
       if (profile?.ladder_opt_in) {
         const eloMatchType = match_type === 'singles' ? 'singles' : 'doubles';
-        const opponentElo = eloMatchType === 'singles'
-          ? (profile.singles_elo ?? 1200)
-          : (profile.doubles_elo ?? 1200);
+        // Estimate the opponent's rating from the free-text level hint. Passing the
+        // player's own ELO here makes every expected score 0.5 (flat ±K/2), defeating ELO.
+        const opponentElo = estimateOpponentElo(opponent_level);
 
         const { data: eloData, error: eloError } = await supabase.rpc('calculate_elo', {
           p_user_id: user.id,

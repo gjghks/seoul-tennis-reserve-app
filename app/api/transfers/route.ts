@@ -25,10 +25,13 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: '로그인이 필요합니다.' }, { status: 401 });
     }
 
-    const { data: interests } = await supabase
+    const { data: interests, error: interestsError } = await supabase
       .from('transfer_interests')
       .select('transfer_id')
-      .eq('user_id', user.id);
+      .eq('buyer_id', user.id);
+    if (interestsError) {
+      console.error('Error fetching transfer interests:', interestsError);
+    }
     const interestedIds = (interests || []).map((i: { transfer_id: string }) => i.transfer_id);
 
     let myQuery = supabase

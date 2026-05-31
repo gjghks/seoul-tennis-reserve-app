@@ -34,6 +34,15 @@ export async function POST(request: NextRequest, context: RouteContext) {
     return NextResponse.json({ error: '대진 추첨은 모집중/초안 상태에서만 가능합니다.' }, { status: 400 });
   }
 
+  // The draw engine only supports single elimination. Reject other formats rather than
+  // silently generating a knockout bracket for a round-robin tournament.
+  if (tournament.format !== 'single_elimination') {
+    return NextResponse.json(
+      { error: '현재 싱글 엘리미네이션 형식만 대진 추첨을 지원합니다.' },
+      { status: 400 }
+    );
+  }
+
   const { data: participants } = await supabase
     .from('tournament_participants')
     .select('*')

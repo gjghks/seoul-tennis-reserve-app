@@ -62,22 +62,20 @@ function waitForActive(
 }
 
 async function waitForServiceWorker(): Promise<ServiceWorkerRegistration> {
-  const existing = await navigator.serviceWorker.getRegistration('/');
-
-  if (existing?.active) {
-    const url = existing.active.scriptURL;
-    if (url.endsWith('/sw-push.js')) return existing;
-    if (url.endsWith('/sw.js') && process.env.NODE_ENV === 'production')
-      return existing;
+  // Production: reuse the Serwist worker (/sw.js) that Providers registers on load — it already
+  // contains the push + notificationclick handlers. Registering a second worker at scope '/'
+  // (or unregistering all) would evict Serwist and wipe runtime caching/offline support.
+  if (process.env.NODE_ENV === 'production') {
+    const existing = await navigator.serviceWorker.getRegistration('/');
+    if (existing) return waitForActive(existing, 10000);
+    const reg = await navigator.serviceWorker.register('/sw.js', { scope: '/' });
+    return waitForActive(reg, 10000);
   }
 
-  const registrations = await navigator.serviceWorker.getRegistrations();
-  await Promise.all(registrations.map((r) => r.unregister()));
-
-  const reg = await navigator.serviceWorker.register('/sw-push.js', {
-    scope: '/',
-  });
-
+  // Development: Serwist is disabled, so use the standalone push-only worker for local testing.
+  const existing = await navigator.serviceWorker.getRegistration('/');
+  if (existing?.active?.scriptURL.endsWith('/sw-push.js')) return existing;
+  const reg = await navigator.serviceWorker.register('/sw-push.js', { scope: '/' });
   return waitForActive(reg, 5000);
 }
 
