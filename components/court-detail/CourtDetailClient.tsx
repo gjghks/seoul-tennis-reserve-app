@@ -333,6 +333,7 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
                 sizes="(max-width: 1200px) 100vw, 1200px"
                 className="object-contain"
                 priority
+                unoptimized
              />
           )}
         </div>

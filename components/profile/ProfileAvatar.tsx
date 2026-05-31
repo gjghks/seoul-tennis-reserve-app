@@ -36,6 +36,7 @@ export default function ProfileAvatar({
         alt={nickname ? `${nickname}의 프로필` : '프로필 사진'}
         width={SIZE_PX[size]}
         height={SIZE_PX[size]}
+        unoptimized
         className={cn(sizeClass, 'rounded-full object-cover', className)}
       />
     );
