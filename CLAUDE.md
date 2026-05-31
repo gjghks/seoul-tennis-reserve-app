@@ -303,6 +303,24 @@ Schema is maintained in two places:
 - `supabase/schema.sql` — Base schema (may lag behind migrations)
 - `supabase/migrations/` — Incremental changes (source of truth for recent additions)
 
+#### Data API GRANT convention (required for new tables from 2026-10-30)
+
+Supabase is removing the platform default that auto-grants new `public` tables to the Data API. **Enforced on this (existing) project for tables created on/after `2026-10-30`.** Existing tables keep their grants and are permanently safe — **do NOT backfill grants or alter old migrations.**
+
+From the cutoff, a new `public` table is **invisible to PostgREST / GraphQL / supabase-js until explicitly GRANTed** — RLS does not expose it (GRANT = table reachability and RLS = row filtering are independent, both required; `service_role` bypasses RLS but **not** the table GRANT, and is also in the revoke). So every new `CREATE TABLE public.*` migration must append, after the RLS + policy block:
+
+```sql
+grant select, insert, update, delete on public.<table> to authenticated;
+grant select, insert, update, delete on public.<table> to service_role;
+-- grant select on public.<table> to anon;   -- ONLY if publicly readable (reviews/popular_courts_cache/site_visits pattern)
+-- grant insert on public.<table> to anon;    -- ONLY anonymous-write tables (feedback pattern)
+```
+
+- **Cron/service-only** tables (`court_status_cache` pattern): `service_role` grant only.
+- **New `supabase.rpc()` functions:** add `grant execute on function public.<fn>() to anon, authenticated;` (mirror `supabase/migrations/20260222000001_trends_rpc_functions.sql`).
+- **Sequences:** not needed — all PKs are `uuid` or `bigint generated always as identity` (no legacy `serial`).
+- Full copy-paste template: **`supabase/TABLE_MIGRATION_TEMPLATE.sql`**. Before the cutoff, run a Security Advisor pass (verify `court_status_cache`'s `FOR ALL using(true)` policy is not anon-exposed). Ref: [supabase/discussions/45329](https://github.com/orgs/supabase/discussions/45329).
+
 ### Theme System
 
 Dual theme support: **Neo-Brutalism** (default) and **Minimal**. Use `useThemeClass()` from `lib/cn.ts`:
