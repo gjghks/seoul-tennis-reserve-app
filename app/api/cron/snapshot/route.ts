@@ -2,9 +2,14 @@ import { NextResponse } from 'next/server';
 import { fetchTennisDataWithStatuses } from '@/lib/seoulApi';
 import { createServiceRoleClient } from '@/lib/supabaseServer';
 import { verifyCronSecret } from '@/lib/cronAuth';
+import { isIndependentCourt } from '@/lib/data/independentCourts';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 30;
+
+// Below this many Seoul-reservable courts the upstream API is degraded/down — skip the
+// snapshot so an outage's near-empty data doesn't permanently pollute booking-rate trends.
+const MIN_SEOUL_COURTS_FOR_SNAPSHOT = 10;
 
 function getTimeSlot(date: Date): string {
   const kstHour = (date.getUTCHours() + 9) % 24;
@@ -28,6 +33,11 @@ export async function GET(request: Request) {
     const districtMap = new Map<string, { total: number; available: number; booked: number; free: number; paid: number }>();
 
     for (const svc of services) {
+      // External (independent) courts aren't Seoul-reservable — counting them would
+      // inflate every district's booking rate (and during an outage only these remain,
+      // poisoning trends with 100%-booked rows). Exclude from aggregation entirely.
+      if (isIndependentCourt(svc.SVCID)) continue;
+
       const stats = districtMap.get(svc.AREANM) ?? { total: 0, available: 0, booked: 0, free: 0, paid: 0 };
 
       stats.total++;
@@ -46,6 +56,12 @@ export async function GET(request: Request) {
       }
 
       districtMap.set(svc.AREANM, stats);
+    }
+
+    const seoulCourtCount = Array.from(districtMap.values()).reduce((n, s) => n + s.total, 0);
+    if (seoulCourtCount < MIN_SEOUL_COURTS_FOR_SNAPSHOT) {
+      console.warn(`Snapshot skipped: only ${seoulCourtCount} Seoul-reservable courts (API likely degraded)`);
+      return NextResponse.json({ ok: true, skipped: true, reason: 'insufficient Seoul courts', seoulCourtCount });
     }
 
     const now = new Date();

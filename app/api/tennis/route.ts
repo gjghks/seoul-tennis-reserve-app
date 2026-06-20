@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { fetchTennisDataWithStatuses, applyScrapedStatuses, getCachedTennisData } from '@/lib/seoulApi';
+import { fetchTennisDataWithStatuses, applyScrapedStatuses, getCachedTennisData, getServedDataMeta, type ServedDataMeta } from '@/lib/seoulApi';
 import { SLUG_TO_KOREAN } from '@/lib/constants/districts';
 import { isCourtAvailable } from '@/lib/utils/courtStatus';
 import { isIndependentCourt } from '@/lib/data/independentCourts';
@@ -8,7 +8,7 @@ import { createRateLimiter } from '@/lib/rateLimit';
 
 const limiter = createRateLimiter({ windowMs: 60_000, maxRequests: 60 });
 
-function buildTennisResponse(services: SeoulService[], district: string | null, stale = false) {
+function buildTennisResponse(services: SeoulService[], district: string | null, meta: ServedDataMeta) {
   const cacheHeaders = { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=3600' };
 
   if (district) {
@@ -19,7 +19,8 @@ function buildTennisResponse(services: SeoulService[], district: string | null, 
       district: koreanDistrict,
       count: filtered.length,
       courts: filtered,
-      ...(stale ? { stale: true } : {}),
+      lastUpdated: meta.lastUpdatedAt,
+      ...(meta.isStale ? { stale: true } : {}),
     }, { headers: cacheHeaders });
   }
 
@@ -42,8 +43,8 @@ function buildTennisResponse(services: SeoulService[], district: string | null, 
     total: services.length,
     byDistrict,
     courts: services,
-    lastUpdated: new Date().toISOString(),
-    ...(stale ? { stale: true } : {}),
+    lastUpdated: meta.lastUpdatedAt,
+    ...(meta.isStale ? { stale: true } : {}),
   }, { headers: cacheHeaders });
 }
 
@@ -66,14 +67,17 @@ export async function GET(request: NextRequest) {
 
   try {
     const services = await fetchTennisDataWithStatuses();
-    return buildTennisResponse(services, district);
+    return buildTennisResponse(services, district, getServedDataMeta());
   } catch (error) {
     console.error('Error fetching tennis data:', error);
 
     const cached = getCachedTennisData();
     if (cached) {
       const enhancedCachedServices = await applyScrapedStatuses(cached.data);
-      return buildTennisResponse(enhancedCachedServices, district, true);
+      return buildTennisResponse(enhancedCachedServices, district, {
+        lastUpdatedAt: new Date(cached.timestamp ?? Date.now()).toISOString(),
+        isStale: true,
+      });
     }
 
     return NextResponse.json(

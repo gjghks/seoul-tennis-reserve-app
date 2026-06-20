@@ -67,6 +67,30 @@ interface TennisDataCache {
 
 let tennisDataCache: TennisDataCache | null = null;
 
+export interface ServedDataMeta {
+    /** ISO timestamp of when the SERVED data was actually fetched (not request time). */
+    lastUpdatedAt: string;
+    /** True when the served data is a fallback / older than the cache TTL. */
+    isStale: boolean;
+}
+
+// Metadata about the most recent fetchTennisAvailability() result so callers can
+// surface honest staleness instead of stamping the response with request time.
+// Per-instance module state; concurrent requests in an instance share the same
+// cache so they observe a consistent value.
+let lastServedMeta: ServedDataMeta = { lastUpdatedAt: new Date(0).toISOString(), isStale: false };
+
+export function getServedDataMeta(): ServedDataMeta {
+    return lastServedMeta;
+}
+
+function setServedMeta(timestampMs: number, forceStale = false): void {
+    lastServedMeta = {
+        lastUpdatedAt: new Date(timestampMs).toISOString(),
+        isStale: forceStale || Date.now() - timestampMs >= CACHE_TTL_MS,
+    };
+}
+
 /**
  * Courts that Seoul API still lists but whose reservations actually use
  * independent (non-Seoul) systems.  The Seoul API entries show misleading
@@ -163,19 +187,21 @@ async function persistSnapshot(courts: SeoulService[]): Promise<void> {
     }
 }
 
-/** Read the last-good durable snapshot. Returns null if absent/unconfigured. */
-async function readSnapshot(): Promise<SeoulService[] | null> {
+/** Read the last-good durable snapshot + its age. Returns null if absent/unconfigured. */
+async function readSnapshot(): Promise<{ data: SeoulService[]; updatedAt: number } | null> {
     try {
         const client = getServiceRoleClient();
         if (!client) return null;
         const { data, error } = await client
             .from('tennis_snapshot_cache')
-            .select('snapshot')
+            .select('snapshot, updated_at')
             .eq('id', true)
             .maybeSingle();
         if (error || !data?.snapshot) return null;
         const snapshot = data.snapshot as SeoulService[];
-        return Array.isArray(snapshot) && snapshot.length > 0 ? snapshot : null;
+        if (!Array.isArray(snapshot) || snapshot.length === 0) return null;
+        const parsed = data.updated_at ? Date.parse(data.updated_at) : Number.NaN;
+        return { data: snapshot, updatedAt: Number.isNaN(parsed) ? Date.now() : parsed };
     } catch (error) {
         console.error('Unexpected error reading tennis snapshot:', error);
         return null;
@@ -184,11 +210,13 @@ async function readSnapshot(): Promise<SeoulService[] | null> {
 
 export async function fetchTennisAvailability(): Promise<SeoulService[]> {
     if (isCacheFresh()) {
+        setServedMeta(tennisDataCache!.timestamp);
         return tennisDataCache!.data;
     }
 
     if (!API_KEY) {
         console.error('SEOUL_OPEN_DATA_KEY is missing');
+        setServedMeta(Date.now(), true);
         return INCLUDE_INDEPENDENT_COURTS ? getIndependentCourts() : [];
     }
 
@@ -277,6 +305,7 @@ export async function fetchTennisAvailability(): Promise<SeoulService[]> {
                 data: allCourts,
                 timestamp: Date.now(),
             };
+            setServedMeta(tennisDataCache.timestamp);
 
             // Persist a durable cross-instance snapshot — ONLY when the Seoul API
             // returned a healthy set, so a degraded response never overwrites a good one.
@@ -295,20 +324,27 @@ export async function fetchTennisAvailability(): Promise<SeoulService[]> {
         }
     }
 
-    if (tennisDataCache) {
-        console.warn('Serving stale tennis data from in-memory cache after Seoul API failures');
+    // Failure path: serve the FRESHEST of (per-instance in-memory cache, durable
+    // snapshot). The in-memory cache must NOT short-circuit the durable snapshot —
+    // a warm instance can hold older data than a snapshot another instance persisted.
+    // Everything here is by definition stale (cache TTL already exceeded).
+    const snapshotResult = await readSnapshot();
+    const memTs = tennisDataCache?.timestamp ?? -1;
+    const snapTs = snapshotResult?.updatedAt ?? -1;
+
+    if (tennisDataCache && memTs >= snapTs) {
+        console.warn('Serving stale in-memory cache after Seoul API failures');
+        setServedMeta(memTs, true);
         return mergeIndependentCourts(tennisDataCache.data);
     }
-
-    // Cross-instance fallback: serve the last-good durable snapshot (survives cold
-    // starts / fresh deploys) before degrading to independent courts only.
-    const snapshot = await readSnapshot();
-    if (snapshot) {
-        console.warn('Serving last-good durable snapshot from Supabase after Seoul API failures');
-        return mergeIndependentCourts(snapshot);
+    if (snapshotResult) {
+        console.warn('Serving last-good durable snapshot after Seoul API failures');
+        setServedMeta(snapTs, true);
+        return mergeIndependentCourts(snapshotResult.data);
     }
 
     console.error('Seoul API failed with no durable fallback. Returning independent courts only:', lastError);
+    setServedMeta(Date.now(), true);
     return INCLUDE_INDEPENDENT_COURTS ? getIndependentCourts() : [];
 }
 

@@ -72,7 +72,7 @@ interface HomeContentProps {
 export default function HomeContent({ initialStats }: HomeContentProps) {
   const { isNeoBrutalism } = useTheme();
   const themeClass = useThemeClass();
-  const { stats, isLoading, error, mutate, lastUpdated } = useTennisData();
+  const { stats, isLoading, error, mutate, lastUpdated, stale } = useTennisData();
   const { user, loading: authLoading } = useAuth();
   const { favorites, loading: favLoading } = useFavorites();
 
@@ -134,9 +134,10 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
                 예약 가능한 테니스장을 찾아보세요
               </p>
               {lastUpdated && (
-                <LastUpdated 
-                  timestamp={lastUpdated} 
-                  className={`mt-1 ${themeClass('text-white/70', 'text-green-200/80')}`} 
+                <LastUpdated
+                  timestamp={lastUpdated}
+                  stale={stale}
+                  className={`mt-1 ${stale ? '' : themeClass('text-white/70', 'text-green-200/80')}`}
                 />
               )}
             </div>

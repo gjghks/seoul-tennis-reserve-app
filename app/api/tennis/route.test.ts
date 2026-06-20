@@ -5,6 +5,7 @@ vi.mock('@/lib/seoulApi', () => ({
   fetchTennisDataWithStatuses: vi.fn(),
   applyScrapedStatuses: vi.fn((services: unknown[]) => Promise.resolve(services)),
   getCachedTennisData: vi.fn(),
+  getServedDataMeta: vi.fn(() => ({ lastUpdatedAt: '2026-06-20T00:00:00.000Z', isStale: false })),
 }));
 
 vi.mock('@/lib/utils/courtStatus', () => ({

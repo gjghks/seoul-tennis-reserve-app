@@ -62,7 +62,7 @@ export default function DistrictContent({
 }: DistrictContentProps) {
   const { isNeoBrutalism } = useTheme();
   const themeClass = useThemeClass();
-  const { courts: allCourts, isLoading, lastUpdated, mutate } = useTennisData();
+  const { courts: allCourts, isLoading, lastUpdated, stale, mutate } = useTennisData();
   const { handleReservationClick } = useReservationTip();
   const [viewMode, setViewMode] = useState<'list' | 'map'>(() => {
     if (typeof window === 'undefined') return 'map';
@@ -290,7 +290,7 @@ export default function DistrictContent({
             {(lastUpdated || districtWeatherGrid) && (
               <div className="flex items-center gap-x-1.5 gap-y-1 ml-auto flex-wrap justify-end">
                 {lastUpdated && (
-                  <LastUpdated timestamp={lastUpdated} className="mt-0" />
+                  <LastUpdated timestamp={lastUpdated} stale={stale} className="mt-0" />
                 )}
                 {lastUpdated && districtWeatherGrid && (
                   <span className={themeClass('text-black/30 dark:text-slate-600', 'text-gray-300 dark:text-slate-600')}>·</span>
