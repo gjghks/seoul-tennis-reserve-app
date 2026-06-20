@@ -295,7 +295,7 @@ export default function ReviewForm({
             <button
               type="button"
               onClick={() => setShowLoginPrompt(true)}
-              className={themeClass('text-[#22c55e] font-bold underline underline-offset-2', 'text-green-600 font-medium hover:underline')}
+              className={themeClass('text-[#22c55e] font-bold underline underline-offset-2', 'text-green-700 font-medium hover:underline')}
             >
               로그인
             </button>
@@ -312,7 +312,7 @@ export default function ReviewForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className={`p-4 ${themeClass('bg-white dark:bg-slate-800 border-2 border-black dark:border-slate-700 rounded-[5px] shadow-[4px_4px_0px_0px_#000]', 'bg-white dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm')} `}>
+    <form onSubmit={handleSubmit} className={`p-4 ${themeClass('bg-white dark:bg-slate-800 border-2 border-black dark:border-slate-700 rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]', 'bg-white dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm')} `}>
       <fieldset className="mb-4 border-none p-0 m-0">
         <legend className={`mb-2 ${themeClass('font-bold text-black dark:text-slate-100', 'font-medium text-gray-700 dark:text-slate-200')} `}>
           평점 <span className="text-red-500">*</span>

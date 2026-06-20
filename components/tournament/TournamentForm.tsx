@@ -228,7 +228,7 @@ export default function TournamentForm({ mode = 'create', initialData }: Tournam
   const inputClass = cn(
     'w-full px-4 py-3 outline-none transition-all',
     themeClass(
-      'bg-white dark:bg-slate-900 border-2 border-black rounded-[5px] font-bold text-black dark:text-slate-100 focus:shadow-[4px_4px_0px_0px_#000] focus:translate-x-[-2px] focus:translate-y-[-2px]',
+      'bg-white dark:bg-slate-900 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] font-bold text-black dark:text-slate-100 focus:shadow-[4px_4px_0px_0px_#000] dark:focus:shadow-[4px_4px_0px_0px_#f1f3f8] focus:translate-x-[-2px] focus:translate-y-[-2px]',
       'bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl font-medium text-gray-900 dark:text-slate-100 focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-green-500'
     )
   );
@@ -239,7 +239,7 @@ export default function TournamentForm({ mode = 'create', initialData }: Tournam
         className={cn(
           'p-6 space-y-6',
           themeClass(
-            'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
+            'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
             'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm'
           )
         )}
@@ -286,7 +286,7 @@ export default function TournamentForm({ mode = 'create', initialData }: Tournam
                   'flex items-center gap-3 px-4 py-3 cursor-pointer transition-all',
                   state.format === option.value
                     ? themeClass(
-                        'bg-[#22c55e]/10 border-2 border-black rounded-[5px] shadow-[2px_2px_0px_0px_#000]',
+                        'bg-[#22c55e]/10 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#f1f3f8]',
                         'bg-green-50 dark:bg-green-950/40 border-2 border-green-600 rounded-xl'
                       )
                     : themeClass(
@@ -309,7 +309,7 @@ export default function TournamentForm({ mode = 'create', initialData }: Tournam
                   <div className={cn('text-xs mt-0.5', themeClass('text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400'))}>{option.desc}</div>
                 </div>
                 {state.format === option.value && (
-                  <span className={cn('ml-auto text-sm shrink-0', themeClass('text-black dark:text-slate-100 font-black', 'text-green-600 font-bold'))}>✓</span>
+                  <span className={cn('ml-auto text-sm shrink-0', themeClass('text-black dark:text-slate-100 font-black', 'text-green-700 font-bold'))}>✓</span>
                 )}
               </label>
             ))}
@@ -328,7 +328,7 @@ export default function TournamentForm({ mode = 'create', initialData }: Tournam
                   'flex items-center gap-3 px-4 py-3 cursor-pointer transition-all',
                   state.match_type === option.value
                     ? themeClass(
-                        'bg-[#22c55e]/10 border-2 border-black rounded-[5px] shadow-[2px_2px_0px_0px_#000]',
+                        'bg-[#22c55e]/10 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#f1f3f8]',
                         'bg-green-50 dark:bg-green-950/40 border-2 border-green-600 rounded-xl'
                       )
                     : themeClass(
@@ -351,7 +351,7 @@ export default function TournamentForm({ mode = 'create', initialData }: Tournam
                   <div className={cn('text-xs mt-0.5', themeClass('text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400'))}>{option.desc}</div>
                 </div>
                 {state.match_type === option.value && (
-                  <span className={cn('ml-auto text-sm shrink-0', themeClass('text-black dark:text-slate-100 font-black', 'text-green-600 font-bold'))}>✓</span>
+                  <span className={cn('ml-auto text-sm shrink-0', themeClass('text-black dark:text-slate-100 font-black', 'text-green-700 font-bold'))}>✓</span>
                 )}
               </label>
             ))}
@@ -370,7 +370,7 @@ export default function TournamentForm({ mode = 'create', initialData }: Tournam
                   'flex items-center gap-3 px-4 py-3 cursor-pointer transition-all',
                   state.scoring_format === option.value
                     ? themeClass(
-                        'bg-[#22c55e]/10 border-2 border-black rounded-[5px] shadow-[2px_2px_0px_0px_#000]',
+                        'bg-[#22c55e]/10 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#f1f3f8]',
                         'bg-green-50 dark:bg-green-950/40 border-2 border-green-600 rounded-xl'
                       )
                     : themeClass(
@@ -392,7 +392,7 @@ export default function TournamentForm({ mode = 'create', initialData }: Tournam
                   <div className={cn('text-xs mt-0.5', themeClass('text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400'))}>{option.desc}</div>
                 </div>
                 {state.scoring_format === option.value && (
-                  <span className={cn('ml-auto text-sm shrink-0', themeClass('text-black dark:text-slate-100 font-black', 'text-green-600 font-bold'))}>✓</span>
+                  <span className={cn('ml-auto text-sm shrink-0', themeClass('text-black dark:text-slate-100 font-black', 'text-green-700 font-bold'))}>✓</span>
                 )}
               </label>
             ))}
@@ -411,7 +411,7 @@ export default function TournamentForm({ mode = 'create', initialData }: Tournam
                   'flex flex-col items-center gap-1 px-3 py-3 cursor-pointer transition-all text-center',
                   state.max_participants === option.value
                     ? themeClass(
-                        'bg-[#22c55e]/10 border-2 border-black rounded-[5px] shadow-[2px_2px_0px_0px_#000]',
+                        'bg-[#22c55e]/10 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#f1f3f8]',
                         'bg-green-50 dark:bg-green-950/40 border-2 border-green-600 rounded-xl'
                       )
                     : themeClass(
@@ -447,7 +447,7 @@ export default function TournamentForm({ mode = 'create', initialData }: Tournam
                   'flex items-center gap-3 px-4 py-3 cursor-pointer transition-all',
                   state.draw_type === option.value
                     ? themeClass(
-                        'bg-[#22c55e]/10 border-2 border-black rounded-[5px] shadow-[2px_2px_0px_0px_#000]',
+                        'bg-[#22c55e]/10 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#f1f3f8]',
                         'bg-green-50 dark:bg-green-950/40 border-2 border-green-600 rounded-xl'
                       )
                     : themeClass(
@@ -470,7 +470,7 @@ export default function TournamentForm({ mode = 'create', initialData }: Tournam
                   <div className={cn('text-xs mt-0.5', themeClass('text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400'))}>{option.desc}</div>
                 </div>
                 {state.draw_type === option.value && (
-                  <span className={cn('ml-auto text-sm shrink-0', themeClass('text-black dark:text-slate-100 font-black', 'text-green-600 font-bold'))}>✓</span>
+                  <span className={cn('ml-auto text-sm shrink-0', themeClass('text-black dark:text-slate-100 font-black', 'text-green-700 font-bold'))}>✓</span>
                 )}
               </label>
             ))}
@@ -484,7 +484,7 @@ export default function TournamentForm({ mode = 'create', initialData }: Tournam
             onChange={(event) => setField('no_ad_scoring', event.target.checked)}
             className={cn(
               'w-4 h-4 rounded',
-              themeClass('border-2 border-black text-black focus:ring-0 checked:bg-black', 'border-gray-300 dark:border-slate-600 text-green-600')
+              themeClass('border-2 border-black dark:border-[#f1f3f8] text-black focus:ring-0 checked:bg-black', 'border-gray-300 dark:border-slate-600 text-green-700')
             )}
           />
           <span className={cn('text-sm', themeClass('font-bold text-black dark:text-slate-100', 'font-medium text-gray-700 dark:text-slate-200'))}>
@@ -569,7 +569,7 @@ export default function TournamentForm({ mode = 'create', initialData }: Tournam
                   'flex items-center justify-center px-3 py-2.5 cursor-pointer transition-all text-center',
                   state.court_count === count
                     ? themeClass(
-                        'bg-[#22c55e]/10 border-2 border-black rounded-[5px] shadow-[2px_2px_0px_0px_#000]',
+                        'bg-[#22c55e]/10 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#f1f3f8]',
                         'bg-green-50 dark:bg-green-950/40 border-2 border-green-600 rounded-xl'
                       )
                     : themeClass(
@@ -601,7 +601,7 @@ export default function TournamentForm({ mode = 'create', initialData }: Tournam
           className={cn(
             'flex-1 py-4 text-center transition-all',
             themeClass(
-              'bg-white dark:bg-slate-900 border-2 border-black rounded-[5px] font-black text-black dark:text-slate-100 shadow-[4px_4px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] uppercase',
+              'bg-white dark:bg-slate-900 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] font-black text-black dark:text-slate-100 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#f1f3f8] uppercase',
               'bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl font-bold text-gray-700 dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-800 shadow-sm'
             )
           )}

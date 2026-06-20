@@ -111,7 +111,7 @@ export default function CongestionBadge({ lat, lng, isNeoBrutalism, variant = 'c
     if (variant === 'compact') return null;
     return (
       <div className={isNeoBrutalism
-        ? 'border-2 border-black rounded-[5px] p-4 shadow-[3px_3px_0px_0px_#000] skeleton-neo h-20'
+        ? 'border-2 border-black dark:border-[#f1f3f8] rounded-[5px] p-4 shadow-[3px_3px_0px_0px_#000] dark:shadow-[3px_3px_0px_0px_#f1f3f8] skeleton-neo h-20'
         : 'rounded-xl p-4 border border-gray-100 dark:border-slate-800 skeleton h-20'
       } />
     );
@@ -136,7 +136,7 @@ export default function CongestionBadge({ lat, lng, isNeoBrutalism, variant = 'c
 
   return (
     <div className={isNeoBrutalism
-      ? 'bg-white border-2 border-black rounded-[5px] p-4 shadow-[3px_3px_0px_0px_#000]'
+      ? 'bg-white border-2 border-black dark:border-[#f1f3f8] rounded-[5px] p-4 shadow-[3px_3px_0px_0px_#000] dark:shadow-[3px_3px_0px_0px_#f1f3f8]'
       : 'bg-white dark:bg-slate-800 rounded-xl p-4 border border-gray-100 dark:border-slate-800'
     }>
       <div className="flex items-stretch gap-4">

@@ -19,11 +19,11 @@ export default function MatchingPostCard({ post }: MatchingPostCardProps) {
       case 'closed':
         return themeClass('bg-[#ffc400] text-black border-2 border-black', 'bg-yellow-100 dark:bg-yellow-950/40 text-yellow-700 dark:text-yellow-300 border border-yellow-200 dark:border-yellow-900');
       case 'completed':
-        return themeClass('bg-gray-300 text-black border-2 border-black', 'bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-slate-300 border border-gray-200 dark:border-slate-600');
+        return themeClass('bg-gray-300 text-black border-2 border-black dark:border-[#f1f3f8]', 'bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-slate-300 border border-gray-200 dark:border-slate-600');
       case 'cancelled':
         return themeClass('bg-[#ff90e8] text-black border-2 border-black', 'bg-red-100 dark:bg-red-950/40 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-900');
       default:
-        return themeClass('bg-gray-200 text-black border-2 border-black', 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-slate-300 border border-gray-200 dark:border-slate-600');
+        return themeClass('bg-gray-200 text-black border-2 border-black dark:border-[#f1f3f8]', 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-slate-300 border border-gray-200 dark:border-slate-600');
     }
   };
 
@@ -40,7 +40,7 @@ export default function MatchingPostCard({ post }: MatchingPostCardProps) {
       <div className={cn(
         'relative overflow-hidden transition-all',
         themeClass(
-          'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] p-5 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000]',
+          'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] p-5 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#f1f3f8]',
           'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 p-5 shadow-sm hover:shadow-md hover:-translate-y-1'
         )
       )}>
@@ -114,7 +114,7 @@ export default function MatchingPostCard({ post }: MatchingPostCardProps) {
               'text-sm font-bold',
               isFull
                 ? themeClass('text-[#ff90e8]', 'text-red-500')
-                : themeClass('text-[#22c55e]', 'text-green-600')
+                : themeClass('text-[#22c55e]', 'text-green-700')
             )}>
               {post.accepted_count} / {post.max_participants}명
             </span>

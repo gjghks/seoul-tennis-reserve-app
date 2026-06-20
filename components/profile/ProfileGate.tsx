@@ -162,7 +162,7 @@ export default function ProfileGate({ children, feature }: ProfileGateProps) {
       <div className={cn(
         'mt-2 mb-4 p-6 text-center',
         themeClass(
-          `border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] ${config.bgClass}`,
+          `border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] ${config.bgClass}`,
           `border border-${config.minimalColor}-200 rounded-xl shadow-sm ${config.minimalBg}`
         )
       )}>
@@ -177,7 +177,7 @@ export default function ProfileGate({ children, feature }: ProfileGateProps) {
           <Link
             href="/login"
             className={themeClass(
-              'inline-block px-6 py-2.5 bg-white border-2 border-black font-bold shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all',
+              'inline-block px-6 py-2.5 bg-white border-2 border-black dark:border-[#f1f3f8] font-bold shadow-[3px_3px_0px_0px_#000] dark:shadow-[3px_3px_0px_0px_#f1f3f8] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all',
               `inline-block px-6 py-2.5 bg-${config.minimalColor}-600 text-white rounded-lg font-medium hover:bg-${config.minimalColor}-700 transition-colors`
             )}
           >
@@ -196,7 +196,7 @@ export default function ProfileGate({ children, feature }: ProfileGateProps) {
       <div className={cn(
         'mt-2 mb-4 p-6',
         themeClass(
-          `border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] ${config.bgClass}`,
+          `border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] ${config.bgClass}`,
           `border border-${config.minimalColor}-200 rounded-xl shadow-sm ${config.minimalBg}`
         )
       )}>
@@ -221,7 +221,7 @@ export default function ProfileGate({ children, feature }: ProfileGateProps) {
         </div>
 
         <div className={themeClass(
-          'bg-white dark:bg-slate-800 border-2 border-black dark:border-slate-700 rounded-[5px] p-5 mb-4 shadow-[2px_2px_0px_0px_#000]',
+          'bg-white dark:bg-slate-800 border-2 border-black dark:border-slate-700 rounded-[5px] p-5 mb-4 shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#f1f3f8]',
           'bg-white dark:bg-slate-800 rounded-lg p-5 mb-4 shadow-sm border border-gray-100 dark:border-slate-700'
         )}>
           <div className="space-y-4">
@@ -238,7 +238,7 @@ export default function ProfileGate({ children, feature }: ProfileGateProps) {
                   placeholder="닉네임을 입력해주세요"
                   maxLength={NICKNAME_MAX}
                   className={themeClass(
-                    'w-full p-2 border-2 border-black dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 rounded-[5px] font-bold focus:outline-none focus:shadow-[2px_2px_0px_0px_#000] transition-all',
+                    'w-full p-2 border-2 border-black dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 rounded-[5px] font-bold focus:outline-none focus:shadow-[2px_2px_0px_0px_#000] dark:focus:shadow-[2px_2px_0px_0px_#f1f3f8] transition-all',
                     `w-full p-2 border border-gray-300 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 rounded-md text-sm focus:ring-2 focus:ring-${config.minimalColor}-500 focus:border-transparent outline-none`
                   )}
                 />

@@ -28,7 +28,7 @@ function StickyHeader({
     }`}>
       <div className={`${
         isNeoBrutalism
-          ? 'bg-white dark:bg-slate-900 border-b-[3px] border-black'
+          ? 'bg-white dark:bg-slate-900 border-b-[3px] border-black dark:border-[#f1f3f8]'
           : 'bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-gray-200 dark:border-slate-700 shadow-sm'
       }`}>
         <div className="container py-3">

@@ -35,7 +35,7 @@ export default function GuideError({
           </button>
           <Link
             href="/compare"
-            className={`px-6 py-3 font-bold transition-all ${themeClass('bg-white dark:bg-slate-800 text-black dark:text-slate-100 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000]', 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-200 rounded-lg hover:bg-gray-300 dark:hover:bg-slate-600')}`}
+            className={`px-6 py-3 font-bold transition-all ${themeClass('bg-white dark:bg-slate-800 text-black dark:text-slate-100 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#f1f3f8]', 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-200 rounded-lg hover:bg-gray-300 dark:hover:bg-slate-600')}`}
           >
             구별 비교
           </Link>

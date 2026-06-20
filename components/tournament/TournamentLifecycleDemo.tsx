@@ -950,7 +950,7 @@ export default function TournamentLifecycleDemo({
                   'flex items-center gap-1 rounded-full px-2 py-1 text-xs font-bold transition-all',
                   isActive
                     ? themeClass(
-                        'bg-black text-white shadow-[2px_2px_0px_0px_#000]',
+                        'bg-black text-white shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#f1f3f8]',
                         'bg-green-600 text-white shadow-sm'
                       )
                     : isPast
@@ -976,7 +976,7 @@ export default function TournamentLifecycleDemo({
             className={cn(
               'ml-1 flex h-6 w-6 items-center justify-center rounded-full text-xs transition-all',
               themeClass(
-                'border-2 border-black bg-white dark:bg-slate-900 text-black dark:text-slate-100 hover:bg-black hover:text-white',
+                'border-2 border-black dark:border-[#f1f3f8] bg-white dark:bg-slate-900 text-black dark:text-slate-100 hover:bg-black hover:text-white',
                 'border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800'
               )
             )}
@@ -989,7 +989,7 @@ export default function TournamentLifecycleDemo({
         <div
           className={cn(
             'h-1.5 w-full overflow-hidden rounded-full',
-            themeClass('border border-black bg-gray-200 dark:bg-slate-700', 'bg-gray-100 dark:bg-slate-700')
+            themeClass('border border-black dark:border-[#f1f3f8] bg-gray-200 dark:bg-slate-700', 'bg-gray-100 dark:bg-slate-700')
           )}
         >
           <div
@@ -1007,7 +1007,7 @@ export default function TournamentLifecycleDemo({
           'relative overflow-hidden',
           '',
           themeClass(
-            'rounded-[5px] border-2 border-black bg-white dark:bg-slate-800 shadow-[4px_4px_0px_0px_#000]',
+            'rounded-[5px] border-2 border-black dark:border-[#f1f3f8] bg-white dark:bg-slate-800 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
             'rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm'
           )
         )}

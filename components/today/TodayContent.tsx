@@ -56,12 +56,12 @@ export default function TodayContent({
     <PullToRefresh
       onRefresh={handleRefresh}
       pullingContent={
-        <div className={`flex items-center justify-center py-4 ${themeClass('text-black dark:text-slate-100 font-bold', 'text-green-600')}`}>
+        <div className={`flex items-center justify-center py-4 ${themeClass('text-black dark:text-slate-100 font-bold', 'text-green-700')}`}>
           <span>↓ 당겨서 새로고침</span>
         </div>
       }
       refreshingContent={
-        <div className={`flex items-center justify-center py-4 ${themeClass('text-black dark:text-slate-100 font-bold', 'text-green-600')}`}>
+        <div className={`flex items-center justify-center py-4 ${themeClass('text-black dark:text-slate-100 font-bold', 'text-green-700')}`}>
           <Spinner size="md" className="mr-2" />
           <span>새로고침 중...</span>
         </div>
@@ -146,7 +146,7 @@ export default function TodayContent({
         {totalAvailable === 0 ? (
           <div
             className={`p-8 text-center rounded-xl ${themeClass(
-              'bg-white dark:bg-slate-800 border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000]',
+              'bg-white dark:bg-slate-800 border-[3px] border-black dark:border-[#f1f3f8] rounded-[10px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
               'bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-800'
             )}`}
           >
@@ -185,7 +185,7 @@ export default function TodayContent({
                   <div
                     key={district}
                     className={`rounded-lg overflow-hidden ${themeClass(
-                      'border-[3px] border-black shadow-[4px_4px_0px_0px_#000]',
+                      'border-[3px] border-black dark:border-[#f1f3f8] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
                       'border border-gray-200 dark:border-slate-700'
                     )}`}
                   >
@@ -297,7 +297,7 @@ export default function TodayContent({
                   <div
                     key={`external-${district}`}
                     className={`rounded-lg overflow-hidden ${themeClass(
-                      'border-[3px] border-black shadow-[4px_4px_0px_0px_#000] bg-white dark:bg-slate-800',
+                      'border-[3px] border-black dark:border-[#f1f3f8] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] bg-white dark:bg-slate-800',
                       'border border-blue-200 dark:border-blue-900/40 bg-white dark:bg-slate-800'
                     )}`}
                   >

@@ -159,7 +159,7 @@ export default function MatchingPostDetail({ id }: { id: string }) {
         <div className={cn(
           'p-6 mb-6',
           themeClass(
-            'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
+            'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
             'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm'
           )
         )}>
@@ -168,7 +168,7 @@ export default function MatchingPostDetail({ id }: { id: string }) {
               'px-2 py-1 text-sm font-bold rounded',
               post.status === 'open' ? themeClass('bg-[#22c55e] text-black border-2 border-black', 'bg-green-100 dark:bg-green-950/40 text-green-700 dark:text-green-300') :
               post.status === 'closed' ? themeClass('bg-[#ffc400] text-black border-2 border-black', 'bg-yellow-100 dark:bg-yellow-950/40 text-yellow-700 dark:text-yellow-300') :
-              themeClass('bg-gray-200 text-black border-2 border-black', 'bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-slate-300')
+              themeClass('bg-gray-200 text-black border-2 border-black dark:border-[#f1f3f8]', 'bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-slate-300')
             )}>
               {MATCH_POST_STATUS_LABELS[post.status]}
             </span>
@@ -207,7 +207,7 @@ export default function MatchingPostDetail({ id }: { id: string }) {
               <div>
                 <div className={cn('text-xs', themeClass('font-bold text-black/50 dark:text-slate-400', 'text-gray-500 dark:text-slate-400'))}>모집 현황</div>
                 <div className={cn('font-bold', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>
-                  <span className={post.accepted_count >= post.max_participants ? 'text-red-500' : 'text-green-600'}>
+                  <span className={post.accepted_count >= post.max_participants ? 'text-red-500' : 'text-green-700'}>
                     {post.accepted_count}
                   </span>
                    / {post.max_participants}명
@@ -253,7 +253,7 @@ export default function MatchingPostDetail({ id }: { id: string }) {
             <div className={cn('pt-6 border-t', themeClass('border-black dark:border-slate-700', 'border-gray-100 dark:border-slate-700'))}>
               <div className={cn(
                 'p-4 rounded-xl',
-                themeClass('bg-green-50 dark:bg-green-950/40 border-2 border-black', 'bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-900')
+                themeClass('bg-green-50 dark:bg-green-950/40 border-2 border-black dark:border-[#f1f3f8]', 'bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-900')
               )}>
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-xl">🔓</span>
@@ -275,7 +275,7 @@ export default function MatchingPostDetail({ id }: { id: string }) {
             <div className={cn('pt-6 border-t', themeClass('border-black dark:border-slate-700', 'border-gray-100 dark:border-slate-700'))}>
               <div className={cn(
                 'p-4 rounded-xl text-center',
-                themeClass('bg-gray-50 dark:bg-slate-700/40 border-2 border-black', 'bg-gray-50 dark:bg-slate-700/40 border border-gray-200 dark:border-slate-600')
+                themeClass('bg-gray-50 dark:bg-slate-700/40 border-2 border-black dark:border-[#f1f3f8]', 'bg-gray-50 dark:bg-slate-700/40 border border-gray-200 dark:border-slate-600')
               )}>
                 <span className="text-xl">🔒</span>
                 <p className={cn('text-sm mt-1', themeClass('font-bold text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400'))}>
@@ -290,7 +290,7 @@ export default function MatchingPostDetail({ id }: { id: string }) {
           <div className={cn(
             'p-6 mb-6 flex flex-wrap gap-3',
             themeClass(
-              'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
+              'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
               'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm'
             )
           )}>
@@ -303,7 +303,7 @@ export default function MatchingPostDetail({ id }: { id: string }) {
             )}
             {(post.status === 'open' || post.status === 'closed') && (
               <>
-                <button type="button" onClick={() => handleUpdateStatus('completed')} disabled={isUpdatingStatus} className={cn('px-4 py-2 text-sm', themeClass('bg-gray-300 font-black border-2 border-black rounded-[5px]', 'bg-gray-200 text-gray-800 font-bold rounded-lg'))}>경기 완료</button>
+                <button type="button" onClick={() => handleUpdateStatus('completed')} disabled={isUpdatingStatus} className={cn('px-4 py-2 text-sm', themeClass('bg-gray-300 font-black border-2 border-black dark:border-[#f1f3f8] rounded-[5px]', 'bg-gray-200 text-gray-800 font-bold rounded-lg'))}>경기 완료</button>
                 <button type="button" onClick={() => handleUpdateStatus('cancelled')} disabled={isUpdatingStatus} className={cn('px-4 py-2 text-sm', themeClass('bg-[#ff90e8] font-black border-2 border-black rounded-[5px]', 'bg-red-100 text-red-800 font-bold rounded-lg'))}>경기 취소</button>
               </>
             )}
@@ -317,7 +317,7 @@ export default function MatchingPostDetail({ id }: { id: string }) {
           <div className={cn(
             'p-6 mb-6',
             themeClass(
-              'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
+              'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
               'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm'
             )
           )}>
@@ -329,12 +329,12 @@ export default function MatchingPostDetail({ id }: { id: string }) {
             ) : (
               <div className="space-y-4">
                 {post.applications.map(app => (
-                  <div key={app.id} className={cn('p-4 rounded-xl', themeClass('border-2 border-black bg-gray-50 dark:bg-slate-700/40', 'border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/40'))}>
+                  <div key={app.id} className={cn('p-4 rounded-xl', themeClass('border-2 border-black dark:border-[#f1f3f8] bg-gray-50 dark:bg-slate-700/40', 'border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/40'))}>
                     <div className="flex justify-between items-start mb-2">
                       <div className={cn('font-bold text-lg', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>{app.applicant_name}</div>
                       <span className={cn(
                         'px-2 py-1 text-xs font-bold rounded',
-                        app.status === 'pending' ? themeClass('bg-white dark:bg-slate-800 border-2 border-black text-black dark:text-slate-100', 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300') :
+                        app.status === 'pending' ? themeClass('bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] text-black dark:text-slate-100', 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300') :
                         app.status === 'accepted' ? themeClass('bg-[#22c55e] border-2 border-black text-black', 'bg-green-100 dark:bg-green-950/40 text-green-700 dark:text-green-300') :
                         themeClass('bg-[#ff90e8] border-2 border-black text-black', 'bg-red-100 dark:bg-red-950/40 text-red-700 dark:text-red-300')
                       )}>
@@ -342,7 +342,7 @@ export default function MatchingPostDetail({ id }: { id: string }) {
                       </span>
                     </div>
                     {app.message && (
-                      <div className={cn('mb-4 p-3 rounded', themeClass('bg-white dark:bg-slate-900 border-2 border-black text-sm font-medium dark:text-slate-200', 'bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-700 text-sm text-gray-700 dark:text-slate-300'))}>
+                      <div className={cn('mb-4 p-3 rounded', themeClass('bg-white dark:bg-slate-900 border-2 border-black dark:border-[#f1f3f8] text-sm font-medium dark:text-slate-200', 'bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-700 text-sm text-gray-700 dark:text-slate-300'))}>
                         {app.message}
                       </div>
                     )}
@@ -359,7 +359,7 @@ export default function MatchingPostDetail({ id }: { id: string }) {
                         <button
                           type="button"
                           onClick={() => handleApplicationStatus(app.id, 'rejected')}
-                          className={cn('flex-1 py-2 text-sm', themeClass('bg-white dark:bg-slate-800 dark:text-slate-100 font-black border-2 border-black rounded-[5px]', 'bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-200 font-bold rounded-lg'))}
+                          className={cn('flex-1 py-2 text-sm', themeClass('bg-white dark:bg-slate-800 dark:text-slate-100 font-black border-2 border-black dark:border-[#f1f3f8] rounded-[5px]', 'bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-200 font-bold rounded-lg'))}
                         >
                           거절
                         </button>
@@ -376,7 +376,7 @@ export default function MatchingPostDetail({ id }: { id: string }) {
           <div className={cn(
             'p-6 mb-6',
             themeClass(
-              'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
+              'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
               'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm'
             )
           )}>
@@ -393,7 +393,7 @@ export default function MatchingPostDetail({ id }: { id: string }) {
                   className={cn(
                     'w-full py-4 text-center transition-all',
                     themeClass(
-                      'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] font-black text-black dark:text-slate-100 shadow-[4px_4px_0px_0px_#000]',
+                      'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] font-black text-black dark:text-slate-100 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
                       'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl font-bold text-gray-700 dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-700 shadow-sm'
                     )
                   )}
@@ -418,7 +418,7 @@ export default function MatchingPostDetail({ id }: { id: string }) {
                   className={cn(
                     'w-full px-4 py-3 outline-none transition-all mb-4 min-h-[100px] resize-y',
                     themeClass(
-                      'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] font-bold text-black dark:text-slate-100 focus:shadow-[4px_4px_0px_0px_#000]',
+                      'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] font-bold text-black dark:text-slate-100 focus:shadow-[4px_4px_0px_0px_#000] dark:focus:shadow-[4px_4px_0px_0px_#f1f3f8]',
                       'bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl font-medium text-gray-900 dark:text-slate-100 focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-green-500'
                     )
                   )}

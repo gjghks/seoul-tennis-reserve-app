@@ -59,7 +59,7 @@ function getTrendDirection(timeline: SkillProgressChartProps['trend']) {
   const secondAvg = withData.slice(half).reduce((s, i) => s + i.winRate, 0) / (withData.length - half);
   const diff = secondAvg - firstAvg;
 
-  if (diff > 5) return { label: '상승 중 ↑', color: 'text-green-600' };
+  if (diff > 5) return { label: '상승 중 ↑', color: 'text-green-700' };
   if (diff < -5) return { label: '하락 중 ↓', color: 'text-red-500' };
   return { label: '유지 중 →', color: 'text-gray-600 dark:text-slate-400' };
 }
@@ -113,7 +113,7 @@ export default function SkillProgressChart({ trend }: SkillProgressChartProps) {
   return (
     <section
       className={themeClass(
-        'rounded-[5px] border-2 border-black bg-white dark:bg-slate-800 p-3 shadow-[2px_2px_0px_0px_#000]',
+        'rounded-[5px] border-2 border-black dark:border-[#f1f3f8] bg-white dark:bg-slate-800 p-3 shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#f1f3f8]',
         'rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-3 shadow-sm'
       )}
     >

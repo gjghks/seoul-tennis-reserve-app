@@ -277,7 +277,7 @@ export default function ReviewList({ reviews, onReviewDeleted }: ReviewListProps
         {reviews.map((review) => (
           <article
             key={review.id}
-            className={`p-4 ${themeClass('bg-white dark:bg-slate-800 border-2 border-black dark:border-slate-700 rounded-[5px] shadow-[3px_3px_0px_0px_#000]', 'bg-white dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-slate-700')}`}
+            className={`p-4 ${themeClass('bg-white dark:bg-slate-800 border-2 border-black dark:border-slate-700 rounded-[5px] shadow-[3px_3px_0px_0px_#000] dark:shadow-[3px_3px_0px_0px_#f1f3f8]', 'bg-white dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-slate-700')}`}
           >
             {editingReview?.id === review.id ? (
               <ReviewForm
@@ -296,7 +296,7 @@ export default function ReviewList({ reviews, onReviewDeleted }: ReviewListProps
                     <span className={`text-sm ${themeClass('text-black/60 dark:text-slate-400 font-medium', 'text-gray-400 dark:text-slate-500')} `}>
                       {formatDate(review.created_at)}
                       {isEditedReview(review) && (
-                        <span className={themeClass('ml-1 text-black/60 dark:text-slate-400 font-bold', 'ml-1 text-green-600 dark:text-green-400 font-medium')}>
+                        <span className={themeClass('ml-1 text-black/60 dark:text-slate-400 font-bold', 'ml-1 text-green-700 dark:text-green-400 font-medium')}>
                           (수정됨)
                         </span>
                       )}
@@ -314,7 +314,7 @@ export default function ReviewList({ reviews, onReviewDeleted }: ReviewListProps
                     <button
                       type="button"
                       onClick={() => setEditingReview(review)}
-                      className={`p-2 ${themeClass('text-black dark:text-slate-100 hover:bg-yellow-100 dark:hover:bg-slate-700 rounded-[5px] border border-transparent hover:border-black dark:hover:border-slate-600', 'text-gray-400 dark:text-slate-500 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-950/40 rounded-lg')} transition-colors`}
+                      className={`p-2 ${themeClass('text-black dark:text-slate-100 hover:bg-yellow-100 dark:hover:bg-slate-700 rounded-[5px] border border-transparent hover:border-black dark:hover:border-slate-600', 'text-gray-400 dark:text-slate-500 hover:text-green-700 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-950/40 rounded-lg')} transition-colors`}
                       aria-label="수정"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

@@ -92,7 +92,7 @@ export default function GuideContent({
         </div>
 
         <div className={`p-5 ${themeClass(
-          'bg-white dark:bg-slate-900 border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000]',
+          'bg-white dark:bg-slate-900 border-[3px] border-black dark:border-[#f1f3f8] rounded-[10px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
           'bg-white dark:bg-slate-900 rounded-xl border border-gray-100 dark:border-slate-800'
         )}`}>
           <h2 className={`text-lg font-bold mb-4 ${themeClass('text-black dark:text-slate-100 uppercase', 'text-gray-900 dark:text-slate-100')}`}>
@@ -180,7 +180,7 @@ export default function GuideContent({
         </div>
 
         <div className={`p-5 ${themeClass(
-          'bg-white dark:bg-slate-900 border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000]',
+          'bg-white dark:bg-slate-900 border-[3px] border-black dark:border-[#f1f3f8] rounded-[10px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
           'bg-white dark:bg-slate-900 rounded-xl border border-gray-100 dark:border-slate-800'
         )}`}>
           <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black dark:text-slate-100 uppercase', 'text-gray-900 dark:text-slate-100')}`}>
@@ -196,7 +196,7 @@ export default function GuideContent({
 
         {stat.placeNames.length > 0 && (
           <div className={`p-5 ${themeClass(
-            'bg-white dark:bg-slate-900 border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000]',
+            'bg-white dark:bg-slate-900 border-[3px] border-black dark:border-[#f1f3f8] rounded-[10px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
             'bg-white dark:bg-slate-900 rounded-xl border border-gray-100 dark:border-slate-800'
           )}`}>
             <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black dark:text-slate-100 uppercase', 'text-gray-900 dark:text-slate-100')}`}>
@@ -207,7 +207,7 @@ export default function GuideContent({
                 <span
                   key={name}
                   className={`px-3 py-1.5 text-sm ${themeClass(
-                    'bg-gray-100 dark:bg-slate-800 text-black dark:text-slate-100 font-bold border-2 border-black rounded-[5px]',
+                    'bg-gray-100 dark:bg-slate-800 text-black dark:text-slate-100 font-bold border-2 border-black dark:border-[#f1f3f8] rounded-[5px]',
                     'bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-200 rounded-lg'
                   )}`}
                 >
@@ -231,7 +231,7 @@ export default function GuideContent({
           <Link
             href="/compare"
             className={`flex-1 text-center px-5 py-3 font-bold transition-all ${themeClass(
-              'bg-white dark:bg-slate-800 text-black dark:text-slate-100 border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000] hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none',
+              'bg-white dark:bg-slate-800 text-black dark:text-slate-100 border-[3px] border-black dark:border-[#f1f3f8] rounded-[10px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none',
               'bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-200 rounded-xl border border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700'
             )}`}
           >
@@ -298,7 +298,7 @@ function CompareBar({
         <span className={`text-sm font-bold ${themeClass('text-black dark:text-slate-100', 'text-gray-700 dark:text-slate-200')}`}>{label}</span>
         <span className={`text-sm font-bold ${
           isAboveAvg
-            ? themeClass('text-[#16a34a]', 'text-green-600')
+            ? themeClass('text-[#16a34a]', 'text-green-700')
             : themeClass('text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400')
         }`}>
           {value}{unit}
@@ -307,7 +307,7 @@ function CompareBar({
           </span>
         </span>
       </div>
-      <div className={`h-3 rounded-full overflow-hidden ${themeClass('bg-gray-200 dark:bg-slate-700 border border-black', 'bg-gray-100 dark:bg-slate-800')}`}>
+      <div className={`h-3 rounded-full overflow-hidden ${themeClass('bg-gray-200 dark:bg-slate-700 border border-black dark:border-[#f1f3f8]', 'bg-gray-100 dark:bg-slate-800')}`}>
         <div className="relative h-full">
           <div
             className={`absolute inset-y-0 left-0 rounded-full ${themeClass(

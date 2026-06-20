@@ -93,7 +93,7 @@ export default function MatchingPostForm() {
   const inputClass = cn(
     'w-full px-4 py-3 outline-none transition-all',
     themeClass(
-      'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] font-bold text-black dark:text-slate-100 focus:shadow-[4px_4px_0px_0px_#000] focus:translate-x-[-2px] focus:translate-y-[-2px]',
+      'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] font-bold text-black dark:text-slate-100 focus:shadow-[4px_4px_0px_0px_#000] dark:focus:shadow-[4px_4px_0px_0px_#f1f3f8] focus:translate-x-[-2px] focus:translate-y-[-2px]',
       'bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl font-medium text-gray-900 dark:text-slate-100 focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-green-500'
     )
   );
@@ -105,7 +105,7 @@ export default function MatchingPostForm() {
       <div className={cn(
         'p-6 space-y-6',
         themeClass(
-          'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
+          'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
           'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm'
         )
       )}>
@@ -233,7 +233,7 @@ export default function MatchingPostForm() {
               type="checkbox"
               checked={isFree}
               onChange={(e) => { setIsFree(e.target.checked); if (e.target.checked) setCostPerPerson(''); }}
-              className={cn('w-4 h-4 rounded', themeClass('border-2 border-black text-black focus:ring-0 checked:bg-black', 'border-gray-300 text-green-600'))}
+              className={cn('w-4 h-4 rounded', themeClass('border-2 border-black dark:border-[#f1f3f8] text-black focus:ring-0 checked:bg-black', 'border-gray-300 text-green-700'))}
             />
             <span className={cn('text-sm', themeClass('font-bold text-black dark:text-slate-100', 'font-medium text-gray-700 dark:text-slate-200'))}>무료</span>
           </label>
@@ -301,7 +301,7 @@ export default function MatchingPostForm() {
           className={cn(
             'flex-1 py-4 text-center transition-all',
             themeClass(
-              'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] font-black text-black dark:text-slate-100 shadow-[4px_4px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] uppercase',
+              'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] font-black text-black dark:text-slate-100 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#f1f3f8] uppercase',
               'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl font-bold text-gray-700 dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-700 shadow-sm'
             )
           )}

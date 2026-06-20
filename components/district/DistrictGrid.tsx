@@ -9,7 +9,7 @@ import type { Season } from '@/contexts/SeasonalContext';
 import { useThemeClass } from '@/lib/cn';
 
 const SEASON_PALETTE = {
-  'default':        { neoAvailBg: 'bg-[#a3e635]', neoAvailText: 'text-[#a3e635]', minHover: 'group-hover:text-green-600',   minDot: 'bg-green-500'   },
+  'default':        { neoAvailBg: 'bg-[#a3e635]', neoAvailText: 'text-[#a3e635]', minHover: 'group-hover:text-green-700',   minDot: 'bg-green-500'   },
   'cherry-blossom': { neoAvailBg: 'bg-[#FFB7C5]', neoAvailText: 'text-[#FFB7C5]', minHover: 'group-hover:text-pink-600',    minDot: 'bg-pink-500'    },
   'tennis-spring':  { neoAvailBg: 'bg-[#A8D49A]', neoAvailText: 'text-[#A8D49A]', minHover: 'group-hover:text-emerald-600', minDot: 'bg-emerald-500' },
   'tennis-autumn':  { neoAvailBg: 'bg-[#FCD34D]', neoAvailText: 'text-[#FCD34D]', minHover: 'group-hover:text-amber-600',   minDot: 'bg-amber-500'   },

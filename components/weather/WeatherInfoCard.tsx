@@ -200,7 +200,7 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
     if (isLoading || (cityDataUrl && isCityWeatherLoading)) {
       return (
         <div className={isNeoBrutalism
-          ? 'border-2 border-black dark:border-slate-700 rounded-[5px] p-4 shadow-[3px_3px_0px_0px_#000] skeleton-neo h-24'
+          ? 'border-2 border-black dark:border-slate-700 rounded-[5px] p-4 shadow-[3px_3px_0px_0px_#000] dark:shadow-[3px_3px_0px_0px_#f1f3f8] skeleton-neo h-24'
           : 'rounded-xl p-4 border border-gray-100 dark:border-slate-800 skeleton h-24'
         } />
       );
@@ -234,7 +234,7 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
 
   return (
     <div className={isNeoBrutalism
-      ? 'bg-white dark:bg-slate-800 border-2 border-black dark:border-slate-700 rounded-[5px] p-4 shadow-[3px_3px_0px_0px_#000] overflow-hidden'
+      ? 'bg-white dark:bg-slate-800 border-2 border-black dark:border-slate-700 rounded-[5px] p-4 shadow-[3px_3px_0px_0px_#000] dark:shadow-[3px_3px_0px_0px_#f1f3f8] overflow-hidden'
       : 'bg-white dark:bg-slate-800 rounded-xl p-4 border border-gray-100 dark:border-slate-800 overflow-hidden'
     }>
       <div className="flex flex-col sm:flex-row items-stretch gap-3 sm:gap-4">

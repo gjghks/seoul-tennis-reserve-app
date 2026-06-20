@@ -131,7 +131,7 @@ export default function ParkingSection({ lat, lng, isNeoBrutalism }: ParkingSect
         type="button"
         onClick={() => setExpanded(prev => !prev)}
         className={isNeoBrutalism
-          ? 'w-full p-5 flex items-center justify-between border-b-2 border-black'
+          ? 'w-full p-5 flex items-center justify-between border-b-2 border-black dark:border-[#f1f3f8]'
           : `w-full p-5 flex items-center justify-between ${expanded ? 'border-b border-gray-100 dark:border-slate-800' : ''}`
         }
         aria-expanded={expanded}
@@ -191,7 +191,7 @@ export default function ParkingSection({ lat, lng, isNeoBrutalism }: ParkingSect
                         <span>·</span>
                         <span>수용 {p.capacity}대</span>
                         <span>·</span>
-                        <span className={isFree ? (isNeoBrutalism ? 'text-[#16a34a] font-black' : 'text-green-600 font-semibold') : ''}>
+                        <span className={isFree ? (isNeoBrutalism ? 'text-[#16a34a] font-black' : 'text-green-700 font-semibold') : ''}>
                           {rateText}
                         </span>
                       </div>
@@ -209,7 +209,7 @@ export default function ParkingSection({ lat, lng, isNeoBrutalism }: ParkingSect
                       onClick={() => handleDirections(p.lat, p.lng, p.name)}
                       className={themeClass(
                         'shrink-0 flex items-center gap-1 px-2.5 py-1.5 text-[11px] font-black rounded-[3px] border-2 border-black bg-[#88aaee] text-black hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none shadow-[2px_2px_0px_0px_#000] transition-all',
-                        'shrink-0 flex items-center gap-1 px-2.5 py-1.5 text-[11px] font-semibold rounded-lg border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-400 hover:border-green-500 hover:text-green-600 transition-colors'
+                        'shrink-0 flex items-center gap-1 px-2.5 py-1.5 text-[11px] font-semibold rounded-lg border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-400 hover:border-green-500 hover:text-green-700 transition-colors'
                       )}
                     >
                       <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

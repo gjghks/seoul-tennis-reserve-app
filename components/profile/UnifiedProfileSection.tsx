@@ -181,7 +181,7 @@ export default function UnifiedProfileSection() {
       </div>
 
       <div className={themeClass(
-        'bg-white dark:bg-slate-800 border-2 border-black dark:border-slate-700 rounded-[5px] shadow-[4px_4px_0px_0px_#000] p-5 relative overflow-hidden',
+        'bg-white dark:bg-slate-800 border-2 border-black dark:border-slate-700 rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] p-5 relative overflow-hidden',
         'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg shadow-sm p-5'
       )}>
         <div className={themeClass(
@@ -237,7 +237,7 @@ export default function UnifiedProfileSection() {
                     )}
                     {tennisProfile.skill_level && (
                       <span className={themeClass(
-                        'inline-block px-3 py-1 bg-white dark:bg-slate-800 border-2 border-black dark:border-slate-700 shadow-[2px_2px_0px_0px_#000] text-black dark:text-slate-100 text-sm font-bold rounded-full',
+                        'inline-block px-3 py-1 bg-white dark:bg-slate-800 border-2 border-black dark:border-slate-700 shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#f1f3f8] text-black dark:text-slate-100 text-sm font-bold rounded-full',
                         'inline-block px-3 py-1 bg-gray-50 dark:bg-slate-700 text-gray-700 dark:text-slate-200 text-sm font-medium rounded-full border border-gray-200 dark:border-slate-600'
                       )}>
                         {getLabel(SKILL_LEVEL_OPTIONS, tennisProfile.skill_level)}
@@ -245,7 +245,7 @@ export default function UnifiedProfileSection() {
                     )}
                     {tennisProfile.preferred_hand && (
                       <span className={themeClass(
-                        'inline-block px-3 py-1 bg-white dark:bg-slate-800 border-2 border-black dark:border-slate-700 shadow-[2px_2px_0px_0px_#000] text-black dark:text-slate-100 text-sm font-bold rounded-full',
+                        'inline-block px-3 py-1 bg-white dark:bg-slate-800 border-2 border-black dark:border-slate-700 shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#f1f3f8] text-black dark:text-slate-100 text-sm font-bold rounded-full',
                         'inline-block px-3 py-1 bg-gray-50 dark:bg-slate-700 text-gray-700 dark:text-slate-200 text-sm font-medium rounded-full border border-gray-200 dark:border-slate-600'
                       )}>
                         {getLabel(PREFERRED_HAND_OPTIONS, tennisProfile.preferred_hand)}
@@ -253,7 +253,7 @@ export default function UnifiedProfileSection() {
                     )}
                     {tennisProfile.age_group && (
                       <span className={themeClass(
-                        'inline-block px-3 py-1 bg-white dark:bg-slate-800 border-2 border-black dark:border-slate-700 shadow-[2px_2px_0px_0px_#000] text-black dark:text-slate-100 text-sm font-bold rounded-full',
+                        'inline-block px-3 py-1 bg-white dark:bg-slate-800 border-2 border-black dark:border-slate-700 shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#f1f3f8] text-black dark:text-slate-100 text-sm font-bold rounded-full',
                         'inline-block px-3 py-1 bg-gray-50 dark:bg-slate-700 text-gray-700 dark:text-slate-200 text-sm font-medium rounded-full border border-gray-200 dark:border-slate-600'
                       )}>
                         {getLabel(AGE_GROUP_OPTIONS, tennisProfile.age_group)}
@@ -310,7 +310,7 @@ export default function UnifiedProfileSection() {
                   placeholder="닉네임을 입력해주세요"
                   maxLength={NICKNAME_MAX}
                   className={themeClass(
-                    'w-full p-2 border-2 border-black dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 rounded-[5px] font-bold focus:outline-none focus:shadow-[2px_2px_0px_0px_#000] transition-all',
+                    'w-full p-2 border-2 border-black dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 rounded-[5px] font-bold focus:outline-none focus:shadow-[2px_2px_0px_0px_#000] dark:focus:shadow-[2px_2px_0px_0px_#f1f3f8] transition-all',
                     'w-full p-2 border border-gray-300 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none'
                   )}
                 />
@@ -365,7 +365,7 @@ export default function UnifiedProfileSection() {
                   maxLength={BIO_MAX}
                   rows={2}
                   className={themeClass(
-                    'w-full p-2 border-2 border-black dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 rounded-[5px] font-bold focus:outline-none focus:shadow-[2px_2px_0px_0px_#000] transition-all resize-none',
+                    'w-full p-2 border-2 border-black dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 rounded-[5px] font-bold focus:outline-none focus:shadow-[2px_2px_0px_0px_#000] dark:focus:shadow-[2px_2px_0px_0px_#f1f3f8] transition-all resize-none',
                     'w-full p-2 border border-gray-300 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none resize-none'
                   )}
                 />
@@ -430,7 +430,7 @@ export default function UnifiedProfileSection() {
                   value={formData.career_years ?? ''}
                   onChange={(e) => setFormData({ ...formData, career_years: e.target.value ? Number(e.target.value) : null })}
                   className={themeClass(
-                    'w-full p-2 border-2 border-black dark:border-slate-700 rounded-[5px] font-bold focus:outline-none focus:shadow-[2px_2px_0px_0px_#000] transition-all bg-white dark:bg-slate-900 dark:text-slate-100',
+                    'w-full p-2 border-2 border-black dark:border-slate-700 rounded-[5px] font-bold focus:outline-none focus:shadow-[2px_2px_0px_0px_#000] dark:focus:shadow-[2px_2px_0px_0px_#f1f3f8] transition-all bg-white dark:bg-slate-900 dark:text-slate-100',
                     'w-full p-2 border border-gray-300 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none'
                   )}
                 >
@@ -513,7 +513,7 @@ export default function UnifiedProfileSection() {
                 onClick={handleCancel}
                 disabled={isSaving}
                 className={themeClass(
-                  'flex-1 py-3 bg-white dark:bg-slate-800 dark:text-slate-100 border-2 border-black dark:border-slate-700 font-bold shadow-[2px_2px_0px_0px_#000] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_#000] transition-all disabled:opacity-50',
+                  'flex-1 py-3 bg-white dark:bg-slate-800 dark:text-slate-100 border-2 border-black dark:border-slate-700 font-bold shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#f1f3f8] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_#000] dark:hover:shadow-[1px_1px_0px_0px_#f1f3f8] transition-all disabled:opacity-50',
                   'flex-1 py-3 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-700 text-gray-700 dark:text-slate-200 rounded-md text-sm font-medium hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors disabled:opacity-50'
                 )}
               >

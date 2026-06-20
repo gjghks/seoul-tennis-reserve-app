@@ -198,7 +198,7 @@ export default function DrawGenerator({
   const inputClass = cn(
     'w-full px-3 py-2 outline-none transition-all',
     themeClass(
-      'bg-white dark:bg-slate-900 border-2 border-black rounded-[5px] font-bold text-black dark:text-slate-100 focus:shadow-[3px_3px_0px_0px_#000]',
+      'bg-white dark:bg-slate-900 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] font-bold text-black dark:text-slate-100 focus:shadow-[3px_3px_0px_0px_#000] dark:focus:shadow-[3px_3px_0px_0px_#f1f3f8]',
       'bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg font-medium text-gray-900 dark:text-slate-100 focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-green-500'
     )
   );
@@ -208,7 +208,7 @@ export default function DrawGenerator({
       className={cn(
         'p-5 space-y-4',
         themeClass(
-          'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
+          'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
           'bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl shadow-sm'
         )
       )}
@@ -262,7 +262,7 @@ export default function DrawGenerator({
               key={participant.id}
               className={cn(
                 'flex items-center justify-between px-3 py-2',
-                themeClass('bg-[#f8fafc] dark:bg-slate-900 border-2 border-black rounded-[5px]', 'bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg')
+                themeClass('bg-[#f8fafc] dark:bg-slate-900 border-2 border-black dark:border-[#f1f3f8] rounded-[5px]', 'bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg')
               )}
             >
               <div className="flex items-center gap-2 min-w-0">
@@ -291,7 +291,7 @@ export default function DrawGenerator({
       )}
 
       {warningMessage ? (
-        <div className={cn('p-3 text-sm', themeClass('bg-[#fff7ed] dark:bg-amber-950/40 border-2 border-black rounded-[5px] font-bold text-black dark:text-amber-200', 'bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/50 rounded-lg text-amber-700 dark:text-amber-300'))}>
+        <div className={cn('p-3 text-sm', themeClass('bg-[#fff7ed] dark:bg-amber-950/40 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] font-bold text-black dark:text-amber-200', 'bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/50 rounded-lg text-amber-700 dark:text-amber-300'))}>
           {warningMessage}
         </div>
       ) : null}
@@ -300,7 +300,7 @@ export default function DrawGenerator({
         <div
           className={cn(
             'p-3 text-center animate-pulse',
-            themeClass('bg-[#f0fdf4] dark:bg-green-950/40 border-2 border-black rounded-[5px] font-black text-black dark:text-green-200', 'bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-900/50 rounded-lg font-bold text-green-700 dark:text-green-300')
+            themeClass('bg-[#f0fdf4] dark:bg-green-950/40 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] font-black text-black dark:text-green-200', 'bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-900/50 rounded-lg font-bold text-green-700 dark:text-green-300')
           )}
         >
           {slotText}

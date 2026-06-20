@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useThemeClass } from '@/lib/cn';
 import AppearanceControls from '@/components/layout/AppearanceControls';
@@ -18,6 +18,28 @@ const NAV_LINKS = [
 export default function Footer() {
   const themeClass = useThemeClass();
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
+  const appearanceRef = useRef<HTMLDetailsElement>(null);
+
+  // Native <details> doesn't close on outside-click or Escape — add both.
+  useEffect(() => {
+    const onPointerDown = (e: Event) => {
+      const el = appearanceRef.current;
+      if (el?.open && !el.contains(e.target as Node)) el.open = false;
+    };
+    const onKey = (e: KeyboardEvent) => {
+      const el = appearanceRef.current;
+      if (e.key === 'Escape' && el?.open) {
+        el.open = false;
+        el.querySelector('summary')?.focus();
+      }
+    };
+    document.addEventListener('pointerdown', onPointerDown);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('pointerdown', onPointerDown);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, []);
 
   return (
     <>
@@ -56,7 +78,7 @@ export default function Footer() {
             >
               💬 의견 보내기
             </button>
-            <details className="relative ml-1">
+            <details ref={appearanceRef} className="relative ml-1">
               <summary
                 aria-label="외관 설정 (테마·다크모드·시즌)"
                 className={`list-none [&::-webkit-details-marker]:hidden cursor-pointer px-2.5 py-2 min-h-[44px] inline-flex items-center text-[clamp(10px,2.5vw,11px)] font-medium transition-colors ${themeClass(

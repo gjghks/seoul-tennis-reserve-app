@@ -225,7 +225,7 @@ const RecordImageUploader = forwardRef<RecordImageUploaderHandle, RecordImageUpl
                 key={image.id}
                 className={cn(
                   'relative aspect-square overflow-hidden',
-                  themeClass('border-2 border-black rounded-[5px]', 'border border-gray-200 dark:border-slate-700 rounded-lg')
+                  themeClass('border-2 border-black dark:border-[#f1f3f8] rounded-[5px]', 'border border-gray-200 dark:border-slate-700 rounded-lg')
                 )}
               >
                 <Image

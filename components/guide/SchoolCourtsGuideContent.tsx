@@ -104,7 +104,7 @@ export default function SchoolCourtsGuideContent() {
 
   return (
     <div className="container py-8 scrollbar-hide">
-      <div className={`max-w-3xl mx-auto ${themeClass('bg-white dark:bg-slate-900 border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000] p-8', 'bg-white dark:bg-slate-900 rounded-xl shadow-lg p-8')}`}>
+      <div className={`max-w-3xl mx-auto ${themeClass('bg-white dark:bg-slate-900 border-[3px] border-black dark:border-[#f1f3f8] rounded-[10px] shadow-[6px_6px_0px_0px_#000] dark:shadow-[6px_6px_0px_0px_#f1f3f8] p-8', 'bg-white dark:bg-slate-900 rounded-xl shadow-lg p-8')}`}>
         <div className="mb-10 text-center">
           <div className="text-4xl mb-4">🏫</div>
           <h1 className={`text-3xl font-bold mb-3 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
@@ -125,7 +125,7 @@ export default function SchoolCourtsGuideContent() {
                 <div
                   key={feature.title}
                   className={`p-4 ${themeClass(
-                    'bg-white dark:bg-slate-800 border-2 border-black rounded-[6px] shadow-[2px_2px_0px_0px_#000]',
+                    'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[6px] shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#f1f3f8]',
                     'bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg'
                   )}`}
                 >
@@ -148,7 +148,7 @@ export default function SchoolCourtsGuideContent() {
                 <div
                   key={step.step}
                   className={`flex items-start gap-4 p-4 ${themeClass(
-                    'bg-white dark:bg-slate-800 border-2 border-black rounded-[6px]',
+                    'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[6px]',
                     'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg'
                   )}`}
                 >
@@ -178,7 +178,7 @@ export default function SchoolCourtsGuideContent() {
               2025년 9월 기준, 서울시교육청 민간개방 학교시설물 현황 데이터 기준입니다.
             </p>
             <div className={`overflow-x-auto ${themeClass(
-              'border-2 border-black rounded-[6px]',
+              'border-2 border-black dark:border-[#f1f3f8] rounded-[6px]',
               'border border-gray-200 dark:border-slate-700 rounded-lg'
             )}`}>
               <table className="w-full text-sm">
@@ -224,7 +224,7 @@ export default function SchoolCourtsGuideContent() {
             <ul className="space-y-3">
               {TIPS.map((tip) => (
                 <li key={tip.title} className="flex items-start gap-2">
-                  <span className="text-green-600 font-bold shrink-0">✓</span>
+                  <span className="text-green-700 font-bold shrink-0">✓</span>
                   <span>
                     <strong className={themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}>{tip.title}</strong>
                     <span className="block text-sm mt-1">{tip.desc}</span>
@@ -248,7 +248,7 @@ export default function SchoolCourtsGuideContent() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`block p-4 transition-all ${themeClass(
-                    'bg-white dark:bg-slate-800 border-2 border-black rounded-[6px] shadow-[2px_2px_0px_0px_#000] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_#000]',
+                    'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[6px] shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#f1f3f8] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_#000] dark:hover:shadow-[1px_1px_0px_0px_#f1f3f8]',
                     'bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700'
                   )}`}
                 >
@@ -268,7 +268,7 @@ export default function SchoolCourtsGuideContent() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`px-6 py-3 rounded-lg text-center font-bold transition-all ${themeClass(
-                  'bg-black text-white border-2 border-black hover:bg-gray-800 shadow-[4px_4px_0px_0px_#000] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000]',
+                  'bg-black text-white border-2 border-black dark:border-[#f1f3f8] hover:bg-gray-800 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#f1f3f8]',
                   'bg-blue-600 text-white hover:bg-blue-700 shadow-md hover:shadow-lg'
                 )}`}
               >
@@ -277,7 +277,7 @@ export default function SchoolCourtsGuideContent() {
               <Link
                 href="/"
                 className={`px-6 py-3 rounded-lg text-center font-bold transition-all ${themeClass(
-                  'bg-white dark:bg-slate-800 text-black dark:text-slate-100 border-2 border-black hover:bg-gray-100 dark:hover:bg-slate-700 shadow-[4px_4px_0px_0px_#000] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000]',
+                  'bg-white dark:bg-slate-800 text-black dark:text-slate-100 border-2 border-black dark:border-[#f1f3f8] hover:bg-gray-100 dark:hover:bg-slate-700 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#f1f3f8]',
                   'bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-200 hover:bg-gray-200 dark:hover:bg-slate-700 shadow-md hover:shadow-lg'
                 )}`}
               >

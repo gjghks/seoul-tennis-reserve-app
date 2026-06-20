@@ -150,11 +150,11 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
   const firstDay = getFirstDayOfWeek(viewYear, viewMonth);
 
   const cardClass = isNeoBrutalism
-    ? 'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000]'
+    ? 'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[3px_3px_0px_0px_#000] dark:shadow-[3px_3px_0px_0px_#f1f3f8]'
     : 'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-800';
 
   const sectionHeaderClass = isNeoBrutalism
-    ? 'p-5 border-b-2 border-black'
+    ? 'p-5 border-b-2 border-black dark:border-[#f1f3f8]'
     : 'p-5 border-b border-gray-100 dark:border-slate-800';
 
   const availableDistricts = useMemo(() => {
@@ -180,12 +180,12 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
     <PullToRefresh
       onRefresh={handleRefresh}
       pullingContent={
-        <div className={`flex items-center justify-center py-4 ${themeClass('text-black dark:text-slate-100 font-bold', 'text-green-600')}`}>
+        <div className={`flex items-center justify-center py-4 ${themeClass('text-black dark:text-slate-100 font-bold', 'text-green-700')}`}>
           <span>↓ 당겨서 새로고침</span>
         </div>
       }
       refreshingContent={
-        <div className={`flex items-center justify-center py-4 ${themeClass('text-black dark:text-slate-100 font-bold', 'text-green-600')}`}>
+        <div className={`flex items-center justify-center py-4 ${themeClass('text-black dark:text-slate-100 font-bold', 'text-green-700')}`}>
           <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24" aria-hidden="true">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
@@ -212,7 +212,7 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
             onChange={(e) => setSelectedDistrict(e.target.value)}
             className={`px-4 py-2 text-sm ${
               isNeoBrutalism
-                ? 'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] font-bold text-black dark:text-slate-100'
+                ? 'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] font-bold text-black dark:text-slate-100'
                 : 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-gray-700 dark:text-slate-200'
             }`}
           >
@@ -231,7 +231,7 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
                 {isNeoBrutalism ? (
                   <span className="w-6 h-6 bg-[#facc15] border-2 border-black rounded-[3px] flex items-center justify-center text-xs">📅</span>
                 ) : (
-                  <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <svg className="w-5 h-5 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                 )}
@@ -254,7 +254,7 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
                   onClick={goPrev}
                   className={`w-8 h-8 flex items-center justify-center ${
                     isNeoBrutalism
-                      ? 'border-2 border-black rounded-[3px] bg-white dark:bg-slate-800 text-black dark:text-slate-100 hover:bg-gray-100 dark:hover:bg-slate-700 font-bold'
+                      ? 'border-2 border-black dark:border-[#f1f3f8] rounded-[3px] bg-white dark:bg-slate-800 text-black dark:text-slate-100 hover:bg-gray-100 dark:hover:bg-slate-700 font-bold'
                       : 'border border-gray-200 dark:border-slate-700 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800'
                   }`}
                   aria-label="이전 달"
@@ -266,7 +266,7 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
                   onClick={goNext}
                   className={`w-8 h-8 flex items-center justify-center ${
                     isNeoBrutalism
-                      ? 'border-2 border-black rounded-[3px] bg-white dark:bg-slate-800 text-black dark:text-slate-100 hover:bg-gray-100 dark:hover:bg-slate-700 font-bold'
+                      ? 'border-2 border-black dark:border-[#f1f3f8] rounded-[3px] bg-white dark:bg-slate-800 text-black dark:text-slate-100 hover:bg-gray-100 dark:hover:bg-slate-700 font-bold'
                       : 'border border-gray-200 dark:border-slate-700 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800'
                   }`}
                   aria-label="다음 달"
@@ -395,7 +395,7 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
                 {isNeoBrutalism ? (
                   <span className="w-6 h-6 bg-[#a3e635] border-2 border-black rounded-[3px] flex items-center justify-center text-xs">🎾</span>
                 ) : (
-                  <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <svg className="w-5 h-5 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                   </svg>
                 )}
@@ -431,7 +431,7 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
                         href={slug ? `/${slug}` : '#'}
                         className={`block p-3 transition-all ${
                           isNeoBrutalism
-                            ? 'border-2 border-black rounded-[5px] hover:shadow-[2px_2px_0px_0px_#000] hover:-translate-x-0.5 hover:-translate-y-0.5'
+                            ? 'border-2 border-black dark:border-[#f1f3f8] rounded-[5px] hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#f1f3f8] hover:-translate-x-0.5 hover:-translate-y-0.5'
                             : 'border border-gray-100 dark:border-slate-700 rounded-xl hover:border-green-200 hover:bg-green-50/30 dark:hover:bg-green-950/20'
                         }`}
                       >
@@ -492,7 +492,7 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
                   <div
                     key={`external-${district}`}
                     className={themeClass(
-                      'border-2 border-black rounded-[5px] overflow-hidden',
+                      'border-2 border-black dark:border-[#f1f3f8] rounded-[5px] overflow-hidden',
                       'border border-blue-200 dark:border-blue-900/40 rounded-xl overflow-hidden'
                     )}
                   >

@@ -54,7 +54,7 @@ export default function AlertSettingsSection() {
     <div className="mb-8">
       <h2 className={`text-lg mb-4 flex items-center gap-2 ${themeClass('font-black text-black dark:text-slate-100 uppercase', 'font-semibold text-gray-900 dark:text-slate-100')}`}>
         {isNeoBrutalism ? '🔔' : (
-          <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <svg className="w-5 h-5 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
           </svg>
         )}
@@ -64,7 +64,7 @@ export default function AlertSettingsSection() {
       {permission !== 'unsupported' && (
         <div className={`flex items-center justify-between p-4 mb-4 ${
           isNeoBrutalism
-            ? 'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000]'
+            ? 'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[3px_3px_0px_0px_#000] dark:shadow-[3px_3px_0px_0px_#f1f3f8]'
             : 'bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700'
         }`}>
           <div>
@@ -90,7 +90,7 @@ export default function AlertSettingsSection() {
               `px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                 isSubscribed
                   ? 'bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-300 hover:bg-red-100 dark:hover:bg-red-900/40'
-                  : 'bg-green-50 dark:bg-green-950/40 text-green-600 dark:text-green-300 hover:bg-green-100 dark:hover:bg-green-900/40'
+                  : 'bg-green-50 dark:bg-green-950/40 text-green-700 dark:text-green-300 hover:bg-green-100 dark:hover:bg-green-900/40'
               } disabled:opacity-50 disabled:cursor-not-allowed`
             )}
           >
@@ -108,7 +108,7 @@ export default function AlertSettingsSection() {
       ) : alerts.length === 0 ? (
         <div className={`py-8 px-6 text-center ${
           isNeoBrutalism
-            ? 'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]'
+            ? 'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]'
             : 'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-800'
         }`}>
           <svg
@@ -181,7 +181,7 @@ export default function AlertSettingsSection() {
             const href = getAlertHref(alert);
             const cardClass = `flex items-center justify-between p-4 ${
               isNeoBrutalism
-                ? 'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000]'
+                ? 'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[3px_3px_0px_0px_#000] dark:shadow-[3px_3px_0px_0px_#f1f3f8]'
                 : 'bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700'
             }`;
             const content = (

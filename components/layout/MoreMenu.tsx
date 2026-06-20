@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
@@ -117,11 +117,30 @@ export default function MoreMenu({ isOpen, onClose }: MoreMenuProps) {
   const pathname = usePathname();
   const themeClass = useThemeClass();
   const { user } = useAuth();
+  const sheetRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLElement | null>(null);
 
+  // Dialog focus management: trap Tab inside the sheet, focus the first control on
+  // open, and restore focus to the trigger on close (Escape also closes).
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen) {
+      const trigger = triggerRef.current;
+      triggerRef.current = null;
+      if (trigger) requestAnimationFrame(() => trigger.focus());
+      return;
+    }
+    triggerRef.current = document.activeElement as HTMLElement | null;
+    const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])';
+    requestAnimationFrame(() => sheetRef.current?.querySelector<HTMLElement>(FOCUSABLE)?.focus());
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') { onClose(); return; }
+      if (e.key !== 'Tab' || !sheetRef.current) return;
+      const els = sheetRef.current.querySelectorAll<HTMLElement>(FOCUSABLE);
+      if (els.length === 0) return;
+      const first = els[0];
+      const last = els[els.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     };
     document.addEventListener('keydown', handleKey);
     return () => document.removeEventListener('keydown', handleKey);
@@ -158,6 +177,7 @@ export default function MoreMenu({ isOpen, onClose }: MoreMenuProps) {
           'bg-white dark:bg-slate-900 border-t-[3px] border-x-[3px] border-black dark:border-[#f1f3f8] rounded-t-[16px]',
           'bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-slate-700 rounded-t-2xl shadow-[0_-4px_24px_rgba(0,0,0,0.08)]'
         )}`}
+        ref={sheetRef}
         style={{ bottom: 'calc(3.5rem + env(safe-area-inset-bottom))' }}
         role="dialog"
         aria-modal="true"
@@ -210,7 +230,7 @@ export default function MoreMenu({ isOpen, onClose }: MoreMenuProps) {
                 >
                   <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${themeClass(
                     'bg-black/10 dark:bg-white/10',
-                    active ? 'bg-green-100 dark:bg-green-950/40 text-green-600' : 'bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-slate-400'
+                    active ? 'bg-green-100 dark:bg-green-950/40 text-green-700' : 'bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-slate-400'
                   )}`}>
                     {item.icon}
                   </div>

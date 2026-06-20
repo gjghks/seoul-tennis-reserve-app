@@ -43,7 +43,7 @@ export default function RecordOptionalDetailsSection({
     'block mb-1.5 font-medium text-gray-700 dark:text-slate-200 text-sm'
   );
   const inputClass = themeClass(
-    'w-full p-3 border-2 border-black rounded-[5px] focus:outline-none focus:ring-2 focus:ring-[#22c55e] focus:ring-offset-2 shadow-[4px_4px_0px_0px_#000] transition-all',
+    'w-full p-3 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] focus:outline-none focus:ring-2 focus:ring-[#22c55e] focus:ring-offset-2 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] transition-all',
     'w-full p-2.5 border border-gray-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all'
   );
 

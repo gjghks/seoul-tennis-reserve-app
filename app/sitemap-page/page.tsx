@@ -55,7 +55,7 @@ export default function SitemapPage() {
         <div className="grid md:grid-cols-2 gap-8">
           <section className="bg-white dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-slate-800 p-6">
             <h2 className="text-lg font-bold text-gray-900 dark:text-slate-100 mb-4 flex items-center gap-2">
-              <span className="w-8 h-8 bg-green-100 dark:bg-green-950/40 rounded-lg flex items-center justify-center text-green-600 dark:text-green-300">
+              <span className="w-8 h-8 bg-green-100 dark:bg-green-950/40 rounded-lg flex items-center justify-center text-green-700 dark:text-green-300">
                 📄
               </span>
               주요 페이지
@@ -67,7 +67,7 @@ export default function SitemapPage() {
                     href={page.href}
                     className="group block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors"
                   >
-                    <span className="font-medium text-gray-900 dark:text-slate-100 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
+                    <span className="font-medium text-gray-900 dark:text-slate-100 group-hover:text-green-700 dark:group-hover:text-green-400 transition-colors">
                       {page.label}
                     </span>
                     <p className="text-sm text-gray-500 dark:text-slate-400 mt-0.5">{page.description}</p>
@@ -91,7 +91,7 @@ export default function SitemapPage() {
                     href={page.href}
                     className="group block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors"
                   >
-                    <span className="font-medium text-gray-900 dark:text-slate-100 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
+                    <span className="font-medium text-gray-900 dark:text-slate-100 group-hover:text-green-700 dark:group-hover:text-green-400 transition-colors">
                       {page.label}
                     </span>
                     <p className="text-sm text-gray-500 dark:text-slate-400 mt-0.5">{page.description}</p>
@@ -115,7 +115,7 @@ export default function SitemapPage() {
                     href={page.href}
                     className="group block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors"
                   >
-                    <span className="font-medium text-gray-900 dark:text-slate-100 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
+                    <span className="font-medium text-gray-900 dark:text-slate-100 group-hover:text-green-700 dark:group-hover:text-green-400 transition-colors">
                       {page.label}
                     </span>
                     <p className="text-sm text-gray-500 dark:text-slate-400 mt-0.5">{page.description}</p>
@@ -152,7 +152,7 @@ export default function SitemapPage() {
         <div className="mt-8 p-4 bg-gray-50 dark:bg-slate-900 rounded-lg text-center">
           <p className="text-sm text-gray-500 dark:text-slate-400">
             찾으시는 페이지가 없으신가요?{' '}
-            <Link href="/contact" className="text-green-600 dark:text-green-400 hover:underline font-medium">
+            <Link href="/contact" className="text-green-700 dark:text-green-400 hover:underline font-medium">
               문의하기
             </Link>
             를 통해 알려주세요.

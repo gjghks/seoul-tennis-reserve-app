@@ -70,7 +70,7 @@ export default function RecordDetail({
       {/* Info Grid */}
       <div
         className={themeClass(
-          'rounded-[5px] border-2 border-black bg-white dark:bg-slate-800 p-6 shadow-[4px_4px_0px_0px_#000]',
+          'rounded-[5px] border-2 border-black dark:border-[#f1f3f8] bg-white dark:bg-slate-800 p-6 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
           'rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm'
         )}
       >
@@ -141,7 +141,7 @@ export default function RecordDetail({
               <div
                 key={`image-${i}`}
                 className={themeClass(
-                  'relative aspect-square overflow-hidden rounded-[5px] border-2 border-black shadow-[2px_2px_0px_0px_#000]',
+                  'relative aspect-square overflow-hidden rounded-[5px] border-2 border-black dark:border-[#f1f3f8] shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#f1f3f8]',
                   'relative aspect-square overflow-hidden rounded-xl border border-gray-200 dark:border-slate-700'
                 )}
                 onClick={() => window.open(url, '_blank')}
@@ -164,7 +164,7 @@ export default function RecordDetail({
           <h3 className="text-sm font-bold text-gray-500 dark:text-slate-400">메모</h3>
           <div
             className={themeClass(
-              'rounded-[5px] border-2 border-black bg-yellow-50 dark:bg-yellow-950/40 p-4 shadow-[4px_4px_0px_0px_#000]',
+              'rounded-[5px] border-2 border-black dark:border-[#f1f3f8] bg-yellow-50 dark:bg-yellow-950/40 p-4 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
               'rounded-xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 p-4'
             )}
           >
@@ -181,7 +181,7 @@ export default function RecordDetail({
           <button
             onClick={onEdit}
             className={themeClass(
-              'flex items-center justify-center rounded-[5px] border-2 border-black bg-white dark:bg-slate-800 dark:text-slate-100 py-3 font-bold shadow-[4px_4px_0px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_#000]',
+              'flex items-center justify-center rounded-[5px] border-2 border-black dark:border-[#f1f3f8] bg-white dark:bg-slate-800 dark:text-slate-100 py-3 font-bold shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_#000] dark:active:shadow-[2px_2px_0px_0px_#f1f3f8]',
               'flex items-center justify-center rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 py-3 font-medium text-gray-700 dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-700'
             )}
           >
@@ -190,7 +190,7 @@ export default function RecordDetail({
           <button
             onClick={onDelete}
             className={themeClass(
-              'flex items-center justify-center rounded-[5px] border-2 border-black bg-red-100 dark:bg-red-950/40 py-3 font-bold text-red-600 dark:text-red-300 shadow-[4px_4px_0px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_#000]',
+              'flex items-center justify-center rounded-[5px] border-2 border-black dark:border-[#f1f3f8] bg-red-100 dark:bg-red-950/40 py-3 font-bold text-red-600 dark:text-red-300 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_#000] dark:active:shadow-[2px_2px_0px_0px_#f1f3f8]',
               'flex items-center justify-center rounded-xl border border-red-100 dark:border-red-900/50 bg-red-50 dark:bg-red-950/40 py-3 font-medium text-red-600 dark:text-red-300 hover:bg-red-100 dark:hover:bg-red-900/40'
             )}
           >
@@ -200,7 +200,7 @@ export default function RecordDetail({
         <Link
           href="/records"
           className={themeClass(
-            'flex items-center justify-center rounded-[5px] border-2 border-black bg-gray-100 dark:bg-slate-800 dark:text-slate-100 py-3 font-bold shadow-[4px_4px_0px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_#000]',
+            'flex items-center justify-center rounded-[5px] border-2 border-black dark:border-[#f1f3f8] bg-gray-100 dark:bg-slate-800 dark:text-slate-100 py-3 font-bold shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_#000] dark:active:shadow-[2px_2px_0px_0px_#f1f3f8]',
             'flex items-center justify-center rounded-xl bg-gray-100 dark:bg-slate-800 py-3 font-medium text-gray-600 dark:text-slate-300 hover:bg-gray-200 dark:hover:bg-slate-700'
           )}
         >

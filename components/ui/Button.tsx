@@ -43,13 +43,13 @@ const LoadingSpinner = () => (
 
 function getNeoClasses(variant: string, size: string): string {
   const base =
-    'inline-flex items-center justify-center gap-2 border-2 border-black rounded-[5px] font-bold uppercase tracking-tight transition-all interact-nb-press';
+    'inline-flex items-center justify-center gap-2 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] font-bold uppercase tracking-tight transition-all interact-nb-press';
 
   const variants: Record<string, string> = {
     primary:
       'bg-[#a3e635] text-black shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none',
     secondary:
-      'bg-white dark:bg-slate-900 text-black dark:text-slate-100 shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none',
+      'bg-white dark:bg-slate-900 text-black dark:text-slate-100 shadow-[3px_3px_0px_0px_#000] dark:shadow-[3px_3px_0px_0px_#f1f3f8] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none',
     ghost:
       'bg-transparent text-black dark:text-slate-100 border-transparent shadow-none hover:bg-black/5',
     danger:

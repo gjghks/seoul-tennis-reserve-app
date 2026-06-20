@@ -137,7 +137,7 @@ export default function EmptyState({
         typeof icon === 'string' ? (
           <div
             className={themeClass(
-              `${iconWrapperSizeNeo} bg-white dark:bg-slate-900 border-2 border-black rounded-full flex items-center justify-center shadow-[4px_4px_0px_0px_#000]`,
+              `${iconWrapperSizeNeo} bg-white dark:bg-slate-900 border-2 border-black dark:border-[#f1f3f8] rounded-full flex items-center justify-center shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]`,
               `${iconWrapperSizeMinimal} bg-gray-50 dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-full flex items-center justify-center`
             )}
             style={{ animation: 'gentle-float 3s ease-in-out infinite' }}

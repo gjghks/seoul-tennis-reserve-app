@@ -53,7 +53,7 @@ export default function AboutPage() {
 
   return (
     <div className="container py-8 scrollbar-hide">
-      <div className={`max-w-3xl mx-auto ${themeClass('bg-white dark:bg-slate-900 border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000] p-8', 'bg-white dark:bg-slate-900 rounded-xl shadow-lg p-8')}`}>
+      <div className={`max-w-3xl mx-auto ${themeClass('bg-white dark:bg-slate-900 border-[3px] border-black dark:border-[#f1f3f8] rounded-[10px] shadow-[6px_6px_0px_0px_#000] dark:shadow-[6px_6px_0px_0px_#f1f3f8] p-8', 'bg-white dark:bg-slate-900 rounded-xl shadow-lg p-8')}`}>
         <h1 className={`text-2xl font-bold mb-6 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
           서울 테니스 소개
         </h1>
@@ -81,7 +81,7 @@ export default function AboutPage() {
                 <div
                   key={feature.title}
                   className={`p-4 ${themeClass(
-                    'bg-white dark:bg-slate-800 border-2 border-black rounded-[6px] shadow-[2px_2px_0px_0px_#000]',
+                    'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[6px] shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#f1f3f8]',
                     'bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg'
                   )}`}
                 >
@@ -102,7 +102,7 @@ export default function AboutPage() {
             <ul className="space-y-2.5">
               {COURT_DETAIL_FEATURES.map((feature) => (
                 <li key={feature.title} className="flex items-start gap-2">
-                  <span className="text-green-600 font-bold shrink-0">✓</span>
+                  <span className="text-green-700 font-bold shrink-0">✓</span>
                   <span><strong>{feature.title}</strong> — {feature.desc}</span>
                 </li>
               ))}
@@ -117,7 +117,7 @@ export default function AboutPage() {
             <ul className="space-y-2.5">
               {CONVENIENCE_FEATURES.map((feature) => (
                 <li key={feature.title} className="flex items-start gap-2">
-                  <span className="text-green-600 font-bold shrink-0">✓</span>
+                  <span className="text-green-700 font-bold shrink-0">✓</span>
                   <span><strong>{feature.title}</strong> — {feature.desc}</span>
                 </li>
               ))}
@@ -168,7 +168,7 @@ export default function AboutPage() {
            </section>
 
           {/* 의견을 들려주세요 */}
-          <section className={`p-5 rounded-lg ${themeClass('bg-yellow-100 dark:bg-yellow-950/40 border-2 border-black', 'bg-gray-50 dark:bg-slate-900')}`}>
+          <section className={`p-5 rounded-lg ${themeClass('bg-yellow-100 dark:bg-yellow-950/40 border-2 border-black dark:border-[#f1f3f8]', 'bg-gray-50 dark:bg-slate-900')}`}>
             <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               의견을 들려주세요
             </h2>
@@ -180,7 +180,7 @@ export default function AboutPage() {
                 type="button"
                 onClick={() => setIsFeedbackOpen(true)}
                 className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${themeClass(
-                  'bg-black text-white border-2 border-black hover:bg-gray-800 font-bold',
+                  'bg-black text-white border-2 border-black dark:border-[#f1f3f8] hover:bg-gray-800 font-bold',
                   'bg-green-600 text-white hover:bg-green-700'
                 )}`}
               >
@@ -189,7 +189,7 @@ export default function AboutPage() {
               <Link
                 href="/contact"
                 className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${themeClass(
-                  'bg-white dark:bg-slate-800 text-black dark:text-slate-100 border-2 border-black hover:bg-gray-100 dark:hover:bg-slate-700 font-bold',
+                  'bg-white dark:bg-slate-800 text-black dark:text-slate-100 border-2 border-black dark:border-[#f1f3f8] hover:bg-gray-100 dark:hover:bg-slate-700 font-bold',
                   'bg-white dark:bg-slate-800 text-gray-600 dark:text-slate-300 border border-gray-200 dark:border-slate-700 hover:bg-gray-100 dark:hover:bg-slate-700'
                 )}`}
               >

@@ -208,7 +208,7 @@ export default function MapDiscoveryContent({ courts }: MapDiscoveryContentProps
                     'bg-green-600 text-white rounded-full'
                   )
                 : themeClass(
-                    'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] text-black dark:text-slate-100 hover:bg-gray-100 dark:hover:bg-slate-700',
+                    'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] text-black dark:text-slate-100 hover:bg-gray-100 dark:hover:bg-slate-700',
                     'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-full text-gray-600 dark:text-slate-300 hover:border-green-300'
                   )
             }`}
@@ -250,12 +250,12 @@ export default function MapDiscoveryContent({ courts }: MapDiscoveryContentProps
       <div
         className={`absolute top-10 left-3 z-10 px-3 py-1.5 text-xs font-bold ${
           themeClass(
-            'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[2px_2px_0px_0px_#000] text-black dark:text-slate-100',
+            'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#f1f3f8] text-black dark:text-slate-100',
             'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-full shadow-sm text-gray-700 dark:text-slate-200'
           )
         }`}
       >
-        전체 {districtCourts.length}개 · <span className={themeClass('text-[#16a34a]', 'text-green-600')}>예약가능 {totalAvailable}개</span>
+        전체 {districtCourts.length}개 · <span className={themeClass('text-[#16a34a]', 'text-green-700')}>예약가능 {totalAvailable}개</span>
       </div>
 
       {/* Locate me button */}
@@ -265,7 +265,7 @@ export default function MapDiscoveryContent({ courts }: MapDiscoveryContentProps
         disabled={locating}
         className={`absolute bottom-4 right-3 z-10 w-10 h-10 flex items-center justify-center transition-all ${
           themeClass(
-            'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[2px_2px_0px_0px_#000] hover:bg-gray-100 dark:hover:bg-slate-700',
+            'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#f1f3f8] hover:bg-gray-100 dark:hover:bg-slate-700',
             'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-full shadow-md hover:bg-gray-50 dark:hover:bg-slate-700'
           )
         }`}
@@ -277,7 +277,7 @@ export default function MapDiscoveryContent({ courts }: MapDiscoveryContentProps
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
         ) : (
-          <svg className={themeClass('w-5 h-5 text-black dark:text-slate-100', 'w-5 h-5 text-green-600')} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <svg className={themeClass('w-5 h-5 text-black dark:text-slate-100', 'w-5 h-5 text-green-700')} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <circle cx="12" cy="12" r="3" />
             <path d="M12 2v4m0 12v4m10-10h-4M6 12H2" />
           </svg>

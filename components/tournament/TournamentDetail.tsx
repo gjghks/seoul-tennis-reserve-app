@@ -180,7 +180,7 @@ export default function TournamentDetail({ id }: { id: string }) {
     return (
       <div className={cn('min-h-screen py-10', themeClass('bg-nb-bg', 'bg-gray-50 dark:bg-slate-900'))}>
         <div className="container mx-auto px-4 max-w-4xl flex items-center justify-center py-28">
-          <Spinner size="md" className={themeClass('text-black dark:text-slate-100', 'text-green-600')} />
+          <Spinner size="md" className={themeClass('text-black dark:text-slate-100', 'text-green-700')} />
         </div>
       </div>
     );
@@ -212,7 +212,7 @@ export default function TournamentDetail({ id }: { id: string }) {
           className={cn(
             'p-6',
             themeClass(
-              'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
+              'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
               'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm'
             )
           )}
@@ -255,7 +255,7 @@ export default function TournamentDetail({ id }: { id: string }) {
           className={cn(
             'p-6',
             themeClass(
-              'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
+              'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
               'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm'
             )
           )}
@@ -307,7 +307,7 @@ export default function TournamentDetail({ id }: { id: string }) {
           className={cn(
             'p-6',
             themeClass(
-              'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
+              'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
               'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm'
             )
           )}
@@ -322,7 +322,7 @@ export default function TournamentDetail({ id }: { id: string }) {
                   key={participant.id}
                   className={cn(
                     'px-3 py-2 flex items-center gap-2',
-                    themeClass('bg-gray-50 dark:bg-slate-900 border-2 border-black rounded-[5px]', 'bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg')
+                    themeClass('bg-gray-50 dark:bg-slate-900 border-2 border-black dark:border-[#f1f3f8] rounded-[5px]', 'bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg')
                   )}
                 >
                   {participant.seed_number ? (
@@ -345,7 +345,7 @@ export default function TournamentDetail({ id }: { id: string }) {
             className={cn(
               'p-6',
               themeClass(
-                'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
+                'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
                 'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm'
               )
             )}
@@ -363,7 +363,7 @@ export default function TournamentDetail({ id }: { id: string }) {
             className={cn(
               'p-6 text-center',
               themeClass(
-                'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
+                'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
                 'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm'
               )
             )}
@@ -379,7 +379,7 @@ export default function TournamentDetail({ id }: { id: string }) {
           className={cn(
             'p-6',
             themeClass(
-              'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
+              'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
               'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm'
             )
           )}
@@ -395,7 +395,7 @@ export default function TournamentDetail({ id }: { id: string }) {
                   className={cn(
                     'px-4 py-2 text-sm transition-all',
                     themeClass(
-                      'bg-white dark:bg-slate-900 border-2 border-black rounded-[5px] font-black text-black dark:text-slate-100',
+                      'bg-white dark:bg-slate-900 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] font-black text-black dark:text-slate-100',
                       'bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-lg font-bold text-gray-700 dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-800'
                     )
                   )}

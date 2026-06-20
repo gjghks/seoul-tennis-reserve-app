@@ -42,7 +42,7 @@ function PromoSection({ themeClass }: { themeClass: (nb: string, min: string) =>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div className={themeClass(
-            'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] p-6 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] transition-all',
+            'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] p-6 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#f1f3f8] transition-all',
             'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-800 p-6 shadow-sm hover:shadow-md transition-shadow'
           )}>
             <div className={`w-12 h-12 mb-4 flex items-center justify-center text-2xl ${themeClass('bg-[#ff90e8] border-2 border-black rounded-[5px]', 'bg-pink-50 dark:bg-pink-950/40 rounded-xl text-pink-500')}`}>
@@ -52,7 +52,7 @@ function PromoSection({ themeClass }: { themeClass: (nb: string, min: string) =>
             <p className={themeClass('text-black/70 dark:text-slate-300 font-medium', 'text-gray-500 dark:text-slate-400')}>참가자 등록만 하면 시드 배정부터 대진표 생성까지 자동으로 완성됩니다.</p>
           </div>
           <div className={themeClass(
-            'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] p-6 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] transition-all',
+            'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] p-6 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#f1f3f8] transition-all',
             'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-800 p-6 shadow-sm hover:shadow-md transition-shadow'
           )}>
             <div className={`w-12 h-12 mb-4 flex items-center justify-center text-2xl ${themeClass('bg-[#22c55e] border-2 border-black rounded-[5px]', 'bg-green-50 dark:bg-green-950/40 rounded-xl text-green-500')}`}>
@@ -62,7 +62,7 @@ function PromoSection({ themeClass }: { themeClass: (nb: string, min: string) =>
             <p className={themeClass('text-black/70 dark:text-slate-300 font-medium', 'text-gray-500 dark:text-slate-400')}>점수를 입력하면 대진표가 실시간으로 업데이트됩니다.</p>
           </div>
           <div className={themeClass(
-            'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] p-6 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] transition-all',
+            'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] p-6 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#f1f3f8] transition-all',
             'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-800 p-6 shadow-sm hover:shadow-md transition-shadow'
           )}>
             <div className={`w-12 h-12 mb-4 flex items-center justify-center text-2xl ${themeClass('bg-[#88aaee] border-2 border-black rounded-[5px]', 'bg-blue-50 dark:bg-blue-950/40 rounded-xl text-blue-500')}`}>

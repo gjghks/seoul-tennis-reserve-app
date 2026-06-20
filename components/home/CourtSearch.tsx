@@ -218,7 +218,7 @@ export default function CourtSearch() {
 
       <div
         className={themeClass(
-          'flex items-center gap-2 rounded-xl border-[3px] border-black bg-white dark:bg-slate-800 px-3 py-2 shadow-[4px_4px_0px_0px_#000]',
+          'flex items-center gap-2 rounded-xl border-[3px] border-black dark:border-[#f1f3f8] bg-white dark:bg-slate-800 px-3 py-2 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
           'flex items-center gap-2 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 shadow-sm'
         )}
       >
@@ -284,7 +284,7 @@ export default function CourtSearch() {
           role="listbox"
           aria-label="검색 결과"
           className={`${themeClass(
-            'absolute left-0 right-0 z-30 max-h-80 overflow-y-auto rounded-xl border-[3px] border-black bg-white dark:bg-slate-800 shadow-[5px_5px_0px_0px_#000]',
+            'absolute left-0 right-0 z-30 max-h-80 overflow-y-auto rounded-xl border-[3px] border-black dark:border-[#f1f3f8] bg-white dark:bg-slate-800 shadow-[5px_5px_0px_0px_#000] dark:shadow-[5px_5px_0px_0px_#f1f3f8]',
             'absolute left-0 right-0 z-30 max-h-80 overflow-y-auto rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-lg'
           )} ${dropdownOffset}`}
         >
@@ -370,7 +370,7 @@ export default function CourtSearch() {
                         className={themeClass(
                           available
                             ? 'shrink-0 rounded-md border-2 border-black bg-[#a3e635] px-2 py-1 text-[11px] font-black text-black'
-                            : 'shrink-0 rounded-md border-2 border-black bg-gray-200 dark:bg-slate-700 px-2 py-1 text-[11px] font-black text-black/60 dark:text-slate-300',
+                            : 'shrink-0 rounded-md border-2 border-black dark:border-[#f1f3f8] bg-gray-200 dark:bg-slate-700 px-2 py-1 text-[11px] font-black text-black/60 dark:text-slate-300',
                           available
                             ? 'shrink-0 rounded-md bg-green-100 px-2 py-1 text-[11px] font-semibold text-green-700'
                             : 'shrink-0 rounded-md bg-gray-100 dark:bg-slate-800 px-2 py-1 text-[11px] font-semibold text-gray-500 dark:text-slate-400'
@@ -385,7 +385,7 @@ export default function CourtSearch() {
             </>
           ) : showRecent ? (
             <>
-              <div className={themeClass('px-4 py-2 border-b-[3px] border-black bg-gray-100 dark:bg-slate-800 flex justify-between items-center', 'px-4 py-2 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center')}>
+              <div className={themeClass('px-4 py-2 border-b-[3px] border-black dark:border-[#f1f3f8] bg-gray-100 dark:bg-slate-800 flex justify-between items-center', 'px-4 py-2 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center')}>
                 <span className={themeClass('text-xs font-black text-black dark:text-slate-100', 'text-xs font-semibold text-gray-500 dark:text-slate-400')}>최근 검색어</span>
               </div>
               <div>
@@ -439,7 +439,7 @@ export default function CourtSearch() {
                   );
                 })}
               </div>
-              <div className={themeClass('border-t-[3px] border-black bg-gray-50 dark:bg-slate-900', 'border-t border-gray-100 dark:border-slate-700 bg-gray-50 dark:bg-slate-900')}>
+              <div className={themeClass('border-t-[3px] border-black dark:border-[#f1f3f8] bg-gray-50 dark:bg-slate-900', 'border-t border-gray-100 dark:border-slate-700 bg-gray-50 dark:bg-slate-900')}>
                 <button
                   type="button"
                   onClick={clearAll}

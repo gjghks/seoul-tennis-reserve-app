@@ -27,7 +27,7 @@ export default function MatchTypeSelect({ value, onChange }: MatchTypeSelectProp
                   'px-4 py-2 rounded-lg font-medium bg-green-600 text-white'
                 )
               : themeClass(
-                  'px-4 py-2 border-2 border-black rounded-[5px] font-bold bg-white dark:bg-slate-800 text-black dark:text-slate-100 hover:bg-gray-50 dark:hover:bg-slate-700',
+                  'px-4 py-2 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] font-bold bg-white dark:bg-slate-800 text-black dark:text-slate-100 hover:bg-gray-50 dark:hover:bg-slate-700',
                   'px-4 py-2 rounded-lg font-medium bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-200 hover:bg-gray-200 dark:hover:bg-slate-700'
                 )
             }

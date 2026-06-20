@@ -127,7 +127,7 @@ export default function CourtLocationInput({ locationType, courtId, courtName, d
   }, []);
 
   const inputClass = themeClass(
-    'w-full border-2 border-black rounded-[5px] p-2.5 font-bold text-black placeholder:text-black/60 focus:outline-none focus:ring-2 focus:ring-[#88aaee]',
+    'w-full border-2 border-black dark:border-[#f1f3f8] rounded-[5px] p-2.5 font-bold text-black placeholder:text-black/60 focus:outline-none focus:ring-2 focus:ring-[#88aaee]',
     'w-full border border-gray-300 dark:border-slate-700 rounded-lg p-2.5 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500'
   );
 
@@ -148,7 +148,7 @@ export default function CourtLocationInput({ locationType, courtId, courtName, d
                 'px-3 py-1.5 rounded-lg font-medium bg-green-600 text-white text-sm'
               )
             : themeClass(
-                'px-3 py-1.5 border-2 border-black rounded-[5px] font-bold bg-white dark:bg-slate-800 text-black dark:text-slate-100 text-sm',
+                'px-3 py-1.5 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] font-bold bg-white dark:bg-slate-800 text-black dark:text-slate-100 text-sm',
                 'px-3 py-1.5 rounded-lg font-medium bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-400 text-sm'
               )
           }
@@ -169,7 +169,7 @@ export default function CourtLocationInput({ locationType, courtId, courtName, d
                 'px-3 py-1.5 rounded-lg font-medium bg-green-600 text-white text-sm'
               )
             : themeClass(
-                'px-3 py-1.5 border-2 border-black rounded-[5px] font-bold bg-white dark:bg-slate-800 text-black dark:text-slate-100 text-sm',
+                'px-3 py-1.5 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] font-bold bg-white dark:bg-slate-800 text-black dark:text-slate-100 text-sm',
                 'px-3 py-1.5 rounded-lg font-medium bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-400 text-sm'
               )
           }
@@ -182,7 +182,7 @@ export default function CourtLocationInput({ locationType, courtId, courtName, d
         <div className="relative" ref={dropdownRef}>
           {courtId ? (
             <div className={themeClass(
-              'flex items-center justify-between border-2 border-black rounded-[5px] p-2.5 bg-[#a3e635]/20',
+              'flex items-center justify-between border-2 border-black dark:border-[#f1f3f8] rounded-[5px] p-2.5 bg-[#a3e635]/20',
               'flex items-center justify-between border border-green-200 dark:border-green-900/50 rounded-lg p-2.5 bg-green-50 dark:bg-green-950/40'
             )}>
               <div>
@@ -235,7 +235,7 @@ export default function CourtLocationInput({ locationType, courtId, courtName, d
               />
               {showDropdown && canSearch && (
                 <div className={themeClass(
-                  'absolute z-20 w-full mt-1 border-2 border-black rounded-[5px] bg-white dark:bg-slate-800 shadow-[3px_3px_0px_0px_#000] max-h-48 overflow-y-auto',
+                  'absolute z-20 w-full mt-1 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] bg-white dark:bg-slate-800 shadow-[3px_3px_0px_0px_#000] dark:shadow-[3px_3px_0px_0px_#f1f3f8] max-h-48 overflow-y-auto',
                   'absolute z-20 w-full mt-1 border border-gray-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 shadow-lg max-h-48 overflow-y-auto'
                 )}>
                   {filteredCourts.length > 0 ? (

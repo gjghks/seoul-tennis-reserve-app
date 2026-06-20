@@ -90,7 +90,7 @@ export default function BottomNav() {
                 aria-current={active ? 'page' : undefined}
                 className={`flex flex-col items-center justify-center flex-1 h-full gap-0.5 transition-colors ${
                   active
-                    ? themeClass('text-black font-bold', 'text-green-600 font-medium')
+                    ? themeClass('text-black font-bold', 'text-green-700 font-medium')
                     : themeClass('text-black/60', 'text-gray-400 dark:text-slate-500')
                 }`}
               >
@@ -104,7 +104,7 @@ export default function BottomNav() {
             onClick={() => setIsMoreOpen((prev) => !prev)}
             className={`flex flex-col items-center justify-center flex-1 h-full gap-0.5 transition-colors ${
               isMoreActive || isMoreOpen
-                ? themeClass('text-black font-bold', 'text-green-600 font-medium')
+                ? themeClass('text-black font-bold', 'text-green-700 font-medium')
                 : themeClass('text-black/60', 'text-gray-400 dark:text-slate-500')
             }`}
           >

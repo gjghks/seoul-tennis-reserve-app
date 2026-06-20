@@ -117,7 +117,7 @@ export default function RecordsGuideContent() {
     <div className="container py-8 scrollbar-hide">
       <div
         className={`max-w-3xl mx-auto ${themeClass(
-          'bg-white dark:bg-slate-900 border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000] p-8',
+          'bg-white dark:bg-slate-900 border-[3px] border-black dark:border-[#f1f3f8] rounded-[10px] shadow-[6px_6px_0px_0px_#000] dark:shadow-[6px_6px_0px_0px_#f1f3f8] p-8',
           'bg-white dark:bg-slate-900 rounded-xl shadow-lg p-8'
         )}`}
       >
@@ -174,12 +174,12 @@ export default function RecordsGuideContent() {
                       className={cn(
                         'w-full flex items-center gap-4 p-4 text-left cursor-pointer select-none transition-all',
                         themeClass(
-                          'bg-white dark:bg-slate-800 border-2 border-black rounded-[6px] shadow-[2px_2px_0px_0px_#000] hover:shadow-[4px_4px_0px_0px_#000] hover:-translate-y-[1px]',
+                          'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[6px] shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#f1f3f8] hover:shadow-[4px_4px_0px_0px_#000] dark:hover:shadow-[4px_4px_0px_0px_#f1f3f8] hover:-translate-y-[1px]',
                           'bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 hover:border-gray-300 dark:hover:border-slate-600'
                         ),
                         isOpen &&
                           themeClass(
-                            'shadow-[4px_4px_0px_0px_#000] -translate-y-[1px] bg-yellow-50 dark:bg-yellow-950/40',
+                            'shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] -translate-y-[1px] bg-yellow-50 dark:bg-yellow-950/40',
                             'bg-white dark:bg-slate-900 border-green-300 dark:border-green-700 shadow-md'
                           )
                       )}
@@ -220,7 +220,7 @@ export default function RecordsGuideContent() {
                         className={cn(
                           'p-4 rounded-b-lg',
                           themeClass(
-                            'bg-gray-50 dark:bg-slate-800 border-2 border-t-0 border-black rounded-[6px]',
+                            'bg-gray-50 dark:bg-slate-800 border-2 border-t-0 border-black dark:border-[#f1f3f8] rounded-[6px]',
                             'bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg shadow-inner'
                           )
                         )}
@@ -248,7 +248,7 @@ export default function RecordsGuideContent() {
             </h2>
             <div
               className={`p-5 rounded-lg ${themeClass(
-                'bg-blue-50 dark:bg-blue-950/40 border-2 border-black',
+                'bg-blue-50 dark:bg-blue-950/40 border-2 border-black dark:border-[#f1f3f8]',
                 'bg-blue-50 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900/50'
               )}`}
             >
@@ -284,7 +284,7 @@ export default function RecordsGuideContent() {
                 <div
                   key={step.step}
                   className={`flex items-start gap-4 p-4 ${themeClass(
-                    'bg-white dark:bg-slate-800 border-2 border-black rounded-[6px]',
+                    'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[6px]',
                     'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg'
                   )}`}
                 >
@@ -325,7 +325,7 @@ export default function RecordsGuideContent() {
             <ul className="space-y-3">
               {TIPS.map((tip) => (
                 <li key={tip.title} className="flex items-start gap-2">
-                  <span className="text-green-600 font-bold shrink-0">✓</span>
+                  <span className="text-green-700 font-bold shrink-0">✓</span>
                   <span>
                     <strong className={themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}>
                       {tip.title}
@@ -342,7 +342,7 @@ export default function RecordsGuideContent() {
               <Link
                 href="/records/new"
                 className={`px-6 py-3 rounded-lg text-center font-bold transition-all ${themeClass(
-                  'bg-black text-white border-2 border-black hover:bg-gray-800 shadow-[4px_4px_0px_0px_#000] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000]',
+                  'bg-black text-white border-2 border-black dark:border-[#f1f3f8] hover:bg-gray-800 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#f1f3f8]',
                   'bg-green-600 text-white hover:bg-green-700 shadow-md hover:shadow-lg'
                 )}`}
               >
@@ -351,7 +351,7 @@ export default function RecordsGuideContent() {
               <Link
                 href="/records"
                 className={`px-6 py-3 rounded-lg text-center font-bold transition-all ${themeClass(
-                  'bg-white dark:bg-slate-800 text-black dark:text-slate-100 border-2 border-black hover:bg-gray-100 dark:hover:bg-slate-700 shadow-[4px_4px_0px_0px_#000] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000]',
+                  'bg-white dark:bg-slate-800 text-black dark:text-slate-100 border-2 border-black dark:border-[#f1f3f8] hover:bg-gray-100 dark:hover:bg-slate-700 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#f1f3f8]',
                   'bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-200 border border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700 shadow-sm hover:shadow'
                 )}`}
               >
@@ -423,7 +423,7 @@ function ScoreDemo({ isOpen }: { isOpen: boolean }) {
             className={cn(
               'text-xs font-bold px-2 py-1 rounded transition-colors',
               themeClass(
-                'bg-white dark:bg-slate-900 border border-black hover:bg-gray-100 dark:hover:bg-slate-700',
+                'bg-white dark:bg-slate-900 border border-black dark:border-[#f1f3f8] hover:bg-gray-100 dark:hover:bg-slate-700',
                 'bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-300 hover:bg-gray-200 dark:hover:bg-slate-700'
               )
             )}
@@ -487,7 +487,7 @@ function StatsDemo({ isOpen }: { isOpen: boolean }) {
       <div className="grid grid-cols-2 gap-3">
         {[
           { label: '전체 경기', value: `${animTotal}전` },
-          { label: '승률', value: `${animWinRate}%`, className: 'text-green-600' },
+          { label: '승률', value: `${animWinRate}%`, className: 'text-green-700' },
           {
             label: '승/패',
             value: `${DEMO_STATS.wins}승 ${DEMO_STATS.losses}패 ${DEMO_STATS.draws}무`,
@@ -503,7 +503,7 @@ function StatsDemo({ isOpen }: { isOpen: boolean }) {
             className={cn(
               enabled ? 'anim-fade-up' : 'opacity-0',
               themeClass(
-                'flex flex-col items-center justify-center rounded-[5px] border-2 border-black bg-white dark:bg-slate-900 p-3 shadow-[3px_3px_0px_0px_#000]',
+                'flex flex-col items-center justify-center rounded-[5px] border-2 border-black dark:border-[#f1f3f8] bg-white dark:bg-slate-900 p-3 shadow-[3px_3px_0px_0px_#000] dark:shadow-[3px_3px_0px_0px_#f1f3f8]',
                 'flex flex-col items-center justify-center rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-3 shadow-sm'
               )
             )}
@@ -618,13 +618,13 @@ function MiniTrendChart({ enabled }: { enabled: boolean }) {
   return (
     <div
       className={themeClass(
-        'rounded-[5px] border-2 border-black bg-white dark:bg-slate-900 p-3 shadow-[2px_2px_0px_0px_#000]',
+        'rounded-[5px] border-2 border-black dark:border-[#f1f3f8] bg-white dark:bg-slate-900 p-3 shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#f1f3f8]',
         'rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-3 shadow-sm'
       )}
     >
       <div className="mb-2 flex items-center justify-between">
         <h4 className="text-xs font-bold text-gray-500 dark:text-slate-400">실력 추이</h4>
-        <span className="text-[10px] font-bold text-green-600">상승 중 ↑</span>
+        <span className="text-[10px] font-bold text-green-700">상승 중 ↑</span>
       </div>
 
       <div className="relative w-full" style={{ aspectRatio: `${MINI_W} / ${MINI_H}` }}>
@@ -763,7 +763,7 @@ function CourtDemo({ isOpen }: { isOpen: boolean }) {
             'p-3 transition-all',
             enabled ? 'anim-fade-up' : 'opacity-0',
             themeClass(
-              'bg-white dark:bg-slate-900 border-2 border-black rounded-[5px] shadow-[2px_2px_0px_0px_#000]',
+              'bg-white dark:bg-slate-900 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#f1f3f8]',
               'bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg shadow-sm'
             ),
             i === 0 &&

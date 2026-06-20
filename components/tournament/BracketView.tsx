@@ -189,7 +189,7 @@ export default function BracketView({
       <div
         ref={bracketRef}
         className={`overflow-x-auto ${themeClass(
-          'rounded-[5px] border-2 border-black bg-gray-50 dark:bg-slate-900 shadow-[4px_4px_0px_0px_#000]',
+          'rounded-[5px] border-2 border-black dark:border-[#f1f3f8] bg-gray-50 dark:bg-slate-900 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
           'rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm'
         )}`}
         style={{ WebkitOverflowScrolling: 'touch' }}

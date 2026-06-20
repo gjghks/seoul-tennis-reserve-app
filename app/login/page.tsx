@@ -85,7 +85,7 @@ function LoginContent() {
 
   return (
     <div className={`min-h-screen flex items-center justify-center p-4 scrollbar-hide ${themeClass('bg-nb-bg', 'bg-gray-50 dark:bg-slate-900')}`}>
-      <div className={themeClass('w-full max-w-md bg-white dark:bg-slate-900 border-[3px] border-black rounded-[5px] shadow-[8px_8px_0px_0px_#000] p-8', 'w-full max-w-md bg-white dark:bg-slate-900 rounded-2xl shadow-lg p-8 border border-gray-100 dark:border-slate-800')}>
+      <div className={themeClass('w-full max-w-md bg-white dark:bg-slate-900 border-[3px] border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[8px_8px_0px_0px_#000] dark:shadow-[8px_8px_0px_0px_#f1f3f8] p-8', 'w-full max-w-md bg-white dark:bg-slate-900 rounded-2xl shadow-lg p-8 border border-gray-100 dark:border-slate-800')}>
         {/* Tennis court welcome illustration */}
         <svg className={themeClass('w-20 h-20 mx-auto mb-4', 'w-16 h-16 mx-auto mb-4')} viewBox="0 0 96 96" fill="none" aria-hidden="true">
           <g style={{ animation: 'gentle-float 3s ease-in-out infinite' }}>
@@ -117,7 +117,7 @@ function LoginContent() {
         {inAppBrowser && (
           <div
             className={themeClass(
-              'bg-amber-100 dark:bg-amber-950/40 border-2 border-black text-amber-900 dark:text-amber-300 font-bold p-4 rounded-[5px] mb-6',
+              'bg-amber-100 dark:bg-amber-950/40 border-2 border-black dark:border-[#f1f3f8] text-amber-900 dark:text-amber-300 font-bold p-4 rounded-[5px] mb-6',
               'bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/50 text-amber-800 dark:text-amber-300 p-4 rounded-lg mb-6'
             )}
           >
@@ -133,7 +133,7 @@ function LoginContent() {
               type="button"
               onClick={() => openInExternalBrowser()}
               className={themeClass(
-                'w-full py-2 bg-amber-900 text-white text-sm font-black border-2 border-black rounded-[5px] shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all',
+                'w-full py-2 bg-amber-900 text-white text-sm font-black border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#f1f3f8] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all',
                 'w-full py-2 bg-amber-700 text-white text-sm font-semibold rounded-lg hover:bg-amber-800 transition-colors'
               )}
             >
@@ -146,7 +146,7 @@ function LoginContent() {
           <div
             role="alert"
             aria-live="assertive"
-            className={themeClass('bg-red-100 dark:bg-red-950/40 border-2 border-black text-red-700 dark:text-red-300 font-bold p-4 rounded-[5px] mb-6 text-center', 'bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800/50 text-red-600 dark:text-red-300 p-4 rounded-lg mb-6 text-center')}
+            className={themeClass('bg-red-100 dark:bg-red-950/40 border-2 border-black dark:border-[#f1f3f8] text-red-700 dark:text-red-300 font-bold p-4 rounded-[5px] mb-6 text-center', 'bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800/50 text-red-600 dark:text-red-300 p-4 rounded-lg mb-6 text-center')}
           >
             {error || authErrorMessage}
           </div>
@@ -169,7 +169,7 @@ function LoginContent() {
             type="button"
             onClick={handleGoogleLogin}
             disabled={loadingProvider !== null || inAppBrowser}
-            className={themeClass('w-full py-4 bg-white dark:bg-slate-800 text-black dark:text-slate-100 font-black uppercase border-[3px] border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none transition-all disabled:opacity-50 flex items-center justify-center gap-3', 'w-full py-4 bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-200 font-semibold rounded-lg border border-gray-300 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-3 shadow-sm')}
+            className={themeClass('w-full py-4 bg-white dark:bg-slate-800 text-black dark:text-slate-100 font-black uppercase border-[3px] border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none transition-all disabled:opacity-50 flex items-center justify-center gap-3', 'w-full py-4 bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-200 font-semibold rounded-lg border border-gray-300 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-3 shadow-sm')}
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24" aria-hidden="true">
               <path

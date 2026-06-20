@@ -39,7 +39,7 @@ export default function RecordCard({ record }: RecordCardProps) {
   return (
     <Link href={`/records/${record.id}`} className="block">
       <div className={themeClass(
-        'relative bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_0px_#000] transition-all overflow-hidden',
+        'relative bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[3px_3px_0px_0px_#000] dark:shadow-[3px_3px_0px_0px_#f1f3f8] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#f1f3f8] transition-all overflow-hidden',
         'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl shadow-sm hover:shadow-md transition-shadow p-4'
       )}>
         {/* Result Badge */}

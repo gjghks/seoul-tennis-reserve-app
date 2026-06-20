@@ -42,8 +42,15 @@ export default function Header() {
         setIsDropdownOpen(false);
       }
     };
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsDropdownOpen(false);
+    };
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKey);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKey);
+    };
   }, [isDropdownOpen]);
 
   const prevPathname = useRef(pathname);
@@ -77,7 +84,7 @@ export default function Header() {
                 key={href}
                 href={href}
                 aria-current={pathname.startsWith(href) ? 'page' : undefined}
-                className={`hidden sm:block px-3 py-1.5 text-sm transition-colors ${themeClass('text-black font-bold hover:underline underline-offset-4', 'text-gray-600 dark:text-slate-400 hover:text-green-600')}`}
+                className={`hidden sm:block px-3 py-1.5 text-sm transition-colors ${themeClass('text-black font-bold hover:underline underline-offset-4', 'text-gray-600 dark:text-slate-400 hover:text-green-700')}`}
               >
                 {label}
               </Link>
@@ -87,10 +94,12 @@ export default function Header() {
               <button
                 type="button"
                 onClick={() => setIsDropdownOpen(prev => !prev)}
+                aria-expanded={isDropdownOpen}
+                aria-haspopup="true"
                 className={cn(
                   'flex items-center gap-1 px-3 py-1.5 text-sm transition-colors',
-                  themeClass('text-black font-bold hover:underline underline-offset-4', 'text-gray-600 dark:text-slate-400 hover:text-green-600'),
-                  isSecondaryActive && themeClass('underline', 'text-green-600')
+                  themeClass('text-black font-bold hover:underline underline-offset-4', 'text-gray-600 dark:text-slate-400 hover:text-green-700'),
+                  isSecondaryActive && themeClass('underline', 'text-green-700')
                 )}
               >
                 더보기
@@ -117,7 +126,7 @@ export default function Header() {
                           'block px-4 py-2.5 text-sm transition-colors',
                           themeClass(
                             `font-bold ${active ? 'bg-[#facc15]/30' : 'hover:bg-gray-100 dark:hover:bg-slate-700'}`,
-                            `${active ? 'text-green-600 bg-green-50 dark:bg-green-950/40' : 'text-gray-700 dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-800'}`
+                            `${active ? 'text-green-700 bg-green-50 dark:bg-green-950/40' : 'text-gray-700 dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-800'}`
                           )
                         )}
                       >

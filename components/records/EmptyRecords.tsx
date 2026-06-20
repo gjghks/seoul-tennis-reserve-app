@@ -41,7 +41,7 @@ export default function EmptyRecords({ showCreateButton = true }: EmptyRecordsPr
       </p>
 
       <div className={themeClass(
-        'w-full max-w-xs bg-white dark:bg-slate-800 border-2 border-black p-4 mb-6 text-left shadow-[4px_4px_0px_0px_#000]',
+        'w-full max-w-xs bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] p-4 mb-6 text-left shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
         'w-full max-w-xs bg-gray-50 dark:bg-slate-900 rounded-lg p-4 mb-6 text-left'
       )}>
         <ul className="space-y-2">

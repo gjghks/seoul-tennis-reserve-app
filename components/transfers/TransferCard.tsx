@@ -29,7 +29,7 @@ export default function TransferCard({ transfer }: TransferCardProps) {
         className={cn(
           'flex flex-col h-full overflow-hidden transition-all duration-200',
           themeClass(
-            'bg-white dark:bg-slate-800 border-2 border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000] hover:-translate-y-[2px] hover:shadow-[6px_6px_0px_0px_#000]',
+            'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[10px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] hover:-translate-y-[2px] hover:shadow-[6px_6px_0px_0px_#000] dark:hover:shadow-[6px_6px_0px_0px_#f1f3f8]',
             'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl shadow-sm hover:shadow-md hover:border-gray-300 dark:hover:border-slate-600'
           ),
           !isAvailable && themeClass('opacity-70 bg-gray-50 dark:bg-slate-900', 'opacity-70')
@@ -88,7 +88,7 @@ export default function TransferCard({ transfer }: TransferCardProps) {
         <div
           className={cn(
             'p-4 flex items-center justify-between border-t',
-            themeClass('border-black bg-gray-50 dark:bg-slate-900', 'border-gray-100 dark:border-slate-700 bg-gray-50/50 dark:bg-slate-900/50')
+            themeClass('border-black dark:border-[#f1f3f8] bg-gray-50 dark:bg-slate-900', 'border-gray-100 dark:border-slate-700 bg-gray-50/50 dark:bg-slate-900/50')
           )}
         >
           <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-slate-400">

@@ -92,7 +92,7 @@ export default function LadderContent() {
   }, [user, profile, players, matchType]);
 
   const RefreshIndicator = (
-    <div className={cn('flex items-center justify-center py-4', themeClass('text-black font-bold dark:text-slate-100', 'text-green-600'))}>
+    <div className={cn('flex items-center justify-center py-4', themeClass('text-black font-bold dark:text-slate-100', 'text-green-700'))}>
       <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24" aria-hidden="true">
         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
@@ -106,7 +106,7 @@ export default function LadderContent() {
     <PullToRefresh
       onRefresh={handleRefresh}
       pullingContent={
-        <div className={cn('flex items-center justify-center py-4', themeClass('text-black font-bold dark:text-slate-100', 'text-green-600'))}>
+        <div className={cn('flex items-center justify-center py-4', themeClass('text-black font-bold dark:text-slate-100', 'text-green-700'))}>
           <span>↓ 당겨서 새로고침</span>
         </div>
       }
@@ -129,7 +129,7 @@ export default function LadderContent() {
               <div className={cn(
                 'p-6 h-32',
                 themeClass(
-                  'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
+                  'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
                   'bg-white dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm'
                 )
               )}>
@@ -195,11 +195,11 @@ export default function LadderContent() {
         <div className={cn(
           'mb-6 p-4 rounded-xl flex flex-wrap gap-3',
           themeClass(
-            'bg-white dark:bg-slate-800 border-2 border-black shadow-[4px_4px_0px_0px_#000]',
+            'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
             'bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 shadow-sm'
           )
         )}>
-          <div className="flex rounded-md overflow-hidden flex-1 min-w-[200px] border-2 border-black">
+          <div className="flex rounded-md overflow-hidden flex-1 min-w-[200px] border-2 border-black dark:border-[#f1f3f8]">
             <button
               type="button"
               onClick={() => { setMatchType('singles'); setOffset(0); }}
@@ -249,7 +249,7 @@ export default function LadderContent() {
           {error ? (
             <div className={cn(
               'text-center py-12',
-              themeClass('bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]', 'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700')
+              themeClass('bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]', 'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700')
             )}>
               <div className={cn('text-lg mb-2', themeClass('font-black text-black dark:text-slate-100', 'font-bold text-gray-900 dark:text-slate-100'))}>오류가 발생했습니다</div>
               <p className={themeClass('text-black/60 font-bold dark:text-slate-400', 'text-gray-500 dark:text-slate-400')}>{error.message}</p>
@@ -260,7 +260,7 @@ export default function LadderContent() {
                 <div key={i} className={cn(
                   'p-4 h-[88px]',
                   themeClass(
-                    'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
+                    'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
                     'bg-white dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm'
                   )
                 )}>
@@ -277,7 +277,7 @@ export default function LadderContent() {
           ) : players.length === 0 ? (
             <div className={cn(
               'text-center py-16',
-              themeClass('bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]', 'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm')
+              themeClass('bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]', 'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm')
             )}>
               <div className="text-4xl mb-4">🏆</div>
               <div className={cn('text-xl mb-2', themeClass('font-black text-black dark:text-slate-100', 'font-bold text-gray-900 dark:text-slate-100'))}>랭킹 정보가 없습니다</div>
@@ -300,7 +300,7 @@ export default function LadderContent() {
                     className={cn(
                       'px-3 py-2 text-sm transition-all',
                       themeClass(
-                        'border-2 border-black rounded-[5px] font-bold disabled:opacity-40 hover:bg-white dark:hover:bg-slate-700 dark:text-slate-100',
+                        'border-2 border-black dark:border-[#f1f3f8] rounded-[5px] font-bold disabled:opacity-40 hover:bg-white dark:hover:bg-slate-700 dark:text-slate-100',
                         'border border-gray-300 dark:border-slate-700 rounded-lg disabled:opacity-40 hover:bg-gray-50 dark:hover:bg-slate-700 bg-white dark:bg-slate-800 font-medium text-gray-700 dark:text-slate-200'
                       )
                     )}
@@ -317,7 +317,7 @@ export default function LadderContent() {
                     className={cn(
                       'px-3 py-2 text-sm transition-all',
                       themeClass(
-                        'border-2 border-black rounded-[5px] font-bold disabled:opacity-40 hover:bg-white dark:hover:bg-slate-700 dark:text-slate-100',
+                        'border-2 border-black dark:border-[#f1f3f8] rounded-[5px] font-bold disabled:opacity-40 hover:bg-white dark:hover:bg-slate-700 dark:text-slate-100',
                         'border border-gray-300 dark:border-slate-700 rounded-lg disabled:opacity-40 hover:bg-gray-50 dark:hover:bg-slate-700 bg-white dark:bg-slate-800 font-medium text-gray-700 dark:text-slate-200'
                       )
                     )}

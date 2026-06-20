@@ -124,7 +124,7 @@ export default function MyPage() {
           <div className="flex items-center justify-between mb-4">
             <h2 className={`text-lg flex items-center gap-2 ${themeClass('font-black text-black dark:text-slate-100 uppercase', 'font-semibold text-gray-900 dark:text-slate-100')} `}>
               {isNeoBrutalism ? '🕐' : (
-                <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <svg className="w-5 h-5 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               )}
@@ -143,7 +143,7 @@ export default function MyPage() {
               <div
                 key={court.svcId}
                 className={isNeoBrutalism
-                  ? 'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] p-4 flex items-center justify-between gap-4'
+                  ? 'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[3px_3px_0px_0px_#000] dark:shadow-[3px_3px_0px_0px_#f1f3f8] p-4 flex items-center justify-between gap-4'
                   : 'bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700 p-4 flex items-center justify-between gap-4'
                 }
               >
@@ -151,7 +151,7 @@ export default function MyPage() {
                   href={`/${court.districtSlug}/${encodeURIComponent(court.svcId)}`}
                   className="flex-1 min-w-0"
                 >
-                  <h3 className={`truncate transition-colors ${themeClass('font-bold text-black dark:text-slate-100 hover:text-[#16a34a]', 'font-medium text-gray-900 dark:text-slate-100 hover:text-green-600')} `}>
+                  <h3 className={`truncate transition-colors ${themeClass('font-bold text-black dark:text-slate-100 hover:text-[#16a34a]', 'font-medium text-gray-900 dark:text-slate-100 hover:text-green-700')} `}>
                     {court.svcName}
                   </h3>
                   <p className={`text-sm truncate ${themeClass('text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400')} `}>
@@ -165,8 +165,8 @@ export default function MyPage() {
                 type="button"
                 onClick={() => setShowAllRecent(!showAllRecent)}
                 className={`w-full py-2.5 text-sm transition-colors ${themeClass(
-                  'font-bold text-black/70 dark:text-slate-300 hover:text-black dark:hover:text-slate-100 bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all',
-                  'font-medium text-gray-500 dark:text-slate-400 hover:text-green-600 bg-gray-50 dark:bg-slate-800 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700'
+                  'font-bold text-black/70 dark:text-slate-300 hover:text-black dark:hover:text-slate-100 bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#f1f3f8] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all',
+                  'font-medium text-gray-500 dark:text-slate-400 hover:text-green-700 bg-gray-50 dark:bg-slate-800 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700'
                 )}`}
               >
                 {showAllRecent ? '접기' : `더보기 (${hiddenCount}개)`}
@@ -179,7 +179,7 @@ export default function MyPage() {
 
       {isHydrated && recentCourts.length === 0 && !user && (
         <div className={isNeoBrutalism
-          ? 'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] py-12 px-6 text-center mb-8'
+          ? 'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] py-12 px-6 text-center mb-8'
           : 'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 py-12 px-6 text-center mb-8'
         }>
           <svg className={themeClass('w-20 h-20 mx-auto mb-4', 'w-16 h-16 mx-auto mb-4')} viewBox="0 0 80 80" fill="none" aria-hidden="true">
@@ -201,7 +201,7 @@ export default function MyPage() {
           </p>
           <Link href="/" className={isNeoBrutalism
             ? 'inline-flex items-center gap-2 bg-[#88aaee] text-black font-bold px-5 py-2.5 border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all'
-            : 'inline-flex items-center gap-2 text-green-600 font-medium hover:text-green-700'
+            : 'inline-flex items-center gap-2 text-green-700 font-medium hover:text-green-700'
           }>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -222,7 +222,7 @@ export default function MyPage() {
               className={cn(
                 'p-4 flex items-center gap-4 transition-all',
                 themeClass(
-                  'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[1px_1px_0px_0px_#000]',
+                  'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[3px_3px_0px_0px_#000] dark:shadow-[3px_3px_0px_0px_#f1f3f8] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[1px_1px_0px_0px_#000] dark:hover:shadow-[1px_1px_0px_0px_#f1f3f8]',
                   'bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700 hover:border-green-300 hover:shadow-sm'
                 )
               )}
@@ -251,7 +251,7 @@ export default function MyPage() {
               className={cn(
                 'p-4 flex items-center gap-4 transition-all',
                 themeClass(
-                  'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[1px_1px_0px_0px_#000]',
+                  'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[3px_3px_0px_0px_#000] dark:shadow-[3px_3px_0px_0px_#f1f3f8] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[1px_1px_0px_0px_#000] dark:hover:shadow-[1px_1px_0px_0px_#f1f3f8]',
                   'bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700 hover:border-green-300 hover:shadow-sm'
                 )
               )}
@@ -281,7 +281,7 @@ export default function MyPage() {
 
         <h2 className={`text-lg mb-4 flex items-center gap-2 ${themeClass('font-black text-black dark:text-slate-100 uppercase', 'font-semibold text-gray-900 dark:text-slate-100')} `}>
           {isNeoBrutalism ? '❤️' : (
-            <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <svg className="w-5 h-5 text-green-700" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
             </svg>
           )}
@@ -295,7 +295,7 @@ export default function MyPage() {
             ))}
           </div>
         ) : fetchError ? (
-          <div className={`p-8 text-center ${themeClass('bg-white dark:bg-slate-800 border-2 border-black rounded-[5px]', 'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700')} `}>
+          <div className={`p-8 text-center ${themeClass('bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px]', 'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700')} `}>
             <p className={`mb-4 ${themeClass('text-red-600 font-bold', 'text-red-500')} `}>
               데이터를 불러오는데 실패했습니다.
             </p>
@@ -309,7 +309,7 @@ export default function MyPage() {
           </div>
         ) : favorites.length === 0 ? (
           <div className={isNeoBrutalism
-            ? 'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] py-12 px-6 text-center'
+            ? 'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] py-12 px-6 text-center'
             : 'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 py-12 px-6 text-center'
           }>
             <svg
@@ -363,7 +363,7 @@ export default function MyPage() {
             </p>
             <Link href="/" className={isNeoBrutalism
               ? 'inline-flex items-center gap-2 bg-[#88aaee] text-black font-bold px-5 py-2.5 border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all'
-              : 'inline-flex items-center gap-2 text-green-600 font-medium hover:text-green-700'
+              : 'inline-flex items-center gap-2 text-green-700 font-medium hover:text-green-700'
             }>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -379,7 +379,7 @@ export default function MyPage() {
                 <div
                   key={fav.id}
                   className={isNeoBrutalism
-                    ? 'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] p-4 flex items-center justify-between gap-4'
+                    ? 'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[3px_3px_0px_0px_#000] dark:shadow-[3px_3px_0px_0px_#f1f3f8] p-4 flex items-center justify-between gap-4'
                     : 'bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700 p-4 flex items-center justify-between gap-4'
                   }
                 >
@@ -387,7 +387,7 @@ export default function MyPage() {
                     href={`/${districtSlug}/${encodeURIComponent(fav.svc_id)}`}
                     className="flex-1 min-w-0"
                   >
-                    <h3 className={`truncate transition-colors ${themeClass('font-bold text-black dark:text-slate-100 hover:text-[#16a34a]', 'font-medium text-gray-900 dark:text-slate-100 hover:text-green-600')} `}>
+                    <h3 className={`truncate transition-colors ${themeClass('font-bold text-black dark:text-slate-100 hover:text-[#16a34a]', 'font-medium text-gray-900 dark:text-slate-100 hover:text-green-700')} `}>
                       {fav.svc_name}
                     </h3>
                     <p className={`text-sm truncate ${themeClass('text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400')} `}>
@@ -414,7 +414,7 @@ export default function MyPage() {
 
       {!user && (
         <div className={isNeoBrutalism
-          ? 'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] py-12 px-6 text-center'
+          ? 'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] py-12 px-6 text-center'
           : 'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 py-12 px-6 text-center'
         }>
           <svg className={themeClass('w-20 h-20 mx-auto mb-4', 'w-16 h-16 mx-auto mb-4')} viewBox="0 0 80 80" fill="none" aria-hidden="true">
@@ -439,7 +439,7 @@ export default function MyPage() {
           </p>
           <Link href="/" className={isNeoBrutalism
             ? 'inline-flex items-center gap-2 bg-[#88aaee] text-black font-bold px-5 py-2.5 border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all'
-            : 'inline-flex items-center gap-2 text-green-600 font-medium hover:text-green-700'
+            : 'inline-flex items-center gap-2 text-green-700 font-medium hover:text-green-700'
           }>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />

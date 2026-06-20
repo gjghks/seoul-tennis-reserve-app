@@ -163,10 +163,10 @@ export default function MatchCard({
           'bracket-match-card h-full w-full cursor-pointer select-none overflow-hidden text-left',
           themeClass(
             cn(
-              'rounded-[5px] border-2 border-black bg-white dark:bg-slate-800',
+              'rounded-[5px] border-2 border-black dark:border-[#f1f3f8] bg-white dark:bg-slate-800',
               isCompleted && (isP1Winner || isP2Winner)
                 ? 'shadow-[4px_4px_0px_#22c55e]'
-                : 'shadow-[4px_4px_0px_#000]'
+                : 'shadow-[4px_4px_0px_#000] dark:shadow-[4px_4px_0px_#f1f3f8]'
             ),
             cn(
               'rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm hover:shadow-md',

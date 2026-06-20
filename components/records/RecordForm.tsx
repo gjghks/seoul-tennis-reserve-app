@@ -62,7 +62,7 @@ export default function RecordForm({
   );
 
   const inputClass = themeClass(
-    'w-full p-3 border-2 border-black rounded-[5px] focus:outline-none focus:ring-2 focus:ring-[#22c55e] focus:ring-offset-2 shadow-[4px_4px_0px_0px_#000] transition-all',
+    'w-full p-3 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] focus:outline-none focus:ring-2 focus:ring-[#22c55e] focus:ring-offset-2 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] transition-all',
     'w-full p-2.5 border border-gray-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all'
   );
 
@@ -111,7 +111,7 @@ export default function RecordForm({
                     `border-2 border-black rounded-[5px] font-bold ${
                       form.state.matchFormat === option.value
                         ? 'bg-[#88aaee] text-black shadow-[2px_2px_0px_0px_#000] translate-x-[1px] translate-y-[1px]'
-                        : 'bg-white dark:bg-slate-800 dark:text-slate-100 hover:bg-gray-50 dark:hover:bg-slate-700 shadow-[4px_4px_0px_0px_#000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[3px_3px_0px_0px_#000]'
+                        : 'bg-white dark:bg-slate-800 dark:text-slate-100 dark:border-[#f1f3f8] hover:bg-gray-50 dark:hover:bg-slate-700 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[3px_3px_0px_0px_#000] dark:hover:shadow-[3px_3px_0px_0px_#f1f3f8]'
                     }`,
                     `rounded-full border ${
                       form.state.matchFormat === option.value
@@ -174,7 +174,7 @@ export default function RecordForm({
         {form.uploadProgress && (
           <div
             className={themeClass(
-              'p-3 text-sm flex items-center gap-2 bg-blue-100 dark:bg-blue-950/40 border-2 border-black rounded-[5px] text-blue-700 dark:text-blue-300 font-medium',
+              'p-3 text-sm flex items-center gap-2 bg-blue-100 dark:bg-blue-950/40 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] text-blue-700 dark:text-blue-300 font-medium',
               'p-3 text-sm flex items-center gap-2 bg-blue-50 dark:bg-blue-950/40 rounded-lg text-blue-600 dark:text-blue-300'
             )}
           >
@@ -187,7 +187,7 @@ export default function RecordForm({
           <div
             role="alert"
             className={themeClass(
-              'p-3 text-sm bg-red-100 dark:bg-red-950/40 border-2 border-black rounded-[5px] text-red-700 dark:text-red-300 font-medium',
+              'p-3 text-sm bg-red-100 dark:bg-red-950/40 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] text-red-700 dark:text-red-300 font-medium',
               'p-3 text-sm bg-red-50 dark:bg-red-950/40 rounded-lg text-red-600 dark:text-red-300'
             )}
           >
@@ -203,7 +203,7 @@ export default function RecordForm({
             className={cn(
               'flex-1 py-3 font-bold transition-all',
               themeClass(
-                'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] text-black dark:text-slate-100 shadow-[4px_4px_0px_0px_#000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[3px_3px_0px_0px_#000]',
+                'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] text-black dark:text-slate-100 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[3px_3px_0px_0px_#000] dark:hover:shadow-[3px_3px_0px_0px_#f1f3f8]',
                 'bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-gray-700 dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-700'
               )
             )}
@@ -218,7 +218,7 @@ export default function RecordForm({
               themeClass(
                 `border-2 border-black rounded-[5px] ${
                   form.isSubmitting
-                    ? 'bg-gray-200 dark:bg-slate-700 text-black/60 dark:text-slate-400 cursor-not-allowed'
+                    ? 'bg-gray-200 dark:bg-slate-700 dark:border-[#f1f3f8] text-black/60 dark:text-slate-400 cursor-not-allowed'
                     : 'bg-[#22c55e] text-black shadow-[4px_4px_0px_0px_#000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[3px_3px_0px_0px_#000]'
                 }`,
                 `rounded-lg ${

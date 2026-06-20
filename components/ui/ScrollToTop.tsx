@@ -35,7 +35,7 @@ export default function ScrollToTop() {
         transition-all duration-300
         ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}
         ${themeClass(
-          'bg-black text-white border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none',
+          'bg-black text-white border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[3px_3px_0px_0px_#000] dark:shadow-[3px_3px_0px_0px_#f1f3f8] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none',
           'bg-white dark:bg-slate-900 text-gray-600 dark:text-slate-400 border border-gray-200 dark:border-slate-700 rounded-full shadow-lg hover:bg-gray-50 dark:hover:bg-slate-800'
         )}
       `}

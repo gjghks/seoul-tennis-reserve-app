@@ -66,7 +66,7 @@ export default function DiscoveryCards() {
           >
             <div className={`w-10 h-10 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300 ${themeClass(
               'bg-[#facc15] text-black',
-              'bg-green-50 dark:bg-green-950/40 text-green-600 dark:text-green-300'
+              'bg-green-50 dark:bg-green-950/40 text-green-700 dark:text-green-300'
             )}`}>
               {card.icon}
             </div>

@@ -95,7 +95,7 @@ export default function TransfersGuideContent() {
         className={cn(
           'max-w-3xl mx-auto',
           themeClass(
-            'bg-white dark:bg-slate-900 border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000] p-8',
+            'bg-white dark:bg-slate-900 border-[3px] border-black dark:border-[#f1f3f8] rounded-[10px] shadow-[6px_6px_0px_0px_#000] dark:shadow-[6px_6px_0px_0px_#f1f3f8] p-8',
             'bg-white dark:bg-slate-900 rounded-xl shadow-lg p-8'
           )
         )}
@@ -137,12 +137,12 @@ export default function TransfersGuideContent() {
                       className={cn(
                         'w-full flex items-center gap-4 p-4 text-left cursor-pointer select-none transition-all',
                         themeClass(
-                          'bg-white dark:bg-slate-800 border-2 border-black rounded-[6px] shadow-[2px_2px_0px_0px_#000] hover:shadow-[4px_4px_0px_0px_#000] hover:-translate-y-[1px]',
+                          'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[6px] shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#f1f3f8] hover:shadow-[4px_4px_0px_0px_#000] dark:hover:shadow-[4px_4px_0px_0px_#f1f3f8] hover:-translate-y-[1px]',
                           'bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 hover:border-gray-300 dark:hover:border-slate-600'
                         ),
                         isOpen &&
                           themeClass(
-                            'shadow-[4px_4px_0px_0px_#000] -translate-y-[1px] bg-red-50 dark:bg-red-950/40',
+                            'shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] -translate-y-[1px] bg-red-50 dark:bg-red-950/40',
                             'bg-white dark:bg-slate-900 border-red-300 dark:border-red-700 shadow-md'
                           )
                       )}
@@ -178,7 +178,7 @@ export default function TransfersGuideContent() {
                         className={cn(
                           'p-4 rounded-b-lg',
                           themeClass(
-                            'bg-gray-50 dark:bg-slate-800 border-2 border-t-0 border-black rounded-[6px]',
+                            'bg-gray-50 dark:bg-slate-800 border-2 border-t-0 border-black dark:border-[#f1f3f8] rounded-[6px]',
                             'bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg shadow-inner'
                           )
                         )}
@@ -218,7 +218,7 @@ export default function TransfersGuideContent() {
                   className={cn(
                     'flex items-start gap-4 p-4',
                     themeClass(
-                      'bg-white dark:bg-slate-800 border-2 border-black rounded-[6px]',
+                      'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[6px]',
                       'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg'
                     )
                   )}
@@ -269,7 +269,7 @@ export default function TransfersGuideContent() {
                 className={cn(
                   'px-6 py-3 rounded-lg text-center font-bold transition-all',
                   themeClass(
-                    'bg-black text-white border-2 border-black hover:bg-gray-800 shadow-[4px_4px_0px_0px_#000] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000]',
+                    'bg-black text-white border-2 border-black dark:border-[#f1f3f8] hover:bg-gray-800 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#f1f3f8]',
                     'bg-red-500 text-white hover:bg-red-600 shadow-md hover:shadow-lg'
                   )
                 )}
@@ -281,7 +281,7 @@ export default function TransfersGuideContent() {
                 className={cn(
                   'px-6 py-3 rounded-lg text-center font-bold transition-all',
                   themeClass(
-                    'bg-white dark:bg-slate-800 text-black dark:text-slate-100 border-2 border-black hover:bg-gray-100 dark:hover:bg-slate-700 shadow-[4px_4px_0px_0px_#000] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000]',
+                    'bg-white dark:bg-slate-800 text-black dark:text-slate-100 border-2 border-black dark:border-[#f1f3f8] hover:bg-gray-100 dark:hover:bg-slate-700 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#f1f3f8]',
                     'bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-200 border border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700 shadow-sm hover:shadow'
                   )
                 )}

@@ -156,7 +156,7 @@ export default function TournamentContent() {
         className={cn(
           'mb-6 p-4 rounded-xl flex flex-wrap gap-3',
           themeClass(
-            'bg-white dark:bg-slate-800 border-2 border-black shadow-[4px_4px_0px_0px_#000]',
+            'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
             'bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 shadow-sm'
           )
         )}
@@ -167,7 +167,7 @@ export default function TournamentContent() {
           className={cn(
             'px-3 py-2 outline-none cursor-pointer min-w-[140px]',
             themeClass(
-              'bg-white dark:bg-slate-900 border-2 border-black rounded-[5px] font-black text-black dark:text-slate-100',
+              'bg-white dark:bg-slate-900 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] font-black text-black dark:text-slate-100',
               'bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg font-medium text-gray-700 dark:text-slate-200 focus:ring-2 focus:ring-green-500'
             )
           )}
@@ -186,7 +186,7 @@ export default function TournamentContent() {
             'px-4 py-2 rounded-full text-sm font-bold transition-colors',
             myOnly
               ? themeClass('bg-black text-white', 'bg-gray-900 text-white')
-              : themeClass('bg-white dark:bg-slate-900 border-2 border-black hover:bg-gray-100 dark:hover:bg-slate-700', 'bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-400 hover:bg-gray-50 dark:hover:bg-slate-800')
+              : themeClass('bg-white dark:bg-slate-900 border-2 border-black dark:border-[#f1f3f8] hover:bg-gray-100 dark:hover:bg-slate-700', 'bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-400 hover:bg-gray-50 dark:hover:bg-slate-800')
           )}
         >
           내 대회만 보기
@@ -198,7 +198,7 @@ export default function TournamentContent() {
           className={cn(
             'ml-auto px-4 py-2 text-sm transition-all',
             themeClass(
-              'border-2 border-black rounded-[5px] font-bold hover:bg-[#facc15] dark:text-slate-100',
+              'border-2 border-black dark:border-[#f1f3f8] rounded-[5px] font-bold hover:bg-[#facc15] dark:text-slate-100',
               'border border-gray-300 dark:border-slate-700 rounded-lg font-medium text-gray-700 dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-800 bg-white dark:bg-slate-900'
             )
           )}
@@ -234,7 +234,7 @@ export default function TournamentContent() {
           <p className={cn('text-sm mb-4', themeClass('font-bold text-black/35 dark:text-slate-500', 'text-gray-400 dark:text-slate-500'))}>싱글엘림</p>
           <div className={cn('pt-3 border-t flex items-center justify-between', themeClass('border-black/10 dark:border-slate-700', 'border-gray-100 dark:border-slate-700'))}>
             <span className={cn('text-sm', themeClass('font-bold text-black/40 dark:text-slate-500', 'font-medium text-gray-400 dark:text-slate-500'))}>송파구</span>
-            <span className={cn('text-sm font-bold', themeClass('text-[#22c55e]/50', 'text-green-600/50'))}>6/8명</span>
+            <span className={cn('text-sm font-bold', themeClass('text-[#22c55e]/50', 'text-green-700/50'))}>6/8명</span>
           </div>
           {!exampleOpen && (
             <p className={cn('mt-3 text-xs text-center', themeClass('text-black/40 dark:text-slate-500 font-bold', 'text-gray-400 dark:text-slate-500'))}>눌러서 대진표 예시 보기</p>
@@ -265,7 +265,7 @@ export default function TournamentContent() {
         <div
           className={cn(
             'text-center py-14',
-            themeClass('bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]', 'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700')
+            themeClass('bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]', 'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700')
           )}
         >
           <p className={cn('text-lg mb-2', themeClass('font-black text-black dark:text-slate-100', 'font-bold text-gray-900 dark:text-slate-100'))}>오류가 발생했습니다</p>
@@ -273,7 +273,7 @@ export default function TournamentContent() {
         </div>
       ) : isLoading ? (
         <div className="py-20 flex items-center justify-center">
-          <Spinner size="md" className={themeClass('text-black dark:text-slate-100', 'text-green-600')} />
+          <Spinner size="md" className={themeClass('text-black dark:text-slate-100', 'text-green-700')} />
         </div>
       ) : tournaments.length === 0 ? (
         <EmptyState
@@ -285,7 +285,7 @@ export default function TournamentContent() {
             onClick: onCreateClick,
           }}
           className={cn(
-            themeClass('bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]', 'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm')
+            themeClass('bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]', 'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm')
           )}
         />
       ) : (
@@ -304,7 +304,7 @@ export default function TournamentContent() {
                 className={cn(
                   'px-5 py-3 text-sm transition-all',
                   themeClass(
-                    'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] font-bold dark:text-slate-100 shadow-[3px_3px_0px_0px_#000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_0px_#000]',
+                    'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] font-bold dark:text-slate-100 shadow-[3px_3px_0px_0px_#000] dark:shadow-[3px_3px_0px_0px_#f1f3f8] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#f1f3f8]',
                     'bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg font-medium text-gray-700 dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-700'
                   )
                 )}

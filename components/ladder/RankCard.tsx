@@ -21,7 +21,7 @@ export default function RankCard({ player, isCurrentUser = false }: RankCardProp
       className={cn(
         'flex items-center gap-4 p-4 transition-all',
         themeClass(
-          'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
+          'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
           'bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-xl shadow-sm'
         ),
         isCurrentUser && themeClass('bg-[#facc15] border-black', 'bg-yellow-50 dark:bg-yellow-950/40 border-yellow-200 dark:border-yellow-900')

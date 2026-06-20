@@ -181,7 +181,7 @@ export default function WeatherBadge({ nx, ny, isOutdoor = false, compact = fals
     <div className="flex items-center gap-2 flex-wrap">
       <div
         className={themeClass(
-          'inline-flex items-center gap-2 px-3 py-2 bg-white dark:bg-slate-800 border-2 border-black dark:border-slate-700 rounded-[5px] shadow-[3px_3px_0px_0px_#000]',
+          'inline-flex items-center gap-2 px-3 py-2 bg-white dark:bg-slate-800 border-2 border-black dark:border-slate-700 rounded-[5px] shadow-[3px_3px_0px_0px_#000] dark:shadow-[3px_3px_0px_0px_#f1f3f8]',
           'inline-flex items-center gap-2 px-3 py-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-full'
         )}
       >

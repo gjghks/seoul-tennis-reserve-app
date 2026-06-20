@@ -69,7 +69,7 @@ export default function ScoreInput({ score, onChange }: ScoreInputProps) {
             className={cn(
               "relative p-4 transition-all",
               themeClass(
-                "bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]",
+                "bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]",
                 "bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg shadow-sm"
               )
             )}
@@ -114,7 +114,7 @@ export default function ScoreInput({ score, onChange }: ScoreInputProps) {
                   className={cn(
                     "w-16 text-center text-lg transition-colors",
                     themeClass(
-                      "border-2 border-black rounded-[5px] p-2 font-bold focus:outline-none focus:ring-2 focus:ring-[#22c55e] focus:ring-offset-2",
+                      "border-2 border-black dark:border-[#f1f3f8] rounded-[5px] p-2 font-bold focus:outline-none focus:ring-2 focus:ring-[#22c55e] focus:ring-offset-2",
                       "border border-gray-300 dark:border-slate-700 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     )
                   )}
@@ -133,7 +133,7 @@ export default function ScoreInput({ score, onChange }: ScoreInputProps) {
                   className={cn(
                     "w-16 text-center text-lg transition-colors",
                     themeClass(
-                      "border-2 border-black rounded-[5px] p-2 font-bold focus:outline-none focus:ring-2 focus:ring-[#22c55e] focus:ring-offset-2",
+                      "border-2 border-black dark:border-[#f1f3f8] rounded-[5px] p-2 font-bold focus:outline-none focus:ring-2 focus:ring-[#22c55e] focus:ring-offset-2",
                       "border border-gray-300 dark:border-slate-700 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     )
                   )}
@@ -151,8 +151,8 @@ export default function ScoreInput({ score, onChange }: ScoreInputProps) {
                   className={cn(
                     "w-4 h-4 rounded transition-colors",
                     themeClass(
-                      "border-2 border-black text-black focus:ring-0 checked:bg-black",
-                      "border-gray-300 dark:border-slate-600 text-green-600 focus:ring-green-500 rounded"
+                      "border-2 border-black dark:border-[#f1f3f8] text-black focus:ring-0 checked:bg-black",
+                      "border-gray-300 dark:border-slate-600 text-green-700 focus:ring-green-500 rounded"
                     )
                   )}
                 />
@@ -177,7 +177,7 @@ export default function ScoreInput({ score, onChange }: ScoreInputProps) {
                     className={cn(
                       "w-12 text-center text-sm transition-colors",
                       themeClass(
-                        "border-2 border-black rounded-[5px] p-1 font-bold focus:outline-none focus:ring-2 focus:ring-[#22c55e]",
+                        "border-2 border-black dark:border-[#f1f3f8] rounded-[5px] p-1 font-bold focus:outline-none focus:ring-2 focus:ring-[#22c55e]",
                         "border border-gray-300 dark:border-slate-700 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-green-500"
                       )
                     )}
@@ -195,7 +195,7 @@ export default function ScoreInput({ score, onChange }: ScoreInputProps) {
                     className={cn(
                       "w-12 text-center text-sm transition-colors",
                       themeClass(
-                        "border-2 border-black rounded-[5px] p-1 font-bold focus:outline-none focus:ring-2 focus:ring-[#22c55e]",
+                        "border-2 border-black dark:border-[#f1f3f8] rounded-[5px] p-1 font-bold focus:outline-none focus:ring-2 focus:ring-[#22c55e]",
                         "border border-gray-300 dark:border-slate-700 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-green-500"
                       )
                     )}
@@ -215,7 +215,7 @@ export default function ScoreInput({ score, onChange }: ScoreInputProps) {
           className={cn(
             "w-full py-3 flex items-center justify-center gap-2 transition-all",
             themeClass(
-              "bg-[#fffbeb] dark:bg-yellow-950/40 dark:text-slate-100 border-2 border-black rounded-[5px] font-bold hover:bg-[#fef3c7] dark:hover:bg-yellow-900/40 active:translate-y-[2px]",
+              "bg-[#fffbeb] dark:bg-yellow-950/40 dark:text-slate-100 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] font-bold hover:bg-[#fef3c7] dark:hover:bg-yellow-900/40 active:translate-y-[2px]",
               "bg-gray-50 dark:bg-slate-800 border border-dashed border-gray-300 dark:border-slate-700 rounded-lg text-gray-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 hover:border-gray-400 dark:hover:border-slate-500"
             )
           )}

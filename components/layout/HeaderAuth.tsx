@@ -27,7 +27,7 @@ export default function HeaderAuth() {
       <>
         <Link
           href="/my"
-          className={`px-3 py-1.5 text-sm transition-colors inline-flex items-center gap-1.5 ${themeClass('text-black font-bold hover:underline underline-offset-4', 'text-gray-600 dark:text-slate-400 hover:text-green-600')}`}
+          className={`px-3 py-1.5 text-sm transition-colors inline-flex items-center gap-1.5 ${themeClass('text-black font-bold hover:underline underline-offset-4', 'text-gray-600 dark:text-slate-400 hover:text-green-700')}`}
         >
           <ProviderIcon />
           마이페이지

@@ -144,15 +144,16 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
           <button
             type="button"
             onClick={handleClose}
+            aria-label="닫기"
             className={cn(
               'w-8 h-8 flex items-center justify-center text-lg',
               themeClass(
-                'border-2 border-black bg-white dark:bg-slate-700 hover:bg-red-100 font-black',
+                'border-2 border-black dark:border-[#f1f3f8] bg-white dark:bg-slate-700 hover:bg-red-100 font-black',
                 'text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:hover:text-slate-300 rounded-full hover:bg-gray-100 dark:hover:bg-slate-700'
               )
             )}
           >
-            ✕
+            <span aria-hidden="true">✕</span>
           </button>
         </div>
 
@@ -173,7 +174,7 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                   'flex-1 py-2 px-3 text-sm transition-colors',
                   themeClass(
                     cn(
-                      'border-2 border-black font-bold',
+                      'border-2 border-black dark:border-[#f1f3f8] font-bold',
                       category === cat.value
                         ? 'bg-black text-white'
                         : 'bg-white dark:bg-slate-700 hover:bg-gray-100 dark:hover:bg-slate-600'
@@ -209,7 +210,7 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
             className={cn(
               'w-full resize-none text-sm p-3',
               themeClass(
-                'border-2 border-black bg-white dark:bg-slate-700 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-black',
+                'border-2 border-black dark:border-[#f1f3f8] bg-white dark:bg-slate-700 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-black',
                 'border border-gray-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-700 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
               )
             )}
@@ -230,7 +231,7 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
             'w-full py-3 text-sm font-bold transition-colors',
             themeClass(
               cn(
-                'border-2 border-black',
+                'border-2 border-black dark:border-[#f1f3f8]',
                 isValid && !isSubmitting
                   ? 'bg-black text-white hover:bg-gray-800 active:translate-x-[2px] active:translate-y-[2px]'
                   : 'bg-gray-200 dark:bg-slate-700 text-gray-500 dark:text-slate-400 cursor-not-allowed'

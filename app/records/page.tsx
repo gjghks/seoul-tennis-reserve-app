@@ -43,7 +43,7 @@ export default function RecordsPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
             <div className={themeClass(
-              'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] p-6 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] transition-all',
+              'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] p-6 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#f1f3f8] transition-all',
               'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-800 p-6 shadow-sm hover:shadow-md transition-shadow'
             )}>
               <div className={`w-12 h-12 mb-4 flex items-center justify-center text-2xl ${themeClass(
@@ -61,7 +61,7 @@ export default function RecordsPage() {
             </div>
 
             <div className={themeClass(
-              'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] p-6 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] transition-all',
+              'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] p-6 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#f1f3f8] transition-all',
               'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-800 p-6 shadow-sm hover:shadow-md transition-shadow'
             )}>
               <div className={`w-12 h-12 mb-4 flex items-center justify-center text-2xl ${themeClass(
@@ -79,7 +79,7 @@ export default function RecordsPage() {
             </div>
 
             <div className={themeClass(
-              'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] p-6 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] transition-all',
+              'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] p-6 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#f1f3f8] transition-all',
               'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-800 p-6 shadow-sm hover:shadow-md transition-shadow'
             )}>
               <div className={`w-12 h-12 mb-4 flex items-center justify-center text-2xl ${themeClass(
@@ -97,7 +97,7 @@ export default function RecordsPage() {
             </div>
 
             <div className={themeClass(
-              'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] p-6 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] transition-all',
+              'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] p-6 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#f1f3f8] transition-all',
               'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-800 p-6 shadow-sm hover:shadow-md transition-shadow'
             )}>
               <div className={`w-12 h-12 mb-4 flex items-center justify-center text-2xl ${themeClass(
@@ -188,7 +188,7 @@ function StatsPreview() {
       <div className={cn(
         'overflow-hidden p-5',
         themeClass(
-          'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
+          'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
           'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-800 shadow-sm'
         )
       )}>
@@ -209,7 +209,7 @@ function StatsPreview() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
           {[
             { label: '전체 경기', value: `${animTotal}전` },
-            { label: '승률', value: `${animWinRate}%`, valueClass: 'text-green-600' },
+            { label: '승률', value: `${animWinRate}%`, valueClass: 'text-green-700' },
             { label: '승/패', value: `${DEMO_STATS.wins}승 ${DEMO_STATS.losses}패 ${DEMO_STATS.draws}무`, valueClass: 'text-sm' },
             { label: '평균 비용', value: `${animAvgCost.toLocaleString('ko-KR')}원` },
           ].map((item, i) => (
@@ -219,7 +219,7 @@ function StatsPreview() {
                 'flex flex-col items-center justify-center p-3',
                 inView ? 'anim-fade-up' : 'opacity-0',
                 themeClass(
-                  'rounded-[5px] border-2 border-black bg-gray-50 dark:bg-slate-900',
+                  'rounded-[5px] border-2 border-black dark:border-[#f1f3f8] bg-gray-50 dark:bg-slate-900',
                   'rounded-xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900'
                 )
               )}
@@ -263,7 +263,7 @@ function StatsPreview() {
             href="/guide/records"
             className={cn(
               'inline-flex items-center gap-1 text-xs font-bold shrink-0 transition-colors',
-              themeClass('text-black/50 dark:text-slate-400 hover:text-black dark:hover:text-slate-100', 'text-green-600 hover:text-green-700')
+              themeClass('text-black/50 dark:text-slate-400 hover:text-black dark:hover:text-slate-100', 'text-green-700 hover:text-green-700')
             )}
           >
             모든 기능 체험

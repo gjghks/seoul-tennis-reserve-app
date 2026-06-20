@@ -16,7 +16,7 @@ export default function ContactPage() {
 
   return (
     <div className="container py-8 scrollbar-hide">
-      <div className={`max-w-3xl mx-auto ${themeClass('bg-white dark:bg-slate-900 border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000] p-8', 'bg-white dark:bg-slate-900 rounded-xl shadow-lg p-8')}`}>
+      <div className={`max-w-3xl mx-auto ${themeClass('bg-white dark:bg-slate-900 border-[3px] border-black dark:border-[#f1f3f8] rounded-[10px] shadow-[6px_6px_0px_0px_#000] dark:shadow-[6px_6px_0px_0px_#f1f3f8] p-8', 'bg-white dark:bg-slate-900 rounded-xl shadow-lg p-8')}`}>
         <h1 className={`text-2xl font-bold mb-6 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
           문의하기
         </h1>
@@ -29,7 +29,7 @@ export default function ContactPage() {
             </p>
           </section>
 
-          <section className={`p-6 rounded-lg ${themeClass('bg-green-100 dark:bg-green-950/40 border-2 border-black', 'bg-green-50 dark:bg-green-950/40')}`}>
+          <section className={`p-6 rounded-lg ${themeClass('bg-green-100 dark:bg-green-950/40 border-2 border-black dark:border-[#f1f3f8]', 'bg-green-50 dark:bg-green-950/40')}`}>
             <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               간단한 의견은 의견 보내기로!
             </h2>
@@ -41,7 +41,7 @@ export default function ContactPage() {
               onClick={() => setIsFeedbackOpen(true)}
               className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold transition-all ${
                 themeClass(
-                  'bg-black text-white border-2 border-black hover:bg-gray-800 shadow-[3px_3px_0px_0px_#000]',
+                  'bg-black text-white border-2 border-black dark:border-[#f1f3f8] hover:bg-gray-800 shadow-[3px_3px_0px_0px_#000] dark:shadow-[3px_3px_0px_0px_#f1f3f8]',
                   'bg-green-600 text-white hover:bg-green-700'
                 )
               }`}
@@ -50,7 +50,7 @@ export default function ContactPage() {
             </button>
           </section>
 
-          <section className={`p-6 rounded-lg ${themeClass('bg-yellow-100 dark:bg-yellow-950/40 border-2 border-black', 'bg-gray-50 dark:bg-slate-900')}`}>
+          <section className={`p-6 rounded-lg ${themeClass('bg-yellow-100 dark:bg-yellow-950/40 border-2 border-black dark:border-[#f1f3f8]', 'bg-gray-50 dark:bg-slate-900')}`}>
             <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               상세한 문의는 이메일로
             </h2>
@@ -61,7 +61,7 @@ export default function ContactPage() {
               <span className="text-2xl">📧</span>
               <a
                 href="mailto:gjghks84@gmail.com"
-                className={`text-lg font-semibold hover:underline ${themeClass('text-black dark:text-slate-100', 'text-green-600')}`}
+                className={`text-lg font-semibold hover:underline ${themeClass('text-black dark:text-slate-100', 'text-green-700')}`}
               >
                 gjghks84@gmail.com
               </a>
@@ -128,7 +128,7 @@ export default function ContactPage() {
             </ul>
           </section>
 
-          <section className={`p-4 rounded-lg ${themeClass('bg-gray-100 dark:bg-slate-800 border-2 border-black', 'bg-gray-50 dark:bg-slate-900')} `}>
+          <section className={`p-4 rounded-lg ${themeClass('bg-gray-100 dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8]', 'bg-gray-50 dark:bg-slate-900')} `}>
             <h2 className={`text-sm font-bold mb-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')} `}>
               📌 참고 사항
             </h2>
@@ -143,7 +143,7 @@ export default function ContactPage() {
             <Link
               href="/about"
               className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
-                themeClass('bg-black text-white border-2 border-black hover:bg-gray-800', 'bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-300 hover:bg-gray-200 dark:hover:bg-slate-700')
+                themeClass('bg-black text-white border-2 border-black dark:border-[#f1f3f8] hover:bg-gray-800', 'bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-300 hover:bg-gray-200 dark:hover:bg-slate-700')
               }`}
             >
               ← 서비스 소개 보기

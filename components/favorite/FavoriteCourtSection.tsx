@@ -124,7 +124,7 @@ export default function FavoriteCourtSection() {
   if (favorites.length === 0) {
     return (
       <section className="container">
-        <div className={`${themeClass('bg-white border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000] p-5', 'bg-white dark:bg-slate-800 rounded-xl p-5 border border-gray-100 dark:border-slate-800 shadow-sm')} `}>
+        <div className={`${themeClass('bg-white border-[3px] border-black dark:border-[#f1f3f8] rounded-[10px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] p-5', 'bg-white dark:bg-slate-800 rounded-xl p-5 border border-gray-100 dark:border-slate-800 shadow-sm')} `}>
           <EmptyState
             icon="💚"
             title="내 즐겨찾기"
@@ -165,10 +165,10 @@ export default function FavoriteCourtSection() {
                 href={`/${districtSlug}/${fav.svc_id}`}
                 className={`block relative ${
                   isNeoBrutalism
-                    ? `border-[3px] border-black rounded-[10px] p-4 transition-all hover:translate-x-[3px] hover:translate-y-[3px] ${
-                        fav.isAvailable 
-                          ? 'bg-[#a3e635] shadow-[4px_4px_0px_0px_#000] hover:shadow-none' 
-                          : 'bg-white shadow-[4px_4px_0px_0px_#000] hover:shadow-none'
+                    ? `border-[3px] border-black dark:border-[#f1f3f8] rounded-[10px] p-4 transition-all hover:translate-x-[3px] hover:translate-y-[3px] ${
+                        fav.isAvailable
+                          ? 'bg-[#a3e635] shadow-[4px_4px_0px_0px_#000] hover:shadow-none'
+                          : 'bg-white shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] hover:shadow-none'
                       }`
                     : `rounded-xl p-4 border transition-all hover:shadow-md ${
                         fav.isAvailable

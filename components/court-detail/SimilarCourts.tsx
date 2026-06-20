@@ -102,7 +102,7 @@ export default function SimilarCourts({
     }>
       <div className={
         isNeoBrutalism
-          ? 'p-5 border-b-2 border-black'
+          ? 'p-5 border-b-2 border-black dark:border-[#f1f3f8]'
           : 'p-5 border-b border-gray-100 dark:border-slate-800'
       }>
         <h2 className={`font-bold flex items-center gap-2 ${
@@ -111,7 +111,7 @@ export default function SimilarCourts({
           {isNeoBrutalism ? (
             <span className="w-6 h-6 bg-[#facc15] border-2 border-black rounded-[3px] flex items-center justify-center text-xs">🎾</span>
           ) : (
-            <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <svg className="w-5 h-5 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
             </svg>
           )}
@@ -245,7 +245,7 @@ export default function SimilarCourts({
               className={`inline-flex items-center gap-1 text-sm font-medium transition-colors ${
                 isNeoBrutalism
                   ? 'text-black dark:text-slate-100 hover:underline underline-offset-4 font-bold'
-                  : 'text-green-600 hover:text-green-700'
+                  : 'text-green-700 hover:text-green-700'
               }`}
             >
               같은 지역 테니스장 더보기

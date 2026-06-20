@@ -59,7 +59,7 @@ export default function RecordScoreSection({
                   `border-2 border-black rounded-[5px] font-bold ${
                     result === option.value
                       ? 'bg-[#a3e635] text-black shadow-[2px_2px_0px_0px_#000] translate-x-[1px] translate-y-[1px]'
-                      : 'bg-white dark:bg-slate-800 dark:text-slate-100 hover:bg-gray-50 dark:hover:bg-slate-700 shadow-[4px_4px_0px_0px_#000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[3px_3px_0px_0px_#000]'
+                      : 'bg-white dark:bg-slate-800 dark:text-slate-100 dark:border-[#f1f3f8] hover:bg-gray-50 dark:hover:bg-slate-700 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[3px_3px_0px_0px_#000] dark:hover:shadow-[3px_3px_0px_0px_#f1f3f8]'
                   }`,
                   `rounded-lg border ${
                     result === option.value

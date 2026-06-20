@@ -105,7 +105,7 @@ export default function MatchingGuideContent() {
         className={cn(
           'max-w-3xl mx-auto',
           themeClass(
-            'bg-white dark:bg-slate-900 border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000] p-8',
+            'bg-white dark:bg-slate-900 border-[3px] border-black dark:border-[#f1f3f8] rounded-[10px] shadow-[6px_6px_0px_0px_#000] dark:shadow-[6px_6px_0px_0px_#f1f3f8] p-8',
             'bg-white dark:bg-slate-900 rounded-xl shadow-lg p-8'
           )
         )}
@@ -146,12 +146,12 @@ export default function MatchingGuideContent() {
                       className={cn(
                         'w-full flex items-center gap-4 p-4 text-left cursor-pointer select-none transition-all',
                         themeClass(
-                          'bg-white dark:bg-slate-800 border-2 border-black rounded-[6px] shadow-[2px_2px_0px_0px_#000] hover:shadow-[4px_4px_0px_0px_#000] hover:-translate-y-[1px]',
+                          'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[6px] shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#f1f3f8] hover:shadow-[4px_4px_0px_0px_#000] dark:hover:shadow-[4px_4px_0px_0px_#f1f3f8] hover:-translate-y-[1px]',
                           'bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 hover:border-gray-300 dark:hover:border-slate-600'
                         ),
                         isOpen &&
                           themeClass(
-                            'shadow-[4px_4px_0px_0px_#000] -translate-y-[1px] bg-blue-50 dark:bg-blue-950/40',
+                            'shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] -translate-y-[1px] bg-blue-50 dark:bg-blue-950/40',
                             'bg-white dark:bg-slate-900 border-blue-300 dark:border-blue-700 shadow-md'
                           )
                       )}
@@ -187,7 +187,7 @@ export default function MatchingGuideContent() {
                         className={cn(
                           'p-4 rounded-b-lg',
                           themeClass(
-                            'bg-gray-50 dark:bg-slate-800 border-2 border-t-0 border-black rounded-[6px]',
+                            'bg-gray-50 dark:bg-slate-800 border-2 border-t-0 border-black dark:border-[#f1f3f8] rounded-[6px]',
                             'bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg shadow-inner'
                           )
                         )}
@@ -203,12 +203,12 @@ export default function MatchingGuideContent() {
                         {feature.id === 'apply' && (
                           <div className="space-y-4">
                             <span className={cn('inline-block text-xs font-bold px-2 py-1 rounded', themeClass('bg-black text-white', 'bg-blue-100 text-blue-700'))}>신청 팝업 예시</span>
-                            <div className={cn('p-4 rounded-lg', themeClass('bg-white dark:bg-slate-900 border-2 border-black shadow-[4px_4px_0px_0px_#000]', 'bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 shadow-sm'))}>
+                            <div className={cn('p-4 rounded-lg', themeClass('bg-white dark:bg-slate-900 border-2 border-black dark:border-[#f1f3f8] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]', 'bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 shadow-sm'))}>
                               <div className="text-sm font-bold mb-2">호스트에게 보낼 메시지</div>
-                              <div className={cn('w-full p-3 rounded-lg text-sm mb-4', themeClass('bg-gray-100 dark:bg-slate-800 border-2 border-black', 'bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700'))}>
+                              <div className={cn('w-full p-3 rounded-lg text-sm mb-4', themeClass('bg-gray-100 dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8]', 'bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700'))}>
                                 안녕하세요! 구력 2년차 백핸드가 장기인 테린이입니다. 즐겁게 치고 싶습니다~
                               </div>
-                              <button type="button" className={cn('w-full py-2 rounded-lg font-bold transition-all', themeClass('bg-black text-white border-2 border-black hover:-translate-y-[2px] shadow-[4px_4px_0px_0px_#000]', 'bg-blue-600 text-white shadow-md hover:bg-blue-700'))}>
+                              <button type="button" className={cn('w-full py-2 rounded-lg font-bold transition-all', themeClass('bg-black text-white border-2 border-black dark:border-[#f1f3f8] hover:-translate-y-[2px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]', 'bg-blue-600 text-white shadow-md hover:bg-blue-700'))}>
                                 매칭 신청하기
                               </button>
                             </div>
@@ -217,7 +217,7 @@ export default function MatchingGuideContent() {
                         {feature.id === 'manage' && (
                           <div className="space-y-4">
                             <span className={cn('inline-block text-xs font-bold px-2 py-1 rounded', themeClass('bg-black text-white', 'bg-blue-100 text-blue-700'))}>신청자 관리 예시</span>
-                            <div className={cn('p-4 rounded-lg flex items-center justify-between', themeClass('bg-white dark:bg-slate-900 border-2 border-black shadow-[4px_4px_0px_0px_#000]', 'bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 shadow-sm'))}>
+                            <div className={cn('p-4 rounded-lg flex items-center justify-between', themeClass('bg-white dark:bg-slate-900 border-2 border-black dark:border-[#f1f3f8] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]', 'bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 shadow-sm'))}>
                               <div className="flex items-center gap-3">
                                 <div className={cn('w-10 h-10 rounded-full flex items-center justify-center font-bold', themeClass('bg-yellow-200 border-2 border-black', 'bg-blue-100 text-blue-700'))}>테</div>
                                 <div>
@@ -226,8 +226,8 @@ export default function MatchingGuideContent() {
                                 </div>
                               </div>
                               <div className="flex gap-2">
-                                <button type="button" className={cn('px-3 py-1.5 text-xs font-bold rounded-md', themeClass('bg-black text-white border-2 border-black', 'bg-blue-600 text-white'))}>수락</button>
-                                <button type="button" className={cn('px-3 py-1.5 text-xs font-bold rounded-md', themeClass('bg-white dark:bg-slate-800 text-black dark:text-slate-100 border-2 border-black', 'bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-200'))}>거절</button>
+                                <button type="button" className={cn('px-3 py-1.5 text-xs font-bold rounded-md', themeClass('bg-black text-white border-2 border-black dark:border-[#f1f3f8]', 'bg-blue-600 text-white'))}>수락</button>
+                                <button type="button" className={cn('px-3 py-1.5 text-xs font-bold rounded-md', themeClass('bg-white dark:bg-slate-800 text-black dark:text-slate-100 border-2 border-black dark:border-[#f1f3f8]', 'bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-200'))}>거절</button>
                               </div>
                             </div>
                           </div>
@@ -245,7 +245,7 @@ export default function MatchingGuideContent() {
                                   className={cn(
                                     'flex items-center gap-3 p-3 rounded-lg',
                                     themeClass(
-                                      'bg-white dark:bg-slate-900 border-2 border-black shadow-[2px_2px_0px_0px_#000]',
+                                      'bg-white dark:bg-slate-900 border-2 border-black dark:border-[#f1f3f8] shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#f1f3f8]',
                                       'bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 shadow-sm'
                                     )
                                   )}
@@ -279,7 +279,7 @@ export default function MatchingGuideContent() {
                   className={cn(
                     'flex items-start gap-4 p-4',
                     themeClass(
-                      'bg-white dark:bg-slate-800 border-2 border-black rounded-[6px]',
+                      'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[6px]',
                       'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg'
                     )
                   )}
@@ -330,7 +330,7 @@ export default function MatchingGuideContent() {
                 className={cn(
                   'px-6 py-3 rounded-lg text-center font-bold transition-all',
                   themeClass(
-                    'bg-black text-white border-2 border-black hover:bg-gray-800 shadow-[4px_4px_0px_0px_#000] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000]',
+                    'bg-black text-white border-2 border-black dark:border-[#f1f3f8] hover:bg-gray-800 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#f1f3f8]',
                     'bg-blue-600 text-white hover:bg-blue-700 shadow-md hover:shadow-lg'
                   )
                 )}
@@ -342,7 +342,7 @@ export default function MatchingGuideContent() {
                 className={cn(
                   'px-6 py-3 rounded-lg text-center font-bold transition-all',
                   themeClass(
-                    'bg-white dark:bg-slate-800 text-black dark:text-slate-100 border-2 border-black hover:bg-gray-100 dark:hover:bg-slate-700 shadow-[4px_4px_0px_0px_#000] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000]',
+                    'bg-white dark:bg-slate-800 text-black dark:text-slate-100 border-2 border-black dark:border-[#f1f3f8] hover:bg-gray-100 dark:hover:bg-slate-700 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#f1f3f8]',
                     'bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-200 border border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700 shadow-sm hover:shadow'
                   )
                 )}

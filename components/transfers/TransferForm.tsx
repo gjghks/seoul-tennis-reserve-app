@@ -132,7 +132,7 @@ export default function TransferForm() {
                 className={cn(
                   'w-full p-3 rounded-lg outline-none transition-colors',
                   themeClass(
-                    'bg-white dark:bg-slate-900 dark:text-slate-100 border-2 border-black dark:border-slate-600 shadow-[4px_4px_0px_0px_#000] focus:shadow-[2px_2px_0px_0px_#000]',
+                    'bg-white dark:bg-slate-900 dark:text-slate-100 border-2 border-black dark:border-slate-600 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] focus:shadow-[2px_2px_0px_0px_#000] dark:focus:shadow-[2px_2px_0px_0px_#f1f3f8]',
                     'bg-white dark:bg-slate-900 dark:text-slate-100 border border-gray-300 dark:border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
                   )
                 )}
@@ -153,7 +153,7 @@ export default function TransferForm() {
                   className={cn(
                     'w-full p-3 rounded-lg outline-none transition-colors',
                     themeClass(
-                      'bg-white dark:bg-slate-900 dark:text-slate-100 border-2 border-black dark:border-slate-600 shadow-[4px_4px_0px_0px_#000] focus:shadow-[2px_2px_0px_0px_#000]',
+                      'bg-white dark:bg-slate-900 dark:text-slate-100 border-2 border-black dark:border-slate-600 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] focus:shadow-[2px_2px_0px_0px_#000] dark:focus:shadow-[2px_2px_0px_0px_#f1f3f8]',
                       'bg-white dark:bg-slate-900 dark:text-slate-100 border border-gray-300 dark:border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
                     )
                   )}
@@ -180,7 +180,7 @@ export default function TransferForm() {
                   className={cn(
                     'w-full p-3 rounded-lg outline-none transition-colors',
                     themeClass(
-                      'bg-white dark:bg-slate-900 dark:text-slate-100 border-2 border-black dark:border-slate-600 shadow-[4px_4px_0px_0px_#000] focus:shadow-[2px_2px_0px_0px_#000]',
+                      'bg-white dark:bg-slate-900 dark:text-slate-100 border-2 border-black dark:border-slate-600 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] focus:shadow-[2px_2px_0px_0px_#000] dark:focus:shadow-[2px_2px_0px_0px_#f1f3f8]',
                       'bg-white dark:bg-slate-900 dark:text-slate-100 border border-gray-300 dark:border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
                     )
                   )}
@@ -203,7 +203,7 @@ export default function TransferForm() {
                   className={cn(
                     'w-full p-3 rounded-lg outline-none transition-colors',
                     themeClass(
-                      'bg-white dark:bg-slate-900 dark:text-slate-100 border-2 border-black dark:border-slate-600 shadow-[4px_4px_0px_0px_#000] focus:shadow-[2px_2px_0px_0px_#000]',
+                      'bg-white dark:bg-slate-900 dark:text-slate-100 border-2 border-black dark:border-slate-600 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] focus:shadow-[2px_2px_0px_0px_#000] dark:focus:shadow-[2px_2px_0px_0px_#f1f3f8]',
                       'bg-white dark:bg-slate-900 dark:text-slate-100 border border-gray-300 dark:border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
                     )
                   )}
@@ -223,7 +223,7 @@ export default function TransferForm() {
                   className={cn(
                     'w-full p-3 rounded-lg outline-none transition-colors',
                     themeClass(
-                      'bg-white dark:bg-slate-900 dark:text-slate-100 border-2 border-black dark:border-slate-600 shadow-[4px_4px_0px_0px_#000] focus:shadow-[2px_2px_0px_0px_#000]',
+                      'bg-white dark:bg-slate-900 dark:text-slate-100 border-2 border-black dark:border-slate-600 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] focus:shadow-[2px_2px_0px_0px_#000] dark:focus:shadow-[2px_2px_0px_0px_#f1f3f8]',
                       'bg-white dark:bg-slate-900 dark:text-slate-100 border border-gray-300 dark:border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
                     )
                   )}
@@ -242,7 +242,7 @@ export default function TransferForm() {
                   className={cn(
                     'w-full p-3 rounded-lg outline-none transition-colors',
                     themeClass(
-                      'bg-white dark:bg-slate-900 dark:text-slate-100 border-2 border-black dark:border-slate-600 shadow-[4px_4px_0px_0px_#000] focus:shadow-[2px_2px_0px_0px_#000]',
+                      'bg-white dark:bg-slate-900 dark:text-slate-100 border-2 border-black dark:border-slate-600 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] focus:shadow-[2px_2px_0px_0px_#000] dark:focus:shadow-[2px_2px_0px_0px_#f1f3f8]',
                       'bg-white dark:bg-slate-900 dark:text-slate-100 border border-gray-300 dark:border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
                     )
                   )}
@@ -268,7 +268,7 @@ export default function TransferForm() {
                     className={cn(
                       'w-full p-3 pr-8 rounded-lg outline-none transition-colors',
                       themeClass(
-                        'bg-white dark:bg-slate-900 dark:text-slate-100 border-2 border-black dark:border-slate-600 shadow-[4px_4px_0px_0px_#000] focus:shadow-[2px_2px_0px_0px_#000]',
+                        'bg-white dark:bg-slate-900 dark:text-slate-100 border-2 border-black dark:border-slate-600 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] focus:shadow-[2px_2px_0px_0px_#000] dark:focus:shadow-[2px_2px_0px_0px_#f1f3f8]',
                         'bg-white dark:bg-slate-900 dark:text-slate-100 border border-gray-300 dark:border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
                       )
                     )}
@@ -289,7 +289,7 @@ export default function TransferForm() {
                       onChange={handleChange}
                       className={cn(
                         'w-4 h-4 rounded cursor-pointer',
-                        themeClass('border-black accent-black', 'border-gray-300 text-blue-600')
+                        themeClass('border-black dark:border-[#f1f3f8] accent-black', 'border-gray-300 text-blue-600')
                       )}
                     />
                     <span className={cn('font-bold', themeClass('text-black dark:text-slate-100', 'text-gray-700 dark:text-slate-200'))}>무료 나눔</span>
@@ -310,7 +310,7 @@ export default function TransferForm() {
                       'w-full p-3 pr-8 rounded-lg outline-none transition-colors',
                       formData.is_free && 'opacity-50 bg-gray-100 dark:bg-slate-800',
                       themeClass(
-                        'bg-white dark:bg-slate-900 dark:text-slate-100 border-2 border-black dark:border-slate-600 shadow-[4px_4px_0px_0px_#000] focus:shadow-[2px_2px_0px_0px_#000]',
+                        'bg-white dark:bg-slate-900 dark:text-slate-100 border-2 border-black dark:border-slate-600 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] focus:shadow-[2px_2px_0px_0px_#000] dark:focus:shadow-[2px_2px_0px_0px_#f1f3f8]',
                         'bg-white dark:bg-slate-900 dark:text-slate-100 border border-gray-300 dark:border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
                       )
                     )}
@@ -322,7 +322,7 @@ export default function TransferForm() {
 
             <div className={cn(
               'p-4 rounded-lg space-y-3',
-              themeClass('bg-blue-50 dark:bg-blue-950/40 border-2 border-black', 'bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900')
+              themeClass('bg-blue-50 dark:bg-blue-950/40 border-2 border-black dark:border-[#f1f3f8]', 'bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900')
             )}>
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-lg">🔒</span>
@@ -363,7 +363,7 @@ export default function TransferForm() {
                 className={cn(
                   'w-full p-3 rounded-lg outline-none transition-colors',
                   themeClass(
-                    'bg-white dark:bg-slate-900 dark:text-slate-100 border-2 border-black dark:border-slate-600 shadow-[4px_4px_0px_0px_#000] focus:shadow-[2px_2px_0px_0px_#000]',
+                    'bg-white dark:bg-slate-900 dark:text-slate-100 border-2 border-black dark:border-slate-600 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] focus:shadow-[2px_2px_0px_0px_#000] dark:focus:shadow-[2px_2px_0px_0px_#f1f3f8]',
                     'bg-white dark:bg-slate-900 dark:text-slate-100 border border-gray-300 dark:border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
                   )
                 )}
@@ -387,7 +387,7 @@ export default function TransferForm() {
                 className={cn(
                   'w-full p-3 rounded-lg outline-none transition-colors resize-none',
                   themeClass(
-                    'bg-white dark:bg-slate-900 dark:text-slate-100 border-2 border-black dark:border-slate-600 shadow-[4px_4px_0px_0px_#000] focus:shadow-[2px_2px_0px_0px_#000]',
+                    'bg-white dark:bg-slate-900 dark:text-slate-100 border-2 border-black dark:border-slate-600 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] focus:shadow-[2px_2px_0px_0px_#000] dark:focus:shadow-[2px_2px_0px_0px_#f1f3f8]',
                     'bg-white dark:bg-slate-900 dark:text-slate-100 border border-gray-300 dark:border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
                   )
                 )}
@@ -402,7 +402,7 @@ export default function TransferForm() {
               className={cn(
                 'flex-1 py-3.5 rounded-lg font-bold transition-all',
                 themeClass(
-                  'bg-white dark:bg-slate-800 text-black dark:text-slate-100 border-2 border-black hover:-translate-y-[2px] shadow-[4px_4px_0px_0px_#000]',
+                  'bg-white dark:bg-slate-800 text-black dark:text-slate-100 border-2 border-black dark:border-[#f1f3f8] hover:-translate-y-[2px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
                   'bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-200 border border-gray-300 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700 shadow-sm'
                 )
               )}
@@ -416,7 +416,7 @@ export default function TransferForm() {
                 'flex-1 py-3.5 rounded-lg font-bold transition-all text-white',
                 isSubmitting && 'opacity-70 cursor-not-allowed',
                 themeClass(
-                  'bg-black border-2 border-black hover:-translate-y-[2px] shadow-[4px_4px_0px_0px_#000]',
+                  'bg-black border-2 border-black dark:border-[#f1f3f8] hover:-translate-y-[2px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
                   'bg-blue-600 hover:bg-blue-700 shadow-md hover:shadow-lg'
                 )
               )}

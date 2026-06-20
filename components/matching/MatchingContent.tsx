@@ -43,7 +43,7 @@ export default function MatchingContent() {
   }, [mutate]);
 
   const RefreshIndicator = (
-    <div className={`flex items-center justify-center py-4 ${themeClass('text-black font-bold dark:text-slate-100', 'text-green-600')}`}>
+    <div className={`flex items-center justify-center py-4 ${themeClass('text-black font-bold dark:text-slate-100', 'text-green-700')}`}>
       <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24" aria-hidden="true">
         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
@@ -78,7 +78,7 @@ export default function MatchingContent() {
       <PullToRefresh
       onRefresh={handleRefresh}
       pullingContent={
-        <div className={`flex items-center justify-center py-4 ${themeClass('text-black font-bold dark:text-slate-100', 'text-green-600')}`}>
+        <div className={`flex items-center justify-center py-4 ${themeClass('text-black font-bold dark:text-slate-100', 'text-green-700')}`}>
           <span>↓ 당겨서 새로고침</span>
         </div>
       }
@@ -95,7 +95,7 @@ export default function MatchingContent() {
                 'px-4 py-2 rounded-full text-sm font-bold transition-colors',
                 !myMode
                   ? themeClass('bg-black text-white', 'bg-gray-900 text-white')
-                  : themeClass('bg-white dark:bg-slate-800 dark:text-slate-100 border-2 border-black hover:bg-gray-100 dark:hover:bg-slate-700', 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700')
+                  : themeClass('bg-white dark:bg-slate-800 dark:text-slate-100 border-2 border-black dark:border-[#f1f3f8] hover:bg-gray-100 dark:hover:bg-slate-700', 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700')
               )}
             >
               전체 매칭
@@ -107,7 +107,7 @@ export default function MatchingContent() {
                 'px-4 py-2 rounded-full text-sm font-bold transition-colors',
                 myMode
                   ? themeClass('bg-black text-white', 'bg-gray-900 text-white')
-                  : themeClass('bg-white dark:bg-slate-800 dark:text-slate-100 border-2 border-black hover:bg-gray-100 dark:hover:bg-slate-700', 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700')
+                  : themeClass('bg-white dark:bg-slate-800 dark:text-slate-100 border-2 border-black dark:border-[#f1f3f8] hover:bg-gray-100 dark:hover:bg-slate-700', 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700')
               )}
             >
               내 매칭
@@ -119,7 +119,7 @@ export default function MatchingContent() {
         <div className={cn(
           'mb-6 p-4 rounded-xl flex flex-wrap gap-3',
           themeClass(
-            'bg-white dark:bg-slate-800 border-2 border-black shadow-[4px_4px_0px_0px_#000]',
+            'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
             'bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 shadow-sm'
           )
         )}>
@@ -163,7 +163,7 @@ export default function MatchingContent() {
             className={cn(
               'px-3 py-2 outline-none cursor-pointer flex-1 min-w-[120px]',
               themeClass(
-                'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] font-black text-black dark:text-slate-100',
+                'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] font-black text-black dark:text-slate-100',
                 'bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg font-medium text-gray-700 dark:text-slate-200 focus:ring-2 focus:ring-green-500'
               )
             )}
@@ -225,7 +225,7 @@ export default function MatchingContent() {
             </div>
             <div className={cn('pt-3 border-t flex justify-between items-center', themeClass('border-black/10 dark:border-white/10', 'border-gray-100 dark:border-slate-700'))}>
               <span className={cn('text-sm', themeClass('font-bold text-black/30 dark:text-slate-500', 'text-gray-300 dark:text-slate-500'))}>테니스매니아</span>
-              <span className={cn('text-sm font-bold', themeClass('text-[#22c55e]/50', 'text-green-600/50'))}>2 / 4명</span>
+              <span className={cn('text-sm font-bold', themeClass('text-[#22c55e]/50', 'text-green-700/50'))}>2 / 4명</span>
             </div>
             {!exampleOpen && (
               <p className={cn('mt-3 text-xs text-center', themeClass('text-black/40 font-bold dark:text-slate-400', 'text-gray-400 dark:text-slate-500'))}>눌러서 예시 상세 보기</p>
@@ -252,7 +252,7 @@ export default function MatchingContent() {
                     <div key={s.step} className="flex items-center gap-1 flex-1">
                       <div className={cn(
                         'flex flex-col items-center flex-1',
-                        s.active ? themeClass('text-black/60 dark:text-slate-300', 'text-green-600/70') : themeClass('text-black/25 dark:text-slate-500', 'text-gray-300 dark:text-slate-600')
+                        s.active ? themeClass('text-black/60 dark:text-slate-300', 'text-green-700/70') : themeClass('text-black/25 dark:text-slate-500', 'text-gray-300 dark:text-slate-600')
                       )}>
                         <span className="text-base">{s.icon}</span>
                         <span className={cn('text-[9px] mt-0.5', s.active ? 'font-bold' : 'font-medium')}>{s.step}</span>
@@ -278,7 +278,7 @@ export default function MatchingContent() {
         {error ? (
           <div className={cn(
             'text-center py-12',
-            themeClass('bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]', 'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700')
+            themeClass('bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]', 'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700')
           )}>
             <div className={cn('text-lg mb-2', themeClass('font-black text-black dark:text-slate-100', 'font-bold text-gray-900 dark:text-slate-100'))}>오류가 발생했습니다</div>
             <p className={themeClass('text-black/60 font-bold dark:text-slate-400', 'text-gray-500 dark:text-slate-400')}>{error.message}</p>
@@ -289,7 +289,7 @@ export default function MatchingContent() {
               <div key={i} className={cn(
                 'p-5 h-[200px]',
                 themeClass(
-                  'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
+                  'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
                   'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm'
                 )
               )}>
@@ -303,7 +303,7 @@ export default function MatchingContent() {
         ) : posts.length === 0 ? (
           <div className={cn(
             'text-center py-16',
-            themeClass('bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]', 'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm')
+            themeClass('bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]', 'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm')
           )}>
             <div className="text-4xl mb-4">🎾</div>
             <div className={cn('text-xl mb-2', themeClass('font-black text-black dark:text-slate-100', 'font-bold text-gray-900 dark:text-slate-100'))}>
@@ -330,7 +330,7 @@ export default function MatchingContent() {
                   className={cn(
                     'px-3 py-2 text-sm transition-all',
                     themeClass(
-                      'border-2 border-black rounded-[5px] font-bold disabled:opacity-40 hover:bg-white dark:hover:bg-slate-700 dark:text-slate-100',
+                      'border-2 border-black dark:border-[#f1f3f8] rounded-[5px] font-bold disabled:opacity-40 hover:bg-white dark:hover:bg-slate-700 dark:text-slate-100',
                       'border border-gray-300 dark:border-slate-700 rounded-lg disabled:opacity-40 hover:bg-gray-50 dark:hover:bg-slate-700 bg-white dark:bg-slate-800 font-medium text-gray-700 dark:text-slate-200'
                     )
                   )}
@@ -347,7 +347,7 @@ export default function MatchingContent() {
                   className={cn(
                     'px-3 py-2 text-sm transition-all',
                     themeClass(
-                      'border-2 border-black rounded-[5px] font-bold disabled:opacity-40 hover:bg-white dark:hover:bg-slate-700 dark:text-slate-100',
+                      'border-2 border-black dark:border-[#f1f3f8] rounded-[5px] font-bold disabled:opacity-40 hover:bg-white dark:hover:bg-slate-700 dark:text-slate-100',
                       'border border-gray-300 dark:border-slate-700 rounded-lg disabled:opacity-40 hover:bg-gray-50 dark:hover:bg-slate-700 bg-white dark:bg-slate-800 font-medium text-gray-700 dark:text-slate-200'
                     )
                   )}

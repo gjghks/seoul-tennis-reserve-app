@@ -69,7 +69,7 @@ export default function PopularCourts() {
             onClick={() => mutate()}
             className={themeClass(
               'text-sm font-bold bg-[#facc15] text-black px-4 py-2 border-2 border-black rounded-[5px] shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all',
-              'text-sm font-medium text-green-600 hover:text-green-700 px-4 py-2 border border-gray-200 dark:border-slate-700 rounded-lg hover:border-green-300 transition-colors'
+              'text-sm font-medium text-green-700 hover:text-green-700 px-4 py-2 border border-gray-200 dark:border-slate-700 rounded-lg hover:border-green-300 transition-colors'
             )}
           >
             다시 시도

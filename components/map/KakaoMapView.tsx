@@ -140,7 +140,7 @@ export default function KakaoMapView({ courts, district, focusPlaceName, onPlace
 
   if (!process.env.NEXT_PUBLIC_KAKAO_MAP_KEY) {
     return (
-      <div className={`p-8 text-center ${isNeoBrutalism ? 'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px]' : 'bg-gray-50 dark:bg-slate-800 rounded-xl'}`}>
+      <div className={`p-8 text-center ${isNeoBrutalism ? 'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px]' : 'bg-gray-50 dark:bg-slate-800 rounded-xl'}`}>
         <p className={isNeoBrutalism ? 'text-black/60 dark:text-slate-400 font-medium' : 'text-gray-400 dark:text-slate-500'}>
           지도를 표시하려면 카카오 맵 API 키가 필요합니다.
         </p>
@@ -150,7 +150,7 @@ export default function KakaoMapView({ courts, district, focusPlaceName, onPlace
 
   if (courtGroups.length === 0) {
     return (
-      <div className={`p-8 text-center ${isNeoBrutalism ? 'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px]' : 'bg-gray-50 dark:bg-slate-800 rounded-xl'}`}>
+      <div className={`p-8 text-center ${isNeoBrutalism ? 'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px]' : 'bg-gray-50 dark:bg-slate-800 rounded-xl'}`}>
         <svg className={isNeoBrutalism ? 'w-12 h-12 mx-auto mb-2' : 'w-10 h-10 mx-auto mb-2'} viewBox="0 0 64 64" fill="none" aria-hidden="true">
           <g style={{ animation: 'gentle-float 3s ease-in-out infinite' }}>
             <path d="M32 8 C22 8 14 16 14 26 C14 40 32 56 32 56 C32 56 50 40 50 26 C50 16 42 8 32 8 Z" className={isNeoBrutalism ? 'fill-[#a3e635] stroke-black stroke-[2.5]' : 'fill-green-100 stroke-gray-300 stroke-[1.5]'} />
@@ -167,7 +167,7 @@ export default function KakaoMapView({ courts, district, focusPlaceName, onPlace
   }
 
   return (
-    <div className={`overflow-hidden ${isNeoBrutalism ? 'border-2 border-black rounded-[5px]' : 'border border-gray-200 dark:border-slate-700 rounded-xl'}`}>
+    <div className={`overflow-hidden ${isNeoBrutalism ? 'border-2 border-black dark:border-[#f1f3f8] rounded-[5px]' : 'border border-gray-200 dark:border-slate-700 rounded-xl'}`}>
       <KakaoMap
         center={mapCenter || initialCenter}
         style={{ width: '100%', height: '400px' }}

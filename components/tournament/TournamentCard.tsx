@@ -95,7 +95,7 @@ export default function TournamentCard({ tournament }: TournamentCardProps) {
         className={cn(
           'relative overflow-hidden transition-all p-5',
           themeClass(
-            'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000]',
+            'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#f1f3f8]',
             'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm hover:shadow-md hover:-translate-y-1'
           )
         )}
@@ -132,7 +132,7 @@ export default function TournamentCard({ tournament }: TournamentCardProps) {
               'text-sm font-bold',
               participantCount >= tournament.max_participants
                 ? themeClass('text-[#ff90e8]', 'text-red-500')
-                : themeClass('text-[#22c55e]', 'text-green-600')
+                : themeClass('text-[#22c55e]', 'text-green-700')
             )}
           >
             {participantCount}/{tournament.max_participants}명

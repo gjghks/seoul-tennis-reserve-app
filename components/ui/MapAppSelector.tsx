@@ -165,6 +165,7 @@ export default function MapAppSelector({ isOpen, onClose, destination }: MapAppS
             <button
               type="button"
               onClick={onClose}
+              aria-label="닫기"
               className={cn(
                 'w-7 h-7 flex items-center justify-center text-sm',
                 themeClass(
@@ -173,7 +174,7 @@ export default function MapAppSelector({ isOpen, onClose, destination }: MapAppS
                 ),
               )}
             >
-              ✕
+              <span aria-hidden="true">✕</span>
             </button>
           </div>
 

@@ -32,7 +32,7 @@ export default function RecordStats() {
 
   const winRateColor =
     stats.win_rate >= 60
-      ? 'text-green-600'
+      ? 'text-green-700'
       : stats.win_rate >= 40
       ? 'text-yellow-600'
       : 'text-red-600';
@@ -66,7 +66,7 @@ export default function RecordStats() {
       {stats.current_streak && (
         <div
           className={themeClass(
-            'rounded-[5px] border-2 border-black bg-white dark:bg-slate-800 p-3 shadow-[4px_4px_0px_0px_#000]',
+            'rounded-[5px] border-2 border-black dark:border-[#f1f3f8] bg-white dark:bg-slate-800 p-3 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
             'rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-3 shadow-sm'
           )}
         >
@@ -187,7 +187,7 @@ export default function RecordStats() {
       {/* Most Played Court */}
       {stats.most_played_court && (
         <div className={themeClass(
-          'border-2 border-black bg-white dark:bg-slate-800 p-4 shadow-[4px_4px_0px_0px_#000] rounded-[5px]',
+          'border-2 border-black dark:border-[#f1f3f8] bg-white dark:bg-slate-800 p-4 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] rounded-[5px]',
           'rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm'
         )}>
           <h3 className="mb-1 text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">
@@ -224,7 +224,7 @@ function StatBox({
   return (
     <div
       className={themeClass(
-        'flex flex-col items-center justify-center rounded-[5px] border-2 border-black bg-white dark:bg-slate-800 p-4 shadow-[4px_4px_0px_0px_#000]',
+        'flex flex-col items-center justify-center rounded-[5px] border-2 border-black dark:border-[#f1f3f8] bg-white dark:bg-slate-800 p-4 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
         'flex flex-col items-center justify-center rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm'
       )}
     >
@@ -244,7 +244,7 @@ function StatsSkeleton() {
         <div
           key={`skeleton-${key}`}
           className={themeClass(
-            'h-24 rounded-[5px] border-2 border-black bg-gray-100 dark:bg-slate-800 shadow-[4px_4px_0px_0px_#000] animate-pulse',
+            'h-24 rounded-[5px] border-2 border-black dark:border-[#f1f3f8] bg-gray-100 dark:bg-slate-800 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] animate-pulse',
             'h-24 rounded-xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 animate-pulse'
           )}
         />

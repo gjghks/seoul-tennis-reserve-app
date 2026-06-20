@@ -67,7 +67,7 @@ export default function TransfersContent() {
                   'px-4 py-2 rounded-full text-sm font-bold transition-colors',
                   !myMode
                     ? themeClass('bg-black text-white', 'bg-gray-900 text-white')
-                    : themeClass('bg-white dark:bg-slate-800 dark:text-slate-100 border-2 border-black hover:bg-gray-100 dark:hover:bg-slate-700', 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700')
+                    : themeClass('bg-white dark:bg-slate-800 dark:text-slate-100 border-2 border-black dark:border-[#f1f3f8] hover:bg-gray-100 dark:hover:bg-slate-700', 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700')
                 )}
               >
                 전체 양도
@@ -79,7 +79,7 @@ export default function TransfersContent() {
                   'px-4 py-2 rounded-full text-sm font-bold transition-colors',
                   myMode
                     ? themeClass('bg-black text-white', 'bg-gray-900 text-white')
-                    : themeClass('bg-white dark:bg-slate-800 dark:text-slate-100 border-2 border-black hover:bg-gray-100 dark:hover:bg-slate-700', 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700')
+                    : themeClass('bg-white dark:bg-slate-800 dark:text-slate-100 border-2 border-black dark:border-[#f1f3f8] hover:bg-gray-100 dark:hover:bg-slate-700', 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700')
                 )}
               >
                 내 양도
@@ -97,7 +97,7 @@ export default function TransfersContent() {
                 district === ''
                   ? themeClass('bg-black text-white', 'bg-gray-900 text-white')
                   : themeClass(
-                      'bg-white dark:bg-slate-800 dark:text-slate-100 border-2 border-black hover:bg-gray-100 dark:hover:bg-slate-700',
+                      'bg-white dark:bg-slate-800 dark:text-slate-100 border-2 border-black dark:border-[#f1f3f8] hover:bg-gray-100 dark:hover:bg-slate-700',
                       'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700'
                     )
               )}
@@ -114,7 +114,7 @@ export default function TransfersContent() {
                   district === d.nameKo
                     ? themeClass('bg-black text-white', 'bg-gray-900 text-white')
                     : themeClass(
-                        'bg-white border-2 border-black hover:bg-gray-100',
+                        'bg-white border-2 border-black dark:border-[#f1f3f8] hover:bg-gray-100',
                         'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-400 hover:bg-gray-50 dark:hover:bg-slate-700'
                       )
                 )}
@@ -132,11 +132,11 @@ export default function TransfersContent() {
                 'px-4 py-2 rounded-lg text-sm font-bold flex-1 transition-colors',
                 status === 'available'
                   ? themeClass(
-                      'bg-green-100 dark:bg-green-950/40 text-green-800 dark:text-green-300 border-2 border-black shadow-[2px_2px_0px_0px_#000]',
+                      'bg-green-100 dark:bg-green-950/40 text-green-800 dark:text-green-300 border-2 border-black dark:border-[#f1f3f8] shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#f1f3f8]',
                       'bg-green-50 dark:bg-green-950/40 text-green-700 dark:text-green-300 border-green-200 dark:border-green-900 shadow-sm'
                     )
                   : themeClass(
-                      'bg-white dark:bg-slate-800 text-gray-600 dark:text-slate-300 border-2 border-black hover:bg-gray-50 dark:hover:bg-slate-700',
+                      'bg-white dark:bg-slate-800 text-gray-600 dark:text-slate-300 border-2 border-black dark:border-[#f1f3f8] hover:bg-gray-50 dark:hover:bg-slate-700',
                       'bg-white dark:bg-slate-800 text-gray-500 dark:text-slate-400 border border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700'
                     )
               )}
@@ -150,11 +150,11 @@ export default function TransfersContent() {
                 'px-4 py-2 rounded-lg text-sm font-bold flex-1 transition-colors',
                 status === 'completed'
                   ? themeClass(
-                      'bg-gray-200 dark:bg-slate-700 text-gray-800 dark:text-slate-200 border-2 border-black shadow-[2px_2px_0px_0px_#000]',
+                      'bg-gray-200 dark:bg-slate-700 text-gray-800 dark:text-slate-200 border-2 border-black dark:border-[#f1f3f8] shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#f1f3f8]',
                       'bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-slate-200 border-gray-300 dark:border-slate-600 shadow-sm'
                     )
                   : themeClass(
-                      'bg-white dark:bg-slate-800 text-gray-600 dark:text-slate-300 border-2 border-black hover:bg-gray-50 dark:hover:bg-slate-700',
+                      'bg-white dark:bg-slate-800 text-gray-600 dark:text-slate-300 border-2 border-black dark:border-[#f1f3f8] hover:bg-gray-50 dark:hover:bg-slate-700',
                       'bg-white dark:bg-slate-800 text-gray-500 dark:text-slate-400 border border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700'
                     )
               )}
@@ -168,11 +168,11 @@ export default function TransfersContent() {
                 'px-4 py-2 rounded-lg text-sm font-bold flex-1 transition-colors',
                 status === 'expired'
                   ? themeClass(
-                      'bg-orange-100 dark:bg-orange-950/40 text-orange-800 dark:text-orange-300 border-2 border-black shadow-[2px_2px_0px_0px_#000]',
+                      'bg-orange-100 dark:bg-orange-950/40 text-orange-800 dark:text-orange-300 border-2 border-black dark:border-[#f1f3f8] shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#f1f3f8]',
                       'bg-orange-50 dark:bg-orange-950/40 text-orange-700 dark:text-orange-300 border-orange-300 dark:border-orange-900 shadow-sm'
                     )
                   : themeClass(
-                      'bg-white dark:bg-slate-800 text-gray-600 dark:text-slate-300 border-2 border-black hover:bg-gray-50 dark:hover:bg-slate-700',
+                      'bg-white dark:bg-slate-800 text-gray-600 dark:text-slate-300 border-2 border-black dark:border-[#f1f3f8] hover:bg-gray-50 dark:hover:bg-slate-700',
                       'bg-white dark:bg-slate-800 text-gray-500 dark:text-slate-400 border border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700'
                     )
               )}
@@ -247,7 +247,7 @@ export default function TransfersContent() {
                         <div key={s.step} className="flex items-center gap-1 flex-1">
                           <div className={cn(
                             'flex flex-col items-center flex-1',
-                            s.active ? themeClass('text-black/60 dark:text-slate-300', 'text-green-600/70') : themeClass('text-black/25 dark:text-slate-500', 'text-gray-300 dark:text-slate-600')
+                            s.active ? themeClass('text-black/60 dark:text-slate-300', 'text-green-700/70') : themeClass('text-black/25 dark:text-slate-500', 'text-gray-300 dark:text-slate-600')
                           )}>
                             <span className="text-base">{s.icon}</span>
                             <span className={cn('text-[9px] mt-0.5', s.active ? 'font-bold' : 'font-medium')}>{s.step}</span>

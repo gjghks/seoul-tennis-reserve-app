@@ -53,7 +53,7 @@ export default function LadderGuideContent() {
         className={cn(
           'max-w-3xl mx-auto',
           themeClass(
-            'bg-white dark:bg-slate-900 border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000] p-8',
+            'bg-white dark:bg-slate-900 border-[3px] border-black dark:border-[#f1f3f8] rounded-[10px] shadow-[6px_6px_0px_0px_#000] dark:shadow-[6px_6px_0px_0px_#f1f3f8] p-8',
             'bg-white dark:bg-slate-900 rounded-xl shadow-lg p-8'
           )
         )}
@@ -74,7 +74,7 @@ export default function LadderGuideContent() {
             <h2 className={cn('text-xl font-bold mb-4 flex items-center gap-2', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>
               <span className="text-2xl">⚡</span> ELO 시스템 체험하기
             </h2>
-            <div className={cn('p-6 rounded-lg text-center', themeClass('bg-gray-50 dark:bg-slate-800 border-2 border-black shadow-[4px_4px_0px_0px_#000]', 'bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700'))}>
+            <div className={cn('p-6 rounded-lg text-center', themeClass('bg-gray-50 dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]', 'bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700'))}>
               <div className="mb-6">
                 <div className="text-sm font-bold text-gray-500 dark:text-slate-400 mb-2">나의 예상 점수</div>
                 <div className={cn('text-5xl font-black mb-2', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>
@@ -89,14 +89,14 @@ export default function LadderGuideContent() {
                 <button
                   type="button"
                   onClick={() => setDemoWins(w => w + 1)}
-                  className={cn('px-4 py-2 rounded-lg font-bold', themeClass('bg-white dark:bg-slate-900 border-2 border-black hover:-translate-y-[2px] shadow-[2px_2px_0px_0px_#000]', 'bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 hover:bg-gray-100 dark:hover:bg-slate-700 shadow-sm'))}
+                  className={cn('px-4 py-2 rounded-lg font-bold', themeClass('bg-white dark:bg-slate-900 border-2 border-black dark:border-[#f1f3f8] hover:-translate-y-[2px] shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#f1f3f8]', 'bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 hover:bg-gray-100 dark:hover:bg-slate-700 shadow-sm'))}
                 >
-                  <span className="text-green-600 mr-2">승리</span>+25
+                  <span className="text-green-700 mr-2">승리</span>+25
                 </button>
                 <button
                   type="button"
                   onClick={() => setDemoLosses(l => l + 1)}
-                  className={cn('px-4 py-2 rounded-lg font-bold', themeClass('bg-white dark:bg-slate-900 border-2 border-black hover:-translate-y-[2px] shadow-[2px_2px_0px_0px_#000]', 'bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 hover:bg-gray-100 dark:hover:bg-slate-700 shadow-sm'))}
+                  className={cn('px-4 py-2 rounded-lg font-bold', themeClass('bg-white dark:bg-slate-900 border-2 border-black dark:border-[#f1f3f8] hover:-translate-y-[2px] shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#f1f3f8]', 'bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 hover:bg-gray-100 dark:hover:bg-slate-700 shadow-sm'))}
                 >
                   <span className="text-red-600 mr-2">패배</span>-15
                 </button>
@@ -121,7 +121,7 @@ export default function LadderGuideContent() {
                   key={tier.key}
                   className={cn(
                     'p-4 rounded-lg text-center flex flex-col items-center justify-center',
-                    themeClass('bg-white dark:bg-slate-800 border-2 border-black shadow-[2px_2px_0px_0px_#000]', 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 shadow-sm')
+                    themeClass('bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#f1f3f8]', 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 shadow-sm')
                   )}
                 >
                   <div className="w-4 h-4 rounded-full mb-2" style={{ backgroundColor: tier.color }} />
@@ -144,7 +144,7 @@ export default function LadderGuideContent() {
                   className={cn(
                     'flex items-start gap-4 p-4',
                     themeClass(
-                      'bg-white dark:bg-slate-800 border-2 border-black rounded-[6px]',
+                      'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[6px]',
                       'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg'
                     )
                   )}
@@ -195,7 +195,7 @@ export default function LadderGuideContent() {
                 className={cn(
                   'px-8 py-3 rounded-lg text-center font-bold transition-all',
                   themeClass(
-                    'bg-black text-white border-2 border-black hover:bg-gray-800 shadow-[4px_4px_0px_0px_#000] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000]',
+                    'bg-black text-white border-2 border-black dark:border-[#f1f3f8] hover:bg-gray-800 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#f1f3f8]',
                     'bg-purple-600 text-white hover:bg-purple-700 shadow-md hover:shadow-lg'
                   )
                 )}

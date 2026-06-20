@@ -165,12 +165,12 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
         onReservationClick={handleReservationClick}
       />
       
-      <div ref={headerRef} className={themeClass('bg-white dark:bg-slate-900 border-b-[3px] border-black', 'bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-slate-800')}>
+      <div ref={headerRef} className={themeClass('bg-white dark:bg-slate-900 border-b-[3px] border-black dark:border-[#f1f3f8]', 'bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-slate-800')}>
         <div className="container py-4">
           <div className="flex items-center justify-between mb-4">
             <Link
               href={`/${districtSlug}`}
-              className={`inline-flex items-center gap-1.5 text-sm ${themeClass('font-bold text-black dark:text-slate-100 hover:underline underline-offset-4', 'text-gray-500 dark:text-slate-400 hover:text-green-600 transition-colors')}`}
+              className={`inline-flex items-center gap-1.5 text-sm ${themeClass('font-bold text-black dark:text-slate-100 hover:underline underline-offset-4', 'text-gray-500 dark:text-slate-400 hover:text-green-700 transition-colors')}`}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -210,7 +210,7 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
               <button
                 type="button"
                 onClick={scrollToMap}
-                className={`inline-flex items-center gap-1.5 cursor-pointer hover:underline underline-offset-4 ${themeClass('text-black/70 dark:text-slate-300 font-medium', 'text-gray-500 dark:text-slate-400 hover:text-green-600')} transition-colors`}
+                className={`inline-flex items-center gap-1.5 cursor-pointer hover:underline underline-offset-4 ${themeClass('text-black/70 dark:text-slate-300 font-medium', 'text-gray-500 dark:text-slate-400 hover:text-green-700')} transition-colors`}
               >
                 <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -375,7 +375,7 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
           <div className={`mb-3 overflow-hidden ${isNeoBrutalism ? 'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[3px_3px_0px_0px_#000] dark:shadow-[3px_3px_0px_0px_#f1f3f8]' : 'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700'}`}>
             <div className="p-5 border-b border-gray-100 dark:border-slate-700">
               <h2 className={`font-bold ${themeClass('text-black dark:text-slate-100 uppercase', 'text-gray-900 dark:text-slate-100')} flex items-center gap-2`}>
-                <span className={`inline-flex items-center justify-center w-5 h-5 text-sm ${themeClass('', 'text-green-600')}`}>🏟️</span>
+                <span className={`inline-flex items-center justify-center w-5 h-5 text-sm ${themeClass('', 'text-green-700')}`}>🏟️</span>
                 코트 시설 정보
               </h2>
             </div>
@@ -461,7 +461,7 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
           <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/40 dark:to-emerald-950/40 rounded-2xl p-5 mb-6 border border-green-100 dark:border-green-900">
             <div className="flex items-center gap-3 mb-3">
               <div className="w-8 h-8 bg-green-100 dark:bg-green-900/40 rounded-full flex items-center justify-center">
-                <svg className="w-4 h-4 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <svg className="w-4 h-4 text-green-700 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
               </div>
@@ -476,7 +476,7 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
         <div className="bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 overflow-hidden mb-6">
           <div className="p-5 border-b border-gray-100 dark:border-slate-700">
             <h2 className="font-bold text-gray-900 dark:text-slate-100 flex items-center gap-2">
-              <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <svg className="w-5 h-5 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               시설 정보
@@ -490,7 +490,7 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
                   <button
                     type="button"
                     onClick={scrollToMap}
-                    className="text-green-600 font-medium text-sm hover:underline cursor-pointer flex items-center gap-1"
+                    className="text-green-700 font-medium text-sm hover:underline cursor-pointer flex items-center gap-1"
                   >
                     {court.PLACENM}
                     <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -527,7 +527,7 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
             {!isNeoBrutalism && (
               <div className="p-5 border-b border-gray-100 dark:border-slate-700">
                 <h2 className="font-bold text-gray-900 dark:text-slate-100 flex items-center gap-2">
-                  <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <svg className="w-5 h-5 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
@@ -583,7 +583,7 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
         <div className="flex gap-3">
           <Link
             href={`/${districtSlug}`}
-            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-400 hover:border-green-500 hover:text-green-600 transition-colors font-medium"
+            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-400 hover:border-green-500 hover:text-green-700 transition-colors font-medium"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
@@ -592,7 +592,7 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
           </Link>
           <Link
             href="/"
-            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-400 hover:border-green-500 hover:text-green-600 transition-colors font-medium"
+            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-400 hover:border-green-500 hover:text-green-700 transition-colors font-medium"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />

@@ -38,7 +38,7 @@ export default function RecordsPromoCard({ user, authLoading }: RecordsPromoCard
   if (!user) {
     return (
       <div className="container my-6 lg:my-4">
-        <div className={`relative overflow-hidden rounded-xl p-5 ${themeClass('bg-white dark:bg-slate-800 border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]', 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 shadow-sm')}`}>
+        <div className={`relative overflow-hidden rounded-xl p-5 ${themeClass('bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] shadow-[4px_4px_0_0_rgba(0,0,0,1)] dark:shadow-[4px_4px_0_0_#f1f3f8]', 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 shadow-sm')}`}>
           <div className="flex items-center justify-between relative z-10">
             <div>
               <h3 className={`text-lg font-bold mb-1 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
@@ -126,7 +126,7 @@ export default function RecordsPromoCard({ user, authLoading }: RecordsPromoCard
 
   return (
     <div className="container my-6 lg:my-4">
-      <div className={`relative overflow-hidden rounded-xl p-5 ${themeClass('bg-white dark:bg-slate-800 border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]', 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 shadow-sm')}`}>
+      <div className={`relative overflow-hidden rounded-xl p-5 ${themeClass('bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] shadow-[4px_4px_0_0_rgba(0,0,0,1)] dark:shadow-[4px_4px_0_0_#f1f3f8]', 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 shadow-sm')}`}>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
           <div>
             <div className="flex items-center gap-2 mb-1">

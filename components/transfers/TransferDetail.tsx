@@ -178,7 +178,7 @@ export default function TransferDetail({ id }: TransferDetailProps) {
           className={cn(
             'overflow-hidden transition-all',
             themeClass(
-              'bg-white dark:bg-slate-800 border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000]',
+              'bg-white dark:bg-slate-800 border-[3px] border-black dark:border-[#f1f3f8] rounded-[10px] shadow-[6px_6px_0px_0px_#000] dark:shadow-[6px_6px_0px_0px_#f1f3f8]',
               'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl shadow-md'
             )
           )}
@@ -217,7 +217,7 @@ export default function TransferDetail({ id }: TransferDetailProps) {
               <div
                 className={cn(
                   'w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg',
-                  themeClass('bg-blue-100 border-2 border-black', 'bg-blue-50 text-blue-600')
+                  themeClass('bg-blue-100 border-2 border-black dark:border-[#f1f3f8]', 'bg-blue-50 text-blue-600')
                 )}
               >
                 {transfer.seller_name?.[0] || '익'}
@@ -235,7 +235,7 @@ export default function TransferDetail({ id }: TransferDetailProps) {
             <div
               className={cn(
                 'grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 p-4 rounded-lg',
-                themeClass('bg-yellow-50 dark:bg-yellow-950/30 border-2 border-black', 'bg-gray-50 dark:bg-slate-900 border border-gray-100 dark:border-slate-700')
+                themeClass('bg-yellow-50 dark:bg-yellow-950/30 border-2 border-black dark:border-[#f1f3f8]', 'bg-gray-50 dark:bg-slate-900 border border-gray-100 dark:border-slate-700')
               )}
             >
               <div className="flex items-start gap-3">
@@ -269,7 +269,7 @@ export default function TransferDetail({ id }: TransferDetailProps) {
             {transfer.contact_info && transfer.contact_type && (
               <div className={cn(
                 'mb-8 p-5 rounded-lg border-2 border-dashed',
-                themeClass('border-black bg-blue-50 dark:bg-blue-950/40', 'border-blue-300 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/40')
+                themeClass('border-black dark:border-[#f1f3f8] bg-blue-50 dark:bg-blue-950/40', 'border-blue-300 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/40')
               )}>
                 <h3 className={cn('font-bold mb-2 flex items-center gap-2', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>
                   <span className="text-xl">🔓</span> 판매자 연락처
@@ -294,7 +294,7 @@ export default function TransferDetail({ id }: TransferDetailProps) {
                       href={`/login?redirect=/transfers/${id}`}
                       className={cn(
                         'inline-block px-6 py-2 rounded-lg font-bold transition-all',
-                        themeClass('bg-black text-white hover:-translate-y-1 shadow-[4px_4px_0px_0px_#000]', 'bg-gray-900 text-white hover:bg-gray-800')
+                        themeClass('bg-black text-white hover:-translate-y-1 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]', 'bg-gray-900 text-white hover:bg-gray-800')
                       )}
                     >
                       로그인하고 관심 표시하기
@@ -349,7 +349,7 @@ export default function TransferDetail({ id }: TransferDetailProps) {
                 ) : (
                   <div className={cn(
                     'p-4 rounded-lg flex items-center justify-between',
-                    myInterest.status === 'pending' && themeClass('bg-gray-100 dark:bg-slate-700 border-2 border-black', 'bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700'),
+                    myInterest.status === 'pending' && themeClass('bg-gray-100 dark:bg-slate-700 border-2 border-black dark:border-[#f1f3f8]', 'bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700'),
                     myInterest.status === 'accepted' && themeClass('bg-green-100 dark:bg-green-950/40 border-2 border-green-800 dark:border-green-700', 'bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-900'),
                     myInterest.status === 'rejected' && themeClass('bg-red-100 dark:bg-red-950/40 border-2 border-red-800 dark:border-red-700', 'bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900')
                   )}>
@@ -501,7 +501,7 @@ export default function TransferDetail({ id }: TransferDetailProps) {
                       className={cn(
                         'w-full md:w-auto px-6 py-3 rounded-lg font-bold transition-all',
                         themeClass(
-                          'bg-black text-white border-2 border-black hover:-translate-y-[2px] shadow-[4px_4px_0px_0px_#000]',
+                          'bg-black text-white border-2 border-black dark:border-[#f1f3f8] hover:-translate-y-[2px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
                           'bg-gray-900 text-white hover:bg-gray-800 shadow-md hover:shadow-lg'
                         )
                       )}

@@ -131,7 +131,7 @@ export default function LiveScoreInput({
         className={cn(
           'w-full max-w-lg max-h-[90vh] overflow-y-auto p-5',
           themeClass(
-            'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[6px_6px_0px_0px_#000]',
+            'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[6px_6px_0px_0px_#000] dark:shadow-[6px_6px_0px_0px_#f1f3f8]',
             'bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl shadow-xl'
           )
         )}
@@ -158,7 +158,7 @@ export default function LiveScoreInput({
               key={`set-${index + 1}`}
               className={cn(
                 'p-3',
-                themeClass('bg-gray-50 dark:bg-slate-900 border-2 border-black rounded-[5px]', 'bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg')
+                themeClass('bg-gray-50 dark:bg-slate-900 border-2 border-black dark:border-[#f1f3f8] rounded-[5px]', 'bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg')
               )}
             >
               <p className={cn('text-xs mb-2', themeClass('font-black text-black/70 dark:text-slate-300', 'font-bold text-gray-500 dark:text-slate-400'))}>SET {index + 1}</p>
@@ -171,7 +171,7 @@ export default function LiveScoreInput({
                   className={cn(
                     'w-full text-center px-2 py-2 outline-none',
                     themeClass(
-                      'bg-white dark:bg-slate-900 border-2 border-black rounded-[5px] font-black text-black dark:text-slate-100',
+                      'bg-white dark:bg-slate-900 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] font-black text-black dark:text-slate-100',
                       'bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-md font-semibold text-gray-900 dark:text-slate-100 focus:ring-2 focus:ring-green-500'
                     )
                   )}
@@ -185,7 +185,7 @@ export default function LiveScoreInput({
                   className={cn(
                     'w-full text-center px-2 py-2 outline-none',
                     themeClass(
-                      'bg-white dark:bg-slate-900 border-2 border-black rounded-[5px] font-black text-black dark:text-slate-100',
+                      'bg-white dark:bg-slate-900 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] font-black text-black dark:text-slate-100',
                       'bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-md font-semibold text-gray-900 dark:text-slate-100 focus:ring-2 focus:ring-green-500'
                     )
                   )}
@@ -206,7 +206,7 @@ export default function LiveScoreInput({
                 'px-3 py-2 text-sm transition-all disabled:opacity-50',
                 winnerId === match.participant1_id
                   ? themeClass('bg-[#22c55e] border-2 border-black rounded-[5px] font-black text-black', 'bg-green-600 rounded-lg font-bold text-white')
-                  : themeClass('bg-white dark:bg-slate-900 border-2 border-black rounded-[5px] font-bold text-black dark:text-slate-100', 'bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-lg font-medium text-gray-700 dark:text-slate-200')
+                  : themeClass('bg-white dark:bg-slate-900 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] font-bold text-black dark:text-slate-100', 'bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-lg font-medium text-gray-700 dark:text-slate-200')
               )}
             >
               {player1Name}
@@ -219,7 +219,7 @@ export default function LiveScoreInput({
                 'px-3 py-2 text-sm transition-all disabled:opacity-50',
                 winnerId === match.participant2_id
                   ? themeClass('bg-[#22c55e] border-2 border-black rounded-[5px] font-black text-black', 'bg-green-600 rounded-lg font-bold text-white')
-                  : themeClass('bg-white dark:bg-slate-900 border-2 border-black rounded-[5px] font-bold text-black dark:text-slate-100', 'bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-lg font-medium text-gray-700 dark:text-slate-200')
+                  : themeClass('bg-white dark:bg-slate-900 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] font-bold text-black dark:text-slate-100', 'bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-lg font-medium text-gray-700 dark:text-slate-200')
               )}
             >
               {player2Name}
@@ -234,7 +234,7 @@ export default function LiveScoreInput({
             className={cn(
               'flex-1 py-3 text-sm transition-all',
               themeClass(
-                'bg-white dark:bg-slate-900 border-2 border-black rounded-[5px] font-black text-black dark:text-slate-100',
+                'bg-white dark:bg-slate-900 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] font-black text-black dark:text-slate-100',
                 'bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-lg font-bold text-gray-700 dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-800'
               )
             )}

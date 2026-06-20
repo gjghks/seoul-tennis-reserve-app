@@ -7,7 +7,7 @@ export default function PrivacyPage() {
 
   return (
     <div className="container py-8 scrollbar-hide">
-      <div className={`max-w-3xl mx-auto ${themeClass('bg-white dark:bg-slate-900 border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000] p-8', 'bg-white dark:bg-slate-900 rounded-xl shadow-lg p-8')}`}>
+      <div className={`max-w-3xl mx-auto ${themeClass('bg-white dark:bg-slate-900 border-[3px] border-black dark:border-[#f1f3f8] rounded-[10px] shadow-[6px_6px_0px_0px_#000] dark:shadow-[6px_6px_0px_0px_#f1f3f8] p-8', 'bg-white dark:bg-slate-900 rounded-xl shadow-lg p-8')}`}>
         <h1 className={`text-2xl font-bold mb-6 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
           개인정보처리방침
         </h1>
@@ -141,7 +141,7 @@ export default function PrivacyPage() {
               정보주체의 불만처리 및 피해구제 등을 위하여 아래와 같이 개인정보 보호책임자를 지정하고 있습니다.
             </p>
             <p className="mt-2">
-              문의: <a href="mailto:gjghks84@gmail.com" className={`font-medium hover:underline ${themeClass('text-black dark:text-slate-100', 'text-green-600')}`}>gjghks84@gmail.com</a>
+              문의: <a href="mailto:gjghks84@gmail.com" className={`font-medium hover:underline ${themeClass('text-black dark:text-slate-100', 'text-green-700')}`}>gjghks84@gmail.com</a>
             </p>
           </section>
 
