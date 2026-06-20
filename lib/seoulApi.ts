@@ -12,6 +12,9 @@ const CACHE_TTL_MS = 30 * 60 * 1000; // 30 minutes (matches ISR revalidate inter
 const PAGE_SIZE = 1000;
 const MAX_FETCHABLE_ROWS = 5000;
 const INCLUDE_INDEPENDENT_COURTS = process.env.NODE_ENV !== 'test';
+// Minimum Seoul-API tennis courts required before overwriting the durable snapshot —
+// prevents persisting a degraded/sparse response (e.g. partial outage) over a good one.
+const SNAPSHOT_MIN_SEOUL_COURTS = 10;
 
 // 서울시 25개 구
 const SEOUL_DISTRICTS = [
@@ -127,6 +130,58 @@ function httpGet(url: string, timeoutMs: number): Promise<string> {
     });
 }
 
+/**
+ * Service-role Supabase client for the durable snapshot cache. Returns null in
+ * tests and when env is unconfigured so callers degrade gracefully.
+ */
+function getServiceRoleClient() {
+    if (process.env.NODE_ENV === 'test') return null;
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    if (!url || !key) return null;
+    return createClient(url, key, { auth: { persistSession: false } });
+}
+
+/**
+ * Persist the last-good full court snapshot. Serves as a cross-instance fallback
+ * when the Seoul API is down (survives cold starts / fresh deploys, unlike the
+ * per-instance in-memory cache). Best-effort: never throws into the caller.
+ */
+async function persistSnapshot(courts: SeoulService[]): Promise<void> {
+    try {
+        const client = getServiceRoleClient();
+        if (!client) return;
+        const { error } = await client
+            .from('tennis_snapshot_cache')
+            .upsert(
+                { id: true, snapshot: courts, court_count: courts.length, updated_at: new Date().toISOString() },
+                { onConflict: 'id' },
+            );
+        if (error) console.error('Failed to persist tennis snapshot:', error.message);
+    } catch (error) {
+        console.error('Unexpected error persisting tennis snapshot:', error);
+    }
+}
+
+/** Read the last-good durable snapshot. Returns null if absent/unconfigured. */
+async function readSnapshot(): Promise<SeoulService[] | null> {
+    try {
+        const client = getServiceRoleClient();
+        if (!client) return null;
+        const { data, error } = await client
+            .from('tennis_snapshot_cache')
+            .select('snapshot')
+            .eq('id', true)
+            .maybeSingle();
+        if (error || !data?.snapshot) return null;
+        const snapshot = data.snapshot as SeoulService[];
+        return Array.isArray(snapshot) && snapshot.length > 0 ? snapshot : null;
+    } catch (error) {
+        console.error('Unexpected error reading tennis snapshot:', error);
+        return null;
+    }
+}
+
 export async function fetchTennisAvailability(): Promise<SeoulService[]> {
     if (isCacheFresh()) {
         return tennisDataCache!.data;
@@ -223,6 +278,12 @@ export async function fetchTennisAvailability(): Promise<SeoulService[]> {
                 timestamp: Date.now(),
             };
 
+            // Persist a durable cross-instance snapshot — ONLY when the Seoul API
+            // returned a healthy set, so a degraded response never overwrites a good one.
+            if (tennisServices.length >= SNAPSHOT_MIN_SEOUL_COURTS) {
+                await persistSnapshot(allCourts);
+            }
+
             return allCourts;
         } catch (error) {
             lastError = error;
@@ -239,7 +300,15 @@ export async function fetchTennisAvailability(): Promise<SeoulService[]> {
         return mergeIndependentCourts(tennisDataCache.data);
     }
 
-    console.error('Seoul API failed with no cache fallback. Returning empty array:', lastError);
+    // Cross-instance fallback: serve the last-good durable snapshot (survives cold
+    // starts / fresh deploys) before degrading to independent courts only.
+    const snapshot = await readSnapshot();
+    if (snapshot) {
+        console.warn('Serving last-good durable snapshot from Supabase after Seoul API failures');
+        return mergeIndependentCourts(snapshot);
+    }
+
+    console.error('Seoul API failed with no durable fallback. Returning independent courts only:', lastError);
     return INCLUDE_INDEPENDENT_COURTS ? getIndependentCourts() : [];
 }
 
