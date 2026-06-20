@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { Geist } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import Providers from "@/components/Providers";
@@ -9,11 +8,6 @@ import BottomNav from "@/components/layout/BottomNav";
 import NavigationProgress from "@/components/ui/NavigationProgress";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import { APPEARANCE_INIT_SCRIPT } from "@/lib/utils/appearanceInitScript";
-
-const geist = Geist({
-  subsets: ["latin"],
-  display: "swap",
-});
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -108,7 +102,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: APPEARANCE_INIT_SCRIPT }}
         />
       </head>
-      <body className={geist.className}>
+      <body>
         <script
           type="application/ld+json"
           suppressHydrationWarning
@@ -135,10 +129,7 @@ export default function RootLayout({
             }),
           }}
         />
-        <Script
-          src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.9/kakao.min.js"
-          strategy="afterInteractive"
-        />
+        {/* Kakao JS SDK (share) is loaded on-demand by KakaoShareButton, not globally. */}
         {process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID && (
           <Script
             src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`}

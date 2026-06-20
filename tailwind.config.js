@@ -7,6 +7,20 @@ module.exports = {
   ],
   theme: {
     extend: {
+      /* ─── Fonts: Korean-friendly system stack (no web-font download) ─── */
+      fontFamily: {
+        sans: [
+          '-apple-system',
+          'BlinkMacSystemFont',
+          '"Segoe UI"',
+          '"Apple SD Gothic Neo"',
+          '"Malgun Gothic"',
+          '"Noto Sans KR"',
+          'Roboto',
+          'sans-serif',
+        ],
+      },
+
       /* ─── Design Tokens ─── */
       colors: {
         nb: {

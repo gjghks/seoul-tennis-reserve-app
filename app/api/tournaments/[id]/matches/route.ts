@@ -87,11 +87,18 @@ export async function PUT(request: NextRequest, context: RouteContext) {
       .single();
 
     if (nextMatch) {
-      const updateField = nextMatch.participant1_id === null ? 'participant1_id' : 'participant2_id';
-      await supabase
+      // Deterministic slot by the COMPLETED match's number parity (odd→p1, even→p2),
+      // mirroring bracket-engine.advanceWinner + the draw's ceil(matchNumber/2) linkage.
+      // The old "first empty slot" rule scrambled seeding by sibling completion order.
+      const updateField = match.match_number % 2 === 1 ? 'participant1_id' : 'participant2_id';
+      const { error: advanceError } = await supabase
         .from('tournament_matches')
         .update({ [updateField]: winner_id })
         .eq('id', match.next_match_id);
+      if (advanceError) {
+        console.error('Error advancing winner to next match:', advanceError);
+        return NextResponse.json({ error: '다음 라운드 진출 처리에 실패했습니다.' }, { status: 500 });
+      }
     }
   }
 
