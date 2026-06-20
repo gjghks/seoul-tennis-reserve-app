@@ -15,8 +15,10 @@ export default function TransferPromoCard() {
     'cherry-blossom': { bg: 'bg-rose-50',  border: 'border-rose-100',  text: 'text-rose-600',  textDark: 'text-rose-700',  hoverText: 'hover:text-rose-700',  hoverBg: 'hover:bg-rose-100',  iconBg: 'bg-rose-200',  iconMinimal: 'bg-rose-100 text-rose-600',   deco: 'bg-rose-600' },
     'tennis-spring':  { bg: 'bg-lime-50',  border: 'border-lime-100',  text: 'text-lime-700',  textDark: 'text-lime-800',  hoverText: 'hover:text-lime-800',  hoverBg: 'hover:bg-lime-100',  iconBg: 'bg-lime-200',  iconMinimal: 'bg-lime-100 text-lime-700',   deco: 'bg-lime-600' },
     'tennis-autumn':  { bg: 'bg-rose-50',  border: 'border-rose-100',  text: 'text-rose-700',  textDark: 'text-rose-800',  hoverText: 'hover:text-rose-800',  hoverBg: 'hover:bg-rose-100',  iconBg: 'bg-rose-200',  iconMinimal: 'bg-rose-100 text-rose-700',   deco: 'bg-rose-700' },
+    'tennis-summer':  { bg: 'bg-cyan-50',  border: 'border-cyan-100',  text: 'text-cyan-700',  textDark: 'text-cyan-800',  hoverText: 'hover:text-cyan-800',  hoverBg: 'hover:bg-cyan-100',  iconBg: 'bg-cyan-200',  iconMinimal: 'bg-cyan-100 text-cyan-700',   deco: 'bg-cyan-700' },
+    'tennis-winter':  { bg: 'bg-sky-50',   border: 'border-sky-100',   text: 'text-sky-700',   textDark: 'text-sky-800',   hoverText: 'hover:text-sky-800',   hoverBg: 'hover:bg-sky-100',   iconBg: 'bg-sky-200',   iconMinimal: 'bg-sky-100 text-sky-700',     deco: 'bg-sky-700' },
   } as const;
-  const { bg, border, text, textDark, hoverText, hoverBg, iconBg, iconMinimal, deco } = palette[season];
+  const { bg, border, text, textDark, hoverText, hoverBg, iconBg, iconMinimal, deco } = palette[season] ?? palette.default;
 
   if (authLoading) {
     return (

@@ -8,6 +8,7 @@ import Footer from "@/components/layout/Footer";
 import BottomNav from "@/components/layout/BottomNav";
 import NavigationProgress from "@/components/ui/NavigationProgress";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import { APPEARANCE_INIT_SCRIPT } from "@/lib/utils/appearanceInitScript";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -100,7 +101,7 @@ export default function RootLayout({
     <html lang="ko" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         <script
-          dangerouslySetInnerHTML={{ __html: `(function(){try{localStorage.removeItem("tennis-season");var s=localStorage.getItem("tennis-season-manual");if(s==="cherry-blossom"||s==="default"){document.documentElement.setAttribute("data-season",s)}else{var m=new Date().getMonth()+1,d=new Date().getDate();document.documentElement.setAttribute("data-season",(m===3&&d>=15)||(m===4&&d<=20)?"cherry-blossom":"default")}}catch(e){}})()` }}
+          dangerouslySetInnerHTML={{ __html: APPEARANCE_INIT_SCRIPT }}
         />
       </head>
       <body className={geist.className}>

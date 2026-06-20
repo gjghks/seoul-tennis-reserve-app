@@ -13,6 +13,8 @@ const SEASON_PALETTE = {
   'cherry-blossom': { neoAvailBg: 'bg-[#FFB7C5]', neoAvailText: 'text-[#FFB7C5]', minHover: 'group-hover:text-pink-600',    minDot: 'bg-pink-500'    },
   'tennis-spring':  { neoAvailBg: 'bg-[#A8D49A]', neoAvailText: 'text-[#A8D49A]', minHover: 'group-hover:text-emerald-600', minDot: 'bg-emerald-500' },
   'tennis-autumn':  { neoAvailBg: 'bg-[#FCD34D]', neoAvailText: 'text-[#FCD34D]', minHover: 'group-hover:text-amber-600',   minDot: 'bg-amber-500'   },
+  'tennis-summer':  { neoAvailBg: 'bg-[#5EEAD4]', neoAvailText: 'text-[#5EEAD4]', minHover: 'group-hover:text-cyan-600',    minDot: 'bg-cyan-500'    },
+  'tennis-winter':  { neoAvailBg: 'bg-[#A8D8F0]', neoAvailText: 'text-[#A8D8F0]', minHover: 'group-hover:text-sky-600',     minDot: 'bg-sky-500'     },
 } as const;
 
 interface DistrictStats {
@@ -46,7 +48,7 @@ const DistrictCard = memo(function DistrictCard({
   const externalCount = stats?.externalCount || 0;
   const hasAvailable = available > 0;
   const isExternalOnly = total > 0 && externalCount === total;
-  const tone = SEASON_PALETTE[season];
+  const tone = SEASON_PALETTE[season] ?? SEASON_PALETTE.default;
 
   if (isNeoBrutalism) {
     const bgColor = hasAvailable ? tone.neoAvailBg : isExternalOnly ? 'bg-amber-50' : total > 0 ? 'bg-white' : 'bg-gray-200';

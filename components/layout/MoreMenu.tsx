@@ -120,10 +120,13 @@ export default function MoreMenu({ isOpen, onClose }: MoreMenuProps) {
   const { user } = useAuth();
   const { toggleTheme, isNeoBrutalism } = useTheme();
   const { season, toggleSeason } = useSeason();
+  // Blind-cycle toggle: label shows the NEXT season in SEASON_ORDER.
   const seasonLabel =
     season === 'default' ? '🌸 벚꽃 시즌'
     : season === 'cherry-blossom' ? '🎾 테니스 봄'
-    : season === 'tennis-spring' ? '🍂 테니스 가을'
+    : season === 'tennis-spring' ? '🌊 한여름 코트'
+    : season === 'tennis-summer' ? '🍂 테니스 가을'
+    : season === 'tennis-autumn' ? '❄️ 테니스 겨울'
     : '✨ 기본 테마';
 
   useEffect(() => {

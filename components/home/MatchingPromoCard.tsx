@@ -19,8 +19,10 @@ export default function MatchingPromoCard({ user, authLoading }: MatchingPromoCa
     'cherry-blossom':  { bg: 'bg-pink-50',    border: 'border-pink-100',    text: 'text-pink-600',    textDark: 'text-pink-700',    hoverText: 'hover:text-pink-700',    hoverBg: 'hover:bg-pink-100',    iconBg: 'bg-pink-200',    iconMinimal: 'bg-pink-100 text-pink-600',       deco: 'bg-pink-600' },
     'tennis-spring':   { bg: 'bg-emerald-50', border: 'border-emerald-100', text: 'text-emerald-600', textDark: 'text-emerald-700', hoverText: 'hover:text-emerald-700', hoverBg: 'hover:bg-emerald-100', iconBg: 'bg-emerald-200', iconMinimal: 'bg-emerald-100 text-emerald-600', deco: 'bg-emerald-600' },
     'tennis-autumn':   { bg: 'bg-orange-50',  border: 'border-orange-100',  text: 'text-orange-600',  textDark: 'text-orange-700',  hoverText: 'hover:text-orange-700',  hoverBg: 'hover:bg-orange-100',  iconBg: 'bg-orange-200',  iconMinimal: 'bg-orange-100 text-orange-600',   deco: 'bg-orange-600' },
+    'tennis-summer':   { bg: 'bg-cyan-50',    border: 'border-cyan-100',    text: 'text-cyan-600',    textDark: 'text-cyan-700',    hoverText: 'hover:text-cyan-700',    hoverBg: 'hover:bg-cyan-100',    iconBg: 'bg-cyan-200',    iconMinimal: 'bg-cyan-100 text-cyan-600',       deco: 'bg-cyan-600' },
+    'tennis-winter':   { bg: 'bg-sky-50',     border: 'border-sky-100',     text: 'text-sky-600',     textDark: 'text-sky-700',     hoverText: 'hover:text-sky-700',     hoverBg: 'hover:bg-sky-100',     iconBg: 'bg-sky-200',     iconMinimal: 'bg-sky-100 text-sky-600',         deco: 'bg-sky-600' },
   } as const;
-  const { bg, border, text, textDark, hoverText, hoverBg, iconBg, iconMinimal, deco } = palette[season];
+  const { bg, border, text, textDark, hoverText, hoverBg, iconBg, iconMinimal, deco } = palette[season] ?? palette.default;
 
   if (authLoading) {
     return (

@@ -26,11 +26,11 @@
   /* Text Colors */
   --text-primary: #1A1A1A;
   --text-secondary: #666666;
-  --text-muted: #999999;
+  --text-muted: #6B7280;
 
   /* Status Colors */
   --status-available: #2E7D32;
-  --status-closed: #9E9E9E;
+  --status-closed: #595959;
   --status-warning: #F57C00;
 
   /* Shadows */
@@ -43,7 +43,7 @@
   --theme-text-muted: #9ca3af;
   --theme-bg-primary: #f9fafb;
   --theme-bg-secondary: #ffffff;
-  --theme-accent: #16a34a;
+  --theme-accent: #15803D;
   --theme-border: #e5e7eb;
   --theme-radius: 12px;
   --theme-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
@@ -57,7 +57,7 @@
   --theme-text-muted: #9ca3af;
   --theme-bg-primary: #f9fafb;
   --theme-bg-secondary: #ffffff;
-  --theme-accent: #16a34a;
+  --theme-accent: #15803D;
   --theme-border: #e5e7eb;
   --theme-radius: 12px;
   --theme-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
@@ -558,7 +558,7 @@ html, body {
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: #22c55e;
+    background: #15803D;
     margin-left: 6px;
     animation: pulse-live 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
@@ -598,7 +598,15 @@ html, body {
   letter-spacing: 0.05em;
 }
 
-[data-theme="neo-brutalism"] .btn-nb:hover {
+@media (hover: hover) {
+  [data-theme="neo-brutalism"] .btn-nb:hover {
+    transform: translate(4px, 4px);
+    box-shadow: 0px 0px 0px 0px #000;
+  }
+}
+
+/* Touch devices have no hover — give taps the same press feedback. */
+[data-theme="neo-brutalism"] .btn-nb:active {
   transform: translate(4px, 4px);
   box-shadow: 0px 0px 0px 0px #000;
 }
@@ -877,10 +885,10 @@ html, body {
 
 [data-theme="default"][data-season="cherry-blossom"] {
   --theme-bg-primary: #FFF5F7;
-  --theme-accent: #D946A6;
+  --theme-accent: #BE185D;
   --theme-border: #FBCFE8;
   --minimal-icon-accent-bg: #FCE7F3;
-  --minimal-icon-accent-text: #DB2777;
+  --minimal-icon-accent-text: #BE185D;
   --minimal-active-bg: #FDF2F8;
   --minimal-active-text: #BE185D;
 }
@@ -971,7 +979,8 @@ html, body {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 9999;
+  /* z-index 30 (NOT 9999): above content, below the z-50 modal/toast/lightbox layer. */
+  z-index: 30;
   overflow: hidden;
 }
 
@@ -1015,12 +1024,12 @@ html, body {
   --court-surface: #D2691E;
   --bg-primary: #F7F4EE;
   --status-available: #7FB069;
-  --theme-accent: #D2691E;
+  --theme-accent: #C2410C;
 }
 
 [data-theme="default"][data-season="tennis-spring"] {
   --theme-bg-primary: #F7F4EE;
-  --theme-accent: #D2691E;
+  --theme-accent: #C2410C;
   --theme-border: #E8DCC4;
   --minimal-icon-accent-bg: #DCFCE7;
   --minimal-icon-accent-text: #059669;
@@ -1034,7 +1043,7 @@ html, body {
   --court-green-dark: #5D8A4B;
   --bg-primary: #F7F4EE;
   --theme-bg-primary: #F7F4EE;
-  --theme-accent: #D2691E;
+  --theme-accent: #C2410C;
 
   --nb-accent-bg: #A8D49A;
   --nb-accent-text: #A8D49A;
@@ -1082,7 +1091,7 @@ html, body {
 }
 
 [data-season="tennis-spring"] .live-indicator::after {
-  background: #7FB069;
+  background: #15803D;
 }
 
 /* 가을: 앰버/단풍 + 딥 그린 */
@@ -1188,7 +1197,8 @@ html, body {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 9999;
+  /* z-index 30 (NOT 9999): above content, below the z-50 modal/toast/lightbox layer. */
+  z-index: 30;
   overflow: hidden;
 }
 
@@ -1205,6 +1215,265 @@ html, body {
 
 @media (prefers-reduced-motion: reduce) {
   .tennis-ball {
+    animation: none !important;
+    display: none;
+  }
+}
+
+/* ============================================
+   TENNIS SUMMER (여름: 코발트 + 틸/아쿠아 + 쿨민트)
+   window 6/16–8/31. 폭염/장마 대비 '새벽·야간 코트' 쿨링 무드.
+   ============================================ */
+[data-season="tennis-summer"] {
+  --court-green: #0D9488;
+  --court-green-light: #5EEAD4;
+  --court-green-dark: #0F766E;
+  --court-surface: #0EA5E9;
+  --bg-primary: #F0FBFE;
+  --status-available: #0D9488;
+  --theme-accent: #0E7490;
+}
+
+[data-theme="default"][data-season="tennis-summer"] {
+  --theme-bg-primary: #F0FBFE;
+  --theme-accent: #0E7490;
+  --theme-border: #BAE6FD;
+  --minimal-icon-accent-bg: #CFFAFE;
+  --minimal-icon-accent-text: #0E7490;
+  --minimal-active-bg: #ECFEFF;
+  --minimal-active-text: #155E75;
+}
+
+[data-theme="neo-brutalism"][data-season="tennis-summer"] {
+  --court-green: #2DD4BF;
+  --court-green-light: #5EEAD4;
+  --court-green-dark: #0F766E;
+  --bg-primary: #E8FBFC;
+  --theme-bg-primary: #E8FBFC;
+  --theme-accent: #0369A1;
+
+  --nb-accent-bg: #7DD3FC;
+  --nb-accent-text: #7DD3FC;
+  --nb-accent-bg-muted: rgba(125, 211, 252, 0.2);
+  --nb-accent-bg-hover: rgba(125, 211, 252, 0.3);
+  --nb-accent-bg-active: rgba(125, 211, 252, 0.25);
+  --nb-icon-accent: #0369A1;
+}
+
+[data-theme="neo-brutalism"][data-season="tennis-summer"] .court-pattern-nb {
+  background: linear-gradient(135deg, #0EA5E9 0%, #0369A1 100%);
+}
+
+[data-theme="neo-brutalism"][data-season="tennis-summer"] .header-nb {
+  background: #38BDF8;
+}
+
+[data-theme="neo-brutalism"][data-season="tennis-summer"] .btn-nb-primary {
+  background: #2DD4BF;
+}
+
+[data-theme="neo-brutalism"][data-season="tennis-summer"] .btn-nb-yellow {
+  background: #FDE047;
+}
+
+[data-theme="neo-brutalism"][data-season="tennis-summer"] .btn-nb-secondary {
+  background: #7DD3FC;
+}
+
+[data-theme="neo-brutalism"][data-season="tennis-summer"] .badge-nb-available {
+  background: #5EEAD4;
+}
+
+[data-season="tennis-summer"] .court-pattern {
+  background: linear-gradient(135deg, #38BDF8 0%, #0369A1 100%);
+}
+
+[data-season="tennis-summer"] .badge-available {
+  background: #CCFBF1;
+  color: #0F766E;
+}
+
+[data-season="tennis-summer"] :focus-visible {
+  outline-color: #0E7490;
+}
+
+[data-season="tennis-summer"] .live-indicator::after {
+  background: #0D9488;
+}
+
+/* 물방울 입자 오버레이 (장마·습도·새벽 응결 모티프) */
+@keyframes tennis-summer-drip {
+  0% {
+    transform: translateY(-26px) translateX(0);
+    opacity: 0;
+  }
+  12% { opacity: 0.45; }
+  88% { opacity: 0.30; }
+  100% {
+    transform: translateY(110vh) translateX(var(--summer-drift, 0));
+    opacity: 0;
+  }
+}
+
+@keyframes tennis-summer-shimmer {
+  0%, 100% { translate: 0 0; }
+  50% { translate: var(--summer-sway, 6px) 0; }
+}
+
+.tennis-summer-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  /* z-index 30 (NOT 9999): above content, below the z-50 modal/toast/lightbox layer. */
+  z-index: 30;
+  overflow: hidden;
+}
+
+.tennis-summer-drop {
+  position: absolute;
+  top: -26px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140'><defs><radialGradient id='d' cx='38%25' cy='30%25' r='75%25'><stop offset='0%25' stop-color='%23E0F7FF'/><stop offset='35%25' stop-color='%23BAE6FD'/><stop offset='72%25' stop-color='%2338BDF8'/><stop offset='100%25' stop-color='%230EA5E9'/></radialGradient></defs><path d='M50 4 C50 40 92 70 92 100 a42 42 0 0 1 -84 0 C8 70 50 40 50 4 Z' fill='url(%23d)'/><ellipse cx='38' cy='92' rx='12' ry='16' fill='white' opacity='0.30'/></svg>");
+  background-size: cover;
+  background-repeat: no-repeat;
+  filter: drop-shadow(0 1px 2px rgba(3, 105, 161, 0.25));
+  animation: tennis-summer-drip linear infinite, tennis-summer-shimmer ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tennis-summer-drop {
+    animation: none !important;
+    display: none;
+  }
+}
+
+/* ============================================
+   TENNIS WINTER (겨울: 아이시 블루 + 슬레이트 + 따뜻한 앰버 포인트)
+   window 11/1~3/14 (연도 경계 wrap). 저조도 가독성 최우선.
+   ============================================ */
+[data-season="tennis-winter"] {
+  --court-green: #2C5F8A;
+  --court-green-light: #A8D8F0;
+  --court-green-dark: #1E4A6B;
+  --court-surface: #5BA3DC;
+  --bg-primary: #F2F7FB;
+  --status-available: #0284C7;
+  --theme-accent: #1E5C94;
+}
+
+[data-theme="default"][data-season="tennis-winter"] {
+  --theme-bg-primary: #F2F7FB;
+  --theme-accent: #1E5C94;
+  --theme-border: #CFE3F2;
+  --minimal-icon-accent-bg: #E0F2FE;
+  --minimal-icon-accent-text: #0369A1;
+  --minimal-active-bg: #EFF8FF;
+  --minimal-active-text: #0C4A6E;
+}
+
+[data-theme="neo-brutalism"][data-season="tennis-winter"] {
+  --court-green: #2C5F8A;
+  --court-green-light: #A8D8F0;
+  --court-green-dark: #1E4A6B;
+  --bg-primary: #EAF3FB;
+  --theme-bg-primary: #EAF3FB;
+  --theme-accent: #1E5C94;
+
+  --nb-accent-bg: #A8D8F0;
+  --nb-accent-text: #A8D8F0;
+  --nb-accent-bg-muted: rgba(168, 216, 240, 0.2);
+  --nb-accent-bg-hover: rgba(168, 216, 240, 0.3);
+  --nb-accent-bg-active: rgba(168, 216, 240, 0.25);
+  --nb-icon-accent: #1E5C94;
+}
+
+[data-theme="neo-brutalism"][data-season="tennis-winter"] .court-pattern-nb {
+  background: linear-gradient(135deg, #2C5F8A 0%, #1E4A6B 100%);
+}
+
+[data-theme="neo-brutalism"][data-season="tennis-winter"] .header-nb {
+  background: #A8D8F0;
+}
+
+[data-theme="neo-brutalism"][data-season="tennis-winter"] .btn-nb-primary {
+  background: #5BA3DC;
+}
+
+[data-theme="neo-brutalism"][data-season="tennis-winter"] .btn-nb-yellow {
+  background: #FBBF77;
+}
+
+[data-theme="neo-brutalism"][data-season="tennis-winter"] .btn-nb-secondary {
+  background: #BFE0F5;
+}
+
+[data-theme="neo-brutalism"][data-season="tennis-winter"] .badge-nb-available {
+  background: #A8D8F0;
+}
+
+[data-season="tennis-winter"] .court-pattern {
+  background: linear-gradient(135deg, #2C5F8A 0%, #1E4A6B 100%);
+}
+
+[data-season="tennis-winter"] .badge-available {
+  background: #E0F2FE;
+  color: #075985;
+}
+
+[data-season="tennis-winter"] :focus-visible {
+  outline-color: #1E5C94;
+}
+
+[data-season="tennis-winter"] .live-indicator::after {
+  background: #0284C7;
+}
+
+/* ---- 눈송이 입자 오버레이 ---- */
+@keyframes snow-fall {
+  0% {
+    transform: translateY(-20px) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% { opacity: 0.9; }
+  90% { opacity: 0.55; }
+  100% {
+    transform: translateY(110vh) translateX(var(--snow-drift, 0)) rotate(160deg);
+    opacity: 0;
+  }
+}
+
+@keyframes snow-sway {
+  0%, 100% { translate: 0; }
+  50% { translate: var(--snow-sway, 10px); }
+}
+
+.snow-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  /* z-index 30 (NOT 9999): above content, below the z-50 modal/toast/lightbox layer. */
+  z-index: 30;
+  overflow: hidden;
+}
+
+.snow-flake {
+  position: absolute;
+  top: -20px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.95), rgba(214, 236, 250, 0.85));
+  box-shadow: 0 0 4px rgba(214, 236, 250, 0.7);
+  filter: blur(0.4px);
+  animation: snow-fall linear infinite, snow-sway ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.snow-flake:nth-child(odd) {
+  background: radial-gradient(circle at 40% 35%, rgba(255, 255, 255, 0.85), rgba(191, 224, 245, 0.7));
+  filter: blur(0.7px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .snow-flake {
     animation: none !important;
     display: none;
   }

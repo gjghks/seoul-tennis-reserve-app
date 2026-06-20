@@ -11,6 +11,8 @@ import ScrollToTop from '@/components/ui/ScrollToTop';
 import UpdatePrompt from '@/components/pwa/UpdatePrompt';
 import SakuraOverlay from '@/components/seasonal/SakuraOverlay';
 import TennisBallOverlay from '@/components/seasonal/TennisBallOverlay';
+import SummerDropletOverlay from '@/components/seasonal/SummerDropletOverlay';
+import SnowOverlay from '@/components/seasonal/SnowOverlay';
 
 function useServiceWorkerRegistration() {
   useEffect(() => {
@@ -48,6 +50,8 @@ export default function Providers({ children }: ProvidersProps) {
             <ScrollToTop />
             <SakuraOverlay />
             <TennisBallOverlay />
+            <SummerDropletOverlay />
+            <SnowOverlay />
           </ToastProvider>
         </SeasonalProvider>
       </ThemeProvider>

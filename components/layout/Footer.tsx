@@ -22,15 +22,21 @@ export default function Footer() {
   const { season, toggleSeason } = useSeason();
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
 
+  // Blind-cycle toggle: the label shows the NEXT season in SEASON_ORDER
+  // (default → cherry → spring → summer → autumn → winter → default).
   const seasonLabel =
     season === 'default' ? '🌸 벚꽃 시즌'
     : season === 'cherry-blossom' ? '🎾 테니스 봄'
-    : season === 'tennis-spring' ? '🍂 테니스 가을'
+    : season === 'tennis-spring' ? '🌊 한여름 코트'
+    : season === 'tennis-summer' ? '🍂 테니스 가을'
+    : season === 'tennis-autumn' ? '❄️ 테니스 겨울'
     : '✨ 기본 테마';
   const seasonAria =
     season === 'default' ? '벚꽃 시즌으로 변경'
     : season === 'cherry-blossom' ? '테니스 봄 시즌으로 변경'
-    : season === 'tennis-spring' ? '테니스 가을 시즌으로 변경'
+    : season === 'tennis-spring' ? '한여름 코트 시즌으로 변경'
+    : season === 'tennis-summer' ? '테니스 가을 시즌으로 변경'
+    : season === 'tennis-autumn' ? '겨울 코트 시즌으로 변경'
     : '기본 테마로 변경';
 
   return (
