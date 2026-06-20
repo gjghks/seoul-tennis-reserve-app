@@ -4,21 +4,12 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { useMode } from '@/contexts/ModeContext';
 import { useSeason } from '@/contexts/SeasonalContext';
 import { type Mode, MODE_ORDER } from '@/lib/utils/appearanceMode';
-import { type Season, SEASON_ORDER } from '@/lib/utils/season';
+import { SEASON_ORDER, SEASON_META } from '@/lib/utils/season';
 
 const MODE_META: Record<Mode, { label: string; icon: string }> = {
   system: { label: '시스템', icon: '🖥️' },
   light: { label: '라이트', icon: '☀️' },
   dark: { label: '다크', icon: '🌙' },
-};
-
-const SEASON_META: Record<Season, { label: string; icon: string }> = {
-  'default': { label: '기본', icon: '✨' },
-  'cherry-blossom': { label: '벚꽃', icon: '🌸' },
-  'tennis-spring': { label: '봄', icon: '🎾' },
-  'tennis-summer': { label: '여름', icon: '🌊' },
-  'tennis-autumn': { label: '가을', icon: '🍂' },
-  'tennis-winter': { label: '겨울', icon: '❄️' },
 };
 
 const SEG_BASE =
@@ -95,7 +86,7 @@ export default function AppearanceControls() {
               aria-pressed={on}
               className={`${SEG_BASE} ${on ? SEG_ON : SEG_OFF}`}
             >
-              <span aria-hidden="true">{SEASON_META[s].icon}</span>
+              <span aria-hidden="true">{SEASON_META[s].emoji}</span>
               {SEASON_META[s].label}
             </button>
           );

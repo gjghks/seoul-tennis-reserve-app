@@ -35,6 +35,20 @@ export const SEASON_ORDER: Season[] = [
   'tennis-winter',
 ];
 
+/**
+ * Canonical per-season display metadata (picker label + emoji). Single source of
+ * truth — the AppearanceControls picker reads this, so adding a season's label
+ * lives next to its type. (SeasonBanner keeps its own richer banner config.)
+ */
+export const SEASON_META: Record<Season, { label: string; emoji: string }> = {
+  'default': { label: '기본', emoji: '✨' },
+  'cherry-blossom': { label: '벚꽃', emoji: '🌸' },
+  'tennis-spring': { label: '봄', emoji: '🎾' },
+  'tennis-summer': { label: '여름', emoji: '🌊' },
+  'tennis-autumn': { label: '가을', emoji: '🍂' },
+  'tennis-winter': { label: '겨울', emoji: '❄️' },
+};
+
 export function isValidSeason(value: unknown): value is Season {
   return (
     value === 'default' ||
