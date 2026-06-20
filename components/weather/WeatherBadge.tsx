@@ -181,16 +181,16 @@ export default function WeatherBadge({ nx, ny, isOutdoor = false, compact = fals
     <div className="flex items-center gap-2 flex-wrap">
       <div
         className={themeClass(
-          'inline-flex items-center gap-2 px-3 py-2 bg-white border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000]',
-          'inline-flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-full'
+          'inline-flex items-center gap-2 px-3 py-2 bg-white dark:bg-slate-800 border-2 border-black dark:border-slate-700 rounded-[5px] shadow-[3px_3px_0px_0px_#000]',
+          'inline-flex items-center gap-2 px-3 py-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-full'
         )}
       >
         <AnimatedWeatherIcon sky={data.sky} rainfall={data.rainfall} size={18} />
-        <span className={themeClass('text-sm font-black text-black', 'text-sm font-semibold text-gray-800')}>
+        <span className={themeClass('text-sm font-black text-black dark:text-slate-100', 'text-sm font-semibold text-gray-800 dark:text-slate-200')}>
           {Math.round(data.temperature)}°C
         </span>
         {hasPrecipitation && (
-          <span className={themeClass('text-xs font-bold text-black/80', 'text-xs text-gray-500')}>
+          <span className={themeClass('text-xs font-bold text-black/80 dark:text-slate-300', 'text-xs text-gray-500 dark:text-slate-400')}>
             강수 {data.rainfall ?? 0}mm
           </span>
         )}

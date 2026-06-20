@@ -91,11 +91,11 @@ export default function LoginPrompt({ isOpen, onClose, message }: LoginPromptPro
       aria-modal="true"
       aria-labelledby={titleId}
     >
-      <div className={themeClass('bg-white border-[3px] border-black rounded-[5px] shadow-[8px_8px_0px_0px_#000] p-6 max-w-sm mx-auto', 'bg-white rounded-xl border border-gray-200 shadow-xl p-6 max-w-sm mx-auto')}>
-        <h2 id={titleId} className={`text-xl mb-3 ${themeClass('font-black text-black uppercase', 'font-semibold text-gray-900')}`}>
+      <div className={themeClass('bg-white dark:bg-slate-900 border-[3px] border-black rounded-[5px] shadow-[8px_8px_0px_0px_#000] p-6 max-w-sm mx-auto', 'bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-700 shadow-xl p-6 max-w-sm mx-auto')}>
+        <h2 id={titleId} className={`text-xl mb-3 ${themeClass('font-black text-black dark:text-slate-100 uppercase', 'font-semibold text-gray-900 dark:text-slate-100')}`}>
           {isNeoBrutalism ? '🔒 ' : ''}로그인이 필요합니다
         </h2>
-        <p className={`mb-6 ${themeClass('text-black/70 font-medium', 'text-gray-500')}`}>
+        <p className={`mb-6 ${themeClass('text-black/70 dark:text-slate-300 font-medium', 'text-gray-500 dark:text-slate-400')}`}>
           {message || '이 기능을 사용하려면 로그인해주세요.'}
         </p>
 
@@ -109,7 +109,7 @@ export default function LoginPrompt({ isOpen, onClose, message }: LoginPromptPro
           <button
             type="button"
             onClick={onClose}
-            className={themeClass('flex-1 py-3 bg-white text-black font-bold border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all', 'flex-1 py-3 rounded-lg border border-gray-200 text-gray-600 hover:text-gray-900 hover:border-gray-300 transition-colors')}
+            className={themeClass('flex-1 py-3 bg-white dark:bg-slate-900 text-black dark:text-slate-100 font-bold border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all', 'flex-1 py-3 rounded-lg border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-100 hover:border-gray-300 dark:hover:border-slate-600 transition-colors')}
           >
             나중에
           </button>

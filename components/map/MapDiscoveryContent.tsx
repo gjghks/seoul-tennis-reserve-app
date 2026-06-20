@@ -165,8 +165,8 @@ export default function MapDiscoveryContent({ courts }: MapDiscoveryContentProps
 
   if (error) {
     return (
-      <div className={`min-h-screen flex items-center justify-center ${themeClass('bg-nb-bg', 'bg-gray-50')}`}>
-        <p className={themeClass('text-black/60 font-medium', 'text-gray-400')}>
+      <div className={`min-h-screen flex items-center justify-center ${themeClass('bg-nb-bg', 'bg-gray-50 dark:bg-slate-900')}`}>
+        <p className={themeClass('text-black/60 dark:text-slate-400 font-medium', 'text-gray-400 dark:text-slate-500')}>
           지도를 불러올 수 없습니다.
         </p>
       </div>
@@ -175,8 +175,8 @@ export default function MapDiscoveryContent({ courts }: MapDiscoveryContentProps
 
   if (!process.env.NEXT_PUBLIC_KAKAO_MAP_KEY) {
     return (
-      <div className={`min-h-screen flex items-center justify-center ${themeClass('bg-nb-bg', 'bg-gray-50')}`}>
-        <p className={themeClass('text-black/60 font-medium', 'text-gray-400')}>
+      <div className={`min-h-screen flex items-center justify-center ${themeClass('bg-nb-bg', 'bg-gray-50 dark:bg-slate-900')}`}>
+        <p className={themeClass('text-black/60 dark:text-slate-400 font-medium', 'text-gray-400 dark:text-slate-500')}>
           카카오 맵 API 키가 필요합니다.
         </p>
       </div>
@@ -188,7 +188,7 @@ export default function MapDiscoveryContent({ courts }: MapDiscoveryContentProps
       {/* District filter chips */}
       <div
         className={`absolute top-0 left-0 right-0 z-10 overflow-x-auto scrollbar-hide ${
-          themeClass('bg-nb-bg/90 backdrop-blur-sm', 'bg-white/90 backdrop-blur-sm')
+          themeClass('bg-nb-bg/90 backdrop-blur-sm', 'bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm')
         }`}
         style={{ paddingBottom: 4 }}
       >
@@ -208,8 +208,8 @@ export default function MapDiscoveryContent({ courts }: MapDiscoveryContentProps
                     'bg-green-600 text-white rounded-full'
                   )
                 : themeClass(
-                    'bg-white border-2 border-black rounded-[5px] text-black hover:bg-gray-100',
-                    'bg-white border border-gray-200 rounded-full text-gray-600 hover:border-green-300'
+                    'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] text-black dark:text-slate-100 hover:bg-gray-100 dark:hover:bg-slate-700',
+                    'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-full text-gray-600 dark:text-slate-300 hover:border-green-300'
                   )
             }`}
           >
@@ -236,7 +236,7 @@ export default function MapDiscoveryContent({ courts }: MapDiscoveryContentProps
                     )
                   : themeClass(
                       'bg-white border-2 border-black rounded-[5px] text-black hover:bg-gray-100',
-                      'bg-white border border-gray-200 rounded-full text-gray-600 hover:border-green-300'
+                      'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-full text-gray-600 dark:text-slate-400 hover:border-green-300'
                     )
               }`}
             >
@@ -250,8 +250,8 @@ export default function MapDiscoveryContent({ courts }: MapDiscoveryContentProps
       <div
         className={`absolute top-10 left-3 z-10 px-3 py-1.5 text-xs font-bold ${
           themeClass(
-            'bg-white border-2 border-black rounded-[5px] shadow-[2px_2px_0px_0px_#000] text-black',
-            'bg-white border border-gray-200 rounded-full shadow-sm text-gray-700'
+            'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[2px_2px_0px_0px_#000] text-black dark:text-slate-100',
+            'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-full shadow-sm text-gray-700 dark:text-slate-200'
           )
         }`}
       >
@@ -265,8 +265,8 @@ export default function MapDiscoveryContent({ courts }: MapDiscoveryContentProps
         disabled={locating}
         className={`absolute bottom-4 right-3 z-10 w-10 h-10 flex items-center justify-center transition-all ${
           themeClass(
-            'bg-white border-2 border-black rounded-[5px] shadow-[2px_2px_0px_0px_#000] hover:bg-gray-100',
-            'bg-white border border-gray-200 rounded-full shadow-md hover:bg-gray-50'
+            'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[2px_2px_0px_0px_#000] hover:bg-gray-100 dark:hover:bg-slate-700',
+            'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-full shadow-md hover:bg-gray-50 dark:hover:bg-slate-700'
           )
         }`}
         aria-label="내 위치로 이동"
@@ -277,7 +277,7 @@ export default function MapDiscoveryContent({ courts }: MapDiscoveryContentProps
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
         ) : (
-          <svg className={themeClass('w-5 h-5 text-black', 'w-5 h-5 text-green-600')} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <svg className={themeClass('w-5 h-5 text-black dark:text-slate-100', 'w-5 h-5 text-green-600')} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <circle cx="12" cy="12" r="3" />
             <path d="M12 2v4m0 12v4m10-10h-4M6 12H2" />
           </svg>
@@ -336,7 +336,7 @@ export default function MapDiscoveryContent({ courts }: MapDiscoveryContentProps
               className={
                 isNeoBrutalism
                   ? 'bg-white border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000]'
-                  : 'bg-white border border-gray-200 rounded-xl shadow-lg'
+                  : 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl shadow-lg'
               }
             >
               {/* Header */}

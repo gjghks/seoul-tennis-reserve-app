@@ -90,9 +90,9 @@ export default function CourtAlertButton({ svcId, svcName, districtSlug, classNa
           } ${loading ? 'cursor-not-allowed' : 'active:translate-x-[3px] active:translate-y-[3px] active:shadow-none'} ${className}`,
           `flex items-center gap-2 px-3 py-2 rounded-lg transition-all active:duration-0 ${
             alertOn
-              ? 'bg-amber-50 text-amber-600'
-              : 'bg-gray-100 text-gray-500 active:text-amber-600'
-          } ${loading ? 'cursor-not-allowed' : 'active:bg-amber-50'} ${className}`
+              ? 'bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-300'
+              : 'bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-slate-400 active:text-amber-600'
+          } ${loading ? 'cursor-not-allowed' : 'active:bg-amber-50 dark:active:bg-amber-950/40'} ${className}`
         )}
       >
         {loading ? (

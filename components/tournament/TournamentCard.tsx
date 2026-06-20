@@ -68,16 +68,16 @@ export default function TournamentCard({ tournament }: TournamentCardProps) {
   const getStatusClass = (status: string) => {
     switch (status) {
       case 'registration':
-        return themeClass('bg-[#88aaee] text-black border-2 border-black', 'bg-blue-100 text-blue-700 border border-blue-200');
+        return themeClass('bg-[#88aaee] text-black border-2 border-black', 'bg-blue-100 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-900/50');
       case 'in_progress':
-        return themeClass('bg-[#22c55e] text-black border-2 border-black', 'bg-green-100 text-green-700 border border-green-200');
+        return themeClass('bg-[#22c55e] text-black border-2 border-black', 'bg-green-100 dark:bg-green-950/40 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-900/50');
       case 'completed':
-        return themeClass('bg-[#facc15] text-black border-2 border-black', 'bg-yellow-100 text-yellow-700 border border-yellow-200');
+        return themeClass('bg-[#facc15] text-black border-2 border-black', 'bg-yellow-100 dark:bg-yellow-950/40 text-yellow-700 dark:text-yellow-300 border border-yellow-200 dark:border-yellow-900/50');
       case 'cancelled':
-        return themeClass('bg-[#ff90e8] text-black border-2 border-black', 'bg-red-100 text-red-700 border border-red-200');
+        return themeClass('bg-[#ff90e8] text-black border-2 border-black', 'bg-red-100 dark:bg-red-950/40 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-900/50');
       case 'draft':
       default:
-        return themeClass('bg-gray-300 text-black border-2 border-black', 'bg-gray-100 text-gray-700 border border-gray-200');
+        return themeClass('bg-gray-300 text-black border-2 border-black', 'bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-300 border border-gray-200 dark:border-slate-700');
     }
   };
 
@@ -95,8 +95,8 @@ export default function TournamentCard({ tournament }: TournamentCardProps) {
         className={cn(
           'relative overflow-hidden transition-all p-5',
           themeClass(
-            'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000]',
-            'bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-1'
+            'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000]',
+            'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm hover:shadow-md hover:-translate-y-1'
           )
         )}
       >
@@ -108,23 +108,23 @@ export default function TournamentCard({ tournament }: TournamentCardProps) {
             <span
               className={cn(
                 'px-2 py-0.5 text-xs font-bold rounded',
-                themeClass('bg-black text-white', 'bg-gray-100 text-gray-700')
+                themeClass('bg-black text-white', 'bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-slate-200')
               )}
             >
               {MATCH_TYPE_LABELS[tournament.match_type] || '기타'}
             </span>
           </div>
-          <span className={cn('text-xs', themeClass('font-bold text-black/50', 'text-gray-400'))}>{dateLabel}</span>
+          <span className={cn('text-xs', themeClass('font-bold text-black/50 dark:text-slate-400', 'text-gray-400 dark:text-slate-500'))}>{dateLabel}</span>
         </div>
 
-        <h3 className={cn('text-lg mb-3 line-clamp-1', themeClass('font-black text-black', 'font-bold text-gray-900'))}>{tournament.title}</h3>
+        <h3 className={cn('text-lg mb-3 line-clamp-1', themeClass('font-black text-black dark:text-slate-100', 'font-bold text-gray-900 dark:text-slate-100'))}>{tournament.title}</h3>
 
-        <p className={cn('text-sm mb-4', themeClass('font-bold text-black/60', 'text-gray-500'))}>
+        <p className={cn('text-sm mb-4', themeClass('font-bold text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400'))}>
           {FORMAT_LABELS[tournament.format] || tournament.format}
         </p>
 
-        <div className={cn('pt-3 border-t flex items-center justify-between', themeClass('border-black/10', 'border-gray-100'))}>
-          <span className={cn('text-sm', themeClass('font-bold text-black/70', 'font-medium text-gray-600'))}>
+        <div className={cn('pt-3 border-t flex items-center justify-between', themeClass('border-black/10 dark:border-slate-700', 'border-gray-100 dark:border-slate-700'))}>
+          <span className={cn('text-sm', themeClass('font-bold text-black/70 dark:text-slate-300', 'font-medium text-gray-600 dark:text-slate-400'))}>
             {tournament.district || '지역 미정'}
           </span>
           <span

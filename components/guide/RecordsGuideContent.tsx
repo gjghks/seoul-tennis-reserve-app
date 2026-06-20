@@ -117,22 +117,22 @@ export default function RecordsGuideContent() {
     <div className="container py-8 scrollbar-hide">
       <div
         className={`max-w-3xl mx-auto ${themeClass(
-          'bg-white border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000] p-8',
-          'bg-white rounded-xl shadow-lg p-8'
+          'bg-white dark:bg-slate-900 border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000] p-8',
+          'bg-white dark:bg-slate-900 rounded-xl shadow-lg p-8'
         )}`}
       >
         <div className="mb-10 text-center">
           <div className="text-4xl mb-4">📝</div>
           <h1
             className={`text-3xl font-bold mb-3 ${themeClass(
-              'text-black',
-              'text-gray-900'
+              'text-black dark:text-slate-100',
+              'text-gray-900 dark:text-slate-100'
             )}`}
           >
             경기 기록 가이드
           </h1>
           <p
-            className={`text-lg ${themeClass('text-black/80', 'text-gray-600')}`}
+            className={`text-lg ${themeClass('text-black/80 dark:text-slate-300', 'text-gray-600 dark:text-slate-400')}`}
           >
             나의 테니스 실력을 체계적으로 관리하는 방법
           </p>
@@ -140,15 +140,15 @@ export default function RecordsGuideContent() {
 
         <div
           className={`space-y-12 ${themeClass(
-            'text-black/80',
-            'text-gray-600'
+            'text-black/80 dark:text-slate-300',
+            'text-gray-600 dark:text-slate-400'
           )}`}
         >
           <section>
             <h2
               className={`text-xl font-bold mb-4 flex items-center gap-2 ${themeClass(
-                'text-black',
-                'text-gray-900'
+                'text-black dark:text-slate-100',
+                'text-gray-900 dark:text-slate-100'
               )}`}
             >
               <span className="text-2xl">✨</span> 주요 기능
@@ -174,13 +174,13 @@ export default function RecordsGuideContent() {
                       className={cn(
                         'w-full flex items-center gap-4 p-4 text-left cursor-pointer select-none transition-all',
                         themeClass(
-                          'bg-white border-2 border-black rounded-[6px] shadow-[2px_2px_0px_0px_#000] hover:shadow-[4px_4px_0px_0px_#000] hover:-translate-y-[1px]',
-                          'bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100 hover:border-gray-300'
+                          'bg-white dark:bg-slate-800 border-2 border-black rounded-[6px] shadow-[2px_2px_0px_0px_#000] hover:shadow-[4px_4px_0px_0px_#000] hover:-translate-y-[1px]',
+                          'bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 hover:border-gray-300 dark:hover:border-slate-600'
                         ),
                         isOpen &&
                           themeClass(
-                            'shadow-[4px_4px_0px_0px_#000] -translate-y-[1px] bg-yellow-50',
-                            'bg-white border-green-300 shadow-md'
+                            'shadow-[4px_4px_0px_0px_#000] -translate-y-[1px] bg-yellow-50 dark:bg-yellow-950/40',
+                            'bg-white dark:bg-slate-900 border-green-300 dark:border-green-700 shadow-md'
                           )
                       )}
                     >
@@ -188,8 +188,8 @@ export default function RecordsGuideContent() {
                       <div className="flex-1 min-w-0">
                         <div
                           className={`font-bold mb-0.5 ${themeClass(
-                            'text-black',
-                            'text-gray-900'
+                            'text-black dark:text-slate-100',
+                            'text-gray-900 dark:text-slate-100'
                           )}`}
                         >
                           {feature.title}
@@ -199,7 +199,7 @@ export default function RecordsGuideContent() {
                       <div
                         className={cn(
                           'shrink-0 text-xs font-bold transition-transform duration-300',
-                          themeClass('text-black', 'text-gray-400'),
+                          themeClass('text-black dark:text-slate-100', 'text-gray-400 dark:text-slate-500'),
                           isOpen && 'rotate-180'
                         )}
                       >
@@ -220,8 +220,8 @@ export default function RecordsGuideContent() {
                         className={cn(
                           'p-4 rounded-b-lg',
                           themeClass(
-                            'bg-gray-50 border-2 border-t-0 border-black rounded-[6px]',
-                            'bg-white border border-gray-200 rounded-lg shadow-inner'
+                            'bg-gray-50 dark:bg-slate-800 border-2 border-t-0 border-black rounded-[6px]',
+                            'bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg shadow-inner'
                           )
                         )}
                       >
@@ -240,16 +240,16 @@ export default function RecordsGuideContent() {
           <section>
             <h2
               className={`text-xl font-bold mb-4 flex items-center gap-2 ${themeClass(
-                'text-black',
-                'text-gray-900'
+                'text-black dark:text-slate-100',
+                'text-gray-900 dark:text-slate-100'
               )}`}
             >
               <span className="text-2xl">🚀</span> 시작하기
             </h2>
             <div
               className={`p-5 rounded-lg ${themeClass(
-                'bg-blue-50 border-2 border-black',
-                'bg-blue-50 border border-blue-100'
+                'bg-blue-50 dark:bg-blue-950/40 border-2 border-black',
+                'bg-blue-50 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900/50'
               )}`}
             >
               <ol className="list-decimal list-inside space-y-2">
@@ -273,8 +273,8 @@ export default function RecordsGuideContent() {
           <section>
             <h2
               className={`text-xl font-bold mb-4 flex items-center gap-2 ${themeClass(
-                'text-black',
-                'text-gray-900'
+                'text-black dark:text-slate-100',
+                'text-gray-900 dark:text-slate-100'
               )}`}
             >
               <span className="text-2xl">✍️</span> 기록 작성법
@@ -284,8 +284,8 @@ export default function RecordsGuideContent() {
                 <div
                   key={step.step}
                   className={`flex items-start gap-4 p-4 ${themeClass(
-                    'bg-white border-2 border-black rounded-[6px]',
-                    'bg-white border border-gray-200 rounded-lg'
+                    'bg-white dark:bg-slate-800 border-2 border-black rounded-[6px]',
+                    'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg'
                   )}`}
                 >
                   <div
@@ -299,8 +299,8 @@ export default function RecordsGuideContent() {
                   <div>
                     <h3
                       className={`font-bold mb-1 ${themeClass(
-                        'text-black',
-                        'text-gray-900'
+                        'text-black dark:text-slate-100',
+                        'text-gray-900 dark:text-slate-100'
                       )}`}
                     >
                       {step.title}
@@ -316,8 +316,8 @@ export default function RecordsGuideContent() {
           <section>
             <h2
               className={`text-xl font-bold mb-4 flex items-center gap-2 ${themeClass(
-                'text-black',
-                'text-gray-900'
+                'text-black dark:text-slate-100',
+                'text-gray-900 dark:text-slate-100'
               )}`}
             >
               <span className="text-2xl">💡</span> 활용 팁
@@ -327,7 +327,7 @@ export default function RecordsGuideContent() {
                 <li key={tip.title} className="flex items-start gap-2">
                   <span className="text-green-600 font-bold shrink-0">✓</span>
                   <span>
-                    <strong className={themeClass('text-black', 'text-gray-900')}>
+                    <strong className={themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}>
                       {tip.title}
                     </strong>
                     <span className="block text-sm mt-1">{tip.desc}</span>
@@ -337,7 +337,7 @@ export default function RecordsGuideContent() {
             </ul>
           </section>
 
-          <section className="pt-4 border-t border-gray-200">
+          <section className="pt-4 border-t border-gray-200 dark:border-slate-700">
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link
                 href="/records/new"
@@ -351,8 +351,8 @@ export default function RecordsGuideContent() {
               <Link
                 href="/records"
                 className={`px-6 py-3 rounded-lg text-center font-bold transition-all ${themeClass(
-                  'bg-white text-black border-2 border-black hover:bg-gray-100 shadow-[4px_4px_0px_0px_#000] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000]',
-                  'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 shadow-sm hover:shadow'
+                  'bg-white dark:bg-slate-800 text-black dark:text-slate-100 border-2 border-black hover:bg-gray-100 dark:hover:bg-slate-700 shadow-[4px_4px_0px_0px_#000] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000]',
+                  'bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-200 border border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700 shadow-sm hover:shadow'
                 )}`}
               >
                 나의 기록 보기
@@ -423,8 +423,8 @@ function ScoreDemo({ isOpen }: { isOpen: boolean }) {
             className={cn(
               'text-xs font-bold px-2 py-1 rounded transition-colors',
               themeClass(
-                'bg-white border border-black hover:bg-gray-100',
-                'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                'bg-white dark:bg-slate-900 border border-black hover:bg-gray-100 dark:hover:bg-slate-700',
+                'bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-300 hover:bg-gray-200 dark:hover:bg-slate-700'
               )
             )}
           >
@@ -503,13 +503,13 @@ function StatsDemo({ isOpen }: { isOpen: boolean }) {
             className={cn(
               enabled ? 'anim-fade-up' : 'opacity-0',
               themeClass(
-                'flex flex-col items-center justify-center rounded-[5px] border-2 border-black bg-white p-3 shadow-[3px_3px_0px_0px_#000]',
-                'flex flex-col items-center justify-center rounded-xl border border-gray-200 bg-white p-3 shadow-sm'
+                'flex flex-col items-center justify-center rounded-[5px] border-2 border-black bg-white dark:bg-slate-900 p-3 shadow-[3px_3px_0px_0px_#000]',
+                'flex flex-col items-center justify-center rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-3 shadow-sm'
               )
             )}
             style={{ animationDelay: `${i * 80}ms` }}
           >
-            <span className="mb-1 text-[10px] font-bold text-gray-500">
+            <span className="mb-1 text-[10px] font-bold text-gray-500 dark:text-slate-400">
               {item.label}
             </span>
             <span className={cn('text-base font-bold', item.className)}>
@@ -520,7 +520,7 @@ function StatsDemo({ isOpen }: { isOpen: boolean }) {
       </div>
 
       <div className="space-y-1">
-        <h4 className="text-xs font-bold text-gray-500">최근 전적</h4>
+        <h4 className="text-xs font-bold text-gray-500 dark:text-slate-400">최근 전적</h4>
         <div className="flex gap-2">
           {recentFormItems.map(({ result, key }, i) => (
             <div
@@ -538,7 +538,7 @@ function StatsDemo({ isOpen }: { isOpen: boolean }) {
       </div>
 
       <div className="space-y-2">
-        <h4 className="text-xs font-bold text-gray-500">월별 활동</h4>
+        <h4 className="text-xs font-bold text-gray-500 dark:text-slate-400">월별 활동</h4>
         {DEMO_STATS.monthly_activity.map((monthData, i) => {
           const maxTotal = Math.max(
             ...DEMO_STATS.monthly_activity.map((m) => m.total)
@@ -548,12 +548,12 @@ function StatsDemo({ isOpen }: { isOpen: boolean }) {
 
           return (
             <div key={monthData.month} className="flex items-center gap-3">
-              <span className="w-8 text-[10px] font-medium text-gray-500">
+              <span className="w-8 text-[10px] font-medium text-gray-500 dark:text-slate-400">
                 {monthData.month}
               </span>
               <div className="flex-1">
                 <div
-                  className="relative h-5 rounded bg-gray-100"
+                  className="relative h-5 rounded bg-gray-100 dark:bg-slate-800"
                   style={{
                     width: enabled ? `${widthPercent}%` : '0%',
                     transition: `width 0.7s cubic-bezier(0.22, 1, 0.36, 1) ${i * 80}ms`,
@@ -563,7 +563,7 @@ function StatsDemo({ isOpen }: { isOpen: boolean }) {
                     className="absolute left-0 top-0 h-full rounded-l bg-green-500/80"
                     style={{ width: `${winPercent}%` }}
                   />
-                  <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[9px] font-bold text-gray-600">
+                  <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[9px] font-bold text-gray-600 dark:text-slate-300">
                     {monthData.total}경기
                   </span>
                 </div>
@@ -618,12 +618,12 @@ function MiniTrendChart({ enabled }: { enabled: boolean }) {
   return (
     <div
       className={themeClass(
-        'rounded-[5px] border-2 border-black bg-white p-3 shadow-[2px_2px_0px_0px_#000]',
-        'rounded-xl border border-gray-200 bg-white p-3 shadow-sm'
+        'rounded-[5px] border-2 border-black bg-white dark:bg-slate-900 p-3 shadow-[2px_2px_0px_0px_#000]',
+        'rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-3 shadow-sm'
       )}
     >
       <div className="mb-2 flex items-center justify-between">
-        <h4 className="text-xs font-bold text-gray-500">실력 추이</h4>
+        <h4 className="text-xs font-bold text-gray-500 dark:text-slate-400">실력 추이</h4>
         <span className="text-[10px] font-bold text-green-600">상승 중 ↑</span>
       </div>
 
@@ -763,13 +763,13 @@ function CourtDemo({ isOpen }: { isOpen: boolean }) {
             'p-3 transition-all',
             enabled ? 'anim-fade-up' : 'opacity-0',
             themeClass(
-              'bg-white border-2 border-black rounded-[5px] shadow-[2px_2px_0px_0px_#000]',
-              'bg-white border border-gray-200 rounded-lg shadow-sm'
+              'bg-white dark:bg-slate-900 border-2 border-black rounded-[5px] shadow-[2px_2px_0px_0px_#000]',
+              'bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg shadow-sm'
             ),
             i === 0 &&
               themeClass(
                 'border-[#22c55e] shadow-[2px_2px_0px_0px_#22c55e]',
-                'border-green-300'
+                'border-green-300 dark:border-green-700'
               )
           )}
           style={{ animationDelay: `${i * 120}ms` }}
@@ -780,7 +780,7 @@ function CourtDemo({ isOpen }: { isOpen: boolean }) {
               <span
                 className={cn(
                   'font-bold text-sm truncate',
-                  themeClass('text-black', 'text-gray-900')
+                  themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')
                 )}
               >
                 {court.name}
@@ -791,7 +791,7 @@ function CourtDemo({ isOpen }: { isOpen: boolean }) {
                 'shrink-0 text-xs font-medium px-2 py-0.5 rounded-full',
                 themeClass(
                   'bg-black text-white',
-                  'bg-gray-100 text-gray-600'
+                  'bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-300'
                 )
               )}
             >
@@ -800,10 +800,10 @@ function CourtDemo({ isOpen }: { isOpen: boolean }) {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-[10px] font-medium text-gray-500 w-12">
+            <span className="text-[10px] font-medium text-gray-500 dark:text-slate-400 w-12">
               승률 {court.winRate}%
             </span>
-            <div className="flex-1 h-2 rounded-full bg-gray-100 overflow-hidden">
+            <div className="flex-1 h-2 rounded-full bg-gray-100 dark:bg-slate-800 overflow-hidden">
               <div
                 className={cn(
                   'h-full rounded-full',

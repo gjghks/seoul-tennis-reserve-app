@@ -90,17 +90,17 @@ export default function InstallPrompt() {
   return (
     <div className={`${themeClass(
       'bg-[#dbeafe] border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000] p-4',
-      'bg-blue-50 rounded-xl p-4 border border-blue-100 shadow-sm'
+      'bg-blue-50 dark:bg-blue-950/40 rounded-xl p-4 border border-blue-100 dark:border-blue-900/40 shadow-sm'
     )}`}>
       <div className="flex items-start gap-3">
         <span className="text-2xl shrink-0 mt-0.5">📲</span>
         <div className="flex-1 min-w-0">
-          <h3 className={`font-bold mb-1 ${themeClass('text-black', 'text-gray-900')}`}>
+          <h3 className={`font-bold mb-1 ${themeClass('text-black', 'text-gray-900 dark:text-slate-100')}`}>
             홈 화면에 추가
           </h3>
 
           {showIOSGuide ? (
-            <p className={`text-sm mb-3 ${themeClass('text-black/70', 'text-gray-600')}`}>
+            <p className={`text-sm mb-3 ${themeClass('text-black/70', 'text-gray-600 dark:text-slate-300')}`}>
               Safari 하단의{' '}
               <span className="inline-flex items-center align-middle mx-0.5">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-500" aria-hidden="true">
@@ -112,7 +112,7 @@ export default function InstallPrompt() {
               {' '}공유 버튼을 누른 뒤 <strong>&quot;홈 화면에 추가&quot;</strong>를 선택하면 앱처럼 사용할 수 있어요.
             </p>
           ) : (
-            <p className={`text-sm mb-3 ${themeClass('text-black/70', 'text-gray-600')}`}>
+            <p className={`text-sm mb-3 ${themeClass('text-black/70', 'text-gray-600 dark:text-slate-300')}`}>
               홈 화면에 추가하면 앱처럼 빠르게 접근할 수 있어요.
             </p>
           )}
@@ -135,7 +135,7 @@ export default function InstallPrompt() {
               onClick={handleDismiss}
               className={`text-sm ${themeClass(
                 'text-black/60 font-bold hover:text-black/80',
-                'text-gray-400 hover:text-gray-600'
+                'text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:hover:text-slate-300'
               )} transition-colors`}
             >
               다음에

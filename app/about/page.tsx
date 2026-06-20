@@ -53,15 +53,15 @@ export default function AboutPage() {
 
   return (
     <div className="container py-8 scrollbar-hide">
-      <div className={`max-w-3xl mx-auto ${themeClass('bg-white border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000] p-8', 'bg-white rounded-xl shadow-lg p-8')}`}>
-        <h1 className={`text-2xl font-bold mb-6 ${themeClass('text-black', 'text-gray-900')}`}>
+      <div className={`max-w-3xl mx-auto ${themeClass('bg-white dark:bg-slate-900 border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000] p-8', 'bg-white dark:bg-slate-900 rounded-xl shadow-lg p-8')}`}>
+        <h1 className={`text-2xl font-bold mb-6 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
           서울 테니스 소개
         </h1>
 
-        <div className={`space-y-8 ${themeClass('text-black/80', 'text-gray-600')}`}>
+        <div className={`space-y-8 ${themeClass('text-black/80 dark:text-slate-300', 'text-gray-600 dark:text-slate-400')}`}>
           {/* 서울 테니스란? */}
           <section>
-            <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black', 'text-gray-900')}`}>
+            <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               서울 테니스란?
             </h2>
             <p className="leading-relaxed">
@@ -73,7 +73,7 @@ export default function AboutPage() {
 
           {/* 핵심 기능 */}
           <section>
-            <h2 className={`text-lg font-bold mb-4 ${themeClass('text-black', 'text-gray-900')}`}>
+            <h2 className={`text-lg font-bold mb-4 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               핵심 기능
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -81,11 +81,11 @@ export default function AboutPage() {
                 <div
                   key={feature.title}
                   className={`p-4 ${themeClass(
-                    'bg-white border-2 border-black rounded-[6px] shadow-[2px_2px_0px_0px_#000]',
-                    'bg-gray-50 border border-gray-200 rounded-lg'
+                    'bg-white dark:bg-slate-800 border-2 border-black rounded-[6px] shadow-[2px_2px_0px_0px_#000]',
+                    'bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg'
                   )}`}
                 >
-                  <div className={`text-base font-bold mb-1 ${themeClass('text-black', 'text-gray-900')}`}>
+                  <div className={`text-base font-bold mb-1 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
                     <span className="mr-1.5">{feature.emoji}</span>{feature.title}
                   </div>
                   <p className="text-sm leading-relaxed">{feature.desc}</p>
@@ -96,7 +96,7 @@ export default function AboutPage() {
 
           {/* 코트 상세 정보 */}
           <section>
-            <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black', 'text-gray-900')}`}>
+            <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               코트 상세 정보
             </h2>
             <ul className="space-y-2.5">
@@ -111,7 +111,7 @@ export default function AboutPage() {
 
           {/* 편의 기능 */}
           <section>
-            <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black', 'text-gray-900')}`}>
+            <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               편의 기능
             </h2>
             <ul className="space-y-2.5">
@@ -126,7 +126,7 @@ export default function AboutPage() {
 
           {/* 데이터 출처 */}
           <section>
-            <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black', 'text-gray-900')}`}>
+            <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               데이터 출처
             </h2>
             <p className="leading-relaxed mb-3">
@@ -141,7 +141,7 @@ export default function AboutPage() {
 
           {/* 만든 이유 */}
           <section>
-            <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black', 'text-gray-900')}`}>
+            <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               만든 이유
             </h2>
             <p className="leading-relaxed">
@@ -154,7 +154,7 @@ export default function AboutPage() {
 
            {/* 이용 안내 */}
            <section>
-             <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black', 'text-gray-900')}`}>
+             <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
                이용 안내
              </h2>
              <ul className="list-disc list-inside space-y-1">
@@ -168,8 +168,8 @@ export default function AboutPage() {
            </section>
 
           {/* 의견을 들려주세요 */}
-          <section className={`p-5 rounded-lg ${themeClass('bg-yellow-100 border-2 border-black', 'bg-gray-50')}`}>
-            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
+          <section className={`p-5 rounded-lg ${themeClass('bg-yellow-100 dark:bg-yellow-950/40 border-2 border-black', 'bg-gray-50 dark:bg-slate-900')}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               의견을 들려주세요
             </h2>
             <p className="mb-4">
@@ -189,8 +189,8 @@ export default function AboutPage() {
               <Link
                 href="/contact"
                 className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${themeClass(
-                  'bg-white text-black border-2 border-black hover:bg-gray-100 font-bold',
-                  'bg-white text-gray-600 border border-gray-200 hover:bg-gray-100'
+                  'bg-white dark:bg-slate-800 text-black dark:text-slate-100 border-2 border-black hover:bg-gray-100 dark:hover:bg-slate-700 font-bold',
+                  'bg-white dark:bg-slate-800 text-gray-600 dark:text-slate-300 border border-gray-200 dark:border-slate-700 hover:bg-gray-100 dark:hover:bg-slate-700'
                 )}`}
               >
                 📧 이메일 문의

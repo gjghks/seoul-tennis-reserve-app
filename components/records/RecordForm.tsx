@@ -57,13 +57,13 @@ export default function RecordForm({
   };
 
   const labelClass = themeClass(
-    'block mb-2 font-bold text-black text-lg',
-    'block mb-1.5 font-medium text-gray-700 text-sm'
+    'block mb-2 font-bold text-black dark:text-slate-100 text-lg',
+    'block mb-1.5 font-medium text-gray-700 dark:text-slate-200 text-sm'
   );
 
   const inputClass = themeClass(
     'w-full p-3 border-2 border-black rounded-[5px] focus:outline-none focus:ring-2 focus:ring-[#22c55e] focus:ring-offset-2 shadow-[4px_4px_0px_0px_#000] transition-all',
-    'w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all'
+    'w-full p-2.5 border border-gray-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all'
   );
 
   return (
@@ -111,12 +111,12 @@ export default function RecordForm({
                     `border-2 border-black rounded-[5px] font-bold ${
                       form.state.matchFormat === option.value
                         ? 'bg-[#88aaee] text-black shadow-[2px_2px_0px_0px_#000] translate-x-[1px] translate-y-[1px]'
-                        : 'bg-white hover:bg-gray-50 shadow-[4px_4px_0px_0px_#000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[3px_3px_0px_0px_#000]'
+                        : 'bg-white dark:bg-slate-800 dark:text-slate-100 hover:bg-gray-50 dark:hover:bg-slate-700 shadow-[4px_4px_0px_0px_#000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[3px_3px_0px_0px_#000]'
                     }`,
                     `rounded-full border ${
                       form.state.matchFormat === option.value
-                        ? 'bg-blue-50 border-blue-200 text-blue-700 font-medium'
-                        : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50'
+                        ? 'bg-blue-50 dark:bg-blue-950/40 border-blue-200 dark:border-blue-900/50 text-blue-700 dark:text-blue-300 font-medium'
+                        : 'bg-white dark:bg-slate-800 border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700'
                     }`
                   )
                 )}
@@ -174,8 +174,8 @@ export default function RecordForm({
         {form.uploadProgress && (
           <div
             className={themeClass(
-              'p-3 text-sm flex items-center gap-2 bg-blue-100 border-2 border-black rounded-[5px] text-blue-700 font-medium',
-              'p-3 text-sm flex items-center gap-2 bg-blue-50 rounded-lg text-blue-600'
+              'p-3 text-sm flex items-center gap-2 bg-blue-100 dark:bg-blue-950/40 border-2 border-black rounded-[5px] text-blue-700 dark:text-blue-300 font-medium',
+              'p-3 text-sm flex items-center gap-2 bg-blue-50 dark:bg-blue-950/40 rounded-lg text-blue-600 dark:text-blue-300'
             )}
           >
             <Spinner className="w-4 h-4 border-blue-600 border-t-transparent" />
@@ -187,8 +187,8 @@ export default function RecordForm({
           <div
             role="alert"
             className={themeClass(
-              'p-3 text-sm bg-red-100 border-2 border-black rounded-[5px] text-red-700 font-medium',
-              'p-3 text-sm bg-red-50 rounded-lg text-red-600'
+              'p-3 text-sm bg-red-100 dark:bg-red-950/40 border-2 border-black rounded-[5px] text-red-700 dark:text-red-300 font-medium',
+              'p-3 text-sm bg-red-50 dark:bg-red-950/40 rounded-lg text-red-600 dark:text-red-300'
             )}
           >
             {form.error}
@@ -203,8 +203,8 @@ export default function RecordForm({
             className={cn(
               'flex-1 py-3 font-bold transition-all',
               themeClass(
-                'bg-white border-2 border-black rounded-[5px] text-black shadow-[4px_4px_0px_0px_#000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[3px_3px_0px_0px_#000]',
-                'bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50'
+                'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] text-black dark:text-slate-100 shadow-[4px_4px_0px_0px_#000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[3px_3px_0px_0px_#000]',
+                'bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg text-gray-700 dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-700'
               )
             )}
           >
@@ -218,12 +218,12 @@ export default function RecordForm({
               themeClass(
                 `border-2 border-black rounded-[5px] ${
                   form.isSubmitting
-                    ? 'bg-gray-200 text-black/60 cursor-not-allowed'
+                    ? 'bg-gray-200 dark:bg-slate-700 text-black/60 dark:text-slate-400 cursor-not-allowed'
                     : 'bg-[#22c55e] text-black shadow-[4px_4px_0px_0px_#000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[3px_3px_0px_0px_#000]'
                 }`,
                 `rounded-lg ${
                   form.isSubmitting
-                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                    ? 'bg-gray-200 dark:bg-slate-700 text-gray-400 dark:text-slate-500 cursor-not-allowed'
                     : 'bg-green-600 text-white hover:bg-green-700'
                 }`
               )

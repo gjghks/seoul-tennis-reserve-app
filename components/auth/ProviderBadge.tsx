@@ -59,8 +59,8 @@ export function ProviderBadge() {
         'bg-[#FEE500]/30 border border-[#FEE500] text-[#191919]'
       )
     : themeClass(
-        'bg-white border-2 border-black/15 text-gray-700',
-        'bg-gray-50 border border-gray-200 text-gray-600'
+        'bg-white dark:bg-slate-900 border-2 border-black/15 text-gray-700 dark:text-slate-200',
+        'bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-400'
       );
 
   return (

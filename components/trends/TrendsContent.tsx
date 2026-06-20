@@ -81,19 +81,19 @@ export default function TrendsContent() {
   }, [mutate, mutateHeatmap]);
 
   const cardClass = isNeoBrutalism
-    ? 'bg-white border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000]'
-    : 'bg-white rounded-2xl border border-gray-100';
+    ? 'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000]'
+    : 'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-800';
 
   return (
     <PullToRefresh
       onRefresh={handleRefresh}
       pullingContent={
-        <div className={`flex items-center justify-center py-4 ${themeClass('text-black font-bold', 'text-green-600')}`}>
+        <div className={`flex items-center justify-center py-4 ${themeClass('text-black dark:text-slate-100 font-bold', 'text-green-600')}`}>
           <span>↓ 당겨서 새로고침</span>
         </div>
       }
       refreshingContent={
-        <div className={`flex items-center justify-center py-4 ${themeClass('text-black font-bold', 'text-green-600')}`}>
+        <div className={`flex items-center justify-center py-4 ${themeClass('text-black dark:text-slate-100 font-bold', 'text-green-600')}`}>
           <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24" aria-hidden="true">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
@@ -102,13 +102,13 @@ export default function TrendsContent() {
         </div>
       }
     >
-    <div className={`min-h-screen scrollbar-hide ${themeClass('bg-nb-bg', 'bg-gray-50')}`}>
+    <div className={`min-h-screen scrollbar-hide ${themeClass('bg-nb-bg', 'bg-gray-50 dark:bg-slate-900')}`}>
       <div className="container mx-auto px-4 py-6 max-w-4xl">
         <div className="mb-6">
-          <h1 className={`text-2xl mb-2 ${themeClass('font-black text-black uppercase tracking-tight', 'font-bold text-gray-900')}`}>
+          <h1 className={`text-2xl mb-2 ${themeClass('font-black text-black dark:text-slate-100 uppercase tracking-tight', 'font-bold text-gray-900 dark:text-slate-100')}`}>
             {isNeoBrutalism ? '📊 예약 타이밍 가이드' : '예약 타이밍 가이드'}
           </h1>
-          <p className={themeClass('text-black/60', 'text-gray-500')}>
+          <p className={themeClass('text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400')}>
             언제 예약하면 경쟁이 적을지 확인하세요
           </p>
         </div>
@@ -125,8 +125,8 @@ export default function TrendsContent() {
                     ? 'bg-black text-white border-2 border-black rounded-[5px]'
                     : 'bg-green-600 text-white rounded-lg'
                   : isNeoBrutalism
-                    ? 'bg-white border-2 border-black rounded-[5px] text-black hover:bg-gray-100'
-                    : 'bg-white border border-gray-200 rounded-lg text-gray-600 hover:border-green-300'
+                    ? 'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] text-black dark:text-slate-100 hover:bg-gray-100 dark:hover:bg-slate-700'
+                    : 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-gray-600 dark:text-slate-300 hover:border-green-300'
               }`}
             >
               {p}일
@@ -150,7 +150,7 @@ export default function TrendsContent() {
 
         {error && (
           <div className={`${cardClass} p-6 mb-6 text-center`}>
-            <p className={themeClass('text-black/60', 'text-gray-500')}>데이터를 불러오는 데 실패했습니다.</p>
+            <p className={themeClass('text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400')}>데이터를 불러오는 데 실패했습니다.</p>
             <button
               type="button"
               onClick={() => setDays(days)}
@@ -165,8 +165,8 @@ export default function TrendsContent() {
           <Fragment key={days}>
             {heatmapData?.hasData && heatmapData.insights ? (
               <div className={`${cardClass} overflow-hidden mb-6`}>
-                <div className={isNeoBrutalism ? 'p-5 border-b-2 border-black' : 'p-5 border-b border-gray-100'}>
-                  <h2 className={`font-bold flex items-center gap-2 ${themeClass('text-black font-black', 'text-gray-900')}`}>
+                <div className={isNeoBrutalism ? 'p-5 border-b-2 border-black' : 'p-5 border-b border-gray-100 dark:border-slate-800'}>
+                  <h2 className={`font-bold flex items-center gap-2 ${themeClass('text-black dark:text-slate-100 font-black', 'text-gray-900 dark:text-slate-100')}`}>
                     {isNeoBrutalism ? (
                       <span className="w-6 h-6 bg-[#facc15] border-2 border-black rounded-[3px] flex items-center justify-center text-xs">📊</span>
                     ) : (
@@ -181,8 +181,8 @@ export default function TrendsContent() {
                   <HeatmapChart data={heatmapData.heatmap} />
                 </div>
 
-                <div className={`px-5 pb-5 space-y-2 ${themeClass('border-t-2 border-black pt-4', 'border-t border-gray-100 pt-4')}`}>
-                  <div className={`flex items-start gap-2 text-sm ${themeClass('text-black', 'text-gray-700')}`}>
+                <div className={`px-5 pb-5 space-y-2 ${themeClass('border-t-2 border-black pt-4', 'border-t border-gray-100 dark:border-slate-800 pt-4')}`}>
+                  <div className={`flex items-start gap-2 text-sm ${themeClass('text-black dark:text-slate-200', 'text-gray-700 dark:text-slate-200')}`}>
                     <span className={`shrink-0 w-5 h-5 flex items-center justify-center rounded-full text-xs ${themeClass('bg-[#a3e635] border border-black font-bold', 'bg-green-100 text-green-700')}`}>
                       {isNeoBrutalism ? '✓' : '✓'}
                     </span>
@@ -195,7 +195,7 @@ export default function TrendsContent() {
                     </span>
                   </div>
 
-                  <div className={`flex items-start gap-2 text-sm ${themeClass('text-black', 'text-gray-700')}`}>
+                  <div className={`flex items-start gap-2 text-sm ${themeClass('text-black dark:text-slate-200', 'text-gray-700 dark:text-slate-200')}`}>
                     <span className={`shrink-0 w-5 h-5 flex items-center justify-center rounded-full text-xs ${themeClass('bg-[#fca5a5] border border-black font-bold', 'bg-red-100 text-red-700')}`}>
                       !
                     </span>
@@ -208,10 +208,10 @@ export default function TrendsContent() {
                     </span>
                   </div>
 
-                  <div className={`flex items-center gap-3 text-sm pt-1 ${themeClass('text-black/70', 'text-gray-500')}`}>
-                    <span>주중 평균 <strong className={themeClass('font-black text-black', 'font-semibold text-gray-700')}>{heatmapData.insights.weekdayAvg}%</strong></span>
-                    <span className={themeClass('text-black/30', 'text-gray-300')}>|</span>
-                    <span>주말 평균 <strong className={themeClass('font-black text-black', 'font-semibold text-gray-700')}>{heatmapData.insights.weekendAvg}%</strong></span>
+                  <div className={`flex items-center gap-3 text-sm pt-1 ${themeClass('text-black/70 dark:text-slate-300', 'text-gray-500 dark:text-slate-400')}`}>
+                    <span>주중 평균 <strong className={themeClass('font-black text-black dark:text-slate-100', 'font-semibold text-gray-700 dark:text-slate-200')}>{heatmapData.insights.weekdayAvg}%</strong></span>
+                    <span className={themeClass('text-black/30 dark:text-slate-600', 'text-gray-300 dark:text-slate-600')}>|</span>
+                    <span>주말 평균 <strong className={themeClass('font-black text-black dark:text-slate-100', 'font-semibold text-gray-700 dark:text-slate-200')}>{heatmapData.insights.weekendAvg}%</strong></span>
                   </div>
                 </div>
               </div>
@@ -222,8 +222,8 @@ export default function TrendsContent() {
                     <span className="text-lg">📊</span>
                   </div>
                   <div>
-                    <h3 className={`font-bold mb-1 ${themeClass('text-black', 'text-gray-900')}`}>요일별 패턴 데이터 수집 중</h3>
-                    <p className={`text-sm ${themeClass('text-black/60', 'text-gray-500')}`}>
+                    <h3 className={`font-bold mb-1 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>요일별 패턴 데이터 수집 중</h3>
+                    <p className={`text-sm ${themeClass('text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400')}`}>
                       하루 4회 데이터가 수집되면 요일·시간대별 예약 패턴 분석이 활성화됩니다.
                     </p>
                   </div>
@@ -233,8 +233,8 @@ export default function TrendsContent() {
 
             {data.hasHistory ? (
               <div className={`${cardClass} overflow-hidden mb-6`}>
-                <div className={isNeoBrutalism ? 'p-5 border-b-2 border-black' : 'p-5 border-b border-gray-100'}>
-                  <h2 className={`font-bold flex items-center gap-2 ${themeClass('text-black font-black', 'text-gray-900')}`}>
+                <div className={isNeoBrutalism ? 'p-5 border-b-2 border-black' : 'p-5 border-b border-gray-100 dark:border-slate-800'}>
+                  <h2 className={`font-bold flex items-center gap-2 ${themeClass('text-black dark:text-slate-100 font-black', 'text-gray-900 dark:text-slate-100')}`}>
                     {isNeoBrutalism ? (
                       <span className="w-6 h-6 bg-[#facc15] border-2 border-black rounded-[3px] flex items-center justify-center text-xs">📈</span>
                     ) : (
@@ -256,8 +256,8 @@ export default function TrendsContent() {
                     <span className="text-lg">📋</span>
                   </div>
                   <div>
-                    <h3 className={`font-bold mb-1 ${themeClass('text-black', 'text-gray-900')}`}>데이터 수집 중</h3>
-                    <p className={`text-sm ${themeClass('text-black/60', 'text-gray-500')}`}>
+                    <h3 className={`font-bold mb-1 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>데이터 수집 중</h3>
+                    <p className={`text-sm ${themeClass('text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400')}`}>
                       현재 실시간 데이터만 표시됩니다. 매일 오전 9시에 데이터가 수집되며, 약 1주일 후 일별 트렌드 차트가 활성화됩니다.
                     </p>
                   </div>
@@ -278,7 +278,7 @@ function TrendTimeline({ trends, isNeoBrutalism }: { trends: DailyTrend[]; isNeo
   const timeline = trends.slice(-30);
 
   if (timeline.length < 2) {
-    return <p className={isNeoBrutalism ? 'text-black/60' : 'text-gray-400'}>데이터가 충분하지 않습니다.</p>;
+    return <p className={isNeoBrutalism ? 'text-black/60 dark:text-slate-400' : 'text-gray-400 dark:text-slate-500'}>데이터가 충분하지 않습니다.</p>;
   }
 
   const maxRate = Math.max(...timeline.map(t => t.booking_rate), 100);
@@ -293,7 +293,7 @@ function TrendTimeline({ trends, isNeoBrutalism }: { trends: DailyTrend[]; isNeo
           const label = `${date.getMonth() + 1}/${date.getDate()}`;
           return (
             <div key={point.day} className="flex-1 flex flex-col items-center justify-end gap-1" style={{ height: chartHeight }}>
-              <span className={`text-[10px] ${isNeoBrutalism ? 'font-bold text-black' : 'text-gray-500'}`}>
+              <span className={`text-[10px] ${isNeoBrutalism ? 'font-bold text-black dark:text-slate-100' : 'text-gray-500 dark:text-slate-400'}`}>
                 {point.booking_rate}%
               </span>
               <div
@@ -309,7 +309,7 @@ function TrendTimeline({ trends, isNeoBrutalism }: { trends: DailyTrend[]; isNeo
                 }}
               />
               {i % Math.max(1, Math.floor(timeline.length / 7)) === 0 && (
-                <span className={`text-[9px] leading-none mt-0.5 whitespace-nowrap ${isNeoBrutalism ? 'text-black/60' : 'text-gray-400'}`}>
+                <span className={`text-[9px] leading-none mt-0.5 whitespace-nowrap ${isNeoBrutalism ? 'text-black/60 dark:text-slate-400' : 'text-gray-400 dark:text-slate-500'}`}>
                   {label}
                 </span>
               )}

@@ -11,10 +11,10 @@ function TableRenderer({ rows }: { rows: string[][] }) {
   const currentMonth = new Date().getMonth() + 1;
 
   return (
-    <div className="overflow-x-auto mt-4 rounded-lg border border-gray-200 shadow-sm">
+    <div className="overflow-x-auto mt-4 rounded-lg border border-gray-200 dark:border-slate-700 shadow-sm">
       <table className={`text-sm border-collapse ${isWideTable ? 'w-max min-w-full' : 'w-full'}`}>
         <thead>
-          <tr className="bg-gray-100">
+          <tr className="bg-gray-100 dark:bg-slate-800">
             {header.map((cell, i) => {
               const monthMatch = cell.match(/^(\d{1,2})월$/);
               const isCurrentMonth = monthMatch && parseInt(monthMatch[1]) === currentMonth;
@@ -22,12 +22,12 @@ function TableRenderer({ rows }: { rows: string[][] }) {
               return (
                 <th 
                   key={headerKey} 
-                  className={`${isWideTable ? 'px-2 py-2' : 'px-3 py-2.5'} text-center font-bold border border-gray-200 whitespace-nowrap ${
-                    i === 0 
-                      ? 'bg-gray-200 sticky left-0 z-10' 
-                      : isCurrentMonth 
-                        ? 'bg-blue-100 text-blue-800' 
-                        : 'bg-gray-100 text-gray-800'
+                  className={`${isWideTable ? 'px-2 py-2' : 'px-3 py-2.5'} text-center font-bold border border-gray-200 dark:border-slate-700 whitespace-nowrap ${
+                    i === 0
+                      ? 'bg-gray-200 dark:bg-slate-700 sticky left-0 z-10'
+                      : isCurrentMonth
+                        ? 'bg-blue-100 dark:bg-blue-950/40 text-blue-800 dark:text-blue-300'
+                        : 'bg-gray-100 dark:bg-slate-800 text-gray-800 dark:text-slate-200'
                   }`}
                 >
                   {cell}
@@ -40,7 +40,7 @@ function TableRenderer({ rows }: { rows: string[][] }) {
           {body.map((row, rowIdx) => {
             const rowKey = `${row.join('|')}-${rowIdx}`;
             return (
-              <tr key={rowKey} className={rowIdx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+              <tr key={rowKey} className={rowIdx % 2 === 0 ? 'bg-white dark:bg-slate-900' : 'bg-gray-50 dark:bg-slate-800'}>
                 {row.map((cell, cellIdx) => {
                   const monthMatch = header[cellIdx]?.match(/^(\d{1,2})월$/);
                   const isCurrentMonth = monthMatch && parseInt(monthMatch[1]) === currentMonth;
@@ -50,20 +50,20 @@ function TableRenderer({ rows }: { rows: string[][] }) {
                   return (
                     <td 
                       key={cellKey} 
-                    className={`${isWideTable ? 'px-2 py-1.5' : 'px-3 py-2'} border border-gray-200 text-center whitespace-nowrap ${
-                      cellIdx === 0 
-                        ? 'font-semibold text-gray-700 bg-gray-100 sticky left-0 z-10' 
+                    className={`${isWideTable ? 'px-2 py-1.5' : 'px-3 py-2'} border border-gray-200 dark:border-slate-700 text-center whitespace-nowrap ${
+                      cellIdx === 0
+                        ? 'font-semibold text-gray-700 dark:text-slate-200 bg-gray-100 dark:bg-slate-800 sticky left-0 z-10'
                         : isCurrentMonth
-                          ? isEmpty 
-                            ? 'bg-blue-50/50 text-gray-400'
-                            : 'bg-blue-50 text-blue-700 font-medium'
-                          : isEmpty 
-                            ? 'text-gray-300' 
-                            : 'text-gray-600'
+                          ? isEmpty
+                            ? 'bg-blue-50/50 dark:bg-blue-950/40 text-gray-400 dark:text-slate-500'
+                            : 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 font-medium'
+                          : isEmpty
+                            ? 'text-gray-300 dark:text-slate-500'
+                            : 'text-gray-600 dark:text-slate-400'
                     }`}
                   >
                     {isMonthlyTable && isEmpty ? (
-                      <span className="text-gray-300">-</span>
+                      <span className="text-gray-300 dark:text-slate-500">-</span>
                     ) : (
                       highlight(cell)
                     )}

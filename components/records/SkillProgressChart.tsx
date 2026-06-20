@@ -52,7 +52,7 @@ function buildTimeline(trend: SkillProgressChartProps['trend']) {
 
 function getTrendDirection(timeline: SkillProgressChartProps['trend']) {
   const withData = timeline.filter((t) => t.total > 0);
-  if (withData.length < 2) return { label: '유지 중 →', color: 'text-gray-600' };
+  if (withData.length < 2) return { label: '유지 중 →', color: 'text-gray-600 dark:text-slate-400' };
 
   const half = Math.ceil(withData.length / 2);
   const firstAvg = withData.slice(0, half).reduce((s, i) => s + i.winRate, 0) / half;
@@ -61,7 +61,7 @@ function getTrendDirection(timeline: SkillProgressChartProps['trend']) {
 
   if (diff > 5) return { label: '상승 중 ↑', color: 'text-green-600' };
   if (diff < -5) return { label: '하락 중 ↓', color: 'text-red-500' };
-  return { label: '유지 중 →', color: 'text-gray-600' };
+  return { label: '유지 중 →', color: 'text-gray-600 dark:text-slate-400' };
 }
 
 function toPlotXY(winRate: number, index: number, count: number) {
@@ -113,12 +113,12 @@ export default function SkillProgressChart({ trend }: SkillProgressChartProps) {
   return (
     <section
       className={themeClass(
-        'rounded-[5px] border-2 border-black bg-white p-3 shadow-[2px_2px_0px_0px_#000]',
-        'rounded-xl border border-gray-200 bg-white p-3 shadow-sm'
+        'rounded-[5px] border-2 border-black bg-white dark:bg-slate-800 p-3 shadow-[2px_2px_0px_0px_#000]',
+        'rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-3 shadow-sm'
       )}
     >
       <div className="mb-2 flex items-center justify-between">
-        <h3 className="text-xs font-bold text-gray-500">실력 추이</h3>
+        <h3 className="text-xs font-bold text-gray-500 dark:text-slate-400">실력 추이</h3>
         <span className={cn('text-[10px] font-bold', trendDirection.color)}>{trendDirection.label}</span>
       </div>
 
@@ -235,7 +235,7 @@ export default function SkillProgressChart({ trend }: SkillProgressChartProps) {
       </div>
 
       {!hasEnoughData && dataPoints.length === 1 && (
-        <p className="mt-1 text-center text-[10px] text-gray-400">
+        <p className="mt-1 text-center text-[10px] text-gray-400 dark:text-slate-500">
           기록이 쌓이면 추이를 확인할 수 있어요
         </p>
       )}
@@ -245,11 +245,11 @@ export default function SkillProgressChart({ trend }: SkillProgressChartProps) {
           const isCurrent = item.month === currentMonth;
           return (
             <div key={item.month} className="text-center">
-              <p className={cn('text-[10px] font-medium text-gray-400', isCurrent && 'text-gray-900 font-bold')}>
+              <p className={cn('text-[10px] font-medium text-gray-400 dark:text-slate-500', isCurrent && 'text-gray-900 dark:text-slate-100 font-bold')}>
                 {toMonthLabel(item.month)}
               </p>
               {item.total > 0 && (
-                <p className="text-[9px] text-gray-400">{item.total}경기</p>
+                <p className="text-[9px] text-gray-400 dark:text-slate-500">{item.total}경기</p>
               )}
             </div>
           );

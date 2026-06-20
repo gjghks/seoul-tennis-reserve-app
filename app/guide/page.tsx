@@ -64,7 +64,7 @@ export default function GuidePage() {
         <div className="mb-8 text-center">
           <div className="text-4xl mb-4">📖</div>
           <h1 className="text-3xl font-bold mb-3">이용 가이드</h1>
-          <p className="text-gray-600">서울 테니스의 다양한 기능을 안내합니다</p>
+          <p className="text-gray-600 dark:text-slate-400">서울 테니스의 다양한 기능을 안내합니다</p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -72,12 +72,12 @@ export default function GuidePage() {
             <Link
               key={guide.href}
               href={guide.href}
-              className="flex items-start gap-4 p-5 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-gray-300 transition-all"
+              className="flex items-start gap-4 p-5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl shadow-sm hover:shadow-md hover:border-gray-300 dark:hover:border-slate-600 transition-all"
             >
               <div className="text-3xl shrink-0">{guide.icon}</div>
               <div>
-                <h2 className="font-bold text-gray-900 mb-1">{guide.title}</h2>
-                <p className="text-sm text-gray-500 leading-relaxed">{guide.desc}</p>
+                <h2 className="font-bold text-gray-900 dark:text-slate-100 mb-1">{guide.title}</h2>
+                <p className="text-sm text-gray-500 dark:text-slate-400 leading-relaxed">{guide.desc}</p>
               </div>
             </Link>
           ))}

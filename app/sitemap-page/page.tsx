@@ -48,14 +48,14 @@ export default function SitemapPage() {
     <div className="container py-8 scrollbar-hide">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">사이트맵</h1>
-          <p className="text-gray-600">서울 테니스의 모든 페이지를 확인하세요.</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-100 mb-2">사이트맵</h1>
+          <p className="text-gray-600 dark:text-slate-400">서울 테니스의 모든 페이지를 확인하세요.</p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
-          <section className="bg-white rounded-xl border border-gray-100 p-6">
-            <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <span className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center text-green-600">
+          <section className="bg-white dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-slate-800 p-6">
+            <h2 className="text-lg font-bold text-gray-900 dark:text-slate-100 mb-4 flex items-center gap-2">
+              <span className="w-8 h-8 bg-green-100 dark:bg-green-950/40 rounded-lg flex items-center justify-center text-green-600 dark:text-green-300">
                 📄
               </span>
               주요 페이지
@@ -65,21 +65,21 @@ export default function SitemapPage() {
                 <li key={page.href}>
                   <Link 
                     href={page.href}
-                    className="group block p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                    className="group block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors"
                   >
-                    <span className="font-medium text-gray-900 group-hover:text-green-600 transition-colors">
+                    <span className="font-medium text-gray-900 dark:text-slate-100 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
                       {page.label}
                     </span>
-                    <p className="text-sm text-gray-500 mt-0.5">{page.description}</p>
+                    <p className="text-sm text-gray-500 dark:text-slate-400 mt-0.5">{page.description}</p>
                   </Link>
                 </li>
               ))}
             </ul>
           </section>
 
-          <section className="bg-white rounded-xl border border-gray-100 p-6">
-            <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <span className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
+          <section className="bg-white dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-slate-800 p-6">
+            <h2 className="text-lg font-bold text-gray-900 dark:text-slate-100 mb-4 flex items-center gap-2">
+              <span className="w-8 h-8 bg-blue-100 dark:bg-blue-950/40 rounded-lg flex items-center justify-center text-blue-600 dark:text-blue-300">
                 👤
               </span>
               회원 페이지
@@ -89,21 +89,21 @@ export default function SitemapPage() {
                 <li key={page.href}>
                   <Link 
                     href={page.href}
-                    className="group block p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                    className="group block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors"
                   >
-                    <span className="font-medium text-gray-900 group-hover:text-green-600 transition-colors">
+                    <span className="font-medium text-gray-900 dark:text-slate-100 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
                       {page.label}
                     </span>
-                    <p className="text-sm text-gray-500 mt-0.5">{page.description}</p>
+                    <p className="text-sm text-gray-500 dark:text-slate-400 mt-0.5">{page.description}</p>
                   </Link>
                 </li>
               ))}
             </ul>
           </section>
 
-          <section className="bg-white rounded-xl border border-gray-100 p-6">
-            <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <span className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600">
+          <section className="bg-white dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-slate-800 p-6">
+            <h2 className="text-lg font-bold text-gray-900 dark:text-slate-100 mb-4 flex items-center gap-2">
+              <span className="w-8 h-8 bg-purple-100 dark:bg-purple-950/40 rounded-lg flex items-center justify-center text-purple-600 dark:text-purple-300">
                 📖
               </span>
               가이드
@@ -113,26 +113,26 @@ export default function SitemapPage() {
                 <li key={page.href}>
                   <Link 
                     href={page.href}
-                    className="group block p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                    className="group block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors"
                   >
-                    <span className="font-medium text-gray-900 group-hover:text-green-600 transition-colors">
+                    <span className="font-medium text-gray-900 dark:text-slate-100 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
                       {page.label}
                     </span>
-                    <p className="text-sm text-gray-500 mt-0.5">{page.description}</p>
+                    <p className="text-sm text-gray-500 dark:text-slate-400 mt-0.5">{page.description}</p>
                   </Link>
                 </li>
               ))}
             </ul>
           </section>
 
-          <section className="md:col-span-2 bg-white rounded-xl border border-gray-100 p-6">
-            <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <span className="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center text-yellow-600">
+          <section className="md:col-span-2 bg-white dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-slate-800 p-6">
+            <h2 className="text-lg font-bold text-gray-900 dark:text-slate-100 mb-4 flex items-center gap-2">
+              <span className="w-8 h-8 bg-yellow-100 dark:bg-yellow-950/40 rounded-lg flex items-center justify-center text-yellow-600 dark:text-yellow-300">
                 🎾
               </span>
               지역별 테니스장
             </h2>
-            <p className="text-gray-600 mb-4 text-sm">
+            <p className="text-gray-600 dark:text-slate-400 mb-4 text-sm">
               서울시 25개 자치구별 공공 테니스장 예약 현황을 확인할 수 있습니다.
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
@@ -140,7 +140,7 @@ export default function SitemapPage() {
                 <Link
                   key={district.slug}
                   href={`/${district.slug}`}
-                  className="px-3 py-2 text-sm text-center rounded-lg border border-gray-200 hover:border-green-500 hover:bg-green-50 hover:text-green-700 transition-colors"
+                  className="px-3 py-2 text-sm text-center rounded-lg border border-gray-200 dark:border-slate-700 dark:text-slate-200 hover:border-green-500 hover:bg-green-50 dark:hover:bg-green-950/40 hover:text-green-700 dark:hover:text-green-300 transition-colors"
                 >
                   {district.nameKo}
                 </Link>
@@ -149,10 +149,10 @@ export default function SitemapPage() {
           </section>
         </div>
 
-        <div className="mt-8 p-4 bg-gray-50 rounded-lg text-center">
-          <p className="text-sm text-gray-500">
+        <div className="mt-8 p-4 bg-gray-50 dark:bg-slate-900 rounded-lg text-center">
+          <p className="text-sm text-gray-500 dark:text-slate-400">
             찾으시는 페이지가 없으신가요?{' '}
-            <Link href="/contact" className="text-green-600 hover:underline font-medium">
+            <Link href="/contact" className="text-green-600 dark:text-green-400 hover:underline font-medium">
               문의하기
             </Link>
             를 통해 알려주세요.

@@ -33,14 +33,14 @@ export default function RecordScoreSection({
 
       <div>
         <div className="flex items-center gap-2 mb-2">
-          <span className={themeClass('font-bold text-black text-lg', 'font-medium text-gray-700 text-sm')}>
+          <span className={themeClass('font-bold text-black dark:text-slate-100 text-lg', 'font-medium text-gray-700 dark:text-slate-200 text-sm')}>
             경기 결과
           </span>
           {isAutoInferred && (
             <span
               className={themeClass(
                 'text-xs px-2 py-0.5 bg-[#facc15] border border-black rounded-[3px] font-bold',
-                'text-xs px-2 py-0.5 bg-yellow-100 text-yellow-800 rounded-full font-medium'
+                'text-xs px-2 py-0.5 bg-yellow-100 dark:bg-yellow-950/40 text-yellow-800 dark:text-yellow-300 rounded-full font-medium'
               )}
             >
               스코어에서 자동 추론됨
@@ -59,12 +59,12 @@ export default function RecordScoreSection({
                   `border-2 border-black rounded-[5px] font-bold ${
                     result === option.value
                       ? 'bg-[#a3e635] text-black shadow-[2px_2px_0px_0px_#000] translate-x-[1px] translate-y-[1px]'
-                      : 'bg-white hover:bg-gray-50 shadow-[4px_4px_0px_0px_#000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[3px_3px_0px_0px_#000]'
+                      : 'bg-white dark:bg-slate-800 dark:text-slate-100 hover:bg-gray-50 dark:hover:bg-slate-700 shadow-[4px_4px_0px_0px_#000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[3px_3px_0px_0px_#000]'
                   }`,
                   `rounded-lg border ${
                     result === option.value
-                      ? 'bg-green-50 border-green-200 text-green-700 font-medium'
-                      : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50'
+                      ? 'bg-green-50 dark:bg-green-950/40 border-green-200 dark:border-green-900/50 text-green-700 dark:text-green-300 font-medium'
+                      : 'bg-white dark:bg-slate-800 border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700'
                   }`
                 )
               )}

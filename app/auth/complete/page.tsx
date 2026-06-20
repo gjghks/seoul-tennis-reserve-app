@@ -24,7 +24,7 @@ export default function AuthComplete() {
 
   return (
     <div className="min-h-screen flex items-center justify-center">
-      <div className="text-gray-500">로그인 완료 중...</div>
+      <div className="text-gray-500 dark:text-slate-400">로그인 완료 중...</div>
     </div>
   );
 }

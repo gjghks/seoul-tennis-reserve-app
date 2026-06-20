@@ -51,13 +51,13 @@ const DistrictCard = memo(function DistrictCard({
   const tone = SEASON_PALETTE[season] ?? SEASON_PALETTE.default;
 
   if (isNeoBrutalism) {
-    const bgColor = hasAvailable ? tone.neoAvailBg : isExternalOnly ? 'bg-amber-50' : total > 0 ? 'bg-white' : 'bg-gray-200';
+    const bgColor = hasAvailable ? tone.neoAvailBg : isExternalOnly ? 'bg-amber-50 dark:bg-amber-950/40' : total > 0 ? 'bg-white dark:bg-slate-800' : 'bg-gray-200 dark:bg-slate-700';
     return (
       <Link
         href={`/${district.slug}`}
         className={`
-          stagger-item flex items-center px-3 py-[16px] border-2 border-black rounded-[5px] 
-          shadow-[2px_2px_0px_0px_#000] sm:shadow-[3px_3px_0px_0px_#000]
+          stagger-item flex items-center px-3 py-[16px] border-2 border-black dark:border-[#f1f3f8] rounded-[5px]
+          shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#f1f3f8] sm:shadow-[3px_3px_0px_0px_#000] sm:dark:shadow-[3px_3px_0px_0px_#f1f3f8]
           transition-all duration-150 active:scale-[0.98]
           hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none
           sm:hover:translate-x-[3px] sm:hover:translate-y-[3px]
@@ -66,7 +66,7 @@ const DistrictCard = memo(function DistrictCard({
         style={{ animationDelay: `${index * 30}ms` } as React.CSSProperties}
       >
         <div className="w-full flex items-center justify-between gap-2">
-          <h3 className={`font-bold text-sm sm:text-base uppercase tracking-tight truncate ${total === 0 ? 'text-black/60' : 'text-black'}`}>
+          <h3 className={`font-bold text-sm sm:text-base uppercase tracking-tight truncate ${total === 0 ? 'text-black/60 dark:text-slate-400' : 'text-black dark:text-slate-100'}`}>
             {district.nameKo}
           </h3>
           {loading ? (
@@ -83,11 +83,11 @@ const DistrictCard = memo(function DistrictCard({
               외부예약
             </span>
           ) : total > 0 ? (
-            <span className="text-[10px] sm:text-xs font-bold text-black/60 uppercase shrink-0">
+            <span className="text-[10px] sm:text-xs font-bold text-black/60 dark:text-slate-400 uppercase shrink-0">
               마감
             </span>
           ) : (
-            <span className="text-[10px] sm:text-xs font-bold text-black/60 uppercase shrink-0">
+            <span className="text-[10px] sm:text-xs font-bold text-black/60 dark:text-slate-400 uppercase shrink-0">
               -
             </span>
           )}
@@ -99,11 +99,11 @@ const DistrictCard = memo(function DistrictCard({
   return (
     <Link
       href={`/${district.slug}`}
-      className={`stagger-item card flex items-center px-3 py-[16px] hover:shadow-md transition-all group active:scale-[0.98] ${total === 0 ? 'bg-gray-50' : ''}`}
+      className={`stagger-item card flex items-center px-3 py-[16px] hover:shadow-md transition-all group active:scale-[0.98] ${total === 0 ? 'bg-gray-50 dark:bg-slate-800' : ''}`}
       style={{ animationDelay: `${index * 30}ms` } as React.CSSProperties}
     >
       <div className="w-full flex items-center justify-between gap-2">
-        <h3 className={`font-medium text-sm sm:text-base transition-colors truncate ${total === 0 ? 'text-gray-400' : `text-gray-900 ${tone.minHover}`}`}>
+        <h3 className={`font-medium text-sm sm:text-base transition-colors truncate ${total === 0 ? 'text-gray-400 dark:text-slate-400' : `text-gray-900 dark:text-slate-100 ${tone.minHover}`}`}>
           {district.nameKo}
         </h3>
         {loading ? (
@@ -118,11 +118,11 @@ const DistrictCard = memo(function DistrictCard({
             외부예약
           </span>
         ) : total > 0 ? (
-          <span className="text-[10px] sm:text-xs text-gray-400 shrink-0">
+          <span className="text-[10px] sm:text-xs text-gray-400 dark:text-slate-400 shrink-0">
             마감
           </span>
         ) : (
-          <span className="text-[10px] sm:text-xs text-gray-300 shrink-0">
+          <span className="text-[10px] sm:text-xs text-gray-300 dark:text-slate-500 shrink-0">
             -
           </span>
         )}

@@ -56,18 +56,18 @@ export default function TodayContent({
     <PullToRefresh
       onRefresh={handleRefresh}
       pullingContent={
-        <div className={`flex items-center justify-center py-4 ${themeClass('text-black font-bold', 'text-green-600')}`}>
+        <div className={`flex items-center justify-center py-4 ${themeClass('text-black dark:text-slate-100 font-bold', 'text-green-600')}`}>
           <span>↓ 당겨서 새로고침</span>
         </div>
       }
       refreshingContent={
-        <div className={`flex items-center justify-center py-4 ${themeClass('text-black font-bold', 'text-green-600')}`}>
+        <div className={`flex items-center justify-center py-4 ${themeClass('text-black dark:text-slate-100 font-bold', 'text-green-600')}`}>
           <Spinner size="md" className="mr-2" />
           <span>새로고침 중...</span>
         </div>
       }
     >
-    <div className={`min-h-screen scrollbar-hide ${themeClass('bg-nb-bg', 'bg-gray-50')}`}>
+    <div className={`min-h-screen scrollbar-hide ${themeClass('bg-nb-bg', 'bg-gray-50 dark:bg-slate-900')}`}>
       <section className={themeClass('court-pattern-nb text-white py-6', 'court-pattern text-white py-6')}>
         <div className="container relative z-10">
           <nav className="mb-3">
@@ -146,8 +146,8 @@ export default function TodayContent({
         {totalAvailable === 0 ? (
           <div
             className={`p-8 text-center rounded-xl ${themeClass(
-              'bg-white border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000]',
-              'bg-white border border-gray-100'
+              'bg-white dark:bg-slate-800 border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000]',
+              'bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-800'
             )}`}
           >
             <svg className={themeClass('w-20 h-20 mx-auto mb-3', 'w-16 h-16 mx-auto mb-3')} viewBox="0 0 80 80" fill="none" aria-hidden="true">
@@ -157,10 +157,10 @@ export default function TodayContent({
               <circle cx="16" cy="12" r="2" className={themeClass('fill-black', 'fill-gray-400')} style={{ animation: 'fav-sparkle 2s ease-in-out infinite', animationDelay: '0s' }} />
               <circle cx="68" cy="64" r="1.5" className={themeClass('fill-black', 'fill-gray-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '1s' }} />
             </svg>
-            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               현재 예약 가능한 코트가 없습니다
             </h2>
-            <p className={`text-sm ${themeClass('text-black/60', 'text-gray-500')}`}>
+            <p className={`text-sm ${themeClass('text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400')}`}>
               잠시 후 다시 확인해주세요.
             </p>
           </div>
@@ -168,8 +168,8 @@ export default function TodayContent({
           <>
             <h2
               className={`text-xl mb-4 ${themeClass(
-                'font-black text-black uppercase tracking-tight',
-                'font-bold text-gray-900'
+                'font-black text-black dark:text-slate-100 uppercase tracking-tight',
+                'font-bold text-gray-900 dark:text-slate-100'
               )}`}
             >
               지역별 예약 가능 코트
@@ -186,7 +186,7 @@ export default function TodayContent({
                     key={district}
                     className={`rounded-lg overflow-hidden ${themeClass(
                       'border-[3px] border-black shadow-[4px_4px_0px_0px_#000]',
-                      'border border-gray-200'
+                      'border border-gray-200 dark:border-slate-700'
                     )}`}
                   >
                     <button
@@ -194,12 +194,12 @@ export default function TodayContent({
                       onClick={() => toggleDistrict(district)}
                       className={`w-full px-4 py-3 flex items-center justify-between font-bold transition-colors ${themeClass(
                         'bg-[#a3e635] text-black hover:bg-[#84cc16]',
-                        'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                        'bg-gray-100 dark:bg-slate-800 text-gray-900 dark:text-slate-100 hover:bg-gray-200 dark:hover:bg-slate-700'
                       )}`}
                     >
                       <span className="flex items-center gap-2">
                         <span>{district}</span>
-                        <span className={`text-sm ${themeClass('text-black/60', 'text-gray-500')}`}>
+                        <span className={`text-sm ${themeClass('text-black/60', 'text-gray-500 dark:text-slate-400')}`}>
                           ({districtCourts.length})
                         </span>
                       </span>
@@ -209,27 +209,27 @@ export default function TodayContent({
                     </button>
 
                     {isExpanded && (
-                      <div className={`${themeClass('bg-white', 'bg-white')}`}>
-                        <div className="divide-y divide-gray-200">
+                      <div className={`${themeClass('bg-white dark:bg-slate-800', 'bg-white dark:bg-slate-800')}`}>
+                        <div className="divide-y divide-gray-200 dark:divide-slate-700">
                           {districtCourts.map((court) => (
                             <div
                               key={court.SVCID}
-                              className={`p-4 ${themeClass('hover:bg-gray-50', 'hover:bg-gray-50')}`}
+                              className={`p-4 ${themeClass('hover:bg-gray-50 dark:hover:bg-slate-700', 'hover:bg-gray-50 dark:hover:bg-slate-700')}`}
                             >
                               <div className="flex items-start justify-between gap-3 mb-2">
                                 <div className="flex-1 min-w-0">
                                   <h3
                                     className={`font-bold text-sm mb-1 ${themeClass(
-                                      'text-black',
-                                      'text-gray-900'
+                                      'text-black dark:text-slate-100',
+                                      'text-gray-900 dark:text-slate-100'
                                     )}`}
                                   >
                                     {court.SVCNM}
                                   </h3>
                                   <p
                                     className={`text-xs ${themeClass(
-                                      'text-black/60',
-                                      'text-gray-500'
+                                      'text-black/60 dark:text-slate-400',
+                                      'text-gray-500 dark:text-slate-400'
                                     )}`}
                                   >
                                     {court.PLACENM}
@@ -248,18 +248,18 @@ export default function TodayContent({
 
                               <div className="grid grid-cols-2 gap-2 text-xs">
                                 <div>
-                                  <span className={`${themeClass('text-black/60', 'text-gray-500')}`}>
+                                  <span className={`${themeClass('text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400')}`}>
                                     이용료
                                   </span>
-                                  <p className={`font-bold ${themeClass('text-black', 'text-gray-900')}`}>
+                                  <p className={`font-bold ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
                                     {court.PAYATNM}
                                   </p>
                                 </div>
                                 <div>
-                                  <span className={`${themeClass('text-black/60', 'text-gray-500')}`}>
+                                  <span className={`${themeClass('text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400')}`}>
                                     운영시간
                                   </span>
-                                  <p className={`font-bold ${themeClass('text-black', 'text-gray-900')}`}>
+                                  <p className={`font-bold ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
                                     {court.V_MIN || '-'} ~ {court.V_MAX || '-'}
                                   </p>
                                 </div>
@@ -280,13 +280,13 @@ export default function TodayContent({
           <div className="mt-8">
             <h2
               className={`text-xl mb-2 ${themeClass(
-                'font-black text-black uppercase tracking-tight',
-                'font-bold text-gray-900'
+                'font-black text-black dark:text-slate-100 uppercase tracking-tight',
+                'font-bold text-gray-900 dark:text-slate-100'
               )}`}
             >
               외부 예약 가능한 테니스장
             </h2>
-            <p className={`text-sm mb-4 ${themeClass('text-black/60 font-bold', 'text-gray-500')}`}>
+            <p className={`text-sm mb-4 ${themeClass('text-black/60 dark:text-slate-400 font-bold', 'text-gray-500 dark:text-slate-400')}`}>
               아래 시설은 각 관리공단에서 직접 예약합니다.
             </p>
 
@@ -297,36 +297,36 @@ export default function TodayContent({
                   <div
                     key={`external-${district}`}
                     className={`rounded-lg overflow-hidden ${themeClass(
-                      'border-[3px] border-black shadow-[4px_4px_0px_0px_#000] bg-white',
-                      'border border-blue-200 bg-white'
+                      'border-[3px] border-black shadow-[4px_4px_0px_0px_#000] bg-white dark:bg-slate-800',
+                      'border border-blue-200 dark:border-blue-900/40 bg-white dark:bg-slate-800'
                     )}`}
                   >
                     <div
                       className={`px-4 py-3 flex items-center justify-between ${themeClass(
                         'bg-[#93c5fd] border-b-2 border-black',
-                        'bg-blue-100 border-b border-blue-200'
+                        'bg-blue-100 dark:bg-blue-950/40 border-b border-blue-200 dark:border-blue-900/40'
                       )}`}
                     >
-                      <span className={themeClass('font-black text-black uppercase tracking-tight', 'font-semibold text-blue-900')}>
+                      <span className={themeClass('font-black text-black uppercase tracking-tight', 'font-semibold text-blue-900 dark:text-blue-200')}>
                         {district}
                       </span>
-                      <span className={`text-xs ${themeClass('font-bold text-black/70', 'font-medium text-blue-700')}`}>
+                      <span className={`text-xs ${themeClass('font-bold text-black/70', 'font-medium text-blue-700 dark:text-blue-300')}`}>
                         {districtCourts.length}개
                       </span>
                     </div>
 
-                    <div className="divide-y divide-blue-100">
+                    <div className="divide-y divide-blue-100 dark:divide-blue-900/40">
                       {districtCourts.map((court) => (
                         <div
                           key={court.SVCID}
-                          className={`p-4 ${themeClass('hover:bg-blue-50/60', 'hover:bg-blue-50/50')}`}
+                          className={`p-4 ${themeClass('hover:bg-blue-50/60 dark:hover:bg-blue-950/30', 'hover:bg-blue-50/50 dark:hover:bg-blue-950/30')}`}
                         >
                           <div className="flex items-start justify-between gap-3 mb-2">
                             <div className="flex-1 min-w-0">
-                              <h3 className={`font-bold text-sm mb-1 ${themeClass('text-black', 'text-gray-900')} `}>
+                              <h3 className={`font-bold text-sm mb-1 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')} `}>
                                 {court.SVCNM}
                               </h3>
-                              <p className={`text-xs ${themeClass('text-black/60', 'text-gray-500')} `}>
+                              <p className={`text-xs ${themeClass('text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400')} `}>
                                 {court.PLACENM}
                               </p>
                             </div>
@@ -347,18 +347,18 @@ export default function TodayContent({
 
                           <div className="grid grid-cols-2 gap-2 text-xs">
                             <div>
-                              <span className={`${themeClass('text-black/60', 'text-gray-500')}`}>
+                              <span className={`${themeClass('text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400')}`}>
                                 이용료
                               </span>
-                              <p className={`font-bold ${themeClass('text-black', 'text-gray-900')}`}>
+                              <p className={`font-bold ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
                                 {court.PAYATNM}
                               </p>
                             </div>
                             <div>
-                              <span className={`${themeClass('text-black/60', 'text-gray-500')}`}>
+                              <span className={`${themeClass('text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400')}`}>
                                 운영시간
                               </span>
-                              <p className={`font-bold ${themeClass('text-black', 'text-gray-900')}`}>
+                              <p className={`font-bold ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
                                 {court.V_MIN || '-'} ~ {court.V_MAX || '-'}
                               </p>
                             </div>

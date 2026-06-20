@@ -178,8 +178,8 @@ export default function BracketView({
       {tournamentName && (
         <h2
           className={themeClass(
-            'text-xl font-black text-black',
-            'text-xl font-bold text-gray-900'
+            'text-xl font-black text-black dark:text-slate-100',
+            'text-xl font-bold text-gray-900 dark:text-slate-100'
           )}
         >
           {tournamentName}
@@ -189,8 +189,8 @@ export default function BracketView({
       <div
         ref={bracketRef}
         className={`overflow-x-auto ${themeClass(
-          'rounded-[5px] border-2 border-black bg-gray-50 shadow-[4px_4px_0px_0px_#000]',
-          'rounded-xl border border-gray-200 bg-white shadow-sm'
+          'rounded-[5px] border-2 border-black bg-gray-50 dark:bg-slate-900 shadow-[4px_4px_0px_0px_#000]',
+          'rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm'
         )}`}
         style={{ WebkitOverflowScrolling: 'touch' }}
       >
@@ -209,7 +209,7 @@ export default function BracketView({
                 x={header.x}
                 y={28}
                 textAnchor="middle"
-                className={isNeoBrutalism ? 'fill-black' : 'fill-gray-500'}
+                className={isNeoBrutalism ? 'fill-black dark:fill-slate-100' : 'fill-gray-500 dark:fill-slate-400'}
                 fontSize="13"
                 fontWeight={isNeoBrutalism ? '900' : '600'}
               >
@@ -260,7 +260,7 @@ export default function BracketView({
                 x={(totalRounds - 1) * (CARD_W + H_GAP) + LEFT_PAD + CARD_W + 30}
                 y={svgHeight / 2 - 8}
                 textAnchor="start"
-                className={isNeoBrutalism ? 'fill-black' : 'fill-gray-800'}
+                className={isNeoBrutalism ? 'fill-black dark:fill-slate-100' : 'fill-gray-800 dark:fill-slate-200'}
                 fontSize="11"
                 fontWeight="700"
               >
@@ -285,14 +285,14 @@ export default function BracketView({
         <div
           className={themeClass(
             'flex items-center gap-2 rounded-[5px] border-2 border-black bg-[#facc15] px-4 py-2.5 shadow-[4px_4px_0px_0px_#000]',
-            'flex items-center gap-2 rounded-xl border border-yellow-200 bg-yellow-50 px-4 py-2.5 shadow-sm'
+            'flex items-center gap-2 rounded-xl border border-yellow-200 dark:border-yellow-900/50 bg-yellow-50 dark:bg-yellow-950/40 px-4 py-2.5 shadow-sm'
           )}
         >
           <span className="text-lg">🏆</span>
           <span
             className={themeClass(
               'font-black text-black',
-              'font-bold text-gray-900'
+              'font-bold text-gray-900 dark:text-yellow-100'
             )}
           >
             우승: {finalMatch.winner.name}

@@ -277,7 +277,7 @@ export default function ReviewForm({
       type="button"
       onClick={() => setRating(value)}
       className={`text-2xl transition-colors ${
-        value <= rating ? 'text-yellow-400' : 'text-gray-300'
+        value <= rating ? 'text-yellow-400' : 'text-gray-300 dark:text-slate-600'
       } hover:scale-110`}
       aria-label={`${value}점 선택`}
       aria-pressed={value <= rating}
@@ -289,8 +289,8 @@ export default function ReviewForm({
   if (!user) {
     return (
       <>
-        <div className={`p-4 text-center ${themeClass('bg-gray-100 border-2 border-black rounded-[5px]', 'bg-gray-50 rounded-xl')} `}>
-          <p className={themeClass('text-black/70 font-medium', 'text-gray-500')}>
+        <div className={`p-4 text-center ${themeClass('bg-gray-100 dark:bg-slate-800 border-2 border-black dark:border-slate-700 rounded-[5px]', 'bg-gray-50 dark:bg-slate-900 rounded-xl')} `}>
+          <p className={themeClass('text-black/70 dark:text-slate-300 font-medium', 'text-gray-500 dark:text-slate-400')}>
             후기를 작성하려면{' '}
             <button
               type="button"
@@ -312,23 +312,23 @@ export default function ReviewForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className={`p-4 ${themeClass('bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]', 'bg-white rounded-xl border border-gray-100 shadow-sm')} `}>
+    <form onSubmit={handleSubmit} className={`p-4 ${themeClass('bg-white dark:bg-slate-800 border-2 border-black dark:border-slate-700 rounded-[5px] shadow-[4px_4px_0px_0px_#000]', 'bg-white dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm')} `}>
       <fieldset className="mb-4 border-none p-0 m-0">
-        <legend className={`mb-2 ${themeClass('font-bold text-black', 'font-medium text-gray-700')} `}>
+        <legend className={`mb-2 ${themeClass('font-bold text-black dark:text-slate-100', 'font-medium text-gray-700 dark:text-slate-200')} `}>
           평점 <span className="text-red-500">*</span>
         </legend>
         <div className="flex gap-1">
           {[1, 2, 3, 4, 5].map((value) => (
             <StarButton key={value} value={value} />
           ))}
-          <span className={`ml-2 ${themeClass('font-bold', 'text-gray-600')} `} aria-live="polite">
+          <span className={`ml-2 ${themeClass('font-bold dark:text-slate-100', 'text-gray-600 dark:text-slate-300')} `} aria-live="polite">
             {rating}점
           </span>
         </div>
       </fieldset>
 
       <div className="mb-4">
-        <label htmlFor="review-content" className={`block mb-2 ${themeClass('font-bold text-black', 'font-medium text-gray-700')} `}>
+        <label htmlFor="review-content" className={`block mb-2 ${themeClass('font-bold text-black dark:text-slate-100', 'font-medium text-gray-700 dark:text-slate-200')} `}>
           후기 내용 <span className="text-red-500">*</span>
         </label>
         <textarea
@@ -341,27 +341,27 @@ export default function ReviewForm({
           required
           aria-invalid={!!validationErrors.content}
           aria-describedby={validationErrors.content ? 'review-content-error' : 'review-content-count'}
-          className={`w-full p-3 resize-none ${themeClass('border-2 border-black rounded-[5px] focus:outline-none focus:ring-2 focus:ring-[#22c55e] focus:ring-offset-2', 'border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent')}`}
+          className={`w-full p-3 resize-none ${themeClass('border-2 border-black dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 rounded-[5px] focus:outline-none focus:ring-2 focus:ring-[#22c55e] focus:ring-offset-2', 'border border-gray-200 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent')}`}
         />
         {validationErrors.content && (
           <p id="review-content-error" className="text-red-500 text-xs mt-1" role="alert">
             {validationErrors.content}
           </p>
         )}
-        <div id="review-content-count" className={`text-right text-sm mt-1 ${themeClass('text-black/60', 'text-gray-400')} `}>
+        <div id="review-content-count" className={`text-right text-sm mt-1 ${themeClass('text-black/60 dark:text-slate-400', 'text-gray-400 dark:text-slate-500')} `}>
           {content.length}/500
         </div>
       </div>
 
       <div className="mb-4">
-        <span className={`block mb-2 ${themeClass('font-bold text-black', 'font-medium text-gray-700')} `}>
-          사진 첨부 <span className={themeClass('text-black/60 font-normal', 'text-gray-400 font-normal')}>(선택, 최대 {MAX_IMAGES}장)</span>
+        <span className={`block mb-2 ${themeClass('font-bold text-black dark:text-slate-100', 'font-medium text-gray-700 dark:text-slate-200')} `}>
+          사진 첨부 <span className={themeClass('text-black/60 dark:text-slate-400 font-normal', 'text-gray-400 dark:text-slate-500 font-normal')}>(선택, 최대 {MAX_IMAGES}장)</span>
         </span>
 
         <label
           onDrop={handleDrop}
           onDragOver={handleDragOver}
-          className={`relative block border-2 border-dashed rounded-lg p-4 text-center transition-colors ${themeClass('border-black/30 hover:border-black/60 bg-gray-50', 'border-gray-200 hover:border-gray-400 bg-gray-50')} ${images.length >= MAX_IMAGES ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+          className={`relative block border-2 border-dashed rounded-lg p-4 text-center transition-colors ${themeClass('border-black/30 dark:border-slate-600 hover:border-black/60 dark:hover:border-slate-500 bg-gray-50 dark:bg-slate-900', 'border-gray-200 dark:border-slate-700 hover:border-gray-400 dark:hover:border-slate-500 bg-gray-50 dark:bg-slate-900')} ${images.length >= MAX_IMAGES ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
           aria-label="리뷰 사진 추가 (최대 3장, 각 5MB 이하)"
         >
           <input
@@ -375,13 +375,13 @@ export default function ReviewForm({
             aria-label="리뷰 사진 파일 선택"
           />
           <div className="flex flex-col items-center gap-2">
-            <svg className={`w-8 h-8 ${themeClass('text-black/60', 'text-gray-400')}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <svg className={`w-8 h-8 ${themeClass('text-black/60 dark:text-slate-400', 'text-gray-400 dark:text-slate-500')}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
-            <p className={`text-sm ${themeClass('text-black/60', 'text-gray-500')} `}>
+            <p className={`text-sm ${themeClass('text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400')} `}>
               클릭하거나 이미지를 드래그하세요
             </p>
-            <p className={`text-xs ${themeClass('text-black/60', 'text-gray-400')} `}>
+            <p className={`text-xs ${themeClass('text-black/60 dark:text-slate-400', 'text-gray-400 dark:text-slate-500')} `}>
               JPG, PNG, WebP (최대 5MB)
             </p>
           </div>
@@ -392,7 +392,7 @@ export default function ReviewForm({
             {images.map((img, index) => (
               <div
                 key={img.id}
-                className={`relative aspect-square rounded-lg overflow-hidden ${themeClass('border-2 border-black', 'border border-gray-200')}`}
+                className={`relative aspect-square rounded-lg overflow-hidden ${themeClass('border-2 border-black dark:border-slate-700', 'border border-gray-200 dark:border-slate-700')}`}
               >
                 <Image
                    src={img.preview}
@@ -424,14 +424,14 @@ export default function ReviewForm({
       </div>
 
       {uploadProgress && (
-        <div className={`mb-4 p-3 text-sm flex items-center gap-2 ${themeClass('bg-blue-100 border-2 border-black rounded-[5px] text-blue-700 font-medium', 'bg-blue-50 rounded-lg text-blue-600')} `}>
+        <div className={`mb-4 p-3 text-sm flex items-center gap-2 ${themeClass('bg-blue-100 dark:bg-blue-950/40 border-2 border-black dark:border-slate-700 rounded-[5px] text-blue-700 dark:text-blue-300 font-medium', 'bg-blue-50 dark:bg-blue-950/40 rounded-lg text-blue-600 dark:text-blue-300')} `}>
           <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
           {uploadProgress}
         </div>
       )}
 
       {error && (
-        <div role="alert" className={`mb-4 p-3 text-sm ${themeClass('bg-red-100 border-2 border-black rounded-[5px] text-red-700 font-medium', 'bg-red-50 rounded-lg text-red-600')} `}>
+        <div role="alert" className={`mb-4 p-3 text-sm ${themeClass('bg-red-100 dark:bg-red-950/40 border-2 border-black dark:border-slate-700 rounded-[5px] text-red-700 dark:text-red-300 font-medium', 'bg-red-50 dark:bg-red-950/40 rounded-lg text-red-600 dark:text-red-300')} `}>
           {error}
         </div>
       )}
@@ -442,8 +442,8 @@ export default function ReviewForm({
             type="button"
             onClick={onCancelEdit}
             className={themeClass(
-              'py-3 px-4 font-bold border-2 border-black rounded-[5px] bg-white text-black hover:bg-gray-100 transition-colors',
-              'py-3 px-4 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors'
+              'py-3 px-4 font-bold border-2 border-black dark:border-slate-700 rounded-[5px] bg-white dark:bg-slate-800 text-black dark:text-slate-100 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors',
+              'py-3 px-4 rounded-lg border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors'
             )}
           >
             취소
@@ -456,12 +456,12 @@ export default function ReviewForm({
           className={themeClass(
             `py-3 font-bold transition-all ${editingReview ? 'flex-1' : 'w-full'} border-2 border-black rounded-[5px] ${
               isSubmitting || content.length < 10
-                ? 'bg-gray-200 text-black/60 cursor-not-allowed'
+                ? 'bg-gray-200 dark:bg-slate-700 text-black/60 dark:text-slate-400 cursor-not-allowed'
                 : 'bg-[#22c55e] text-black shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none'
             }`,
             `py-3 font-bold transition-all ${editingReview ? 'flex-1' : 'w-full'} rounded-lg ${
               isSubmitting || content.length < 10
-                ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                ? 'bg-gray-200 dark:bg-slate-700 text-gray-400 dark:text-slate-500 cursor-not-allowed'
                 : 'bg-green-600 text-white hover:bg-green-700'
             }`
           )}

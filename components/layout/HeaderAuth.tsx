@@ -27,7 +27,7 @@ export default function HeaderAuth() {
       <>
         <Link
           href="/my"
-          className={`px-3 py-1.5 text-sm transition-colors inline-flex items-center gap-1.5 ${themeClass('text-black font-bold hover:underline underline-offset-4', 'text-gray-600 hover:text-green-600')}`}
+          className={`px-3 py-1.5 text-sm transition-colors inline-flex items-center gap-1.5 ${themeClass('text-black font-bold hover:underline underline-offset-4', 'text-gray-600 dark:text-slate-400 hover:text-green-600')}`}
         >
           <ProviderIcon />
           마이페이지
@@ -35,7 +35,7 @@ export default function HeaderAuth() {
         <button
           type="button"
           onClick={handleSignOut}
-          className={`px-3 py-1.5 text-sm transition-colors ${themeClass('text-black/70 font-medium hover:underline underline-offset-4', 'text-gray-400 hover:text-gray-600')}`}
+          className={`px-3 py-1.5 text-sm transition-colors ${themeClass('text-black/70 font-medium hover:underline underline-offset-4', 'text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:hover:text-slate-300')}`}
         >
           로그아웃
         </button>

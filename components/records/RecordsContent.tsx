@@ -27,7 +27,7 @@ export default function RecordsContent() {
   }, [mutate]);
 
   const RefreshIndicator = (
-    <div className={`flex items-center justify-center py-4 ${themeClass('text-black font-bold', 'text-green-600')}`}>
+    <div className={`flex items-center justify-center py-4 ${themeClass('text-black dark:text-slate-100 font-bold', 'text-green-600')}`}>
       <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24" aria-hidden="true">
         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
@@ -40,19 +40,19 @@ export default function RecordsContent() {
     <PullToRefresh
       onRefresh={handleRefresh}
       pullingContent={
-        <div className={`flex items-center justify-center py-4 ${themeClass('text-black font-bold', 'text-green-600')}`}>
+        <div className={`flex items-center justify-center py-4 ${themeClass('text-black dark:text-slate-100 font-bold', 'text-green-600')}`}>
           <span>↓ 당겨서 새로고침</span>
         </div>
       }
       refreshingContent={RefreshIndicator}
     >
-    <div className={cn('min-h-screen scrollbar-hide', themeClass('bg-nb-bg', 'bg-gray-50'))}>
+    <div className={cn('min-h-screen scrollbar-hide', themeClass('bg-nb-bg', 'bg-gray-50 dark:bg-slate-900'))}>
       <div className="container mx-auto px-4 py-6">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <h1 className={cn(
               'text-2xl',
-              themeClass('font-black text-black uppercase', 'font-bold text-gray-900')
+              themeClass('font-black text-black dark:text-slate-100 uppercase', 'font-bold text-gray-900 dark:text-slate-100')
             )}>
               {isNeoBrutalism ? '🎾 경기 기록' : '경기 기록'}
             </h1>
@@ -61,8 +61,8 @@ export default function RecordsContent() {
               className={cn(
                 'text-xs px-2 py-1 transition-colors',
                 themeClass(
-                  'font-bold text-black/50 border-2 border-black/20 rounded-[4px] hover:bg-gray-100 hover:text-black',
-                  'text-gray-400 border border-gray-200 rounded-md hover:bg-gray-50 hover:text-gray-600'
+                  'font-bold text-black/50 dark:text-slate-400 border-2 border-black/20 dark:border-slate-700 rounded-[4px] hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-black dark:hover:text-slate-100',
+                  'text-gray-400 dark:text-slate-500 border border-gray-200 dark:border-slate-700 rounded-md hover:bg-gray-50 dark:hover:bg-slate-800 hover:text-gray-600 dark:hover:text-slate-300'
                 )
               )}
             >
@@ -99,8 +99,8 @@ export default function RecordsContent() {
             <div className={cn(
               'p-8 text-center',
               themeClass(
-                'bg-white border-2 border-black rounded-[5px]',
-                'bg-white rounded-2xl border border-gray-100'
+                'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px]',
+                'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-800'
               )
             )}>
               <p className={cn('mb-4', themeClass('text-red-600 font-bold', 'text-red-500'))}>
@@ -126,14 +126,14 @@ export default function RecordsContent() {
                     className={cn(
                       'px-3 py-2 text-sm transition-all',
                       themeClass(
-                        'border-2 border-black rounded-[5px] font-bold disabled:opacity-40 hover:bg-gray-100',
-                        'border border-gray-300 rounded-lg disabled:opacity-40 hover:bg-gray-50'
+                        'border-2 border-black rounded-[5px] font-bold disabled:opacity-40 hover:bg-gray-100 dark:hover:bg-slate-800',
+                        'border border-gray-300 dark:border-slate-700 rounded-lg disabled:opacity-40 hover:bg-gray-50 dark:hover:bg-slate-800'
                       )
                     )}
                   >
                     이전
                   </button>
-                  <span className={cn('text-sm', themeClass('font-bold', 'text-gray-600'))}>
+                  <span className={cn('text-sm', themeClass('font-bold', 'text-gray-600 dark:text-slate-300'))}>
                     {currentPage} / {totalPages}
                   </span>
                   <button
@@ -143,8 +143,8 @@ export default function RecordsContent() {
                     className={cn(
                       'px-3 py-2 text-sm transition-all',
                       themeClass(
-                        'border-2 border-black rounded-[5px] font-bold disabled:opacity-40 hover:bg-gray-100',
-                        'border border-gray-300 rounded-lg disabled:opacity-40 hover:bg-gray-50'
+                        'border-2 border-black rounded-[5px] font-bold disabled:opacity-40 hover:bg-gray-100 dark:hover:bg-slate-800',
+                        'border border-gray-300 dark:border-slate-700 rounded-lg disabled:opacity-40 hover:bg-gray-50 dark:hover:bg-slate-800'
                       )
                     )}
                   >

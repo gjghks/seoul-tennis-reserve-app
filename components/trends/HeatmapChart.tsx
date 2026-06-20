@@ -22,14 +22,14 @@ interface HeatmapChartProps {
 }
 
 function getCellColorNeo(rate: number): string {
-  if (rate === 0) return 'bg-gray-100 border-black/20';
+  if (rate === 0) return 'bg-gray-100 dark:bg-slate-700 border-black/20 dark:border-slate-600';
   if (rate < 30) return 'bg-[#a3e635] border-black';
   if (rate < 60) return 'bg-[#facc15] border-black';
   return 'bg-[#fca5a5] border-black';
 }
 
 function getCellColorMinimal(rate: number): string {
-  if (rate === 0) return 'bg-gray-50';
+  if (rate === 0) return 'bg-gray-50 dark:bg-slate-700';
   if (rate < 30) return 'bg-green-200';
   if (rate < 60) return 'bg-yellow-200';
   return 'bg-red-200';
@@ -74,8 +74,8 @@ export default function HeatmapChart({ data }: HeatmapChartProps) {
               <div
                 key={label}
                 className={`text-center text-xs py-1.5 ${themeClass(
-                  'font-black text-black',
-                  'font-medium text-gray-500'
+                  'font-black text-black dark:text-slate-100',
+                  'font-medium text-gray-500 dark:text-slate-400'
                 )}`}
               >
                 {label}
@@ -86,8 +86,8 @@ export default function HeatmapChart({ data }: HeatmapChartProps) {
               <div key={slot} className="contents">
                 <div
                   className={`text-[11px] pr-2 flex items-center justify-end whitespace-nowrap ${themeClass(
-                    'font-bold text-black',
-                    'font-medium text-gray-500'
+                    'font-bold text-black dark:text-slate-100',
+                    'font-medium text-gray-500 dark:text-slate-400'
                   )}`}
                 >
                   {TIME_SLOT_LABELS[slot]}
@@ -139,22 +139,22 @@ export default function HeatmapChart({ data }: HeatmapChartProps) {
       {selected && selectedCell && selectedCell.sampleCount > 0 && (
         <div
           className={`text-sm px-3 py-2 rounded-md ${themeClass(
-            'bg-[#facc15]/30 border border-black/20 font-bold text-black',
-            'bg-green-50 text-gray-700'
+            'bg-[#facc15]/30 dark:bg-amber-950/40 border border-black/20 dark:border-amber-900/40 font-bold text-black dark:text-amber-100',
+            'bg-green-50 dark:bg-green-950/40 text-gray-700 dark:text-green-200'
           )}`}
         >
           {getDayFullName(selectedDayLabel)} {getTimeSlotKorean(selected.slot)}: 평균 마감률{' '}
-          <span className={themeClass('text-black', 'text-green-700 font-semibold')}>
+          <span className={themeClass('text-black dark:text-amber-100', 'text-green-700 dark:text-green-300 font-semibold')}>
             {selectedCell.avgBookingRate}%
           </span>
-          <span className={`ml-2 text-xs ${themeClass('text-black/60', 'text-gray-400')}`}>
+          <span className={`ml-2 text-xs ${themeClass('text-black/60 dark:text-amber-200/70', 'text-gray-400 dark:text-green-200/60')}`}>
             (데이터 {selectedCell.sampleCount}건)
           </span>
         </div>
       )}
 
       <div className="flex items-center gap-2 justify-center">
-        <span className={`text-[10px] ${themeClass('text-black/60 font-bold', 'text-gray-400')}`}>여유</span>
+        <span className={`text-[10px] ${themeClass('text-black/60 dark:text-slate-400 font-bold', 'text-gray-400 dark:text-slate-500')}`}>여유</span>
         {[
           { neo: 'bg-[#a3e635]', min: 'bg-green-200' },
           { neo: 'bg-[#facc15]', min: 'bg-yellow-200' },
@@ -168,7 +168,7 @@ export default function HeatmapChart({ data }: HeatmapChartProps) {
             )}`}
           />
         ))}
-        <span className={`text-[10px] ${themeClass('text-black/60 font-bold', 'text-gray-400')}`}>치열</span>
+        <span className={`text-[10px] ${themeClass('text-black/60 dark:text-slate-400 font-bold', 'text-gray-400 dark:text-slate-500')}`}>치열</span>
       </div>
     </div>
   );

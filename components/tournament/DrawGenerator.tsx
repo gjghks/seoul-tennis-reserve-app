@@ -198,8 +198,8 @@ export default function DrawGenerator({
   const inputClass = cn(
     'w-full px-3 py-2 outline-none transition-all',
     themeClass(
-      'bg-white border-2 border-black rounded-[5px] font-bold text-black focus:shadow-[3px_3px_0px_0px_#000]',
-      'bg-gray-50 border border-gray-200 rounded-lg font-medium text-gray-900 focus:bg-white focus:ring-2 focus:ring-green-500'
+      'bg-white dark:bg-slate-900 border-2 border-black rounded-[5px] font-bold text-black dark:text-slate-100 focus:shadow-[3px_3px_0px_0px_#000]',
+      'bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg font-medium text-gray-900 dark:text-slate-100 focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-green-500'
     )
   );
 
@@ -208,14 +208,14 @@ export default function DrawGenerator({
       className={cn(
         'p-5 space-y-4',
         themeClass(
-          'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
-          'bg-white border border-gray-100 rounded-2xl shadow-sm'
+          'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
+          'bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl shadow-sm'
         )
       )}
     >
       <div className="flex items-center justify-between">
-        <h3 className={cn('text-lg', themeClass('font-black text-black', 'font-bold text-gray-900'))}>참가자 관리</h3>
-        <span className={cn('text-sm', themeClass('font-bold text-black/60', 'text-gray-500'))}>
+        <h3 className={cn('text-lg', themeClass('font-black text-black dark:text-slate-100', 'font-bold text-gray-900 dark:text-slate-100'))}>참가자 관리</h3>
+        <span className={cn('text-sm', themeClass('font-bold text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400'))}>
           {participants.length}/{maxParticipants}명
         </span>
       </div>
@@ -254,7 +254,7 @@ export default function DrawGenerator({
       </div>
 
       {participants.length === 0 ? (
-        <p className={themeClass('font-bold text-black/60', 'text-gray-500')}>등록된 참가자가 없습니다.</p>
+        <p className={themeClass('font-bold text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400')}>등록된 참가자가 없습니다.</p>
       ) : (
         <ul className="space-y-2 max-h-72 overflow-y-auto pr-1">
           {participants.map((participant) => (
@@ -262,18 +262,18 @@ export default function DrawGenerator({
               key={participant.id}
               className={cn(
                 'flex items-center justify-between px-3 py-2',
-                themeClass('bg-[#f8fafc] border-2 border-black rounded-[5px]', 'bg-gray-50 border border-gray-200 rounded-lg')
+                themeClass('bg-[#f8fafc] dark:bg-slate-900 border-2 border-black rounded-[5px]', 'bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg')
               )}
             >
               <div className="flex items-center gap-2 min-w-0">
                 {participant.seed_number ? (
-                  <span className={cn('text-xs px-2 py-0.5 rounded', themeClass('font-black bg-[#facc15] border-2 border-black text-black', 'font-bold bg-yellow-100 text-yellow-700 border border-yellow-200'))}>
+                  <span className={cn('text-xs px-2 py-0.5 rounded', themeClass('font-black bg-[#facc15] border-2 border-black text-black', 'font-bold bg-yellow-100 dark:bg-yellow-950/40 text-yellow-700 dark:text-yellow-300 border border-yellow-200 dark:border-yellow-900/50'))}>
                     #{participant.seed_number}
                   </span>
                 ) : null}
-                <span className={cn('truncate', themeClass('font-bold text-black', 'font-medium text-gray-800'))}>{participant.name}</span>
+                <span className={cn('truncate', themeClass('font-bold text-black dark:text-slate-100', 'font-medium text-gray-800 dark:text-slate-200'))}>{participant.name}</span>
                 {participant.partner_name ? (
-                  <span className={cn('text-xs truncate', themeClass('font-bold text-black/60', 'text-gray-500'))}>
+                  <span className={cn('text-xs truncate', themeClass('font-bold text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400'))}>
                     ({participant.partner_name})
                   </span>
                 ) : null}
@@ -291,7 +291,7 @@ export default function DrawGenerator({
       )}
 
       {warningMessage ? (
-        <div className={cn('p-3 text-sm', themeClass('bg-[#fff7ed] border-2 border-black rounded-[5px] font-bold text-black', 'bg-amber-50 border border-amber-200 rounded-lg text-amber-700'))}>
+        <div className={cn('p-3 text-sm', themeClass('bg-[#fff7ed] dark:bg-amber-950/40 border-2 border-black rounded-[5px] font-bold text-black dark:text-amber-200', 'bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/50 rounded-lg text-amber-700 dark:text-amber-300'))}>
           {warningMessage}
         </div>
       ) : null}
@@ -300,7 +300,7 @@ export default function DrawGenerator({
         <div
           className={cn(
             'p-3 text-center animate-pulse',
-            themeClass('bg-[#f0fdf4] border-2 border-black rounded-[5px] font-black text-black', 'bg-green-50 border border-green-200 rounded-lg font-bold text-green-700')
+            themeClass('bg-[#f0fdf4] dark:bg-green-950/40 border-2 border-black rounded-[5px] font-black text-black dark:text-green-200', 'bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-900/50 rounded-lg font-bold text-green-700 dark:text-green-300')
           )}
         >
           {slotText}

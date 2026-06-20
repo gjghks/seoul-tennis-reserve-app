@@ -91,8 +91,8 @@ export default function TennisProfileSection() {
     <section className="mb-8">
       <div className="flex items-center justify-between mb-4">
         <h2 className={themeClass(
-          'text-xl font-black flex items-center gap-2',
-          'text-lg font-semibold text-gray-900'
+          'text-xl font-black flex items-center gap-2 dark:text-slate-100',
+          'text-lg font-semibold text-gray-900 dark:text-slate-100'
         )}>
           {themeClass(
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-6 h-6">
@@ -110,8 +110,8 @@ export default function TennisProfileSection() {
             type="button"
             onClick={() => setIsEditing(true)}
             className={themeClass(
-              'text-sm font-bold underline decoration-2 underline-offset-2 hover:text-blue-600',
-              'text-sm text-gray-500 hover:text-gray-900'
+              'text-sm font-bold underline decoration-2 underline-offset-2 hover:text-blue-600 dark:text-slate-200',
+              'text-sm text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-100'
             )}
           >
             수정
@@ -120,8 +120,8 @@ export default function TennisProfileSection() {
       </div>
 
       <div className={themeClass(
-        'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] p-5 relative overflow-hidden',
-        'bg-white border border-gray-200 rounded-lg shadow-sm p-5'
+        'bg-white dark:bg-slate-800 border-2 border-black dark:border-slate-700 rounded-[5px] shadow-[4px_4px_0px_0px_#000] p-5 relative overflow-hidden',
+        'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg shadow-sm p-5'
       )}>
         {/* Decorative background for Neo-Brutalism */}
         <div className={themeClass(
@@ -136,7 +136,7 @@ export default function TennisProfileSection() {
                 {profile.career_years !== null && (
                   <span className={themeClass(
                     'inline-block px-3 py-1 bg-black text-white text-sm font-bold rounded-full',
-                    'inline-block px-3 py-1 bg-gray-100 text-gray-800 text-sm font-medium rounded-full'
+                    'inline-block px-3 py-1 bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-slate-200 text-sm font-medium rounded-full'
                   )}>
                     구력 {getLabel(CAREER_YEARS_OPTIONS, profile.career_years)}
                   </span>
@@ -144,7 +144,7 @@ export default function TennisProfileSection() {
                 {profile.ntrp_rating !== null && (
                   <span className={themeClass(
                     'inline-block px-3 py-1 bg-black text-white text-sm font-bold rounded-full',
-                    'inline-block px-3 py-1 bg-gray-100 text-gray-800 text-sm font-medium rounded-full'
+                    'inline-block px-3 py-1 bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-slate-200 text-sm font-medium rounded-full'
                   )}>
                     NTRP {profile.ntrp_rating}
                   </span>
@@ -152,7 +152,7 @@ export default function TennisProfileSection() {
                 {profile.skill_level && (
                   <span className={themeClass(
                     'inline-block px-3 py-1 bg-black text-white text-sm font-bold rounded-full',
-                    'inline-block px-3 py-1 bg-gray-100 text-gray-800 text-sm font-medium rounded-full'
+                    'inline-block px-3 py-1 bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-slate-200 text-sm font-medium rounded-full'
                   )}>
                     {getLabel(SKILL_LEVEL_OPTIONS, profile.skill_level)}
                   </span>
@@ -160,7 +160,7 @@ export default function TennisProfileSection() {
                 {profile.preferred_hand && (
                   <span className={themeClass(
                     'inline-block px-3 py-1 bg-black text-white text-sm font-bold rounded-full',
-                    'inline-block px-3 py-1 bg-gray-100 text-gray-800 text-sm font-medium rounded-full'
+                    'inline-block px-3 py-1 bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-slate-200 text-sm font-medium rounded-full'
                   )}>
                     {getLabel(PREFERRED_HAND_OPTIONS, profile.preferred_hand)}
                   </span>
@@ -168,7 +168,7 @@ export default function TennisProfileSection() {
                 {profile.age_group && (
                   <span className={themeClass(
                     'inline-block px-3 py-1 bg-black text-white text-sm font-bold rounded-full',
-                    'inline-block px-3 py-1 bg-gray-100 text-gray-800 text-sm font-medium rounded-full'
+                    'inline-block px-3 py-1 bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-slate-200 text-sm font-medium rounded-full'
                   )}>
                     {getLabel(AGE_GROUP_OPTIONS, profile.age_group)}
                   </span>
@@ -187,11 +187,11 @@ export default function TennisProfileSection() {
                   <ellipse cx="62" cy="30" rx="7" ry="10" className={themeClass('fill-none stroke-black stroke-[2]', 'fill-none stroke-green-400 stroke-[1.5]')} transform="rotate(-30 62 30)" />
                   <line x1="56" y1="38" x2="50" y2="50" className={themeClass('stroke-black stroke-[2]', 'stroke-green-400 stroke-[1.5]')} strokeLinecap="round" />
                 </g>
-                <circle cx="14" cy="16" r="2" className={themeClass('fill-black', 'fill-green-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0s' }} />
-                <circle cx="70" cy="62" r="2.5" className={themeClass('fill-black', 'fill-green-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.7s' }} />
-                <path d="M68 12 Q68 16 72 16 Q68 16 68 20 Q68 16 64 16 Q68 16 68 12 Z" className={themeClass('fill-black', 'fill-green-300')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.4s' }} />
+                <circle cx="14" cy="16" r="2" className={themeClass('fill-black dark:fill-slate-300', 'fill-green-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0s' }} />
+                <circle cx="70" cy="62" r="2.5" className={themeClass('fill-black dark:fill-slate-300', 'fill-green-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.7s' }} />
+                <path d="M68 12 Q68 16 72 16 Q68 16 68 20 Q68 16 64 16 Q68 16 68 12 Z" className={themeClass('fill-black dark:fill-slate-300', 'fill-green-300')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.4s' }} />
               </svg>
-              <p className={themeClass('font-bold mb-3', 'text-gray-600 mb-3')}>
+              <p className={themeClass('font-bold mb-3 dark:text-slate-100', 'text-gray-600 dark:text-slate-300 mb-3')}>
                 아직 프로필 정보가 없습니다.
               </p>
               <button
@@ -210,7 +210,7 @@ export default function TennisProfileSection() {
           <div className="space-y-4 relative z-10">
             {/* 구력 */}
             <div>
-              <label htmlFor="career_years" className={themeClass('block font-bold mb-1 text-sm', 'block text-sm font-medium text-gray-700 mb-1')}>
+              <label htmlFor="career_years" className={themeClass('block font-bold mb-1 text-sm dark:text-slate-100', 'block text-sm font-medium text-gray-700 dark:text-slate-200 mb-1')}>
                 구력
               </label>
               <select
@@ -218,8 +218,8 @@ export default function TennisProfileSection() {
                 value={formData.career_years ?? ''}
                 onChange={(e) => setFormData({ ...formData, career_years: e.target.value ? Number(e.target.value) : null })}
                 className={themeClass(
-                  'w-full p-2 border-2 border-black rounded-[5px] font-bold focus:outline-none focus:shadow-[2px_2px_0px_0px_#000] transition-all bg-white',
-                  'w-full p-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none'
+                  'w-full p-2 border-2 border-black dark:border-slate-700 rounded-[5px] font-bold focus:outline-none focus:shadow-[2px_2px_0px_0px_#000] transition-all bg-white dark:bg-slate-900 dark:text-slate-100',
+                  'w-full p-2 border border-gray-300 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none'
                 )}
               >
                 <option value="">선택해주세요</option>
@@ -233,7 +233,7 @@ export default function TennisProfileSection() {
 
             {/* NTRP */}
             <div>
-              <label htmlFor="ntrp_rating" className={themeClass('block font-bold mb-1 text-sm', 'block text-sm font-medium text-gray-700 mb-1')}>
+              <label htmlFor="ntrp_rating" className={themeClass('block font-bold mb-1 text-sm dark:text-slate-100', 'block text-sm font-medium text-gray-700 dark:text-slate-200 mb-1')}>
                 NTRP (1.0 ~ 7.0)
               </label>
               <input
@@ -246,15 +246,15 @@ export default function TennisProfileSection() {
                 value={formData.ntrp_rating ?? ''}
                 onChange={(e) => setFormData({ ...formData, ntrp_rating: e.target.value ? Number(e.target.value) : null })}
                 className={themeClass(
-                  'w-full p-2 border-2 border-black rounded-[5px] font-bold focus:outline-none focus:shadow-[2px_2px_0px_0px_#000] transition-all',
-                  'w-full p-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none'
+                  'w-full p-2 border-2 border-black dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 rounded-[5px] font-bold focus:outline-none focus:shadow-[2px_2px_0px_0px_#000] transition-all',
+                  'w-full p-2 border border-gray-300 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 rounded-md text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none'
                 )}
               />
             </div>
 
             {/* 실력 수준 */}
             <div>
-              <span className={themeClass('block font-bold mb-2 text-sm', 'block text-sm font-medium text-gray-700 mb-2')}>
+              <span className={themeClass('block font-bold mb-2 text-sm dark:text-slate-100', 'block text-sm font-medium text-gray-700 dark:text-slate-200 mb-2')}>
                 실력 수준
               </span>
               <div className="flex flex-wrap gap-2">
@@ -265,12 +265,12 @@ export default function TennisProfileSection() {
                     onClick={() => setFormData({ ...formData, skill_level: opt.value })}
                     className={cn(
                       themeClass(
-                        'px-3 py-1 border-2 border-black rounded-full text-sm font-bold transition-all',
-                        'px-3 py-1 border border-gray-200 rounded-full text-sm transition-colors'
+                        'px-3 py-1 border-2 border-black dark:border-slate-700 rounded-full text-sm font-bold transition-all',
+                        'px-3 py-1 border border-gray-200 dark:border-slate-700 rounded-full text-sm transition-colors'
                       ),
                       formData.skill_level === opt.value
                         ? themeClass('bg-black text-white', 'bg-green-600 text-white border-green-600')
-                        : themeClass('bg-white hover:bg-gray-100', 'bg-white text-gray-600 hover:bg-gray-50')
+                        : themeClass('bg-white dark:bg-slate-800 dark:text-slate-100 hover:bg-gray-100 dark:hover:bg-slate-700', 'bg-white dark:bg-slate-800 text-gray-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700')
                     )}
                   >
                     {opt.label}
@@ -281,7 +281,7 @@ export default function TennisProfileSection() {
 
             {/* 주 사용 손 */}
             <div>
-              <span className={themeClass('block font-bold mb-2 text-sm', 'block text-sm font-medium text-gray-700 mb-2')}>
+              <span className={themeClass('block font-bold mb-2 text-sm dark:text-slate-100', 'block text-sm font-medium text-gray-700 dark:text-slate-200 mb-2')}>
                 주 사용 손
               </span>
               <div className="flex flex-wrap gap-2">
@@ -292,12 +292,12 @@ export default function TennisProfileSection() {
                     onClick={() => setFormData({ ...formData, preferred_hand: opt.value })}
                     className={cn(
                       themeClass(
-                        'px-3 py-1 border-2 border-black rounded-full text-sm font-bold transition-all',
-                        'px-3 py-1 border border-gray-200 rounded-full text-sm transition-colors'
+                        'px-3 py-1 border-2 border-black dark:border-slate-700 rounded-full text-sm font-bold transition-all',
+                        'px-3 py-1 border border-gray-200 dark:border-slate-700 rounded-full text-sm transition-colors'
                       ),
                       formData.preferred_hand === opt.value
                         ? themeClass('bg-black text-white', 'bg-green-600 text-white border-green-600')
-                        : themeClass('bg-white hover:bg-gray-100', 'bg-white text-gray-600 hover:bg-gray-50')
+                        : themeClass('bg-white dark:bg-slate-800 dark:text-slate-100 hover:bg-gray-100 dark:hover:bg-slate-700', 'bg-white dark:bg-slate-800 text-gray-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700')
                     )}
                   >
                     {opt.label}
@@ -308,7 +308,7 @@ export default function TennisProfileSection() {
 
             {/* 연령대 */}
             <div>
-              <span className={themeClass('block font-bold mb-2 text-sm', 'block text-sm font-medium text-gray-700 mb-2')}>
+              <span className={themeClass('block font-bold mb-2 text-sm dark:text-slate-100', 'block text-sm font-medium text-gray-700 dark:text-slate-200 mb-2')}>
                 연령대
               </span>
               <div className="flex flex-wrap gap-2">
@@ -319,12 +319,12 @@ export default function TennisProfileSection() {
                     onClick={() => setFormData({ ...formData, age_group: opt.value })}
                     className={cn(
                       themeClass(
-                        'px-3 py-1 border-2 border-black rounded-full text-sm font-bold transition-all',
-                        'px-3 py-1 border border-gray-200 rounded-full text-sm transition-colors'
+                        'px-3 py-1 border-2 border-black dark:border-slate-700 rounded-full text-sm font-bold transition-all',
+                        'px-3 py-1 border border-gray-200 dark:border-slate-700 rounded-full text-sm transition-colors'
                       ),
                       formData.age_group === opt.value
                         ? themeClass('bg-black text-white', 'bg-green-600 text-white border-green-600')
-                        : themeClass('bg-white hover:bg-gray-100', 'bg-white text-gray-600 hover:bg-gray-50')
+                        : themeClass('bg-white dark:bg-slate-800 dark:text-slate-100 hover:bg-gray-100 dark:hover:bg-slate-700', 'bg-white dark:bg-slate-800 text-gray-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700')
                     )}
                   >
                     {opt.label}
@@ -334,7 +334,7 @@ export default function TennisProfileSection() {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex gap-2 mt-6 pt-2 border-t border-gray-100">
+            <div className="flex gap-2 mt-6 pt-2 border-t border-gray-100 dark:border-slate-700">
               <button
                 type="button"
                 onClick={handleSave}
@@ -351,8 +351,8 @@ export default function TennisProfileSection() {
                 onClick={handleCancel}
                 disabled={isSaving}
                 className={themeClass(
-                  'flex-1 py-2 bg-white border-2 border-black font-bold shadow-[2px_2px_0px_0px_#000] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_#000] transition-all disabled:opacity-50',
-                  'flex-1 py-2 bg-white border border-gray-300 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors disabled:opacity-50'
+                  'flex-1 py-2 bg-white dark:bg-slate-800 dark:text-slate-100 border-2 border-black dark:border-slate-700 font-bold shadow-[2px_2px_0px_0px_#000] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_#000] transition-all disabled:opacity-50',
+                  'flex-1 py-2 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-700 text-gray-700 dark:text-slate-200 rounded-md text-sm font-medium hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors disabled:opacity-50'
                 )}
               >
                 취소

@@ -7,14 +7,14 @@ export default function TermsPage() {
 
   return (
     <div className="container py-8 scrollbar-hide">
-      <div className={`max-w-3xl mx-auto ${themeClass('bg-white border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000] p-8', 'bg-white rounded-xl shadow-lg p-8')}`}>
-        <h1 className={`text-2xl font-bold mb-6 ${themeClass('text-black', 'text-gray-900')}`}>
+      <div className={`max-w-3xl mx-auto ${themeClass('bg-white dark:bg-slate-900 border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000] p-8', 'bg-white dark:bg-slate-900 rounded-xl shadow-lg p-8')}`}>
+        <h1 className={`text-2xl font-bold mb-6 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
           이용약관
         </h1>
 
-        <div className={`space-y-6 ${themeClass('text-black/80', 'text-gray-600')}`}>
+        <div className={`space-y-6 ${themeClass('text-black/80 dark:text-slate-300', 'text-gray-600 dark:text-slate-400')}`}>
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               제1조 (목적)
             </h2>
             <p>
@@ -24,7 +24,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               제2조 (정의)
             </h2>
             <ul className="list-disc list-inside space-y-1">
@@ -35,7 +35,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               제3조 (서비스의 제공)
             </h2>
             <p>서비스는 다음의 서비스를 제공합니다:</p>
@@ -64,7 +64,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               제4조 (서비스 이용)
             </h2>
             <p>
@@ -75,7 +75,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               제5조 (이용자의 의무)
             </h2>
             <p>이용자는 다음 행위를 하여서는 안 됩니다:</p>
@@ -89,7 +89,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               제6조 (사용자 생성 콘텐츠)
             </h2>
             <ul className="list-disc list-inside space-y-1">
@@ -108,7 +108,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               제7조 (면책조항)
             </h2>
             <ul className="list-disc list-inside space-y-1">
@@ -120,7 +120,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               제8조 (분쟁해결)
             </h2>
             <p>
@@ -130,7 +130,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               부칙
             </h2>
             <p>이 약관은 2025년 2월 14일부터 시행합니다.</p>

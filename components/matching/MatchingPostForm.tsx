@@ -93,20 +93,20 @@ export default function MatchingPostForm() {
   const inputClass = cn(
     'w-full px-4 py-3 outline-none transition-all',
     themeClass(
-      'bg-white border-2 border-black rounded-[5px] font-bold text-black focus:shadow-[4px_4px_0px_0px_#000] focus:translate-x-[-2px] focus:translate-y-[-2px]',
-      'bg-gray-50 border border-gray-200 rounded-xl font-medium text-gray-900 focus:bg-white focus:ring-2 focus:ring-green-500'
+      'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] font-bold text-black dark:text-slate-100 focus:shadow-[4px_4px_0px_0px_#000] focus:translate-x-[-2px] focus:translate-y-[-2px]',
+      'bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl font-medium text-gray-900 dark:text-slate-100 focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-green-500'
     )
   );
 
-  const labelClass = cn('block mb-2 text-sm', themeClass('font-black text-black', 'font-bold text-gray-700'));
+  const labelClass = cn('block mb-2 text-sm', themeClass('font-black text-black dark:text-slate-100', 'font-bold text-gray-700 dark:text-slate-200'));
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className={cn(
         'p-6 space-y-6',
         themeClass(
-          'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
-          'bg-white rounded-2xl border border-gray-100 shadow-sm'
+          'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
+          'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm'
         )
       )}>
         <div>
@@ -235,7 +235,7 @@ export default function MatchingPostForm() {
               onChange={(e) => { setIsFree(e.target.checked); if (e.target.checked) setCostPerPerson(''); }}
               className={cn('w-4 h-4 rounded', themeClass('border-2 border-black text-black focus:ring-0 checked:bg-black', 'border-gray-300 text-green-600'))}
             />
-            <span className={cn('text-sm', themeClass('font-bold text-black', 'font-medium text-gray-700'))}>무료</span>
+            <span className={cn('text-sm', themeClass('font-bold text-black dark:text-slate-100', 'font-medium text-gray-700 dark:text-slate-200'))}>무료</span>
           </label>
           {!isFree && (
             <div className="relative">
@@ -249,14 +249,14 @@ export default function MatchingPostForm() {
                 placeholder="예: 10000"
                 className={inputClass}
               />
-              <span className={cn('absolute right-4 top-3', themeClass('font-black text-black', 'font-bold text-gray-500'))}>원</span>
+              <span className={cn('absolute right-4 top-3', themeClass('font-black text-black dark:text-slate-100', 'font-bold text-gray-500 dark:text-slate-400'))}>원</span>
             </div>
           )}
         </div>
 
         <div>
           <label htmlFor="contactType" className={labelClass}>연락처 <span className="text-red-500">*</span></label>
-          <p className={cn('text-xs mb-2', themeClass('text-black/50 font-bold', 'text-gray-400'))}>
+          <p className={cn('text-xs mb-2', themeClass('text-black/50 font-bold dark:text-slate-400', 'text-gray-400 dark:text-slate-500'))}>
             수락된 신청자에게만 공개됩니다.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -301,8 +301,8 @@ export default function MatchingPostForm() {
           className={cn(
             'flex-1 py-4 text-center transition-all',
             themeClass(
-              'bg-white border-2 border-black rounded-[5px] font-black text-black shadow-[4px_4px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] uppercase',
-              'bg-white border border-gray-200 rounded-xl font-bold text-gray-700 hover:bg-gray-50 shadow-sm'
+              'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] font-black text-black dark:text-slate-100 shadow-[4px_4px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] uppercase',
+              'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl font-bold text-gray-700 dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-700 shadow-sm'
             )
           )}
         >

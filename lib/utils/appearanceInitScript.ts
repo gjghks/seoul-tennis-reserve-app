@@ -1,17 +1,24 @@
 /**
- * Inline <head> script injected in app/layout.tsx. It runs BEFORE first paint and
- * sets BOTH `data-theme` and `data-season` synchronously so the CSS variable
- * palette is correct from frame 1 (kills the Minimal→Neo flash and the
- * wrong-season-then-flip flash).
+ * Inline <head> script injected in app/layout.tsx. Runs BEFORE first paint and
+ * sets, synchronously, all THREE appearance axes so the CSS-variable palette is
+ * correct from frame 1 (no flash):
+ *   - data-theme  (neo-brutalism | default)            from localStorage 'tennis-theme'
+ *   - .dark class + data-mode (light | dark | system)  from localStorage 'tennis-mode' (+ prefers-color-scheme)
+ *   - data-season (6 seasons)                          from localStorage 'tennis-season-manual' or the date
  *
- * It is a self-contained string (no runtime imports), so its date-window logic
- * MUST mirror lib/utils/season.ts exactly. `season.test.ts` executes this string
- * against detectSeasonByDate() for sampled dates to catch any drift.
+ * Self-contained string (no runtime imports), so its logic MUST mirror
+ * lib/utils/season.ts and lib/utils/appearanceMode.ts. season.test.ts executes
+ * this string and asserts agreement to catch drift.
  */
 export const APPEARANCE_INIT_SCRIPT = `(function(){try{
 var el=document.documentElement;
 var t=localStorage.getItem("tennis-theme");
 el.setAttribute("data-theme",(t==="default"||t==="neo-brutalism")?t:"neo-brutalism");
+var mode=localStorage.getItem("tennis-mode");
+if(mode!=="light"&&mode!=="dark"&&mode!=="system")mode="system";
+var dark=mode==="dark"||(mode==="system"&&typeof window.matchMedia==="function"&&window.matchMedia("(prefers-color-scheme: dark)").matches);
+el.classList[dark?"add":"remove"]("dark");
+el.setAttribute("data-mode",mode);
 localStorage.removeItem("tennis-season");
 var s=localStorage.getItem("tennis-season-manual");
 var valid=["default","cherry-blossom","tennis-spring","tennis-summer","tennis-autumn","tennis-winter"];

@@ -95,7 +95,7 @@ export default function TransferForm() {
     <div className="container py-6">
       <div className="max-w-2xl mx-auto">
         <div className="mb-6 flex items-center justify-between">
-          <h1 className={cn('text-2xl font-black', themeClass('text-black', 'text-gray-900'))}>
+          <h1 className={cn('text-2xl font-black', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>
             양도글 작성
           </h1>
           <Link
@@ -104,7 +104,7 @@ export default function TransferForm() {
               'flex items-center gap-1.5 text-sm px-3.5 py-2 rounded-lg transition-all',
               themeClass(
                 'bg-[#facc15] border-2 border-black font-bold text-black shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none',
-                'bg-green-50 text-green-700 font-semibold border border-green-200 hover:bg-green-100'
+                'bg-green-50 dark:bg-green-950/40 text-green-700 dark:text-green-300 font-semibold border border-green-200 dark:border-green-900 hover:bg-green-100 dark:hover:bg-green-900/50'
               )
             )}
           >
@@ -118,7 +118,7 @@ export default function TransferForm() {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-4">
             <div>
-              <label htmlFor="title" className="block text-sm font-bold text-gray-700 mb-1">
+              <label htmlFor="title" className="block text-sm font-bold text-gray-700 dark:text-slate-200 mb-1">
                 제목 <span className="text-red-500">*</span>
               </label>
               <input
@@ -132,8 +132,8 @@ export default function TransferForm() {
                 className={cn(
                   'w-full p-3 rounded-lg outline-none transition-colors',
                   themeClass(
-                    'bg-white border-2 border-black shadow-[4px_4px_0px_0px_#000] focus:shadow-[2px_2px_0px_0px_#000]',
-                    'bg-white border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
+                    'bg-white dark:bg-slate-900 dark:text-slate-100 border-2 border-black dark:border-slate-600 shadow-[4px_4px_0px_0px_#000] focus:shadow-[2px_2px_0px_0px_#000]',
+                    'bg-white dark:bg-slate-900 dark:text-slate-100 border border-gray-300 dark:border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
                   )
                 )}
               />
@@ -141,7 +141,7 @@ export default function TransferForm() {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label htmlFor="district" className="block text-sm font-bold text-gray-700 mb-1">
+                <label htmlFor="district" className="block text-sm font-bold text-gray-700 dark:text-slate-200 mb-1">
                   지역 <span className="text-red-500">*</span>
                 </label>
                 <select
@@ -153,8 +153,8 @@ export default function TransferForm() {
                   className={cn(
                     'w-full p-3 rounded-lg outline-none transition-colors',
                     themeClass(
-                      'bg-white border-2 border-black shadow-[4px_4px_0px_0px_#000] focus:shadow-[2px_2px_0px_0px_#000]',
-                      'bg-white border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
+                      'bg-white dark:bg-slate-900 dark:text-slate-100 border-2 border-black dark:border-slate-600 shadow-[4px_4px_0px_0px_#000] focus:shadow-[2px_2px_0px_0px_#000]',
+                      'bg-white dark:bg-slate-900 dark:text-slate-100 border border-gray-300 dark:border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
                     )
                   )}
                 >
@@ -166,7 +166,7 @@ export default function TransferForm() {
                 </select>
               </div>
               <div>
-                <label htmlFor="court_name" className="block text-sm font-bold text-gray-700 mb-1">
+                <label htmlFor="court_name" className="block text-sm font-bold text-gray-700 dark:text-slate-200 mb-1">
                   코트 이름 <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -180,8 +180,8 @@ export default function TransferForm() {
                   className={cn(
                     'w-full p-3 rounded-lg outline-none transition-colors',
                     themeClass(
-                      'bg-white border-2 border-black shadow-[4px_4px_0px_0px_#000] focus:shadow-[2px_2px_0px_0px_#000]',
-                      'bg-white border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
+                      'bg-white dark:bg-slate-900 dark:text-slate-100 border-2 border-black dark:border-slate-600 shadow-[4px_4px_0px_0px_#000] focus:shadow-[2px_2px_0px_0px_#000]',
+                      'bg-white dark:bg-slate-900 dark:text-slate-100 border border-gray-300 dark:border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
                     )
                   )}
                 />
@@ -190,7 +190,7 @@ export default function TransferForm() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label htmlFor="play_date" className="block text-sm font-bold text-gray-700 mb-1">
+                <label htmlFor="play_date" className="block text-sm font-bold text-gray-700 dark:text-slate-200 mb-1">
                   날짜 <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -203,14 +203,14 @@ export default function TransferForm() {
                   className={cn(
                     'w-full p-3 rounded-lg outline-none transition-colors',
                     themeClass(
-                      'bg-white border-2 border-black shadow-[4px_4px_0px_0px_#000] focus:shadow-[2px_2px_0px_0px_#000]',
-                      'bg-white border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
+                      'bg-white dark:bg-slate-900 dark:text-slate-100 border-2 border-black dark:border-slate-600 shadow-[4px_4px_0px_0px_#000] focus:shadow-[2px_2px_0px_0px_#000]',
+                      'bg-white dark:bg-slate-900 dark:text-slate-100 border border-gray-300 dark:border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
                     )
                   )}
                 />
               </div>
               <div>
-                <label htmlFor="play_time_start" className="block text-sm font-bold text-gray-700 mb-1">
+                <label htmlFor="play_time_start" className="block text-sm font-bold text-gray-700 dark:text-slate-200 mb-1">
                   시작 시간 <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -223,14 +223,14 @@ export default function TransferForm() {
                   className={cn(
                     'w-full p-3 rounded-lg outline-none transition-colors',
                     themeClass(
-                      'bg-white border-2 border-black shadow-[4px_4px_0px_0px_#000] focus:shadow-[2px_2px_0px_0px_#000]',
-                      'bg-white border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
+                      'bg-white dark:bg-slate-900 dark:text-slate-100 border-2 border-black dark:border-slate-600 shadow-[4px_4px_0px_0px_#000] focus:shadow-[2px_2px_0px_0px_#000]',
+                      'bg-white dark:bg-slate-900 dark:text-slate-100 border border-gray-300 dark:border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
                     )
                   )}
                 />
               </div>
               <div>
-                <label htmlFor="play_time_end" className="block text-sm font-bold text-gray-700 mb-1">
+                <label htmlFor="play_time_end" className="block text-sm font-bold text-gray-700 dark:text-slate-200 mb-1">
                   종료 시간
                 </label>
                 <input
@@ -242,8 +242,8 @@ export default function TransferForm() {
                   className={cn(
                     'w-full p-3 rounded-lg outline-none transition-colors',
                     themeClass(
-                      'bg-white border-2 border-black shadow-[4px_4px_0px_0px_#000] focus:shadow-[2px_2px_0px_0px_#000]',
-                      'bg-white border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
+                      'bg-white dark:bg-slate-900 dark:text-slate-100 border-2 border-black dark:border-slate-600 shadow-[4px_4px_0px_0px_#000] focus:shadow-[2px_2px_0px_0px_#000]',
+                      'bg-white dark:bg-slate-900 dark:text-slate-100 border border-gray-300 dark:border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
                     )
                   )}
                 />
@@ -252,7 +252,7 @@ export default function TransferForm() {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label htmlFor="original_price" className="block text-sm font-bold text-gray-700 mb-1">
+                <label htmlFor="original_price" className="block text-sm font-bold text-gray-700 dark:text-slate-200 mb-1">
                   원가 <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
@@ -268,12 +268,12 @@ export default function TransferForm() {
                     className={cn(
                       'w-full p-3 pr-8 rounded-lg outline-none transition-colors',
                       themeClass(
-                        'bg-white border-2 border-black shadow-[4px_4px_0px_0px_#000] focus:shadow-[2px_2px_0px_0px_#000]',
-                        'bg-white border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
+                        'bg-white dark:bg-slate-900 dark:text-slate-100 border-2 border-black dark:border-slate-600 shadow-[4px_4px_0px_0px_#000] focus:shadow-[2px_2px_0px_0px_#000]',
+                        'bg-white dark:bg-slate-900 dark:text-slate-100 border border-gray-300 dark:border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
                       )
                     )}
                   />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">원</span>
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-slate-400">원</span>
                 </div>
               </div>
               <div>
@@ -292,7 +292,7 @@ export default function TransferForm() {
                         themeClass('border-black accent-black', 'border-gray-300 text-blue-600')
                       )}
                     />
-                    <span className={cn('font-bold', themeClass('text-black', 'text-gray-700'))}>무료 나눔</span>
+                    <span className={cn('font-bold', themeClass('text-black dark:text-slate-100', 'text-gray-700 dark:text-slate-200'))}>무료 나눔</span>
                   </label>
                 </div>
                 <div className="relative">
@@ -308,25 +308,25 @@ export default function TransferForm() {
                     onChange={handleChange}
                     className={cn(
                       'w-full p-3 pr-8 rounded-lg outline-none transition-colors',
-                      formData.is_free && 'opacity-50 bg-gray-100',
+                      formData.is_free && 'opacity-50 bg-gray-100 dark:bg-slate-800',
                       themeClass(
-                        'bg-white border-2 border-black shadow-[4px_4px_0px_0px_#000] focus:shadow-[2px_2px_0px_0px_#000]',
-                        'bg-white border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
+                        'bg-white dark:bg-slate-900 dark:text-slate-100 border-2 border-black dark:border-slate-600 shadow-[4px_4px_0px_0px_#000] focus:shadow-[2px_2px_0px_0px_#000]',
+                        'bg-white dark:bg-slate-900 dark:text-slate-100 border border-gray-300 dark:border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
                       )
                     )}
                   />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">원</span>
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-slate-400">원</span>
                 </div>
               </div>
             </div>
 
             <div className={cn(
               'p-4 rounded-lg space-y-3',
-              themeClass('bg-blue-50 border-2 border-black', 'bg-blue-50 border border-blue-200')
+              themeClass('bg-blue-50 dark:bg-blue-950/40 border-2 border-black', 'bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900')
             )}>
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-lg">🔒</span>
-                <span className={cn('text-sm font-bold', themeClass('text-black', 'text-gray-900'))}>
+                <span className={cn('text-sm font-bold', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>
                   연락처 (승인된 상대에게만 공개)
                 </span>
               </div>
@@ -340,7 +340,7 @@ export default function TransferForm() {
                     onChange={handleChange}
                     className={cn('w-4 h-4 cursor-pointer', themeClass('accent-black', 'text-blue-600'))}
                   />
-                  <span className={cn('text-sm font-bold', themeClass('text-black', 'text-gray-700'))}>카카오톡 ID</span>
+                  <span className={cn('text-sm font-bold', themeClass('text-black dark:text-slate-100', 'text-gray-700 dark:text-slate-200'))}>카카오톡 ID</span>
                 </label>
                 <label className="flex items-center gap-1.5 cursor-pointer">
                   <input
@@ -351,7 +351,7 @@ export default function TransferForm() {
                     onChange={handleChange}
                     className={cn('w-4 h-4 cursor-pointer', themeClass('accent-black', 'text-blue-600'))}
                   />
-                  <span className={cn('text-sm font-bold', themeClass('text-black', 'text-gray-700'))}>전화번호</span>
+                  <span className={cn('text-sm font-bold', themeClass('text-black dark:text-slate-100', 'text-gray-700 dark:text-slate-200'))}>전화번호</span>
                 </label>
               </div>
               <input
@@ -363,18 +363,18 @@ export default function TransferForm() {
                 className={cn(
                   'w-full p-3 rounded-lg outline-none transition-colors',
                   themeClass(
-                    'bg-white border-2 border-black shadow-[4px_4px_0px_0px_#000] focus:shadow-[2px_2px_0px_0px_#000]',
-                    'bg-white border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
+                    'bg-white dark:bg-slate-900 dark:text-slate-100 border-2 border-black dark:border-slate-600 shadow-[4px_4px_0px_0px_#000] focus:shadow-[2px_2px_0px_0px_#000]',
+                    'bg-white dark:bg-slate-900 dark:text-slate-100 border border-gray-300 dark:border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
                   )
                 )}
               />
-              <p className={cn('text-xs', themeClass('text-black/50 font-medium', 'text-gray-400'))}>
+              <p className={cn('text-xs', themeClass('text-black/50 font-medium dark:text-slate-400', 'text-gray-400 dark:text-slate-500'))}>
                 관심 표시 후 승인한 상대에게만 공개됩니다
               </p>
             </div>
 
             <div>
-              <label htmlFor="description" className="block text-sm font-bold text-gray-700 mb-1">
+              <label htmlFor="description" className="block text-sm font-bold text-gray-700 dark:text-slate-200 mb-1">
                 상세 내용
               </label>
               <textarea
@@ -387,8 +387,8 @@ export default function TransferForm() {
                 className={cn(
                   'w-full p-3 rounded-lg outline-none transition-colors resize-none',
                   themeClass(
-                    'bg-white border-2 border-black shadow-[4px_4px_0px_0px_#000] focus:shadow-[2px_2px_0px_0px_#000]',
-                    'bg-white border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
+                    'bg-white dark:bg-slate-900 dark:text-slate-100 border-2 border-black dark:border-slate-600 shadow-[4px_4px_0px_0px_#000] focus:shadow-[2px_2px_0px_0px_#000]',
+                    'bg-white dark:bg-slate-900 dark:text-slate-100 border border-gray-300 dark:border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
                   )
                 )}
               />
@@ -402,8 +402,8 @@ export default function TransferForm() {
               className={cn(
                 'flex-1 py-3.5 rounded-lg font-bold transition-all',
                 themeClass(
-                  'bg-white text-black border-2 border-black hover:-translate-y-[2px] shadow-[4px_4px_0px_0px_#000]',
-                  'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 shadow-sm'
+                  'bg-white dark:bg-slate-800 text-black dark:text-slate-100 border-2 border-black hover:-translate-y-[2px] shadow-[4px_4px_0px_0px_#000]',
+                  'bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-200 border border-gray-300 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700 shadow-sm'
                 )
               )}
             >

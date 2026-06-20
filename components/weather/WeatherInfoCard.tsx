@@ -200,8 +200,8 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
     if (isLoading || (cityDataUrl && isCityWeatherLoading)) {
       return (
         <div className={isNeoBrutalism
-          ? 'border-2 border-black rounded-[5px] p-4 shadow-[3px_3px_0px_0px_#000] skeleton-neo h-24'
-          : 'rounded-xl p-4 border border-gray-100 skeleton h-24'
+          ? 'border-2 border-black dark:border-slate-700 rounded-[5px] p-4 shadow-[3px_3px_0px_0px_#000] skeleton-neo h-24'
+          : 'rounded-xl p-4 border border-gray-100 dark:border-slate-800 skeleton h-24'
         } />
       );
     }
@@ -234,23 +234,23 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
 
   return (
     <div className={isNeoBrutalism
-      ? 'bg-white border-2 border-black rounded-[5px] p-4 shadow-[3px_3px_0px_0px_#000] overflow-hidden'
-      : 'bg-white rounded-xl p-4 border border-gray-100 overflow-hidden'
+      ? 'bg-white dark:bg-slate-800 border-2 border-black dark:border-slate-700 rounded-[5px] p-4 shadow-[3px_3px_0px_0px_#000] overflow-hidden'
+      : 'bg-white dark:bg-slate-800 rounded-xl p-4 border border-gray-100 dark:border-slate-800 overflow-hidden'
     }>
       <div className="flex flex-col sm:flex-row items-stretch gap-3 sm:gap-4">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1.5">
             <AnimatedWeatherIcon sky={sky} rainfall={rainfall} size={20} />
             <div>
-              <p className={themeClass('text-xs text-black/60 font-bold uppercase', 'text-xs text-gray-400')}>현재 날씨</p>
-              <p className={themeClass('font-black text-black text-base', 'font-semibold text-gray-800 text-base')}>
+              <p className={themeClass('text-xs text-black/60 dark:text-slate-400 font-bold uppercase', 'text-xs text-gray-400 dark:text-slate-500')}>현재 날씨</p>
+              <p className={themeClass('font-black text-black dark:text-slate-100 text-base', 'font-semibold text-gray-800 dark:text-slate-200 text-base')}>
                 {Math.round(temperature)}°C {sky ?? ''}
               </p>
             </div>
           </div>
           <div className={themeClass(
-            'flex items-center gap-1.5 text-[11px] font-bold text-black/60',
-            'flex items-center gap-1.5 text-[11px] text-gray-400'
+            'flex items-center gap-1.5 text-[11px] font-bold text-black/60 dark:text-slate-400',
+            'flex items-center gap-1.5 text-[11px] text-gray-400 dark:text-slate-500'
           )}>
             {humidity !== null && <span>습도 {humidity}%</span>}
             {humidity !== null && windSpeed !== null && <span>·</span>}
@@ -266,15 +266,15 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
 
         {showAirQuality && (
           <>
-            <div className={themeClass('h-[2px] sm:h-auto sm:w-[2px] bg-black/10 self-stretch', 'h-px sm:h-auto sm:w-px bg-gray-100 self-stretch')} />
+            <div className={themeClass('h-[2px] sm:h-auto sm:w-[2px] bg-black/10 dark:bg-slate-700 self-stretch', 'h-px sm:h-auto sm:w-px bg-gray-100 dark:bg-slate-800 self-stretch')} />
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1.5">
                 <span className="text-xl leading-none">{airGradeColor.icon}</span>
                 <div>
-                  <p className={themeClass('text-xs text-black/60 font-bold uppercase', 'text-xs text-gray-400')}>미세먼지</p>
+                  <p className={themeClass('text-xs text-black/60 dark:text-slate-400 font-bold uppercase', 'text-xs text-gray-400 dark:text-slate-500')}>미세먼지</p>
                   <p className={themeClass(
-                    `font-black text-base ${isAirQualityBad(airData.grade) ? 'text-red-600' : 'text-black'}`,
-                    `font-semibold text-base ${isAirQualityBad(airData.grade) ? 'text-red-600' : 'text-gray-800'}`
+                    `font-black text-base ${isAirQualityBad(airData.grade) ? 'text-red-600 dark:text-red-400' : 'text-black dark:text-slate-100'}`,
+                    `font-semibold text-base ${isAirQualityBad(airData.grade) ? 'text-red-600 dark:text-red-400' : 'text-gray-800 dark:text-slate-200'}`
                   )}>
                     {airData.grade}
                   </p>
@@ -286,14 +286,14 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
               )}>
                 {airData.pm25 !== null && (
                   <span>
-                    <span className={themeClass('text-black/60', 'text-gray-400')}>PM2.5 </span>
+                    <span className={themeClass('text-black/60 dark:text-slate-400', 'text-gray-400 dark:text-slate-500')}>PM2.5 </span>
                     <span className={themeClass(resolvePmColorNeo('pm25', airData.pm25), resolvePmColor('pm25', airData.pm25))}>{airData.pm25}</span>
                   </span>
                 )}
-                {airData.pm25 !== null && airData.pm10 !== null && <span className={themeClass('text-black/20', 'text-gray-300')}>·</span>}
+                {airData.pm25 !== null && airData.pm10 !== null && <span className={themeClass('text-black/20 dark:text-slate-600', 'text-gray-300 dark:text-slate-600')}>·</span>}
                 {airData.pm10 !== null && (
                   <span>
-                    <span className={themeClass('text-black/60', 'text-gray-400')}>PM10 </span>
+                    <span className={themeClass('text-black/60 dark:text-slate-400', 'text-gray-400 dark:text-slate-500')}>PM10 </span>
                     <span className={themeClass(resolvePmColorNeo('pm10', airData.pm10), resolvePmColor('pm10', airData.pm10))}>{airData.pm10}</span>
                   </span>
                 )}
@@ -326,8 +326,8 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
 
       {showUv && uvColor && (
         <div className={themeClass(
-          'mt-3 pt-3 border-t-2 border-black/15 flex items-center gap-2',
-          'mt-3 pt-3 border-t border-gray-100 flex items-center gap-2'
+          'mt-3 pt-3 border-t-2 border-black/15 dark:border-slate-700 flex items-center gap-2',
+          'mt-3 pt-3 border-t border-gray-100 dark:border-slate-800 flex items-center gap-2'
         )}>
           <span className="text-sm leading-none">☀️</span>
           <span className={themeClass(
@@ -338,8 +338,8 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
           </span>
           {showUvWarning && (
             <p className={themeClass(
-              'text-[11px] font-bold text-black/60 flex-1 min-w-0 truncate',
-              'text-[11px] text-gray-400 flex-1 min-w-0 truncate'
+              'text-[11px] font-bold text-black/60 dark:text-slate-400 flex-1 min-w-0 truncate',
+              'text-[11px] text-gray-400 dark:text-slate-500 flex-1 min-w-0 truncate'
             )}>
               {uvData.uvMsg.split('.')[0]}
             </p>
@@ -349,11 +349,11 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
 
       {isOutdoor && livingWeather?.uv && (livingWeather.uv.todayMax > 0 || livingWeather.uv.tomorrowMax > 0) && (
         <div className={themeClass(
-          'mt-3 pt-3 border-t-2 border-black/15 flex items-center gap-2 flex-wrap',
-          'mt-3 pt-3 border-t border-gray-100 flex items-center gap-2 flex-wrap'
+          'mt-3 pt-3 border-t-2 border-black/15 dark:border-slate-700 flex items-center gap-2 flex-wrap',
+          'mt-3 pt-3 border-t border-gray-100 dark:border-slate-800 flex items-center gap-2 flex-wrap'
         )}>
           <span className="text-sm leading-none">☀️</span>
-          <span className={themeClass('text-[11px] font-black text-black/60', 'text-[11px] text-gray-400')}>자외선 예보</span>
+          <span className={themeClass('text-[11px] font-black text-black/60 dark:text-slate-400', 'text-[11px] text-gray-400 dark:text-slate-500')}>자외선 예보</span>
           {[
             { label: '오늘', value: livingWeather.uv.todayMax },
             { label: '내일', value: livingWeather.uv.tomorrowMax },
@@ -377,25 +377,25 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
 
       {uvData?.sunrise && uvData?.sunset && (
         <div className={themeClass(
-          'mt-3 pt-3 border-t-2 border-black/15 flex items-center gap-3',
-          'mt-3 pt-3 border-t border-gray-100 flex items-center gap-3'
+          'mt-3 pt-3 border-t-2 border-black/15 dark:border-slate-700 flex items-center gap-3',
+          'mt-3 pt-3 border-t border-gray-100 dark:border-slate-800 flex items-center gap-3'
         )}>
           <div className="flex items-center gap-1.5">
             <span className="text-sm leading-none">🌅</span>
-            <span className={themeClass('text-[11px] font-black text-black/60', 'text-[11px] text-gray-400')}>
+            <span className={themeClass('text-[11px] font-black text-black/60 dark:text-slate-400', 'text-[11px] text-gray-400 dark:text-slate-500')}>
               {uvData.sunrise}
             </span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="text-sm leading-none">🌇</span>
-            <span className={themeClass('text-[11px] font-black text-black/60', 'text-[11px] text-gray-400')}>
+            <span className={themeClass('text-[11px] font-black text-black/60 dark:text-slate-400', 'text-[11px] text-gray-400 dark:text-slate-500')}>
               {uvData.sunset}
             </span>
           </div>
           {!warning && uvData.pcpMsg && (
             <p className={themeClass(
-              'text-[11px] font-bold text-black/60 flex-1 min-w-0 truncate',
-              'text-[11px] text-gray-400 flex-1 min-w-0 truncate'
+              'text-[11px] font-bold text-black/60 dark:text-slate-400 flex-1 min-w-0 truncate',
+              'text-[11px] text-gray-400 dark:text-slate-500 flex-1 min-w-0 truncate'
             )}>
               {uvData.pcpMsg}
             </p>
@@ -405,13 +405,13 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
 
       {warning && (
         <div className={themeClass(
-          'mt-3 pt-3 border-t-2 border-black/15 flex items-center gap-1.5',
-          'mt-3 pt-3 border-t border-gray-100 flex items-center gap-1.5'
+          'mt-3 pt-3 border-t-2 border-black/15 dark:border-slate-700 flex items-center gap-1.5',
+          'mt-3 pt-3 border-t border-gray-100 dark:border-slate-800 flex items-center gap-1.5'
         )}>
           <span className="text-sm">⚠️</span>
           <p className={themeClass(
-            'text-xs font-bold text-red-600',
-            'text-xs font-medium text-amber-600'
+            'text-xs font-bold text-red-600 dark:text-red-400',
+            'text-xs font-medium text-amber-600 dark:text-amber-400'
           )}>
             {warning}
           </p>
@@ -424,8 +424,8 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
             type="button"
             onClick={() => setForecastExpanded(prev => !prev)}
             className={themeClass(
-              'mt-3 pt-3 border-t-2 border-black/15 w-full flex items-center justify-between text-xs font-black text-black/60',
-              'mt-3 pt-3 border-t border-gray-100 w-full flex items-center justify-between text-xs text-gray-400'
+              'mt-3 pt-3 border-t-2 border-black/15 dark:border-slate-700 w-full flex items-center justify-between text-xs font-black text-black/60 dark:text-slate-400',
+              'mt-3 pt-3 border-t border-gray-100 dark:border-slate-800 w-full flex items-center justify-between text-xs text-gray-400 dark:text-slate-500'
             )}
           >
             <span>24시간 예보</span>
@@ -445,17 +445,17 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
                     <div
                       key={f.time}
                       className={themeClass(
-                        'flex flex-col items-center gap-1 px-2.5 py-2 rounded-[5px] border-2 border-black/15 min-w-[52px]',
-                        'flex flex-col items-center gap-1 px-2.5 py-2 rounded-lg border border-gray-100 min-w-[52px]'
+                        'flex flex-col items-center gap-1 px-2.5 py-2 rounded-[5px] border-2 border-black/15 dark:border-slate-700 min-w-[52px]',
+                        'flex flex-col items-center gap-1 px-2.5 py-2 rounded-lg border border-gray-100 dark:border-slate-700 min-w-[52px]'
                       )}
                     >
-                      <span className={themeClass('text-[10px] font-black text-black/60', 'text-[10px] text-gray-400')}>
+                      <span className={themeClass('text-[10px] font-black text-black/60 dark:text-slate-400', 'text-[10px] text-gray-400 dark:text-slate-500')}>
                         {formatForecastHour(f.time)}
                       </span>
                       <span className="text-sm leading-none">
                         {resolveForecastIcon(f.sky, f.precipitation)}
                       </span>
-                      <span className={themeClass('text-[11px] font-black text-black', 'text-[11px] font-semibold text-gray-700')}>
+                      <span className={themeClass('text-[11px] font-black text-black dark:text-slate-100', 'text-[11px] font-semibold text-gray-700 dark:text-slate-200')}>
                         {f.temp}°
                       </span>
                       {f.rainChance > 0 && (
@@ -468,7 +468,7 @@ export default function WeatherInfoCard({ nx, ny, isOutdoor, isNeoBrutalism, dis
                 </div>
               </div>
               {showForecastFade && (
-                <div className="pointer-events-none absolute top-0 right-0 bottom-0 w-8 bg-gradient-to-l from-white to-transparent" />
+                <div className="pointer-events-none absolute top-0 right-0 bottom-0 w-8 bg-gradient-to-l from-white dark:from-slate-800 to-transparent" />
               )}
             </div>
           )}

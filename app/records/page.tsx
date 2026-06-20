@@ -20,7 +20,7 @@ export default function RecordsPage() {
     return (
       <div className={`container mx-auto px-4 py-6 min-h-screen scrollbar-hide ${themeClass('bg-nb-bg', '')}`}>
         <div className="flex items-center justify-center min-h-[400px]">
-          <div className={themeClass('text-black font-bold', 'text-gray-400')}>로딩중...</div>
+          <div className={themeClass('text-black dark:text-slate-100 font-bold', 'text-gray-400 dark:text-slate-500')}>로딩중...</div>
         </div>
       </div>
     );
@@ -31,10 +31,10 @@ export default function RecordsPage() {
       <div className={`container mx-auto px-4 py-6 min-h-screen scrollbar-hide ${themeClass('bg-nb-bg', '')}`}>
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <h1 className={`text-3xl md:text-4xl mb-4 ${themeClass('font-black text-black uppercase', 'font-bold text-gray-900')}`}>
+            <h1 className={`text-3xl md:text-4xl mb-4 ${themeClass('font-black text-black dark:text-slate-100 uppercase', 'font-bold text-gray-900 dark:text-slate-100')}`}>
               나의 테니스 기록을<br className="md:hidden" /> 한눈에 관리하세요
             </h1>
-            <p className={`text-lg ${themeClass('text-black/70 font-medium', 'text-gray-600')}`}>
+            <p className={`text-lg ${themeClass('text-black/70 dark:text-slate-300 font-medium', 'text-gray-600 dark:text-slate-400')}`}>
               경기 스코어부터 승률 분석까지, 더 나은 플레이를 위한 데이터 파트너
             </p>
           </div>
@@ -43,73 +43,73 @@ export default function RecordsPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
             <div className={themeClass(
-              'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] p-6 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] transition-all',
-              'bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-md transition-shadow'
+              'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] p-6 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] transition-all',
+              'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-800 p-6 shadow-sm hover:shadow-md transition-shadow'
             )}>
               <div className={`w-12 h-12 mb-4 flex items-center justify-center text-2xl ${themeClass(
                 'bg-[#ff90e8] border-2 border-black rounded-[5px]',
-                'bg-pink-50 rounded-xl text-pink-500'
+                'bg-pink-50 dark:bg-pink-950/40 rounded-xl text-pink-500'
               )}`}>
                 📝
               </div>
-              <h3 className={`text-xl mb-2 ${themeClass('font-black text-black', 'font-bold text-gray-900')}`}>
+              <h3 className={`text-xl mb-2 ${themeClass('font-black text-black dark:text-slate-100', 'font-bold text-gray-900 dark:text-slate-100')}`}>
                 간편한 스코어 기록
               </h3>
-              <p className={themeClass('text-black/70 font-medium', 'text-gray-500')}>
+              <p className={themeClass('text-black/70 dark:text-slate-300 font-medium', 'text-gray-500 dark:text-slate-400')}>
                 날짜, 장소, 상대방, 스코어를 쉽고 빠르게 기록하세요. 타이브레이크까지 상세하게 남길 수 있습니다.
               </p>
             </div>
 
             <div className={themeClass(
-              'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] p-6 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] transition-all',
-              'bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-md transition-shadow'
+              'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] p-6 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] transition-all',
+              'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-800 p-6 shadow-sm hover:shadow-md transition-shadow'
             )}>
               <div className={`w-12 h-12 mb-4 flex items-center justify-center text-2xl ${themeClass(
                 'bg-[#22c55e] border-2 border-black rounded-[5px]',
-                'bg-green-50 rounded-xl text-green-500'
+                'bg-green-50 dark:bg-green-950/40 rounded-xl text-green-500'
               )}`}>
                 📊
               </div>
-              <h3 className={`text-xl mb-2 ${themeClass('font-black text-black', 'font-bold text-gray-900')}`}>
+              <h3 className={`text-xl mb-2 ${themeClass('font-black text-black dark:text-slate-100', 'font-bold text-gray-900 dark:text-slate-100')}`}>
                 승률 데이터 분석
               </h3>
-              <p className={themeClass('text-black/70 font-medium', 'text-gray-500')}>
+              <p className={themeClass('text-black/70 dark:text-slate-300 font-medium', 'text-gray-500 dark:text-slate-400')}>
                 전체 승률, 월별 추이, 코트별 성적을 자동으로 분석해드립니다. 나의 강점과 약점을 파악해보세요.
               </p>
             </div>
 
             <div className={themeClass(
-              'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] p-6 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] transition-all',
-              'bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-md transition-shadow'
+              'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] p-6 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] transition-all',
+              'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-800 p-6 shadow-sm hover:shadow-md transition-shadow'
             )}>
               <div className={`w-12 h-12 mb-4 flex items-center justify-center text-2xl ${themeClass(
                 'bg-[#ffc400] border-2 border-black rounded-[5px]',
-                'bg-yellow-50 rounded-xl text-yellow-500'
+                'bg-yellow-50 dark:bg-yellow-950/40 rounded-xl text-yellow-500'
               )}`}>
                 🤝
               </div>
-              <h3 className={`text-xl mb-2 ${themeClass('font-black text-black', 'font-bold text-gray-900')}`}>
+              <h3 className={`text-xl mb-2 ${themeClass('font-black text-black dark:text-slate-100', 'font-bold text-gray-900 dark:text-slate-100')}`}>
                 상대 전적 관리
               </h3>
-              <p className={themeClass('text-black/70 font-medium', 'text-gray-500')}>
+              <p className={themeClass('text-black/70 dark:text-slate-300 font-medium', 'text-gray-500 dark:text-slate-400')}>
                 자주 만나는 상대와의 역대 전적을 한눈에. 라이벌과의 승부를 기록하고 관리할 수 있습니다.
               </p>
             </div>
 
             <div className={themeClass(
-              'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] p-6 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] transition-all',
-              'bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-md transition-shadow'
+              'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] p-6 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000] transition-all',
+              'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-800 p-6 shadow-sm hover:shadow-md transition-shadow'
             )}>
               <div className={`w-12 h-12 mb-4 flex items-center justify-center text-2xl ${themeClass(
                 'bg-[#88aaee] border-2 border-black rounded-[5px]',
-                'bg-blue-50 rounded-xl text-blue-500'
+                'bg-blue-50 dark:bg-blue-950/40 rounded-xl text-blue-500'
               )}`}>
                 🏟️
               </div>
-              <h3 className={`text-xl mb-2 ${themeClass('font-black text-black', 'font-bold text-gray-900')}`}>
+              <h3 className={`text-xl mb-2 ${themeClass('font-black text-black dark:text-slate-100', 'font-bold text-gray-900 dark:text-slate-100')}`}>
                 코트별 기록
               </h3>
-              <p className={themeClass('text-black/70 font-medium', 'text-gray-500')}>
+              <p className={themeClass('text-black/70 dark:text-slate-300 font-medium', 'text-gray-500 dark:text-slate-400')}>
                 어떤 코트에서 승률이 가장 높을까요? 클레이, 하드, 잔디 등 코트 재질별 성적도 확인하세요.
               </p>
             </div>
@@ -129,7 +129,7 @@ export default function RecordsPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
             </button>
-            <p className={`mt-4 text-sm ${themeClass('text-black/60 font-bold', 'text-gray-400')}`}>
+            <p className={`mt-4 text-sm ${themeClass('text-black/60 dark:text-slate-400 font-bold', 'text-gray-400 dark:text-slate-500')}`}>
               * 카카오 또는 구글 계정으로 3초 만에 시작할 수 있습니다
             </p>
             <Link
@@ -137,8 +137,8 @@ export default function RecordsPage() {
               className={cn(
                 'inline-flex items-center gap-1 mt-3 text-sm transition-colors',
                 themeClass(
-                  'text-black/40 font-bold hover:text-black/70 underline decoration-1 underline-offset-4',
-                  'text-gray-400 hover:text-gray-600'
+                  'text-black/40 dark:text-slate-500 font-bold hover:text-black/70 dark:hover:text-slate-300 underline decoration-1 underline-offset-4',
+                  'text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:hover:text-slate-300'
                 )
               )}
             >
@@ -188,19 +188,19 @@ function StatsPreview() {
       <div className={cn(
         'overflow-hidden p-5',
         themeClass(
-          'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
-          'bg-white rounded-2xl border border-gray-100 shadow-sm'
+          'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
+          'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-800 shadow-sm'
         )
       )}>
         <div className="flex items-center gap-2 mb-4">
           <span className={cn(
             'text-xs font-bold px-2 py-1 rounded',
-            themeClass('bg-black text-white', 'bg-green-100 text-green-700')
+            themeClass('bg-black text-white', 'bg-green-100 dark:bg-green-950/40 text-green-700 dark:text-green-300')
           )}>
             예시 데이터
           </span>
           {DEMO_STATS.current_streak && (
-            <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-bold text-green-700">
+            <span className="inline-flex items-center rounded-full bg-green-100 dark:bg-green-950/40 px-2.5 py-0.5 text-xs font-bold text-green-700 dark:text-green-300">
               🔥 {DEMO_STATS.current_streak.count}연승 중!
             </span>
           )}
@@ -219,20 +219,20 @@ function StatsPreview() {
                 'flex flex-col items-center justify-center p-3',
                 inView ? 'anim-fade-up' : 'opacity-0',
                 themeClass(
-                  'rounded-[5px] border-2 border-black bg-gray-50',
-                  'rounded-xl border border-gray-200 bg-gray-50'
+                  'rounded-[5px] border-2 border-black bg-gray-50 dark:bg-slate-900',
+                  'rounded-xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900'
                 )
               )}
               style={{ animationDelay: `${i * 80}ms` }}
             >
-              <span className="mb-1 text-[10px] font-bold text-gray-500">{item.label}</span>
+              <span className="mb-1 text-[10px] font-bold text-gray-500 dark:text-slate-400">{item.label}</span>
               <span className={cn('text-base font-bold', item.valueClass)}>{item.value}</span>
             </div>
           ))}
         </div>
 
         <div>
-          <div className="text-xs font-bold text-gray-500 mb-1.5">최근 전적</div>
+          <div className="text-xs font-bold text-gray-500 dark:text-slate-400 mb-1.5">최근 전적</div>
           <div className="flex gap-2">
             {recentFormItems.map(({ result, key }, i) => (
               <div
@@ -251,11 +251,11 @@ function StatsPreview() {
 
         <div className={cn(
           'flex items-center justify-between mt-4 pt-3 border-t',
-          themeClass('border-black/10', 'border-gray-100')
+          themeClass('border-black/10 dark:border-slate-700', 'border-gray-100 dark:border-slate-800')
         )}>
           <p className={cn(
             'text-xs',
-            themeClass('text-black/40 font-bold', 'text-gray-400')
+            themeClass('text-black/40 dark:text-slate-500 font-bold', 'text-gray-400 dark:text-slate-500')
           )}>
             로그인하면 나만의 통계를 확인할 수 있어요
           </p>
@@ -263,7 +263,7 @@ function StatsPreview() {
             href="/guide/records"
             className={cn(
               'inline-flex items-center gap-1 text-xs font-bold shrink-0 transition-colors',
-              themeClass('text-black/50 hover:text-black', 'text-green-600 hover:text-green-700')
+              themeClass('text-black/50 dark:text-slate-400 hover:text-black dark:hover:text-slate-100', 'text-green-600 hover:text-green-700')
             )}
           >
             모든 기능 체험

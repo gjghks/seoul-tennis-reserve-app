@@ -150,12 +150,12 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
   const firstDay = getFirstDayOfWeek(viewYear, viewMonth);
 
   const cardClass = isNeoBrutalism
-    ? 'bg-white border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000]'
-    : 'bg-white rounded-2xl border border-gray-100';
+    ? 'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000]'
+    : 'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-800';
 
   const sectionHeaderClass = isNeoBrutalism
     ? 'p-5 border-b-2 border-black'
-    : 'p-5 border-b border-gray-100';
+    : 'p-5 border-b border-gray-100 dark:border-slate-800';
 
   const availableDistricts = useMemo(() => {
     const set = new Set(courts.map(c => c.AREANM));
@@ -180,12 +180,12 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
     <PullToRefresh
       onRefresh={handleRefresh}
       pullingContent={
-        <div className={`flex items-center justify-center py-4 ${themeClass('text-black font-bold', 'text-green-600')}`}>
+        <div className={`flex items-center justify-center py-4 ${themeClass('text-black dark:text-slate-100 font-bold', 'text-green-600')}`}>
           <span>↓ 당겨서 새로고침</span>
         </div>
       }
       refreshingContent={
-        <div className={`flex items-center justify-center py-4 ${themeClass('text-black font-bold', 'text-green-600')}`}>
+        <div className={`flex items-center justify-center py-4 ${themeClass('text-black dark:text-slate-100 font-bold', 'text-green-600')}`}>
           <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24" aria-hidden="true">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
@@ -194,13 +194,13 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
         </div>
       }
     >
-    <div className={`min-h-screen scrollbar-hide ${themeClass('bg-nb-bg', 'bg-gray-50')}`}>
+    <div className={`min-h-screen scrollbar-hide ${themeClass('bg-nb-bg', 'bg-gray-50 dark:bg-slate-900')}`}>
       <div className="container mx-auto px-4 py-6 max-w-4xl">
         <div className="mb-6">
-          <h1 className={`text-2xl mb-2 ${themeClass('font-black text-black uppercase tracking-tight', 'font-bold text-gray-900')}`}>
+          <h1 className={`text-2xl mb-2 ${themeClass('font-black text-black dark:text-slate-100 uppercase tracking-tight', 'font-bold text-gray-900 dark:text-slate-100')}`}>
             {isNeoBrutalism ? '📅 예약 캘린더' : '예약 캘린더'}
           </h1>
-          <p className={themeClass('text-black/60', 'text-gray-500')}>
+          <p className={themeClass('text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400')}>
             날짜별 접수 가능한 테니스장을 확인하세요
           </p>
         </div>
@@ -212,8 +212,8 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
             onChange={(e) => setSelectedDistrict(e.target.value)}
             className={`px-4 py-2 text-sm ${
               isNeoBrutalism
-                ? 'bg-white border-2 border-black rounded-[5px] font-bold text-black'
-                : 'bg-white border border-gray-200 rounded-lg text-gray-700'
+                ? 'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] font-bold text-black dark:text-slate-100'
+                : 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-gray-700 dark:text-slate-200'
             }`}
           >
             <option value="all">전체 지역</option>
@@ -227,7 +227,7 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
         <div className={`${cardClass} overflow-hidden mb-6`}>
           <div className={sectionHeaderClass}>
             <div className="flex items-center justify-between">
-              <h2 className={`font-bold flex items-center gap-2 ${themeClass('text-black font-black', 'text-gray-900')}`}>
+              <h2 className={`font-bold flex items-center gap-2 ${themeClass('text-black dark:text-slate-100 font-black', 'text-gray-900 dark:text-slate-100')}`}>
                 {isNeoBrutalism ? (
                   <span className="w-6 h-6 bg-[#facc15] border-2 border-black rounded-[3px] flex items-center justify-center text-xs">📅</span>
                 ) : (
@@ -244,7 +244,7 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
                   className={`px-3 py-1 text-xs ${
                     isNeoBrutalism
                       ? 'bg-[#facc15] border-2 border-black rounded-[3px] font-bold text-black hover:bg-[#fbbf24]'
-                      : 'bg-green-50 border border-green-200 rounded-md text-green-700 hover:bg-green-100'
+                      : 'bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-900/40 rounded-md text-green-700 dark:text-green-300 hover:bg-green-100 dark:hover:bg-green-900/40'
                   }`}
                 >
                   오늘
@@ -254,8 +254,8 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
                   onClick={goPrev}
                   className={`w-8 h-8 flex items-center justify-center ${
                     isNeoBrutalism
-                      ? 'border-2 border-black rounded-[3px] bg-white hover:bg-gray-100 font-bold'
-                      : 'border border-gray-200 rounded-lg hover:bg-gray-50'
+                      ? 'border-2 border-black rounded-[3px] bg-white dark:bg-slate-800 text-black dark:text-slate-100 hover:bg-gray-100 dark:hover:bg-slate-700 font-bold'
+                      : 'border border-gray-200 dark:border-slate-700 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800'
                   }`}
                   aria-label="이전 달"
                 >
@@ -266,8 +266,8 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
                   onClick={goNext}
                   className={`w-8 h-8 flex items-center justify-center ${
                     isNeoBrutalism
-                      ? 'border-2 border-black rounded-[3px] bg-white hover:bg-gray-100 font-bold'
-                      : 'border border-gray-200 rounded-lg hover:bg-gray-50'
+                      ? 'border-2 border-black rounded-[3px] bg-white dark:bg-slate-800 text-black dark:text-slate-100 hover:bg-gray-100 dark:hover:bg-slate-700 font-bold'
+                      : 'border border-gray-200 dark:border-slate-700 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800'
                   }`}
                   aria-label="다음 달"
                 >
@@ -288,7 +288,7 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
                       ? themeClass('font-bold text-red-500', 'font-medium text-red-400')
                       : i === 6
                         ? themeClass('font-bold text-blue-500', 'font-medium text-blue-400')
-                        : themeClass('font-bold text-black/60', 'font-medium text-gray-400')
+                        : themeClass('font-bold text-black/60 dark:text-slate-400', 'font-medium text-gray-400 dark:text-slate-500')
                   }`}
                 >
                   {label}
@@ -328,10 +328,10 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
                         : today
                           ? isNeoBrutalism
                             ? 'bg-[#facc15] border-2 border-black rounded-[3px] font-black'
-                            : 'bg-green-50 border border-green-300 rounded-lg font-semibold'
+                            : 'bg-green-50 dark:bg-green-950/40 border border-green-300 dark:border-green-900/40 rounded-lg font-semibold'
                           : isNeoBrutalism
-                            ? 'hover:bg-gray-100 rounded-[3px]'
-                            : 'hover:bg-gray-50 rounded-lg'
+                            ? 'hover:bg-gray-100 dark:hover:bg-slate-700 rounded-[3px]'
+                            : 'hover:bg-gray-50 dark:hover:bg-slate-800 rounded-lg'
                     } ${
                       !isSelected && isSunday ? themeClass('text-red-500', 'text-red-400') : ''
                     } ${
@@ -359,7 +359,7 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
             </div>
 
             {/* Legend */}
-            <div className={`flex items-center justify-center gap-4 mt-4 pt-4 ${themeClass('border-t-2 border-black/15', 'border-t border-gray-100')}`}>
+            <div className={`flex items-center justify-center gap-4 mt-4 pt-4 ${themeClass('border-t-2 border-black/15 dark:border-slate-700', 'border-t border-gray-100 dark:border-slate-800')}`}>
               {[
                 { label: '1~5개', cls: getDotClass(1, isNeoBrutalism) },
                 { label: '6~15개', cls: getDotClass(6, isNeoBrutalism) },
@@ -367,7 +367,7 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
               ].map(item => (
                 <div key={item.label} className="flex items-center gap-1.5">
                   <span className={`w-2.5 h-2.5 rounded-full ${item.cls}`} />
-                  <span className={`text-xs ${themeClass('text-black/60 font-bold', 'text-gray-400')}`}>{item.label}</span>
+                  <span className={`text-xs ${themeClass('text-black/60 dark:text-slate-400 font-bold', 'text-gray-400 dark:text-slate-500')}`}>{item.label}</span>
                 </div>
               ))}
             </div>
@@ -381,8 +381,8 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
             { label: '최다 접수일', value: peakDayNum > 0 ? `${animPeakDay}일` : '-' },
           ].map(item => (
             <div key={item.label} className={`${cardClass} p-4 text-center`}>
-              <p className={`text-xs mb-1 ${themeClass('text-black/60 font-bold uppercase', 'text-gray-400')}`}>{item.label}</p>
-              <p className={`text-xl ${themeClass('font-black text-black', 'font-bold text-gray-900')}`}>{item.value}</p>
+              <p className={`text-xs mb-1 ${themeClass('text-black/60 dark:text-slate-400 font-bold uppercase', 'text-gray-400 dark:text-slate-500')}`}>{item.label}</p>
+              <p className={`text-xl ${themeClass('font-black text-black dark:text-slate-100', 'font-bold text-gray-900 dark:text-slate-100')}`}>{item.value}</p>
             </div>
           ))}
         </div>
@@ -391,7 +391,7 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
         {selectedDate && (
           <div className={`${cardClass} overflow-hidden`}>
             <div className={sectionHeaderClass}>
-              <h2 className={`font-bold flex items-center gap-2 ${themeClass('text-black font-black', 'text-gray-900')}`}>
+              <h2 className={`font-bold flex items-center gap-2 ${themeClass('text-black dark:text-slate-100 font-black', 'text-gray-900 dark:text-slate-100')}`}>
                 {isNeoBrutalism ? (
                   <span className="w-6 h-6 bg-[#a3e635] border-2 border-black rounded-[3px] flex items-center justify-center text-xs">🎾</span>
                 ) : (
@@ -417,7 +417,7 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
                     <circle cx="56" cy="10" r="2" className={themeClass('fill-black', 'fill-gray-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0s' }} />
                     <circle cx="6" cy="46" r="1.5" className={themeClass('fill-black', 'fill-gray-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.5s' }} />
                   </svg>
-                  <p className={themeClass('text-black/60', 'text-gray-400')}>
+                  <p className={themeClass('text-black/60 dark:text-slate-400', 'text-gray-400 dark:text-slate-500')}>
                     이 날짜에 접수 가능한 테니스장이 없습니다.
                   </p>
                 </div>
@@ -432,15 +432,15 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
                         className={`block p-3 transition-all ${
                           isNeoBrutalism
                             ? 'border-2 border-black rounded-[5px] hover:shadow-[2px_2px_0px_0px_#000] hover:-translate-x-0.5 hover:-translate-y-0.5'
-                            : 'border border-gray-100 rounded-xl hover:border-green-200 hover:bg-green-50/30'
+                            : 'border border-gray-100 dark:border-slate-700 rounded-xl hover:border-green-200 hover:bg-green-50/30 dark:hover:bg-green-950/20'
                         }`}
                       >
                         <div className="flex items-start justify-between gap-2">
                           <div className="min-w-0 flex-1">
-                            <p className={`text-sm truncate ${themeClass('font-bold text-black', 'font-medium text-gray-900')}`}>
+                            <p className={`text-sm truncate ${themeClass('font-bold text-black dark:text-slate-100', 'font-medium text-gray-900 dark:text-slate-100')}`}>
                               {court.SVCNM}
                             </p>
-                            <p className={`text-xs mt-0.5 ${themeClass('text-black/60', 'text-gray-400')}`}>
+                            <p className={`text-xs mt-0.5 ${themeClass('text-black/60 dark:text-slate-400', 'text-gray-400 dark:text-slate-500')}`}>
                               {court.PLACENM} · {court.AREANM}
                             </p>
                           </div>
@@ -456,7 +456,7 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
                             {court.SVCSTATNM}
                           </span>
                         </div>
-                        <div className={`flex items-center gap-3 mt-2 text-xs ${themeClass('text-black/60', 'text-gray-400')}`}>
+                        <div className={`flex items-center gap-3 mt-2 text-xs ${themeClass('text-black/60 dark:text-slate-400', 'text-gray-400 dark:text-slate-500')}`}>
                           <span>접수: {court.RCPTBGNDT?.slice(0, 10)} ~ {court.RCPTENDDT?.slice(0, 10)}</span>
                           <span>{court.PAYATNM}</span>
                         </div>
@@ -472,7 +472,7 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
         {externalCourts.length > 0 && (
           <div className={`${cardClass} overflow-hidden mt-6`}>
             <div className={sectionHeaderClass}>
-              <h2 className={`font-bold flex items-center gap-2 ${themeClass('text-black font-black', 'text-gray-900')}`}>
+              <h2 className={`font-bold flex items-center gap-2 ${themeClass('text-black dark:text-slate-100 font-black', 'text-gray-900 dark:text-slate-100')}`}>
                 {isNeoBrutalism ? (
                   <span className="w-6 h-6 bg-[#93c5fd] border-2 border-black rounded-[3px] flex items-center justify-center text-xs">🌐</span>
                 ) : (
@@ -480,7 +480,7 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
                 )}
                 상시 예약 가능 (외부 예약)
               </h2>
-              <p className={`mt-1 text-xs ${themeClass('text-black/60 font-bold', 'text-gray-500')}`}>
+              <p className={`mt-1 text-xs ${themeClass('text-black/60 dark:text-slate-400 font-bold', 'text-gray-500 dark:text-slate-400')}`}>
                 아래 시설은 별도의 예약 사이트에서 상시 예약 가능합니다.
               </p>
             </div>
@@ -493,27 +493,27 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
                     key={`external-${district}`}
                     className={themeClass(
                       'border-2 border-black rounded-[5px] overflow-hidden',
-                      'border border-blue-200 rounded-xl overflow-hidden'
+                      'border border-blue-200 dark:border-blue-900/40 rounded-xl overflow-hidden'
                     )}
                   >
-                    <div className={`px-3 py-2 flex items-center justify-between ${themeClass('bg-[#93c5fd] border-b-2 border-black', 'bg-blue-100 border-b border-blue-200')}`}>
-                      <p className={themeClass('font-black text-black uppercase tracking-tight text-sm', 'font-semibold text-blue-900 text-sm')}>
+                    <div className={`px-3 py-2 flex items-center justify-between ${themeClass('bg-[#93c5fd] border-b-2 border-black', 'bg-blue-100 dark:bg-blue-950/40 border-b border-blue-200 dark:border-blue-900/40')}`}>
+                      <p className={themeClass('font-black text-black uppercase tracking-tight text-sm', 'font-semibold text-blue-900 dark:text-blue-200 text-sm')}>
                         {district}
                       </p>
-                      <p className={`text-xs ${themeClass('font-bold text-black/70', 'text-blue-700')}`}>
+                      <p className={`text-xs ${themeClass('font-bold text-black/70', 'text-blue-700 dark:text-blue-300')}`}>
                         {districtCourts.length}개
                       </p>
                     </div>
 
-                    <div className="divide-y divide-blue-100">
+                    <div className="divide-y divide-blue-100 dark:divide-blue-900/40">
                       {districtCourts.map(court => (
                         <div key={court.SVCID} className="p-3">
                           <div className="flex items-start justify-between gap-2">
                             <div className="min-w-0">
-                              <p className={`text-sm truncate ${themeClass('font-bold text-black', 'font-medium text-gray-900')}`}>
+                              <p className={`text-sm truncate ${themeClass('font-bold text-black dark:text-slate-100', 'font-medium text-gray-900 dark:text-slate-100')}`}>
                                 {court.SVCNM}
                               </p>
-                              <p className={`text-xs mt-0.5 ${themeClass('text-black/60', 'text-gray-500')}`}>
+                              <p className={`text-xs mt-0.5 ${themeClass('text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400')}`}>
                                 {court.PLACENM} · {court.AREANM}
                               </p>
                             </div>
@@ -536,7 +536,7 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
                             </div>
                           </div>
 
-                          <div className={`flex items-center gap-2 mt-2 text-xs ${themeClass('text-black/60', 'text-gray-500')}`}>
+                          <div className={`flex items-center gap-2 mt-2 text-xs ${themeClass('text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400')}`}>
                             <span>{court.V_MIN || '-'} ~ {court.V_MAX || '-'}</span>
                             <span>·</span>
                             <span>{court.PAYATNM}</span>
@@ -545,7 +545,7 @@ export default function CalendarContent({ courts }: CalendarContentProps) {
                                 <span>·</span>
                                 <Link
                                   href={`/${districtSlug}`}
-                                  className={themeClass('font-bold text-black underline', 'font-medium text-blue-700 hover:text-blue-800')}
+                                  className={themeClass('font-bold text-black dark:text-slate-100 underline', 'font-medium text-blue-700 dark:text-blue-300 hover:text-blue-800')}
                                 >
                                   지역 보기
                                 </Link>

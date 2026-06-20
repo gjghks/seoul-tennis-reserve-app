@@ -23,8 +23,12 @@ export default function SakuraOverlay() {
   const { isCherryBlossom } = useSeason();
 
   const petals = useMemo(() => generatePetals(), []);
+  const reduceMotion =
+    typeof window !== 'undefined' &&
+    window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
-  if (!isCherryBlossom) return null;
+  // reduced-motion: build zero DOM (defense-in-depth with the CSS guard).
+  if (!isCherryBlossom || reduceMotion) return null;
 
   return (
     <div className="sakura-overlay" aria-hidden="true">

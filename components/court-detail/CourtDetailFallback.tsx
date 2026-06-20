@@ -33,7 +33,7 @@ export default function CourtDetailFallback({ districtSlug, courtId, district }:
     return (
       <div className="container py-12 text-center">
         <div className="animate-spin h-8 w-8 border-4 border-green-500 border-t-transparent rounded-full mx-auto mb-4" />
-        <p className={themeClass('text-black font-bold', 'text-gray-600')}>
+        <p className={themeClass('text-black dark:text-slate-100 font-bold', 'text-gray-600 dark:text-slate-400')}>
           테니스장 정보를 불러오는 중...
         </p>
       </div>
@@ -43,8 +43,8 @@ export default function CourtDetailFallback({ districtSlug, courtId, district }:
   if (error || courts.length === 0) {
     return (
       <div className="container py-12">
-        <div className={`max-w-md mx-auto text-center ${themeClass('card-nb p-8 bg-white', 'card p-8')}`}>
-          <p className={`mb-4 ${themeClass('text-red-600 font-bold', 'text-red-500')}`}>
+        <div className={`max-w-md mx-auto text-center ${themeClass('card-nb p-8 bg-white dark:bg-slate-900', 'card p-8')}`}>
+          <p className={`mb-4 ${themeClass('text-red-600 dark:text-red-400 font-bold', 'text-red-500 dark:text-red-400')}`}>
             데이터를 불러오는데 실패했습니다.
           </p>
           <button
@@ -61,8 +61,8 @@ export default function CourtDetailFallback({ districtSlug, courtId, district }:
 
   return (
     <div className="container py-12">
-      <div className={`max-w-md mx-auto text-center ${themeClass('card-nb p-8 bg-white', 'card p-8')}`}>
-        <p className={`mb-4 ${themeClass('text-black font-bold', 'text-gray-700')}`}>
+      <div className={`max-w-md mx-auto text-center ${themeClass('card-nb p-8 bg-white dark:bg-slate-900', 'card p-8')}`}>
+        <p className={`mb-4 ${themeClass('text-black dark:text-slate-100 font-bold', 'text-gray-700 dark:text-slate-200')}`}>
           해당 테니스장을 찾을 수 없습니다.
         </p>
         <Link

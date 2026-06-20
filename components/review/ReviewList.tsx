@@ -107,7 +107,7 @@ export default function ReviewList({ reviews, onReviewDeleted }: ReviewListProps
       {[1, 2, 3, 4, 5].map((star) => (
         <span
           key={star}
-          className={`text-lg ${star <= rating ? 'text-yellow-400' : 'text-gray-300'}`}
+          className={`text-lg ${star <= rating ? 'text-yellow-400' : 'text-gray-300 dark:text-slate-600'}`}
           aria-hidden="true"
         >
           ★
@@ -127,7 +127,7 @@ export default function ReviewList({ reviews, onReviewDeleted }: ReviewListProps
             key={url}
             type="button"
             onClick={() => openLightbox(images, index)}
-            className={`relative w-20 h-20 overflow-hidden flex-shrink-0 ${themeClass('border-2 border-black rounded-[5px]', 'border border-gray-200 rounded-lg')} hover:opacity-80 transition-opacity`}
+            className={`relative w-20 h-20 overflow-hidden flex-shrink-0 ${themeClass('border-2 border-black dark:border-slate-700 rounded-[5px]', 'border border-gray-200 dark:border-slate-700 rounded-lg')} hover:opacity-80 transition-opacity`}
           >
             <Image
               src={url}
@@ -250,16 +250,16 @@ export default function ReviewList({ reviews, onReviewDeleted }: ReviewListProps
 
   if (reviews.length === 0) {
     return (
-      <div className={`${themeClass('bg-gray-100 border-2 border-black rounded-[5px]', 'bg-gray-50 rounded-xl')} `}>
+      <div className={`${themeClass('bg-gray-100 dark:bg-slate-800 border-2 border-black dark:border-slate-700 rounded-[5px]', 'bg-gray-50 dark:bg-slate-900 rounded-xl')} `}>
         <EmptyState
           icon={
             <svg className={themeClass('w-14 h-14 mx-auto mb-1', 'w-12 h-12 mx-auto mb-1')} viewBox="0 0 64 64" fill="none" aria-hidden="true">
               <g style={{ animation: 'gentle-float 3s ease-in-out infinite' }}>
-                <path d="M12 14 C12 10 16 6 20 6 L44 6 C48 6 52 10 52 14 L52 34 C52 38 48 42 44 42 L24 42 L16 50 L16 42 L20 42 C16 42 12 38 12 34 Z" className={themeClass('fill-white stroke-black stroke-[2.5]', 'fill-white stroke-gray-300 stroke-[1.5]')} />
+                <path d="M12 14 C12 10 16 6 20 6 L44 6 C48 6 52 10 52 14 L52 34 C52 38 48 42 44 42 L24 42 L16 50 L16 42 L20 42 C16 42 12 38 12 34 Z" className={themeClass('fill-white dark:fill-slate-700 stroke-black dark:stroke-slate-500 stroke-[2.5]', 'fill-white dark:fill-slate-700 stroke-gray-300 dark:stroke-slate-500 stroke-[1.5]')} />
                 <path d="M28 28 Q28 32 32 32 Q28 32 28 36 Q28 32 24 32 Q28 32 28 28 Z" className={themeClass('fill-[#facc15]', 'fill-green-300')} />
               </g>
-              <circle cx="56" cy="10" r="2" className={themeClass('fill-black', 'fill-gray-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0s' }} />
-              <circle cx="8" cy="44" r="1.5" className={themeClass('fill-black', 'fill-gray-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.5s' }} />
+              <circle cx="56" cy="10" r="2" className={themeClass('fill-black dark:fill-slate-300', 'fill-gray-400 dark:fill-slate-500')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0s' }} />
+              <circle cx="8" cy="44" r="1.5" className={themeClass('fill-black dark:fill-slate-300', 'fill-gray-400 dark:fill-slate-500')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.5s' }} />
             </svg>
           }
           title="아직 후기가 없습니다"
@@ -277,7 +277,7 @@ export default function ReviewList({ reviews, onReviewDeleted }: ReviewListProps
         {reviews.map((review) => (
           <article
             key={review.id}
-            className={`p-4 ${themeClass('bg-white border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000]', 'bg-white rounded-xl border border-gray-100')}`}
+            className={`p-4 ${themeClass('bg-white dark:bg-slate-800 border-2 border-black dark:border-slate-700 rounded-[5px] shadow-[3px_3px_0px_0px_#000]', 'bg-white dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-slate-700')}`}
           >
             {editingReview?.id === review.id ? (
               <ReviewForm
@@ -293,16 +293,16 @@ export default function ReviewList({ reviews, onReviewDeleted }: ReviewListProps
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-2">
                     <StarRating rating={review.rating} />
-                    <span className={`text-sm ${themeClass('text-black/60 font-medium', 'text-gray-400')} `}>
+                    <span className={`text-sm ${themeClass('text-black/60 dark:text-slate-400 font-medium', 'text-gray-400 dark:text-slate-500')} `}>
                       {formatDate(review.created_at)}
                       {isEditedReview(review) && (
-                        <span className={themeClass('ml-1 text-black/60 font-bold', 'ml-1 text-green-600 font-medium')}>
+                        <span className={themeClass('ml-1 text-black/60 dark:text-slate-400 font-bold', 'ml-1 text-green-600 dark:text-green-400 font-medium')}>
                           (수정됨)
                         </span>
                       )}
                     </span>
                   </div>
-                  <p className={`whitespace-pre-wrap break-words ${themeClass('text-black/80', 'text-gray-700')} `}>
+                  <p className={`whitespace-pre-wrap break-words ${themeClass('text-black/80 dark:text-slate-200', 'text-gray-700 dark:text-slate-200')} `}>
                     {review.content}
                   </p>
                   {review.images && review.images.length > 0 && (
@@ -314,7 +314,7 @@ export default function ReviewList({ reviews, onReviewDeleted }: ReviewListProps
                     <button
                       type="button"
                       onClick={() => setEditingReview(review)}
-                      className={`p-2 ${themeClass('text-black hover:bg-yellow-100 rounded-[5px] border border-transparent hover:border-black', 'text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg')} transition-colors`}
+                      className={`p-2 ${themeClass('text-black dark:text-slate-100 hover:bg-yellow-100 dark:hover:bg-slate-700 rounded-[5px] border border-transparent hover:border-black dark:hover:border-slate-600', 'text-gray-400 dark:text-slate-500 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-950/40 rounded-lg')} transition-colors`}
                       aria-label="수정"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -325,7 +325,7 @@ export default function ReviewList({ reviews, onReviewDeleted }: ReviewListProps
                     <button
                       type="button"
                       onClick={() => handleDelete(review.id)}
-                      className={`p-2 ${themeClass('text-red-500 hover:bg-red-100 rounded-[5px] border border-transparent hover:border-black', 'text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg')} transition-colors`}
+                      className={`p-2 ${themeClass('text-red-500 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-950/40 rounded-[5px] border border-transparent hover:border-black dark:hover:border-slate-600', 'text-gray-400 dark:text-slate-500 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 rounded-lg')} transition-colors`}
                       aria-label="삭제"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

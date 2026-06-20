@@ -57,8 +57,8 @@ export default function ShareButton({
       onClick={handleShare}
       aria-label="공유하기"
       className={`interact-press ${themeClass(
-        `flex items-center gap-2 px-3 py-2 border-2 border-black rounded-[5px] bg-white text-black font-bold shadow-[3px_3px_0px_0px_#000] transition-all active:duration-0 active:bg-[#88aaee] active:translate-x-[3px] active:translate-y-[3px] active:shadow-none ${className}`,
-        `flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 text-gray-500 transition-all active:duration-0 active:bg-gray-200 active:text-gray-700 ${className}`
+        `flex items-center gap-2 px-3 py-2 border-2 border-black rounded-[5px] bg-white dark:bg-slate-900 text-black dark:text-slate-100 font-bold shadow-[3px_3px_0px_0px_#000] transition-all active:duration-0 active:bg-[#88aaee] active:translate-x-[3px] active:translate-y-[3px] active:shadow-none ${className}`,
+        `flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-slate-400 transition-all active:duration-0 active:bg-gray-200 active:text-gray-700 ${className}`
       )}`}
     >
       <svg

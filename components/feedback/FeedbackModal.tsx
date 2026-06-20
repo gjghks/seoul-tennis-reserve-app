@@ -128,7 +128,7 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
           'relative w-full max-w-md p-6',
           themeClass(
             'bg-[#fffbeb] border-[3px] border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]',
-            'bg-white rounded-xl shadow-xl border border-gray-200'
+            'bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-gray-200 dark:border-slate-700'
           )
         )}
         onClick={(e) => e.stopPropagation()}
@@ -137,7 +137,7 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
         <div className="flex items-center justify-between mb-5">
           <h2 id={titleId} className={cn(
             'text-lg font-bold',
-            themeClass('uppercase tracking-wide', 'text-gray-900')
+            themeClass('uppercase tracking-wide', 'text-gray-900 dark:text-slate-100')
           )}>
             의견 보내기
           </h2>
@@ -147,8 +147,8 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
             className={cn(
               'w-8 h-8 flex items-center justify-center text-lg',
               themeClass(
-                'border-2 border-black bg-white hover:bg-red-100 font-black',
-                'text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100'
+                'border-2 border-black bg-white dark:bg-slate-700 hover:bg-red-100 font-black',
+                'text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:hover:text-slate-300 rounded-full hover:bg-gray-100 dark:hover:bg-slate-700'
               )
             )}
           >
@@ -159,7 +159,7 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
         <div className="mb-4">
           <p className={cn(
             'text-sm mb-2',
-            themeClass('font-bold', 'text-gray-600 font-medium')
+            themeClass('font-bold', 'text-gray-600 dark:text-slate-300 font-medium')
           )}>
             카테고리
           </p>
@@ -176,13 +176,13 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                       'border-2 border-black font-bold',
                       category === cat.value
                         ? 'bg-black text-white'
-                        : 'bg-white hover:bg-gray-100'
+                        : 'bg-white dark:bg-slate-700 hover:bg-gray-100 dark:hover:bg-slate-600'
                     ),
                     cn(
                       'rounded-lg border',
                       category === cat.value
-                        ? 'border-blue-500 bg-blue-50 text-blue-700'
-                        : 'border-gray-200 hover:border-gray-300 text-gray-600'
+                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300'
+                        : 'border-gray-200 dark:border-slate-700 hover:border-gray-300 dark:hover:border-slate-600 text-gray-600 dark:text-slate-300'
                     )
                   )
                 )}
@@ -196,7 +196,7 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
         <div className="mb-4">
           <p className={cn(
             'text-sm mb-2',
-            themeClass('font-bold', 'text-gray-600 font-medium')
+            themeClass('font-bold', 'text-gray-600 dark:text-slate-300 font-medium')
           )}>
             내용
           </p>
@@ -209,14 +209,14 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
             className={cn(
               'w-full resize-none text-sm p-3',
               themeClass(
-                'border-2 border-black bg-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-black',
-                'border border-gray-200 rounded-lg placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                'border-2 border-black bg-white dark:bg-slate-700 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-black',
+                'border border-gray-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-700 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
               )
             )}
           />
           <p className={cn(
             'text-xs mt-1 text-right',
-            themeClass('font-mono', 'text-gray-400')
+            themeClass('font-mono', 'text-gray-400 dark:text-slate-500')
           )}>
             {contentLength}/500
           </p>
@@ -233,13 +233,13 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                 'border-2 border-black',
                 isValid && !isSubmitting
                   ? 'bg-black text-white hover:bg-gray-800 active:translate-x-[2px] active:translate-y-[2px]'
-                  : 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                  : 'bg-gray-200 dark:bg-slate-700 text-gray-500 dark:text-slate-400 cursor-not-allowed'
               ),
               cn(
                 'rounded-lg',
                 isValid && !isSubmitting
                   ? 'bg-blue-600 text-white hover:bg-blue-700'
-                  : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                  : 'bg-gray-100 dark:bg-slate-700 text-gray-400 dark:text-slate-500 cursor-not-allowed'
               )
             )
           )}

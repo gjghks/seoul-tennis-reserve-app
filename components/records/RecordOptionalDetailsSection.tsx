@@ -39,19 +39,19 @@ export default function RecordOptionalDetailsSection({
 }: RecordOptionalDetailsSectionProps) {
   const themeClass = useThemeClass();
   const labelClass = themeClass(
-    'block mb-2 font-bold text-black text-lg',
-    'block mb-1.5 font-medium text-gray-700 text-sm'
+    'block mb-2 font-bold text-black dark:text-slate-100 text-lg',
+    'block mb-1.5 font-medium text-gray-700 dark:text-slate-200 text-sm'
   );
   const inputClass = themeClass(
     'w-full p-3 border-2 border-black rounded-[5px] focus:outline-none focus:ring-2 focus:ring-[#22c55e] focus:ring-offset-2 shadow-[4px_4px_0px_0px_#000] transition-all',
-    'w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all'
+    'w-full p-2.5 border border-gray-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all'
   );
 
   return (
     <>
       <div>
         <label htmlFor="court_surface" className={labelClass}>
-          코트 표면 <span className="text-gray-400 text-sm">(선택)</span>
+          코트 표면 <span className="text-gray-400 dark:text-slate-500 text-sm">(선택)</span>
         </label>
         <select
           id="court_surface"
@@ -74,7 +74,7 @@ export default function RecordOptionalDetailsSection({
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor="opponent_name" className={labelClass}>
-            상대 이름 <span className="text-gray-400 text-sm">(선택)</span>
+            상대 이름 <span className="text-gray-400 dark:text-slate-500 text-sm">(선택)</span>
           </label>
           <input
             type="text"
@@ -87,7 +87,7 @@ export default function RecordOptionalDetailsSection({
         </div>
         <div>
           <label htmlFor="opponent_level" className={labelClass}>
-            상대 수준 <span className="text-gray-400 text-sm">(선택)</span>
+            상대 수준 <span className="text-gray-400 dark:text-slate-500 text-sm">(선택)</span>
           </label>
           <input
             type="text"
@@ -102,7 +102,7 @@ export default function RecordOptionalDetailsSection({
 
       <div>
         <label htmlFor="duration_minutes" className={labelClass}>
-          경기 시간 (분) <span className="text-gray-400 text-sm">(선택)</span>
+          경기 시간 (분) <span className="text-gray-400 dark:text-slate-500 text-sm">(선택)</span>
         </label>
         <input
           type="number"
@@ -118,7 +118,7 @@ export default function RecordOptionalDetailsSection({
 
       <div>
         <label htmlFor="cost" className={labelClass}>
-          비용 (원) <span className="text-gray-400 text-sm">(선택)</span>
+          비용 (원) <span className="text-gray-400 dark:text-slate-500 text-sm">(선택)</span>
         </label>
         <input
           type="number"
@@ -133,7 +133,7 @@ export default function RecordOptionalDetailsSection({
 
       <div>
         <label htmlFor="notes" className={labelClass}>
-          메모 <span className="text-gray-400 text-sm">(선택)</span>
+          메모 <span className="text-gray-400 dark:text-slate-500 text-sm">(선택)</span>
         </label>
         <textarea
           id="notes"
@@ -148,8 +148,8 @@ export default function RecordOptionalDetailsSection({
         <div
           id="notes-count"
           className={themeClass(
-            'text-right text-sm mt-1 text-black/60',
-            'text-right text-sm mt-1 text-gray-400'
+            'text-right text-sm mt-1 text-black/60 dark:text-slate-400',
+            'text-right text-sm mt-1 text-gray-400 dark:text-slate-500'
           )}
         >
           {notes.length}/1000

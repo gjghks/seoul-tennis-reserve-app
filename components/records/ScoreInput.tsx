@@ -69,15 +69,15 @@ export default function ScoreInput({ score, onChange }: ScoreInputProps) {
             className={cn(
               "relative p-4 transition-all",
               themeClass(
-                "bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]",
-                "bg-white border border-gray-200 rounded-lg shadow-sm"
+                "bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]",
+                "bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg shadow-sm"
               )
             )}
           >
             <div className="flex items-center justify-between mb-3">
               <span className={cn(
                 "text-sm",
-                themeClass("font-bold text-black", "font-medium text-gray-500")
+                themeClass("font-bold text-black dark:text-slate-100", "font-medium text-gray-500 dark:text-slate-400")
               )}>
                 SET {setIndex + 1}
               </span>
@@ -89,7 +89,7 @@ export default function ScoreInput({ score, onChange }: ScoreInputProps) {
                     "w-6 h-6 flex items-center justify-center rounded-full transition-colors",
                     themeClass(
                       "bg-black text-white hover:bg-red-600",
-                      "bg-gray-100 text-gray-500 hover:bg-red-100 hover:text-red-600"
+                      "bg-gray-100 dark:bg-slate-700 text-gray-500 dark:text-slate-300 hover:bg-red-100 dark:hover:bg-red-900/40 hover:text-red-600 dark:hover:text-red-300"
                     )
                   )}
                   aria-label={`${setIndex + 1}세트 삭제`}
@@ -103,7 +103,7 @@ export default function ScoreInput({ score, onChange }: ScoreInputProps) {
 
             <div className="flex items-center justify-center gap-3 mb-3">
               <div className="flex flex-col items-center gap-1">
-                <label htmlFor={myId} className={cn("text-xs", themeClass("font-bold", "text-gray-500"))}>나</label>
+                <label htmlFor={myId} className={cn("text-xs", themeClass("font-bold", "text-gray-500 dark:text-slate-400"))}>나</label>
                 <input
                   id={myId}
                   type="number"
@@ -115,14 +115,14 @@ export default function ScoreInput({ score, onChange }: ScoreInputProps) {
                     "w-16 text-center text-lg transition-colors",
                     themeClass(
                       "border-2 border-black rounded-[5px] p-2 font-bold focus:outline-none focus:ring-2 focus:ring-[#22c55e] focus:ring-offset-2",
-                      "border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      "border border-gray-300 dark:border-slate-700 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     )
                   )}
                 />
               </div>
-              <span className={cn("text-xl mt-5", themeClass("font-black", "font-medium text-gray-400"))} aria-hidden="true">-</span>
+              <span className={cn("text-xl mt-5", themeClass("font-black", "font-medium text-gray-400 dark:text-slate-500"))} aria-hidden="true">-</span>
               <div className="flex flex-col items-center gap-1">
-                <label htmlFor={oppId} className={cn("text-xs", themeClass("font-bold", "text-gray-500"))}>상대</label>
+                <label htmlFor={oppId} className={cn("text-xs", themeClass("font-bold", "text-gray-500 dark:text-slate-400"))}>상대</label>
                 <input
                   id={oppId}
                   type="number"
@@ -134,7 +134,7 @@ export default function ScoreInput({ score, onChange }: ScoreInputProps) {
                     "w-16 text-center text-lg transition-colors",
                     themeClass(
                       "border-2 border-black rounded-[5px] p-2 font-bold focus:outline-none focus:ring-2 focus:ring-[#22c55e] focus:ring-offset-2",
-                      "border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      "border border-gray-300 dark:border-slate-700 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     )
                   )}
                 />
@@ -152,21 +152,21 @@ export default function ScoreInput({ score, onChange }: ScoreInputProps) {
                     "w-4 h-4 rounded transition-colors",
                     themeClass(
                       "border-2 border-black text-black focus:ring-0 checked:bg-black",
-                      "border-gray-300 text-green-600 focus:ring-green-500 rounded"
+                      "border-gray-300 dark:border-slate-600 text-green-600 focus:ring-green-500 rounded"
                     )
                   )}
                 />
-                <span className={cn("text-sm", themeClass("font-bold", "text-gray-600"))}>타이브레이크</span>
+                <span className={cn("text-sm", themeClass("font-bold", "text-gray-600 dark:text-slate-300"))}>타이브레이크</span>
               </label>
             </div>
 
             {set.tb && (
               <div className={cn(
                 "mt-3 pt-3 border-t flex items-center justify-center gap-3 animate-in fade-in slide-in-from-top-2",
-                themeClass("border-black/15", "border-gray-100")
+                themeClass("border-black/15", "border-gray-100 dark:border-slate-700")
               )}>
                 <div className="flex items-center gap-2">
-                  <label htmlFor={`${tbId}-my`} className={cn("text-xs", themeClass("font-bold text-black/60", "text-gray-400"))}>TB</label>
+                  <label htmlFor={`${tbId}-my`} className={cn("text-xs", themeClass("font-bold text-black/60 dark:text-slate-400", "text-gray-400 dark:text-slate-500"))}>TB</label>
                   <input
                     id={`${tbId}-my`}
                     type="number"
@@ -178,12 +178,12 @@ export default function ScoreInput({ score, onChange }: ScoreInputProps) {
                       "w-12 text-center text-sm transition-colors",
                       themeClass(
                         "border-2 border-black rounded-[5px] p-1 font-bold focus:outline-none focus:ring-2 focus:ring-[#22c55e]",
-                        "border border-gray-300 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-green-500"
+                        "border border-gray-300 dark:border-slate-700 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-green-500"
                       )
                     )}
                     placeholder="0"
                   />
-                  <span className={themeClass("font-bold text-black/60", "text-gray-300")} aria-hidden="true">:</span>
+                  <span className={themeClass("font-bold text-black/60 dark:text-slate-400", "text-gray-300 dark:text-slate-600")} aria-hidden="true">:</span>
                   <label htmlFor={`${tbId}-opp`} className="sr-only">상대 타이브레이크</label>
                   <input
                     id={`${tbId}-opp`}
@@ -196,7 +196,7 @@ export default function ScoreInput({ score, onChange }: ScoreInputProps) {
                       "w-12 text-center text-sm transition-colors",
                       themeClass(
                         "border-2 border-black rounded-[5px] p-1 font-bold focus:outline-none focus:ring-2 focus:ring-[#22c55e]",
-                        "border border-gray-300 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-green-500"
+                        "border border-gray-300 dark:border-slate-700 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-green-500"
                       )
                     )}
                     placeholder="0"
@@ -215,8 +215,8 @@ export default function ScoreInput({ score, onChange }: ScoreInputProps) {
           className={cn(
             "w-full py-3 flex items-center justify-center gap-2 transition-all",
             themeClass(
-              "bg-[#fffbeb] border-2 border-black rounded-[5px] font-bold hover:bg-[#fef3c7] active:translate-y-[2px]",
-              "bg-gray-50 border border-dashed border-gray-300 rounded-lg text-gray-600 hover:bg-gray-100 hover:border-gray-400"
+              "bg-[#fffbeb] dark:bg-yellow-950/40 dark:text-slate-100 border-2 border-black rounded-[5px] font-bold hover:bg-[#fef3c7] dark:hover:bg-yellow-900/40 active:translate-y-[2px]",
+              "bg-gray-50 dark:bg-slate-800 border border-dashed border-gray-300 dark:border-slate-700 rounded-lg text-gray-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 hover:border-gray-400 dark:hover:border-slate-500"
             )
           )}
         >

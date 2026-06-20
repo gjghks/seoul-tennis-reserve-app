@@ -75,7 +75,7 @@ export default function BottomNav() {
         aria-label="하단 탐색"
         className={`fixed bottom-0 left-0 right-0 z-50 sm:hidden ${themeClass(
           'bg-[var(--nb-accent-bg)] border-t-[3px] border-black',
-          'bg-white border-t border-gray-200'
+          'bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-slate-700'
         )}`}
         style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
       >
@@ -91,7 +91,7 @@ export default function BottomNav() {
                 className={`flex flex-col items-center justify-center flex-1 h-full gap-0.5 transition-colors ${
                   active
                     ? themeClass('text-black font-bold', 'text-green-600 font-medium')
-                    : themeClass('text-black/60', 'text-gray-400')
+                    : themeClass('text-black/60', 'text-gray-400 dark:text-slate-500')
                 }`}
               >
                 {item.icon}
@@ -105,7 +105,7 @@ export default function BottomNav() {
             className={`flex flex-col items-center justify-center flex-1 h-full gap-0.5 transition-colors ${
               isMoreActive || isMoreOpen
                 ? themeClass('text-black font-bold', 'text-green-600 font-medium')
-                : themeClass('text-black/60', 'text-gray-400')
+                : themeClass('text-black/60', 'text-gray-400 dark:text-slate-500')
             }`}
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5" aria-hidden="true">

@@ -55,7 +55,7 @@ export default function Header() {
   }, [pathname]);
 
   return (
-    <header className={`shrink-0 sticky top-0 z-50 ${themeClass('bg-[var(--nb-accent-bg)] border-b-[3px] border-black', 'bg-white border-b border-gray-100')}`}>
+    <header className={`shrink-0 sticky top-0 z-50 ${themeClass('bg-[var(--nb-accent-bg)] border-b-[3px] border-black', 'bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-slate-800')}`}>
       <div className="container">
         <div className="flex items-center justify-between h-14">
           <Link href="/" className="flex items-center gap-2">
@@ -66,7 +66,7 @@ export default function Header() {
                 <path d="M12 22C12 12 12 12 2 12" stroke="currentColor" strokeWidth="2" fill="none"/>
               </svg>
             </div>
-            <span className={`font-semibold ${themeClass('text-black font-bold', 'text-gray-900')}`}>
+            <span className={`font-semibold ${themeClass('text-black font-bold', 'text-gray-900 dark:text-slate-100')}`}>
               서울 테니스
             </span>
           </Link>
@@ -77,7 +77,7 @@ export default function Header() {
                 key={href}
                 href={href}
                 aria-current={pathname.startsWith(href) ? 'page' : undefined}
-                className={`hidden sm:block px-3 py-1.5 text-sm transition-colors ${themeClass('text-black font-bold hover:underline underline-offset-4', 'text-gray-600 hover:text-green-600')}`}
+                className={`hidden sm:block px-3 py-1.5 text-sm transition-colors ${themeClass('text-black font-bold hover:underline underline-offset-4', 'text-gray-600 dark:text-slate-400 hover:text-green-600')}`}
               >
                 {label}
               </Link>
@@ -89,7 +89,7 @@ export default function Header() {
                 onClick={() => setIsDropdownOpen(prev => !prev)}
                 className={cn(
                   'flex items-center gap-1 px-3 py-1.5 text-sm transition-colors',
-                  themeClass('text-black font-bold hover:underline underline-offset-4', 'text-gray-600 hover:text-green-600'),
+                  themeClass('text-black font-bold hover:underline underline-offset-4', 'text-gray-600 dark:text-slate-400 hover:text-green-600'),
                   isSecondaryActive && themeClass('underline', 'text-green-600')
                 )}
               >
@@ -103,8 +103,8 @@ export default function Header() {
                 <div className={cn(
                   'absolute right-0 top-full mt-2 w-44 py-1 z-50',
                   themeClass(
-                    'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
-                    'bg-white border border-gray-200 rounded-xl shadow-lg'
+                    'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]',
+                    'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl shadow-lg'
                   )
                 )}>
                   {SECONDARY_NAV.map(({ href, label }) => {
@@ -116,8 +116,8 @@ export default function Header() {
                         className={cn(
                           'block px-4 py-2.5 text-sm transition-colors',
                           themeClass(
-                            `font-bold ${active ? 'bg-[#facc15]/30' : 'hover:bg-gray-100'}`,
-                            `${active ? 'text-green-600 bg-green-50' : 'text-gray-700 hover:bg-gray-50'}`
+                            `font-bold ${active ? 'bg-[#facc15]/30' : 'hover:bg-gray-100 dark:hover:bg-slate-700'}`,
+                            `${active ? 'text-green-600 bg-green-50 dark:bg-green-950/40' : 'text-gray-700 dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-800'}`
                           )
                         )}
                       >

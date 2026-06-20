@@ -99,6 +99,8 @@ describe('APPEARANCE_INIT_SCRIPT — drift guard (real inline script execution)'
     localStorage.clear();
     document.documentElement.removeAttribute('data-season');
     document.documentElement.removeAttribute('data-theme');
+    document.documentElement.removeAttribute('data-mode');
+    document.documentElement.classList.remove('dark');
   });
 
   afterEach(() => {
@@ -152,5 +154,29 @@ describe('APPEARANCE_INIT_SCRIPT — drift guard (real inline script execution)'
     localStorage.setItem('tennis-season', 'stale');
     runScript();
     expect(localStorage.getItem('tennis-season')).toBeNull();
+  });
+
+  it('mode=dark adds the dark class and sets data-mode', () => {
+    vi.setSystemTime(d(6, 20));
+    localStorage.setItem('tennis-mode', 'dark');
+    runScript();
+    expect(document.documentElement.classList.contains('dark')).toBe(true);
+    expect(document.documentElement.getAttribute('data-mode')).toBe('dark');
+  });
+
+  it('mode=light removes the dark class', () => {
+    vi.setSystemTime(d(6, 20));
+    document.documentElement.classList.add('dark');
+    localStorage.setItem('tennis-mode', 'light');
+    runScript();
+    expect(document.documentElement.classList.contains('dark')).toBe(false);
+    expect(document.documentElement.getAttribute('data-mode')).toBe('light');
+  });
+
+  it('absent/invalid mode defaults to system', () => {
+    vi.setSystemTime(d(6, 20));
+    localStorage.setItem('tennis-mode', 'garbage');
+    runScript();
+    expect(document.documentElement.getAttribute('data-mode')).toBe('system');
   });
 });

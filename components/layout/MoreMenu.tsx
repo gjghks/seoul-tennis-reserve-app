@@ -4,9 +4,8 @@ import { useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
-import { useTheme } from '@/contexts/ThemeContext';
-import { useSeason } from '@/contexts/SeasonalContext';
 import { useThemeClass } from '@/lib/cn';
+import AppearanceControls from '@/components/layout/AppearanceControls';
 
 const NAV_ITEMS = [
   {
@@ -118,16 +117,6 @@ export default function MoreMenu({ isOpen, onClose }: MoreMenuProps) {
   const pathname = usePathname();
   const themeClass = useThemeClass();
   const { user } = useAuth();
-  const { toggleTheme, isNeoBrutalism } = useTheme();
-  const { season, toggleSeason } = useSeason();
-  // Blind-cycle toggle: label shows the NEXT season in SEASON_ORDER.
-  const seasonLabel =
-    season === 'default' ? '🌸 벚꽃 시즌'
-    : season === 'cherry-blossom' ? '🎾 테니스 봄'
-    : season === 'tennis-spring' ? '🌊 한여름 코트'
-    : season === 'tennis-summer' ? '🍂 테니스 가을'
-    : season === 'tennis-autumn' ? '❄️ 테니스 겨울'
-    : '✨ 기본 테마';
 
   useEffect(() => {
     if (!isOpen) return;
@@ -166,8 +155,8 @@ export default function MoreMenu({ isOpen, onClose }: MoreMenuProps) {
         className={`fixed left-0 right-0 z-40 transition-transform duration-300 ease-out ${
           isOpen ? 'translate-y-0' : 'translate-y-full'
         } ${themeClass(
-          'bg-white border-t-[3px] border-x-[3px] border-black rounded-t-[16px]',
-          'bg-white border-t border-gray-200 rounded-t-2xl shadow-[0_-4px_24px_rgba(0,0,0,0.08)]'
+          'bg-white dark:bg-slate-900 border-t-[3px] border-x-[3px] border-black dark:border-[#f1f3f8] rounded-t-[16px]',
+          'bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-slate-700 rounded-t-2xl shadow-[0_-4px_24px_rgba(0,0,0,0.08)]'
         )}`}
         style={{ bottom: 'calc(3.5rem + env(safe-area-inset-bottom))' }}
         role="dialog"
@@ -175,7 +164,7 @@ export default function MoreMenu({ isOpen, onClose }: MoreMenuProps) {
         aria-label="더보기 메뉴"
       >
         <div className="flex justify-center pt-3 pb-1">
-          <div className={`w-10 h-1 rounded-full ${themeClass('bg-black/20', 'bg-gray-300')}`} />
+          <div className={`w-10 h-1 rounded-full ${themeClass('bg-black/20 dark:bg-slate-600', 'bg-gray-300 dark:bg-slate-600')}`} />
         </div>
 
         <div className="px-4 pb-4 max-h-[60vh] overflow-y-auto">
@@ -183,8 +172,8 @@ export default function MoreMenu({ isOpen, onClose }: MoreMenuProps) {
             href={user ? myPageItem.href : loginUrl}
             onClick={onClose}
             className={`flex items-center gap-3 p-3 mb-3 transition-colors ${themeClass(
-              'bg-[var(--nb-accent-bg-muted)] hover:bg-[var(--nb-accent-bg-hover)] border-2 border-black rounded-[10px]',
-              'bg-gray-50 rounded-xl hover:bg-gray-100'
+              'bg-[var(--nb-accent-bg-muted)] hover:bg-[var(--nb-accent-bg-hover)] border-2 border-black dark:border-[#f1f3f8] rounded-[10px]',
+              'bg-gray-50 dark:bg-slate-800 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700'
             )}`}
           >
             <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${themeClass(
@@ -194,14 +183,14 @@ export default function MoreMenu({ isOpen, onClose }: MoreMenuProps) {
               {myPageItem.icon}
             </div>
             <div className="min-w-0 flex-1">
-              <p className={`text-sm font-semibold truncate ${themeClass('text-black', 'text-gray-900')}`}>
+              <p className={`text-sm font-semibold truncate ${themeClass('text-black', 'text-gray-900 dark:text-slate-100')}`}>
                 {user ? '마이페이지' : '로그인'}
               </p>
-              <p className={`text-xs truncate ${themeClass('text-black/60', 'text-gray-500')}`}>
+              <p className={`text-xs truncate ${themeClass('text-black/60', 'text-gray-500 dark:text-slate-400')}`}>
                 {user ? myPageItem.description : '로그인하고 더 많은 기능을 이용하세요'}
               </p>
             </div>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className={`w-4 h-4 shrink-0 ${themeClass('text-black/30', 'text-gray-400')}`} aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className={`w-4 h-4 shrink-0 ${themeClass('text-black/30', 'text-gray-400 dark:text-slate-500')}`} aria-hidden="true">
               <polyline points="9 18 15 12 9 6" />
             </svg>
           </Link>
@@ -215,21 +204,21 @@ export default function MoreMenu({ isOpen, onClose }: MoreMenuProps) {
                   href={item.href}
                   onClick={onClose}
                   className={`flex items-center gap-3 p-3 transition-colors ${themeClass(
-                    `rounded-[10px] ${active ? 'bg-[var(--nb-accent-bg-active)] font-bold' : 'hover:bg-gray-100'}`,
-                    `rounded-xl ${active ? 'bg-[var(--minimal-active-bg)] text-[var(--minimal-active-text)]' : 'hover:bg-gray-50'}`
+                    `rounded-[10px] ${active ? 'bg-[var(--nb-accent-bg-active)] font-bold' : 'hover:bg-gray-100 dark:hover:bg-slate-800'}`,
+                    `rounded-xl ${active ? 'bg-[var(--minimal-active-bg)] text-[var(--minimal-active-text)]' : 'hover:bg-gray-50 dark:hover:bg-slate-800'}`
                   )}`}
                 >
                   <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${themeClass(
-                    'bg-black/10',
-                    active ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-500'
+                    'bg-black/10 dark:bg-white/10',
+                    active ? 'bg-green-100 dark:bg-green-950/40 text-green-600' : 'bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-slate-400'
                   )}`}>
                     {item.icon}
                   </div>
                   <div className="min-w-0">
-                    <p className={`text-sm font-medium ${themeClass('text-black', 'text-gray-900')}`}>
+                    <p className={`text-sm font-medium ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
                       {item.label}
                     </p>
-                    <p className={`text-xs ${themeClass('text-black/60', 'text-gray-500')}`}>
+                    <p className={`text-xs ${themeClass('text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400')}`}>
                       {item.description}
                     </p>
                   </div>
@@ -238,14 +227,14 @@ export default function MoreMenu({ isOpen, onClose }: MoreMenuProps) {
             })}
           </div>
 
-          <div className={`border-t pt-3 ${themeClass('border-black/15', 'border-gray-100')}`}>
+          <div className={`border-t pt-3 ${themeClass('border-black/15 dark:border-slate-700', 'border-gray-100 dark:border-slate-800')}`}>
             <div className="flex items-center gap-2">
               <Link
                 href="/about"
                 onClick={onClose}
                 className={`flex-1 text-center px-3 min-h-[44px] inline-flex items-center justify-center text-xs transition-colors ${themeClass(
-                  'text-black/60 hover:bg-gray-100 font-medium rounded-[8px]',
-                  'text-gray-500 hover:bg-gray-50 rounded-lg'
+                  'text-black/60 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800 font-medium rounded-[8px]',
+                  'text-gray-500 dark:text-slate-400 hover:bg-gray-50 dark:hover:bg-slate-800 rounded-lg'
                 )}`}
               >
                 서비스 소개
@@ -254,32 +243,16 @@ export default function MoreMenu({ isOpen, onClose }: MoreMenuProps) {
                 href="/guide"
                 onClick={onClose}
                 className={`flex-1 text-center px-3 min-h-[44px] inline-flex items-center justify-center text-xs transition-colors ${themeClass(
-                  'text-black/60 hover:bg-gray-100 font-medium rounded-[8px]',
-                  'text-gray-500 hover:bg-gray-50 rounded-lg'
+                  'text-black/60 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800 font-medium rounded-[8px]',
+                  'text-gray-500 dark:text-slate-400 hover:bg-gray-50 dark:hover:bg-slate-800 rounded-lg'
                 )}`}
               >
                 이용 가이드
               </Link>
-              <button
-                type="button"
-                onClick={() => { toggleTheme(); onClose(); }}
-                className={`flex-1 text-center px-3 min-h-[44px] inline-flex items-center justify-center text-xs transition-colors ${themeClass(
-                  'text-black/60 hover:bg-gray-100 font-medium rounded-[8px]',
-                  'text-gray-500 hover:bg-gray-50 rounded-lg'
-                )}`}
-              >
-                {isNeoBrutalism ? '🎨 Minimal' : '🎨 Neo-Brutal'}
-              </button>
-              <button
-                type="button"
-                onClick={() => { toggleSeason(); onClose(); }}
-                className={`flex-1 text-center px-3 min-h-[44px] inline-flex items-center justify-center text-xs transition-colors ${themeClass(
-                  'text-black/60 hover:bg-gray-100 font-medium rounded-[8px]',
-                  'text-gray-500 hover:bg-gray-50 rounded-lg'
-                )}`}
-              >
-                {seasonLabel}
-              </button>
+            </div>
+            <div className="mt-3">
+              <p className={`text-xs font-semibold mb-2 px-0.5 ${themeClass('text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400')}`}>외관 설정</p>
+              <AppearanceControls />
             </div>
           </div>
         </div>

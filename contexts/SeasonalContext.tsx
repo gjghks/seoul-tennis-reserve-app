@@ -7,37 +7,43 @@ import {
   MANUAL_SEASON_KEY,
   LEGACY_SEASON_KEY,
   resolveSeason,
+  detectSeasonByDate,
+  isValidSeason,
 } from '@/lib/utils/season';
 
 export type { Season };
 
 interface SeasonalContextType {
   season: Season;
+  isAutoSeason: boolean; // true when no manual override (auto-detected by date)
   isCherryBlossom: boolean;
   isTennisSpring: boolean;
   isTennisSummer: boolean;
   isTennisAutumn: boolean;
   isTennisWinter: boolean;
   isTennisSeason: boolean;
-  toggleSeason: () => void;
+  toggleSeason: () => void;            // legacy blind cycle (kept for back-compat)
+  setSeasonOverride: (season: Season) => void; // explicit pick
+  setSeasonAuto: () => void;           // clear override → auto-detect by date
 }
 
 const SeasonalContext = createContext<SeasonalContextType | undefined>(undefined);
 
 export function SeasonalProvider({ children }: { children: ReactNode }) {
   const [season, setSeason] = useState<Season>('default');
-  // The inline <head> script (lib/utils/appearanceInitScript) already set the
-  // correct data-season attribute before paint. Skip the first sync so this
-  // provider doesn't briefly stomp it back to 'default' before the resolve runs.
+  const [isAutoSeason, setIsAutoSeason] = useState(true);
+  // The inline <head> script already set the correct data-season attribute before
+  // paint. Skip the first sync so this provider doesn't briefly stomp it.
   const syncedRef = useRef(false);
 
   useEffect(() => {
     localStorage.removeItem(LEGACY_SEASON_KEY);
-    const resolved = resolveSeason(localStorage.getItem(MANUAL_SEASON_KEY), new Date());
-    // Defer to next frame: the palette is already correct via the inline-script
-    // attribute + syncedRef guard, so this only settles the React-state-driven
-    // overlay/banner components (and avoids a synchronous-setState-in-effect).
-    requestAnimationFrame(() => setSeason(resolved));
+    const manual = localStorage.getItem(MANUAL_SEASON_KEY);
+    const resolved = resolveSeason(manual, new Date());
+    requestAnimationFrame(() => {
+      setIsAutoSeason(!isValidSeason(manual));
+      setSeason(resolved);
+    });
   }, []);
 
   useEffect(() => {
@@ -55,6 +61,19 @@ export function SeasonalProvider({ children }: { children: ReactNode }) {
       localStorage.setItem(MANUAL_SEASON_KEY, next);
       return next;
     });
+    setIsAutoSeason(false);
+  }, []);
+
+  const setSeasonOverride = useCallback((next: Season) => {
+    localStorage.setItem(MANUAL_SEASON_KEY, next);
+    setIsAutoSeason(false);
+    setSeason(next);
+  }, []);
+
+  const setSeasonAuto = useCallback(() => {
+    localStorage.removeItem(MANUAL_SEASON_KEY);
+    setIsAutoSeason(true);
+    setSeason(detectSeasonByDate(new Date()));
   }, []);
 
   const isCherryBlossom = season === 'cherry-blossom';
@@ -69,6 +88,7 @@ export function SeasonalProvider({ children }: { children: ReactNode }) {
   const value = useMemo(
     () => ({
       season,
+      isAutoSeason,
       isCherryBlossom,
       isTennisSpring,
       isTennisSummer,
@@ -76,8 +96,10 @@ export function SeasonalProvider({ children }: { children: ReactNode }) {
       isTennisWinter,
       isTennisSeason,
       toggleSeason,
+      setSeasonOverride,
+      setSeasonAuto,
     }),
-    [season, isCherryBlossom, isTennisSpring, isTennisSummer, isTennisAutumn, isTennisWinter, isTennisSeason, toggleSeason]
+    [season, isAutoSeason, isCherryBlossom, isTennisSpring, isTennisSummer, isTennisAutumn, isTennisWinter, isTennisSeason, toggleSeason, setSeasonOverride, setSeasonAuto]
   );
 
   return (

@@ -60,11 +60,11 @@ export default function UpdatePrompt() {
     >
       <div className={`max-w-lg mx-auto ${themeClass(
         'bg-[#d1fae5] border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000] p-3',
-        'bg-green-50 rounded-xl p-3 border border-green-200 shadow-lg'
+        'bg-green-50 dark:bg-green-950/40 rounded-xl p-3 border border-green-200 dark:border-green-900/40 shadow-lg'
       )}`}>
         <div className="flex items-center gap-3">
           <span className="text-xl shrink-0" aria-hidden="true">🎾</span>
-          <p className={`flex-1 min-w-0 text-sm ${themeClass('text-black font-bold', 'text-gray-800')}`}>
+          <p className={`flex-1 min-w-0 text-sm ${themeClass('text-black font-bold', 'text-gray-800 dark:text-slate-200')}`}>
             새 버전이 적용되었어요!
           </p>
           <div className="flex items-center gap-2 shrink-0">
@@ -84,7 +84,7 @@ export default function UpdatePrompt() {
               aria-label="닫기"
               className={`p-1 ${themeClass(
                 'text-black/40 hover:text-black/70',
-                'text-gray-400 hover:text-gray-600'
+                'text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:hover:text-slate-300'
               )} transition-colors`}
             >
               <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4" aria-hidden="true">

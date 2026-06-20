@@ -49,9 +49,9 @@ function getNeoClasses(variant: string, size: string): string {
     primary:
       'bg-[#a3e635] text-black shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none',
     secondary:
-      'bg-white text-black shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none',
+      'bg-white dark:bg-slate-900 text-black dark:text-slate-100 shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none',
     ghost:
-      'bg-transparent text-black border-transparent shadow-none hover:bg-black/5',
+      'bg-transparent text-black dark:text-slate-100 border-transparent shadow-none hover:bg-black/5',
     danger:
       'bg-[#ff6b6b] text-black shadow-[3px_3px_0px_0px_#000] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none',
   };
@@ -72,8 +72,8 @@ function getMinimalClasses(variant: string, size: string): string {
   const variants: Record<string, string> = {
     primary: 'bg-green-600 text-white hover:bg-green-700',
     secondary:
-      'bg-white text-gray-700 border border-gray-200 hover:border-green-300 hover:text-green-700',
-    ghost: 'bg-transparent text-gray-700 hover:bg-gray-100',
+      'bg-white dark:bg-slate-900 text-gray-700 dark:text-slate-200 border border-gray-200 dark:border-slate-700 hover:border-green-300 hover:text-green-700',
+    ghost: 'bg-transparent text-gray-700 dark:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-700',
     danger: 'bg-red-500 text-white hover:bg-red-600',
   };
 

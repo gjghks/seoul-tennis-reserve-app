@@ -164,7 +164,7 @@ export default function TransferDetail({ id }: TransferDetailProps) {
           onClick={() => router.back()}
           className={cn(
             'mb-6 flex items-center text-sm font-bold transition-colors',
-            themeClass('text-black hover:opacity-70', 'text-gray-600 hover:text-gray-900')
+            themeClass('text-black dark:text-slate-100 hover:opacity-70', 'text-gray-600 dark:text-slate-300 hover:text-gray-900 dark:hover:text-slate-100')
           )}
         >
           <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -178,8 +178,8 @@ export default function TransferDetail({ id }: TransferDetailProps) {
           className={cn(
             'overflow-hidden transition-all',
             themeClass(
-              'bg-white border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000]',
-              'bg-white border border-gray-200 rounded-xl shadow-md'
+              'bg-white dark:bg-slate-800 border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000]',
+              'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl shadow-md'
             )
           )}
         >
@@ -190,26 +190,26 @@ export default function TransferDetail({ id }: TransferDetailProps) {
                   'px-3 py-1 text-sm font-bold rounded-full',
                   isAvailable
                     ? themeClass(
-                        'bg-green-100 text-green-800 border-2 border-green-800 shadow-[2px_2px_0px_0px_rgba(22,101,52,1)]',
-                        'bg-green-100 text-green-800'
+                        'bg-green-100 dark:bg-green-950/40 text-green-800 dark:text-green-300 border-2 border-green-800 dark:border-green-700 shadow-[2px_2px_0px_0px_rgba(22,101,52,1)]',
+                        'bg-green-100 dark:bg-green-950/40 text-green-800 dark:text-green-300'
                       )
                     : transfer.status === 'expired'
                       ? themeClass(
-                          'bg-orange-100 text-orange-800 border-2 border-orange-800 shadow-[2px_2px_0px_0px_rgba(154,52,18,1)]',
-                          'bg-orange-100 text-orange-700'
+                          'bg-orange-100 dark:bg-orange-950/40 text-orange-800 dark:text-orange-300 border-2 border-orange-800 dark:border-orange-700 shadow-[2px_2px_0px_0px_rgba(154,52,18,1)]',
+                          'bg-orange-100 dark:bg-orange-950/40 text-orange-700 dark:text-orange-300'
                         )
                       : themeClass(
-                          'bg-gray-200 text-gray-700 border-2 border-gray-700 shadow-[2px_2px_0px_0px_rgba(55,65,81,1)]',
-                          'bg-gray-100 text-gray-600'
+                          'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300 border-2 border-gray-700 dark:border-slate-500 shadow-[2px_2px_0px_0px_rgba(55,65,81,1)]',
+                          'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-slate-300'
                         )
                 )}
               >
                 {TRANSFER_STATUS_LABELS[transfer.status]}
               </span>
-              <span className="text-sm font-medium text-gray-500">{transfer.district}</span>
+              <span className="text-sm font-medium text-gray-500 dark:text-slate-400">{transfer.district}</span>
             </div>
 
-            <h1 className={cn('text-2xl font-black mb-6', themeClass('text-black', 'text-gray-900'))}>
+            <h1 className={cn('text-2xl font-black mb-6', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>
               {transfer.title}
             </h1>
 
@@ -223,10 +223,10 @@ export default function TransferDetail({ id }: TransferDetailProps) {
                 {transfer.seller_name?.[0] || '익'}
               </div>
               <div>
-                <div className={cn('font-bold', themeClass('text-black', 'text-gray-900'))}>
+                <div className={cn('font-bold', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>
                   {transfer.seller_name}
                 </div>
-                <div className="text-xs text-gray-500">
+                <div className="text-xs text-gray-500 dark:text-slate-400">
                   {new Date(transfer.created_at).toLocaleDateString()}
                 </div>
               </div>
@@ -235,14 +235,14 @@ export default function TransferDetail({ id }: TransferDetailProps) {
             <div
               className={cn(
                 'grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 p-4 rounded-lg',
-                themeClass('bg-yellow-50 border-2 border-black', 'bg-gray-50 border border-gray-100')
+                themeClass('bg-yellow-50 dark:bg-yellow-950/30 border-2 border-black', 'bg-gray-50 dark:bg-slate-900 border border-gray-100 dark:border-slate-700')
               )}
             >
               <div className="flex items-start gap-3">
                 <span className="text-xl">🏟️</span>
                 <div>
-                  <div className="text-xs font-bold text-gray-500 mb-0.5">코트</div>
-                  <div className={cn('font-bold', themeClass('text-black', 'text-gray-900'))}>
+                  <div className="text-xs font-bold text-gray-500 dark:text-slate-400 mb-0.5">코트</div>
+                  <div className={cn('font-bold', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>
                     {transfer.court_name}
                   </div>
                 </div>
@@ -250,8 +250,8 @@ export default function TransferDetail({ id }: TransferDetailProps) {
               <div className="flex items-start gap-3">
                 <span className="text-xl">📅</span>
                 <div>
-                  <div className="text-xs font-bold text-gray-500 mb-0.5">일시</div>
-                  <div className={cn('font-bold', themeClass('text-black', 'text-gray-900'))}>
+                  <div className="text-xs font-bold text-gray-500 dark:text-slate-400 mb-0.5">일시</div>
+                  <div className={cn('font-bold', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>
                     {formatDate(transfer.play_date)} {transfer.play_time_start}
                     {transfer.play_time_end ? `~${transfer.play_time_end}` : ''}
                   </div>
@@ -260,8 +260,8 @@ export default function TransferDetail({ id }: TransferDetailProps) {
             </div>
 
             <div className="mb-8">
-              <h3 className="text-sm font-bold text-gray-500 mb-3">상세 내용</h3>
-              <p className={cn('whitespace-pre-wrap leading-relaxed', themeClass('text-black', 'text-gray-700'))}>
+              <h3 className="text-sm font-bold text-gray-500 dark:text-slate-400 mb-3">상세 내용</h3>
+              <p className={cn('whitespace-pre-wrap leading-relaxed', themeClass('text-black dark:text-slate-200', 'text-gray-700 dark:text-slate-300'))}>
                 {transfer.description || '상세 내용이 없습니다.'}
               </p>
             </div>
@@ -269,16 +269,16 @@ export default function TransferDetail({ id }: TransferDetailProps) {
             {transfer.contact_info && transfer.contact_type && (
               <div className={cn(
                 'mb-8 p-5 rounded-lg border-2 border-dashed',
-                themeClass('border-black bg-blue-50', 'border-blue-300 bg-blue-50')
+                themeClass('border-black bg-blue-50 dark:bg-blue-950/40', 'border-blue-300 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/40')
               )}>
-                <h3 className={cn('font-bold mb-2 flex items-center gap-2', themeClass('text-black', 'text-gray-900'))}>
+                <h3 className={cn('font-bold mb-2 flex items-center gap-2', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>
                   <span className="text-xl">🔓</span> 판매자 연락처
                 </h3>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-bold text-blue-600 bg-blue-100 px-2 py-1 rounded">
+                  <span className="text-sm font-bold text-blue-600 dark:text-blue-300 bg-blue-100 dark:bg-blue-900/50 px-2 py-1 rounded">
                     {CONTACT_TYPE_LABELS[transfer.contact_type]}
                   </span>
-                  <span className={cn('font-bold', themeClass('text-black', 'text-gray-900'))}>
+                  <span className={cn('font-bold', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>
                     {transfer.contact_info}
                   </span>
                 </div>
@@ -286,10 +286,10 @@ export default function TransferDetail({ id }: TransferDetailProps) {
             )}
             
             {!isSeller && (
-              <div className={cn('mt-8 pt-8 border-t', themeClass('border-black', 'border-gray-200'))}>
+              <div className={cn('mt-8 pt-8 border-t', themeClass('border-black dark:border-slate-700', 'border-gray-200 dark:border-slate-700'))}>
                 {!user ? (
-                  <div className="text-center p-6 bg-gray-50 rounded-lg border border-gray-200">
-                    <p className="mb-4 text-gray-600">이 코트에 관심이 있으신가요?</p>
+                  <div className="text-center p-6 bg-gray-50 dark:bg-slate-900 rounded-lg border border-gray-200 dark:border-slate-700">
+                    <p className="mb-4 text-gray-600 dark:text-slate-300">이 코트에 관심이 있으신가요?</p>
                     <Link 
                       href={`/login?redirect=/transfers/${id}`}
                       className={cn(
@@ -304,7 +304,7 @@ export default function TransferDetail({ id }: TransferDetailProps) {
                   isAvailable ? (
                     <div className="space-y-4">
                       <div>
-                        <label htmlFor="message" className="block text-sm font-bold text-gray-700 mb-2">
+                        <label htmlFor="message" className="block text-sm font-bold text-gray-700 dark:text-slate-200 mb-2">
                           판매자에게 남길 메시지 (선택)
                         </label>
                         <textarea
@@ -314,15 +314,15 @@ export default function TransferDetail({ id }: TransferDetailProps) {
                           className={cn(
                             'w-full p-3 rounded-lg resize-none',
                             themeClass(
-                              'border-[2px] border-black focus:ring-0 focus:outline-none',
-                              'border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                              'border-[2px] border-black dark:border-slate-600 bg-white dark:bg-slate-900 dark:text-slate-100 focus:ring-0 focus:outline-none',
+                              'border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
                             )
                           )}
                           placeholder="예: 꼭 양도받고 싶습니다!"
                           value={message}
                           onChange={(e) => setMessage(e.target.value)}
                         />
-                        <div className="text-right text-xs text-gray-500 mt-1">
+                        <div className="text-right text-xs text-gray-500 dark:text-slate-400 mt-1">
                           {message.length} / 200
                         </div>
                       </div>
@@ -342,30 +342,30 @@ export default function TransferDetail({ id }: TransferDetailProps) {
                       </button>
                     </div>
                   ) : (
-                    <div className="text-center p-4 bg-gray-100 text-gray-500 rounded-lg font-bold">
+                    <div className="text-center p-4 bg-gray-100 dark:bg-slate-700 text-gray-500 dark:text-slate-400 rounded-lg font-bold">
                       {transfer.status === 'expired' ? '기간이 만료된 글입니다.' : '거래가 완료된 글입니다.'}
                     </div>
                   )
                 ) : (
                   <div className={cn(
                     'p-4 rounded-lg flex items-center justify-between',
-                    myInterest.status === 'pending' && themeClass('bg-gray-100 border-2 border-black', 'bg-gray-50 border border-gray-200'),
-                    myInterest.status === 'accepted' && themeClass('bg-green-100 border-2 border-green-800', 'bg-green-50 border border-green-200'),
-                    myInterest.status === 'rejected' && themeClass('bg-red-100 border-2 border-red-800', 'bg-red-50 border border-red-200')
+                    myInterest.status === 'pending' && themeClass('bg-gray-100 dark:bg-slate-700 border-2 border-black', 'bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700'),
+                    myInterest.status === 'accepted' && themeClass('bg-green-100 dark:bg-green-950/40 border-2 border-green-800 dark:border-green-700', 'bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-900'),
+                    myInterest.status === 'rejected' && themeClass('bg-red-100 dark:bg-red-950/40 border-2 border-red-800 dark:border-red-700', 'bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900')
                   )}>
                     <div>
                       <div className="font-bold flex items-center gap-2 mb-1">
                         내 관심 표시 
                         <span className={cn(
                           'text-xs px-2 py-0.5 rounded-full',
-                          myInterest.status === 'pending' && 'bg-gray-200 text-gray-700',
-                          myInterest.status === 'accepted' && 'bg-green-200 text-green-800',
-                          myInterest.status === 'rejected' && 'bg-red-200 text-red-800'
+                          myInterest.status === 'pending' && 'bg-gray-200 dark:bg-slate-600 text-gray-700 dark:text-slate-200',
+                          myInterest.status === 'accepted' && 'bg-green-200 dark:bg-green-900/60 text-green-800 dark:text-green-200',
+                          myInterest.status === 'rejected' && 'bg-red-200 dark:bg-red-900/60 text-red-800 dark:text-red-200'
                         )}>
                           {INTEREST_STATUS_LABELS[myInterest.status]}
                         </span>
                       </div>
-                      <p className="text-sm text-gray-600">{myInterest.message || '메시지 없음'}</p>
+                      <p className="text-sm text-gray-600 dark:text-slate-300">{myInterest.message || '메시지 없음'}</p>
                     </div>
                     
                     {myInterest.status !== 'accepted' && (
@@ -375,7 +375,7 @@ export default function TransferDetail({ id }: TransferDetailProps) {
                         disabled={isSubmitting}
                         className={cn(
                           'px-3 py-1.5 text-sm font-bold rounded',
-                          themeClass('border-2 border-black hover:bg-gray-200', 'border border-gray-300 text-gray-600 hover:bg-gray-100')
+                          themeClass('border-2 border-black dark:border-slate-500 dark:text-slate-100 hover:bg-gray-200 dark:hover:bg-slate-600', 'border border-gray-300 dark:border-slate-600 text-gray-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700')
                         )}
                       >
                         철회
@@ -387,19 +387,19 @@ export default function TransferDetail({ id }: TransferDetailProps) {
             )}
             
             {isSeller && (
-              <div className={cn('mt-8 pt-8 border-t', themeClass('border-black', 'border-gray-200'))}>
-                <h3 className={cn('font-bold mb-4 flex items-center gap-2', themeClass('text-black', 'text-gray-900'))}>
+              <div className={cn('mt-8 pt-8 border-t', themeClass('border-black dark:border-slate-700', 'border-gray-200 dark:border-slate-700'))}>
+                <h3 className={cn('font-bold mb-4 flex items-center gap-2', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>
                   관심 표시한 유저
                   <span className={cn(
                     'px-2 py-0.5 text-xs rounded-full',
-                    themeClass('bg-black text-white', 'bg-blue-100 text-blue-800')
+                    themeClass('bg-black text-white', 'bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300')
                   )}>
                     {interests.length}명
                   </span>
                 </h3>
-                
+
                 {interests.length === 0 ? (
-                  <div className="text-center p-6 text-gray-500 bg-gray-50 rounded-lg">
+                  <div className="text-center p-6 text-gray-500 dark:text-slate-400 bg-gray-50 dark:bg-slate-900 rounded-lg">
                     아직 관심 표시한 유저가 없습니다.
                   </div>
                 ) : (
@@ -409,25 +409,25 @@ export default function TransferDetail({ id }: TransferDetailProps) {
                         key={interest.id}
                         className={cn(
                           'p-4 rounded-lg flex flex-col sm:flex-row sm:items-center justify-between gap-4',
-                          themeClass('border-2 border-black', 'border border-gray-200')
+                          themeClass('border-2 border-black dark:border-slate-600', 'border border-gray-200 dark:border-slate-700')
                         )}
                       >
                         <div>
                           <div className="flex items-center gap-2 mb-1">
-                            <span className="font-bold">{interest.buyer_name}</span>
-                            <span className="text-xs text-gray-500">
+                            <span className="font-bold dark:text-slate-100">{interest.buyer_name}</span>
+                            <span className="text-xs text-gray-500 dark:text-slate-400">
                               {new Date(interest.created_at).toLocaleString()}
                             </span>
                             {interest.status !== 'pending' && (
                               <span className={cn(
                                 'text-xs px-2 py-0.5 rounded-full font-bold',
-                                interest.status === 'accepted' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                                interest.status === 'accepted' ? 'bg-green-100 dark:bg-green-950/40 text-green-700 dark:text-green-300' : 'bg-red-100 dark:bg-red-950/40 text-red-700 dark:text-red-300'
                               )}>
                                 {INTEREST_STATUS_LABELS[interest.status]}
                               </span>
                             )}
                           </div>
-                          <p className="text-sm text-gray-700">{interest.message || '메시지 없음'}</p>
+                          <p className="text-sm text-gray-700 dark:text-slate-300">{interest.message || '메시지 없음'}</p>
                         </div>
                         
                         {interest.status === 'pending' && isAvailable && (
@@ -449,7 +449,7 @@ export default function TransferDetail({ id }: TransferDetailProps) {
                               disabled={isSubmitting}
                               className={cn(
                                 'px-4 py-1.5 text-sm font-bold rounded transition-colors',
-                                themeClass('bg-red-400 border-2 border-black hover:-translate-y-0.5 shadow-[2px_2px_0px_0px_#000]', 'bg-white border border-red-500 text-red-600 hover:bg-red-50')
+                                themeClass('bg-red-400 border-2 border-black hover:-translate-y-0.5 shadow-[2px_2px_0px_0px_#000]', 'bg-white dark:bg-slate-800 border border-red-500 dark:border-red-700 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40')
                               )}
                             >
                               거절
@@ -467,22 +467,22 @@ export default function TransferDetail({ id }: TransferDetailProps) {
           <div
             className={cn(
               'p-6 border-t flex flex-col md:flex-row items-center justify-between gap-4',
-              themeClass('border-black bg-gray-50', 'border-gray-200 bg-gray-50/50')
+              themeClass('border-black dark:border-slate-700 bg-gray-50 dark:bg-slate-900', 'border-gray-200 dark:border-slate-700 bg-gray-50/50 dark:bg-slate-900/50')
             )}
           >
             <div>
-              <div className="text-sm font-bold text-gray-500 mb-1">양도 금액</div>
+              <div className="text-sm font-bold text-gray-500 dark:text-slate-400 mb-1">양도 금액</div>
               {transfer.is_free ? (
                 <div className={cn('text-3xl font-black', themeClass('text-blue-600', 'text-blue-600'))}>
                   무료 나눔
                 </div>
               ) : (
                 <div className="flex items-end gap-2">
-                  <span className={cn('text-3xl font-black', themeClass('text-black', 'text-gray-900'))}>
+                  <span className={cn('text-3xl font-black', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>
                     {transfer.asking_price.toLocaleString()}원
                   </span>
                   {transfer.asking_price < transfer.original_price && (
-                    <span className="text-sm text-gray-400 line-through mb-1">
+                    <span className="text-sm text-gray-400 dark:text-slate-500 line-through mb-1">
                       원가 {transfer.original_price.toLocaleString()}원
                     </span>
                   )}

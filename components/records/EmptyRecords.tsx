@@ -28,40 +28,40 @@ export default function EmptyRecords({ showCreateButton = true }: EmptyRecordsPr
       
       <h3 className={themeClass(
         'text-xl font-black mb-2',
-        'text-lg font-semibold text-gray-900 mb-1'
+        'text-lg font-semibold text-gray-900 dark:text-slate-100 mb-1'
       )}>
         아직 기록이 없습니다
       </h3>
       
       <p className={themeClass(
-        'text-gray-600 font-bold mb-6',
-        'text-gray-500 text-sm mb-6'
+        'text-gray-600 dark:text-slate-400 font-bold mb-6',
+        'text-gray-500 dark:text-slate-400 text-sm mb-6'
       )}>
         첫 경기를 기록해보세요!
       </p>
 
       <div className={themeClass(
-        'w-full max-w-xs bg-white border-2 border-black p-4 mb-6 text-left shadow-[4px_4px_0px_0px_#000]',
-        'w-full max-w-xs bg-gray-50 rounded-lg p-4 mb-6 text-left'
+        'w-full max-w-xs bg-white dark:bg-slate-800 border-2 border-black p-4 mb-6 text-left shadow-[4px_4px_0px_0px_#000]',
+        'w-full max-w-xs bg-gray-50 dark:bg-slate-900 rounded-lg p-4 mb-6 text-left'
       )}>
         <ul className="space-y-2">
           <li className={themeClass(
             'flex items-start text-sm font-bold',
-            'flex items-start text-sm text-gray-700'
+            'flex items-start text-sm text-gray-700 dark:text-slate-200'
           )}>
             <span className="mr-2">📊</span>
             <span>승률, 세트별 스코어 등 통계 자동 분석</span>
           </li>
           <li className={themeClass(
             'flex items-start text-sm font-bold',
-            'flex items-start text-sm text-gray-700'
+            'flex items-start text-sm text-gray-700 dark:text-slate-200'
           )}>
             <span className="mr-2">🏟️</span>
             <span>코트별·파트너별 기록 관리</span>
           </li>
           <li className={themeClass(
             'flex items-start text-sm font-bold',
-            'flex items-start text-sm text-gray-700'
+            'flex items-start text-sm text-gray-700 dark:text-slate-200'
           )}>
             <span className="mr-2">📈</span>
             <span>구력에 따른 실력 변화 추적</span>
@@ -72,8 +72,8 @@ export default function EmptyRecords({ showCreateButton = true }: EmptyRecordsPr
       <Link 
         href="/guide/records"
         className={themeClass(
-          'text-sm font-bold underline decoration-2 underline-offset-4 mb-6 hover:text-gray-600',
-          'text-sm text-gray-500 hover:text-gray-900 mb-6 flex items-center gap-1'
+          'text-sm font-bold underline decoration-2 underline-offset-4 mb-6 hover:text-gray-600 dark:hover:text-slate-400',
+          'text-sm text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-100 mb-6 flex items-center gap-1'
         )}
       >
         자세한 사용법 보기 →

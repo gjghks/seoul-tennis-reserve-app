@@ -218,12 +218,12 @@ export default function CourtSearch() {
 
       <div
         className={themeClass(
-          'flex items-center gap-2 rounded-xl border-[3px] border-black bg-white px-3 py-2 shadow-[4px_4px_0px_0px_#000]',
-          'flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2 shadow-sm'
+          'flex items-center gap-2 rounded-xl border-[3px] border-black bg-white dark:bg-slate-800 px-3 py-2 shadow-[4px_4px_0px_0px_#000]',
+          'flex items-center gap-2 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 shadow-sm'
         )}
       >
         <svg
-          className={themeClass('h-5 w-5 shrink-0 text-black', 'h-5 w-5 shrink-0 text-gray-400')}
+          className={themeClass('h-5 w-5 shrink-0 text-black dark:text-slate-100', 'h-5 w-5 shrink-0 text-gray-400 dark:text-slate-500')}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -266,8 +266,8 @@ export default function CourtSearch() {
           type="text"
           placeholder="테니스장 검색 (이름, 장소)"
           className={themeClass(
-            'w-full bg-white text-black placeholder:text-black/60 font-bold text-sm sm:text-base outline-none',
-            'w-full bg-white text-gray-900 placeholder:text-gray-400 text-sm sm:text-base outline-none'
+            'w-full bg-white dark:bg-slate-800 text-black dark:text-slate-100 placeholder:text-black/60 dark:placeholder:text-slate-500 font-bold text-sm sm:text-base outline-none',
+            'w-full bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 text-sm sm:text-base outline-none'
           )}
           aria-label="테니스장 검색"
           role="combobox"
@@ -284,8 +284,8 @@ export default function CourtSearch() {
           role="listbox"
           aria-label="검색 결과"
           className={`${themeClass(
-            'absolute left-0 right-0 z-30 max-h-80 overflow-y-auto rounded-xl border-[3px] border-black bg-white shadow-[5px_5px_0px_0px_#000]',
-            'absolute left-0 right-0 z-30 max-h-80 overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg'
+            'absolute left-0 right-0 z-30 max-h-80 overflow-y-auto rounded-xl border-[3px] border-black bg-white dark:bg-slate-800 shadow-[5px_5px_0px_0px_#000]',
+            'absolute left-0 right-0 z-30 max-h-80 overflow-y-auto rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-lg'
           )} ${dropdownOffset}`}
         >
           {showResults && hasQuery && filteredCourts.length === 0 ? (
@@ -300,16 +300,16 @@ export default function CourtSearch() {
                 <circle cx="52" cy="12" r="2" className={themeClass('fill-black', 'fill-gray-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0s' }} />
                 <circle cx="10" cy="50" r="1.5" className={themeClass('fill-black', 'fill-gray-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.5s' }} />
               </svg>
-              <p className={themeClass('text-base font-bold text-black mb-1', 'text-base font-medium text-gray-900 mb-1')}>
+              <p className={themeClass('text-base font-bold text-black dark:text-slate-100 mb-1', 'text-base font-medium text-gray-900 dark:text-slate-100 mb-1')}>
                 &apos;{query}&apos;에 대한 검색 결과가 없습니다
               </p>
-              <p className={themeClass('text-sm font-medium text-black/60', 'text-sm text-gray-500')}>
+              <p className={themeClass('text-sm font-medium text-black/60 dark:text-slate-400', 'text-sm text-gray-500 dark:text-slate-400')}>
                 테니스장 이름이나 장소로 검색해보세요
               </p>
             </div>
           ) : showResults ? (
             <>
-              <div className={themeClass('px-4 py-2 border-b-[3px] border-black/15 bg-gray-50/50 text-xs font-bold text-black/60', 'px-4 py-2 border-b border-gray-100 bg-gray-50 text-xs font-medium text-gray-500')}>
+              <div className={themeClass('px-4 py-2 border-b-[3px] border-black/15 bg-gray-50/50 dark:bg-slate-900 text-xs font-bold text-black/60 dark:text-slate-400', 'px-4 py-2 border-b border-gray-100 dark:border-slate-700 bg-gray-50 dark:bg-slate-900 text-xs font-medium text-gray-500 dark:text-slate-400')}>
                 {filteredCourts.length}개의 검색 결과
               </div>
               {filteredCourts.map((court, index) => {
@@ -340,19 +340,19 @@ export default function CourtSearch() {
                     }}
                     className={themeClass(
                       `w-full border-b-2 border-black/15 px-4 py-3 text-left transition-colors last:border-b-0 ${isActive ? 'bg-[#facc15]/30' : 'hover:bg-[#facc15]/30'}`,
-                      `w-full border-b border-gray-100 px-4 py-3 text-left transition-colors last:border-b-0 ${isActive ? 'bg-green-50' : 'hover:bg-green-50'}`
+                      `w-full border-b border-gray-100 dark:border-slate-700 px-4 py-3 text-left transition-colors last:border-b-0 ${isActive ? 'bg-green-50 dark:bg-green-950/40' : 'hover:bg-green-50 dark:hover:bg-green-950/40'}`
                     )}
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="min-w-0">
-                        <p className={themeClass('truncate text-sm font-black text-black uppercase tracking-tight', 'truncate text-sm font-semibold text-gray-900')}>
+                        <p className={themeClass('truncate text-sm font-black text-black dark:text-slate-100 uppercase tracking-tight', 'truncate text-sm font-semibold text-gray-900 dark:text-slate-100')}>
                           {renderHighlightedText(
                             court.SVCNM,
                             debouncedQuery,
                             themeClass('rounded bg-[#facc15] px-0.5 text-black', 'rounded bg-green-100 px-0.5 text-green-900')
                           )}
                         </p>
-                        <p className={themeClass('mt-0.5 truncate text-xs font-medium text-black/60', 'mt-0.5 truncate text-xs text-gray-500')}>
+                        <p className={themeClass('mt-0.5 truncate text-xs font-medium text-black/60 dark:text-slate-400', 'mt-0.5 truncate text-xs text-gray-500 dark:text-slate-400')}>
                           {renderHighlightedText(
                             court.AREANM,
                             debouncedQuery,
@@ -370,10 +370,10 @@ export default function CourtSearch() {
                         className={themeClass(
                           available
                             ? 'shrink-0 rounded-md border-2 border-black bg-[#a3e635] px-2 py-1 text-[11px] font-black text-black'
-                            : 'shrink-0 rounded-md border-2 border-black bg-gray-200 px-2 py-1 text-[11px] font-black text-black/60',
+                            : 'shrink-0 rounded-md border-2 border-black bg-gray-200 dark:bg-slate-700 px-2 py-1 text-[11px] font-black text-black/60 dark:text-slate-300',
                           available
                             ? 'shrink-0 rounded-md bg-green-100 px-2 py-1 text-[11px] font-semibold text-green-700'
-                            : 'shrink-0 rounded-md bg-gray-100 px-2 py-1 text-[11px] font-semibold text-gray-500'
+                            : 'shrink-0 rounded-md bg-gray-100 dark:bg-slate-800 px-2 py-1 text-[11px] font-semibold text-gray-500 dark:text-slate-400'
                         )}
                       >
                         {available ? '접수중' : '마감'}
@@ -385,8 +385,8 @@ export default function CourtSearch() {
             </>
           ) : showRecent ? (
             <>
-              <div className={themeClass('px-4 py-2 border-b-[3px] border-black bg-gray-100 flex justify-between items-center', 'px-4 py-2 border-b border-gray-100 flex justify-between items-center')}>
-                <span className={themeClass('text-xs font-black text-black', 'text-xs font-semibold text-gray-500')}>최근 검색어</span>
+              <div className={themeClass('px-4 py-2 border-b-[3px] border-black bg-gray-100 dark:bg-slate-800 flex justify-between items-center', 'px-4 py-2 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center')}>
+                <span className={themeClass('text-xs font-black text-black dark:text-slate-100', 'text-xs font-semibold text-gray-500 dark:text-slate-400')}>최근 검색어</span>
               </div>
               <div>
                 {searches.map((term, index) => {
@@ -401,8 +401,8 @@ export default function CourtSearch() {
                       tabIndex={-1}
                       ref={(el) => { itemRefs.current[index] = el; }}
                       className={themeClass(
-                        `w-full flex items-center justify-between border-b-2 border-black/15 px-4 py-3 text-left transition-colors last:border-b-0 ${isActive ? 'bg-gray-100' : 'hover:bg-gray-100'}`,
-                        `w-full flex items-center justify-between border-b border-gray-100 px-4 py-3 text-left transition-colors last:border-b-0 ${isActive ? 'bg-gray-50' : 'hover:bg-gray-50'}`
+                        `w-full flex items-center justify-between border-b-2 border-black/15 px-4 py-3 text-left transition-colors last:border-b-0 ${isActive ? 'bg-gray-100 dark:bg-slate-700' : 'hover:bg-gray-100 dark:hover:bg-slate-700'}`,
+                        `w-full flex items-center justify-between border-b border-gray-100 dark:border-slate-700 px-4 py-3 text-left transition-colors last:border-b-0 ${isActive ? 'bg-gray-50 dark:bg-slate-900' : 'hover:bg-gray-50 dark:hover:bg-slate-900'}`
                       )}
                     >
                       <button
@@ -413,11 +413,11 @@ export default function CourtSearch() {
                         {isNeoBrutalism ? (
                           <span>🕐</span>
                         ) : (
-                          <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                          <svg className="w-4 h-4 text-gray-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
                         )}
-                        <span className={themeClass('text-sm font-bold text-black', 'text-sm text-gray-700')}>{term}</span>
+                        <span className={themeClass('text-sm font-bold text-black dark:text-slate-100', 'text-sm text-gray-700 dark:text-slate-200')}>{term}</span>
                       </button>
                       <button
                         type="button"
@@ -426,8 +426,8 @@ export default function CourtSearch() {
                           removeSearch(term);
                         }}
                         className={themeClass(
-                          'p-1 text-black/60 hover:text-black hover:bg-black/5 rounded',
-                          'p-1 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full'
+                          'p-1 text-black/60 dark:text-slate-400 hover:text-black dark:hover:text-slate-100 hover:bg-black/5 dark:hover:bg-white/10 rounded',
+                          'p-1 text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:hover:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-full'
                         )}
                         aria-label="검색어 삭제"
                       >
@@ -439,13 +439,13 @@ export default function CourtSearch() {
                   );
                 })}
               </div>
-              <div className={themeClass('border-t-[3px] border-black bg-gray-50', 'border-t border-gray-100 bg-gray-50')}>
+              <div className={themeClass('border-t-[3px] border-black bg-gray-50 dark:bg-slate-900', 'border-t border-gray-100 dark:border-slate-700 bg-gray-50 dark:bg-slate-900')}>
                 <button
                   type="button"
                   onClick={clearAll}
                   className={themeClass(
-                    'w-full py-2.5 text-xs font-bold text-black/60 hover:text-black hover:bg-gray-200 transition-colors',
-                    'w-full py-2.5 text-xs text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors'
+                    'w-full py-2.5 text-xs font-bold text-black/60 dark:text-slate-300 hover:text-black dark:hover:text-slate-100 hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors',
+                    'w-full py-2.5 text-xs text-gray-500 dark:text-slate-300 hover:text-gray-700 dark:hover:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors'
                   )}
                 >
                   최근 검색어 전체 삭제

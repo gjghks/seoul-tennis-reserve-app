@@ -41,21 +41,21 @@ export default function EditRecordPage() {
     return (
       <div className={`container mx-auto px-4 py-8 min-h-screen ${themeClass('bg-nb-bg', '')}`}>
         <div className={themeClass(
-          'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] py-12 px-6 text-center max-w-md mx-auto',
-          'bg-white rounded-2xl border border-gray-100 py-12 px-6 text-center max-w-md mx-auto'
+          'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] py-12 px-6 text-center max-w-md mx-auto',
+          'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-800 py-12 px-6 text-center max-w-md mx-auto'
         )}>
           <div className={`w-16 h-16 mx-auto mb-4 flex items-center justify-center ${themeClass(
             'bg-[#a3e635] border-2 border-black rounded-[5px]',
-            'bg-green-50 rounded-full'
+            'bg-green-50 dark:bg-green-950/40 rounded-full'
           )}`}>
             <svg className={`w-8 h-8 ${themeClass('text-black', 'text-green-400')}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
           </div>
-          <h3 className={`text-lg mb-2 ${themeClass('font-black text-black', 'font-semibold text-gray-900')}`}>
+          <h3 className={`text-lg mb-2 ${themeClass('font-black text-black dark:text-slate-100', 'font-semibold text-gray-900 dark:text-slate-100')}`}>
             로그인이 필요합니다
           </h3>
-          <p className={`mb-6 ${themeClass('text-black/60 font-medium', 'text-gray-500')}`}>
+          <p className={`mb-6 ${themeClass('text-black/60 dark:text-slate-400 font-medium', 'text-gray-500 dark:text-slate-400')}`}>
             경기 기록을 수정하려면 로그인해주세요
           </p>
           <button
@@ -89,7 +89,7 @@ export default function EditRecordPage() {
   if (error || !data?.record) {
     return (
       <div className={`min-h-screen flex flex-col items-center justify-center p-4 ${themeClass('bg-nb-bg', '')}`}>
-        <p className={`text-lg mb-4 ${themeClass('font-bold text-black', 'text-gray-600')}`}>기록을 찾을 수 없습니다</p>
+        <p className={`text-lg mb-4 ${themeClass('font-bold text-black dark:text-slate-100', 'text-gray-600 dark:text-slate-400')}`}>기록을 찾을 수 없습니다</p>
         <Link 
           href="/records" 
           className={themeClass(
@@ -110,8 +110,8 @@ export default function EditRecordPage() {
           <Link 
             href={`/records/${id}`} 
             className={themeClass(
-              'mr-4 p-2 hover:bg-gray-200 transition-colors rounded-[5px]',
-              'mr-4 p-2 hover:bg-gray-100 transition-colors rounded-full'
+              'mr-4 p-2 hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors rounded-[5px]',
+              'mr-4 p-2 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors rounded-full'
             )}
             aria-label="뒤로 가기"
           >
@@ -120,8 +120,8 @@ export default function EditRecordPage() {
             </svg>
           </Link>
           <h1 className={themeClass(
-            'text-2xl font-black text-black uppercase',
-            'text-2xl font-bold text-gray-900'
+            'text-2xl font-black text-black dark:text-slate-100 uppercase',
+            'text-2xl font-bold text-gray-900 dark:text-slate-100'
           )}>
             경기 기록 수정
           </h1>

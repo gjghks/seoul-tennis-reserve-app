@@ -25,7 +25,7 @@ export default function FacilityTags({ tags, maxTags, className }: FacilityTagsP
             'inline-flex items-center gap-1 px-2 py-1 text-xs whitespace-nowrap',
             isNeoBrutalism
               ? `border-2 border-black rounded-[5px] font-black text-black ${tag.color}`
-              : 'rounded-full font-semibold text-gray-700 bg-gray-100 border border-gray-200'
+              : 'rounded-full font-semibold text-gray-700 dark:text-slate-200 bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700'
           )}
         >
           <span aria-hidden="true">{tag.icon}</span>

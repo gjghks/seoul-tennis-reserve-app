@@ -25,13 +25,13 @@ const formatPenaltyText = (text: string): React.ReactNode => {
   const lines = markedText.split('\n').filter(line => line.trim());
 
   const renderCategoryLine = (content: string, key: number) => (
-    <div key={key} className="font-bold text-gray-800 mt-3 first:mt-0 border-l-2 border-amber-400 pl-2 py-0.5 bg-amber-50/50">
+    <div key={key} className="font-bold text-gray-800 dark:text-slate-200 mt-3 first:mt-0 border-l-2 border-amber-400 pl-2 py-0.5 bg-amber-50/50 dark:bg-amber-950/40">
       {content}
     </div>
   );
 
   const renderBulletLine = (content: string, key: number) => (
-    <div key={key} className="flex items-start gap-2 ml-4 text-sm text-gray-700">
+    <div key={key} className="flex items-start gap-2 ml-4 text-sm text-gray-700 dark:text-slate-200">
       <span className="text-amber-500 shrink-0">•</span>
       <span>{highlight(content)}</span>
     </div>
@@ -40,7 +40,7 @@ const formatPenaltyText = (text: string): React.ReactNode => {
   const renderDefaultLine = (content: string, key: number) => {
     const isExample = content.startsWith('예시)');
     return (
-      <div key={key} className={`text-sm text-gray-700 ${isExample ? 'ml-6' : ''}`}>
+      <div key={key} className={`text-sm text-gray-700 dark:text-slate-200 ${isExample ? 'ml-6' : ''}`}>
         {highlight(content)}
       </div>
     );
@@ -70,7 +70,7 @@ function ContentItemComponent({ item, idx }: { item: ContentItem; idx: number })
   if (item.type === 'heading') {
     return (
       <li key={itemKey} className="mt-4 mb-2 first:mt-0 list-none" role="presentation">
-        <h4 className="font-bold text-gray-800 text-base border-l-4 border-blue-500 pl-3 py-1 bg-blue-50 rounded-r m-0">
+        <h4 className="font-bold text-gray-800 dark:text-slate-200 text-base border-l-4 border-blue-500 pl-3 py-1 bg-blue-50 dark:bg-blue-950/40 rounded-r m-0">
           {item.text}
         </h4>
       </li>
@@ -81,7 +81,7 @@ function ContentItemComponent({ item, idx }: { item: ContentItem; idx: number })
     return (
       <li key={itemKey} className={`flex items-start gap-2 py-1 ${indentClass} list-none`}>
         <span className="shrink-0 text-amber-500 font-bold">※</span>
-        <span className="text-amber-800 text-sm">{highlight(item.text)}</span>
+        <span className="text-amber-800 dark:text-amber-300 text-sm">{highlight(item.text)}</span>
       </li>
     );
   }
@@ -90,7 +90,7 @@ function ContentItemComponent({ item, idx }: { item: ContentItem; idx: number })
     return (
       <li key={itemKey} className={`flex items-start gap-2 py-1 ${indentClass} list-none`}>
         <span className="shrink-0 text-blue-500 font-bold">•</span>
-        <span className="text-gray-700 text-sm">
+        <span className="text-gray-700 dark:text-slate-200 text-sm">
           <span className="font-semibold">{item.key}:</span> {highlight(item.text)}
         </span>
       </li>
@@ -99,7 +99,7 @@ function ContentItemComponent({ item, idx }: { item: ContentItem; idx: number })
 
   if (item.type === 'subtext') {
     return (
-      <li key={itemKey} className={`flex items-start gap-2 py-0.5 ${indentClass} list-none text-gray-500 text-sm`}>
+      <li key={itemKey} className={`flex items-start gap-2 py-0.5 ${indentClass} list-none text-gray-500 dark:text-slate-400 text-sm`}>
         <span className="shrink-0">◦</span>
         <span>{highlight(item.text)}</span>
       </li>
@@ -110,7 +110,7 @@ function ContentItemComponent({ item, idx }: { item: ContentItem; idx: number })
     return (
       <li key={itemKey} className={`flex items-start gap-2 py-1 ${indentClass} list-none`}>
         <span className="shrink-0 text-blue-500 font-bold">•</span>
-        <span className="text-gray-700 text-sm leading-relaxed">{highlight(item.text)}</span>
+        <span className="text-gray-700 dark:text-slate-200 text-sm leading-relaxed">{highlight(item.text)}</span>
       </li>
     );
   }
@@ -125,7 +125,7 @@ function ContentItemComponent({ item, idx }: { item: ContentItem; idx: number })
   }
 
   return (
-    <li key={itemKey} className="py-1 text-gray-700 text-sm list-none">{highlight(item.text)}</li>
+    <li key={itemKey} className="py-1 text-gray-700 dark:text-slate-200 text-sm list-none">{highlight(item.text)}</li>
   );
 }
 

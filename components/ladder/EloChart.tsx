@@ -88,12 +88,12 @@ export default function EloChart({ history, enabled = true }: EloChartProps) {
   return (
     <div
       className={themeClass(
-        'rounded-[5px] border-2 border-black bg-white p-3 shadow-[2px_2px_0px_0px_#000]',
-        'rounded-xl border border-gray-200 bg-white p-3 shadow-sm'
+        'rounded-[5px] border-2 border-black bg-white dark:bg-slate-800 p-3 shadow-[2px_2px_0px_0px_#000]',
+        'rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-3 shadow-sm'
       )}
     >
       <div className="mb-2 flex items-center justify-between">
-        <h4 className="text-xs font-bold text-gray-500">ELO 추이</h4>
+        <h4 className="text-xs font-bold text-gray-500 dark:text-slate-400">ELO 추이</h4>
         {plotPoints.length > 1 && (
           <span className={cn('text-[10px] font-bold', isRising ? 'text-green-600' : 'text-red-600')}>
             {isRising ? '상승 중 ↑' : '하락 중 ↓'}

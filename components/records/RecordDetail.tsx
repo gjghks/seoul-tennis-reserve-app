@@ -34,15 +34,15 @@ export default function RecordDetail({
   const getResultStyles = (result: MatchResult) => {
     switch (result) {
       case 'win':
-        return themeClass('bg-[#22c55e] text-black', 'bg-green-100 text-green-700');
+        return themeClass('bg-[#22c55e] text-black', 'bg-green-100 dark:bg-green-950/40 text-green-700 dark:text-green-300');
       case 'loss':
-        return themeClass('bg-[#f87171] text-black', 'bg-red-100 text-red-700');
+        return themeClass('bg-[#f87171] text-black', 'bg-red-100 dark:bg-red-950/40 text-red-700 dark:text-red-300');
       case 'draw':
-        return themeClass('bg-[#d4d4d4] text-black', 'bg-gray-100 text-gray-600');
+        return themeClass('bg-[#d4d4d4] text-black', 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-slate-300');
       case 'retired':
-        return themeClass('bg-[#facc15] text-black', 'bg-yellow-100 text-yellow-700');
+        return themeClass('bg-[#facc15] text-black', 'bg-yellow-100 dark:bg-yellow-950/40 text-yellow-700 dark:text-yellow-300');
       default:
-        return themeClass('bg-gray-200 text-black', 'bg-gray-100 text-gray-600');
+        return themeClass('bg-gray-200 dark:bg-slate-700 text-black dark:text-slate-100', 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-slate-300');
     }
   };
 
@@ -70,8 +70,8 @@ export default function RecordDetail({
       {/* Info Grid */}
       <div
         className={themeClass(
-          'rounded-[5px] border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_#000]',
-          'rounded-xl border border-gray-200 bg-white p-6 shadow-sm'
+          'rounded-[5px] border-2 border-black bg-white dark:bg-slate-800 p-6 shadow-[4px_4px_0px_0px_#000]',
+          'rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm'
         )}
       >
         <div className="grid gap-y-4 gap-x-8 md:grid-cols-2">
@@ -126,7 +126,7 @@ export default function RecordDetail({
       {/* Images */}
       {record.images && record.images.length > 0 && (
         <div className="space-y-2">
-          <h3 className="text-sm font-bold text-gray-500">사진</h3>
+          <h3 className="text-sm font-bold text-gray-500 dark:text-slate-400">사진</h3>
           <div
             className={cn(
               'grid gap-2',
@@ -142,7 +142,7 @@ export default function RecordDetail({
                 key={`image-${i}`}
                 className={themeClass(
                   'relative aspect-square overflow-hidden rounded-[5px] border-2 border-black shadow-[2px_2px_0px_0px_#000]',
-                  'relative aspect-square overflow-hidden rounded-xl border border-gray-200'
+                  'relative aspect-square overflow-hidden rounded-xl border border-gray-200 dark:border-slate-700'
                 )}
                 onClick={() => window.open(url, '_blank')}
               >
@@ -161,11 +161,11 @@ export default function RecordDetail({
       {/* Notes */}
       {record.notes && (
         <div className="space-y-2">
-          <h3 className="text-sm font-bold text-gray-500">메모</h3>
+          <h3 className="text-sm font-bold text-gray-500 dark:text-slate-400">메모</h3>
           <div
             className={themeClass(
-              'rounded-[5px] border-2 border-black bg-yellow-50 p-4 shadow-[4px_4px_0px_0px_#000]',
-              'rounded-xl border border-gray-200 bg-gray-50 p-4'
+              'rounded-[5px] border-2 border-black bg-yellow-50 dark:bg-yellow-950/40 p-4 shadow-[4px_4px_0px_0px_#000]',
+              'rounded-xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 p-4'
             )}
           >
             <p className="whitespace-pre-wrap text-sm leading-relaxed">
@@ -181,8 +181,8 @@ export default function RecordDetail({
           <button
             onClick={onEdit}
             className={themeClass(
-              'flex items-center justify-center rounded-[5px] border-2 border-black bg-white py-3 font-bold shadow-[4px_4px_0px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_#000]',
-              'flex items-center justify-center rounded-xl border border-gray-200 bg-white py-3 font-medium text-gray-700 hover:bg-gray-50'
+              'flex items-center justify-center rounded-[5px] border-2 border-black bg-white dark:bg-slate-800 dark:text-slate-100 py-3 font-bold shadow-[4px_4px_0px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_#000]',
+              'flex items-center justify-center rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 py-3 font-medium text-gray-700 dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-700'
             )}
           >
             수정
@@ -190,8 +190,8 @@ export default function RecordDetail({
           <button
             onClick={onDelete}
             className={themeClass(
-              'flex items-center justify-center rounded-[5px] border-2 border-black bg-red-100 py-3 font-bold text-red-600 shadow-[4px_4px_0px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_#000]',
-              'flex items-center justify-center rounded-xl border border-red-100 bg-red-50 py-3 font-medium text-red-600 hover:bg-red-100'
+              'flex items-center justify-center rounded-[5px] border-2 border-black bg-red-100 dark:bg-red-950/40 py-3 font-bold text-red-600 dark:text-red-300 shadow-[4px_4px_0px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_#000]',
+              'flex items-center justify-center rounded-xl border border-red-100 dark:border-red-900/50 bg-red-50 dark:bg-red-950/40 py-3 font-medium text-red-600 dark:text-red-300 hover:bg-red-100 dark:hover:bg-red-900/40'
             )}
           >
             삭제
@@ -200,8 +200,8 @@ export default function RecordDetail({
         <Link
           href="/records"
           className={themeClass(
-            'flex items-center justify-center rounded-[5px] border-2 border-black bg-gray-100 py-3 font-bold shadow-[4px_4px_0px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_#000]',
-            'flex items-center justify-center rounded-xl bg-gray-100 py-3 font-medium text-gray-600 hover:bg-gray-200'
+            'flex items-center justify-center rounded-[5px] border-2 border-black bg-gray-100 dark:bg-slate-800 dark:text-slate-100 py-3 font-bold shadow-[4px_4px_0px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_#000]',
+            'flex items-center justify-center rounded-xl bg-gray-100 dark:bg-slate-800 py-3 font-medium text-gray-600 dark:text-slate-300 hover:bg-gray-200 dark:hover:bg-slate-700'
           )}
         >
           목록으로 돌아가기
@@ -214,7 +214,7 @@ export default function RecordDetail({
 function InfoItem({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex flex-col gap-1">
-      <span className="text-xs font-bold text-gray-500">{label}</span>
+      <span className="text-xs font-bold text-gray-500 dark:text-slate-400">{label}</span>
       <span className="font-medium">{value}</span>
     </div>
   );

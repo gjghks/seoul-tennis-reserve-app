@@ -955,12 +955,12 @@ export default function TournamentLifecycleDemo({
                       )
                     : isPast
                       ? themeClass(
-                          'bg-gray-200 text-black/60',
-                          'bg-green-50 text-green-700'
+                          'bg-gray-200 dark:bg-slate-700 text-black/60 dark:text-slate-300',
+                          'bg-green-50 dark:bg-green-950/40 text-green-700 dark:text-green-300'
                         )
                       : themeClass(
-                          'bg-gray-100 text-black/30',
-                          'bg-gray-100 text-gray-400'
+                          'bg-gray-100 dark:bg-slate-800 text-black/30 dark:text-slate-500',
+                          'bg-gray-100 dark:bg-slate-800 text-gray-400 dark:text-slate-500'
                         )
                 )}
               >
@@ -976,8 +976,8 @@ export default function TournamentLifecycleDemo({
             className={cn(
               'ml-1 flex h-6 w-6 items-center justify-center rounded-full text-xs transition-all',
               themeClass(
-                'border-2 border-black bg-white text-black hover:bg-black hover:text-white',
-                'border border-gray-300 bg-white text-gray-500 hover:bg-gray-100'
+                'border-2 border-black bg-white dark:bg-slate-900 text-black dark:text-slate-100 hover:bg-black hover:text-white',
+                'border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800'
               )
             )}
             aria-label={isPlaying ? '일시정지' : '재생'}
@@ -989,13 +989,13 @@ export default function TournamentLifecycleDemo({
         <div
           className={cn(
             'h-1.5 w-full overflow-hidden rounded-full',
-            themeClass('border border-black bg-gray-200', 'bg-gray-100')
+            themeClass('border border-black bg-gray-200 dark:bg-slate-700', 'bg-gray-100 dark:bg-slate-700')
           )}
         >
           <div
             className={cn(
               'h-full rounded-full transition-all duration-500 ease-out',
-              themeClass('bg-black', 'bg-green-500')
+              themeClass('bg-black dark:bg-slate-300', 'bg-green-500')
             )}
             style={{ width: `${progressPct}%` }}
           />
@@ -1007,8 +1007,8 @@ export default function TournamentLifecycleDemo({
           'relative overflow-hidden',
           '',
           themeClass(
-            'rounded-[5px] border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000]',
-            'rounded-xl border border-gray-200 bg-white shadow-sm'
+            'rounded-[5px] border-2 border-black bg-white dark:bg-slate-800 shadow-[4px_4px_0px_0px_#000]',
+            'rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm'
           )
         )}
       >
@@ -1034,7 +1034,7 @@ export default function TournamentLifecycleDemo({
         <p
           className={cn(
             'text-center text-sm',
-            themeClass('font-bold text-black/60', 'text-gray-500')
+            themeClass('font-bold text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400')
           )}
         >
           {PHASE_DESCRIPTIONS[currentPhase]}

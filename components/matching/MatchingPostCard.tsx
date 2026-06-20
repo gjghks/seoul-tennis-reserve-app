@@ -15,15 +15,15 @@ export default function MatchingPostCard({ post }: MatchingPostCardProps) {
   const getStatusColor = (status: MatchPost['status']) => {
     switch (status) {
       case 'open':
-        return themeClass('bg-[#22c55e] text-black border-2 border-black', 'bg-green-100 text-green-700 border border-green-200');
+        return themeClass('bg-[#22c55e] text-black border-2 border-black', 'bg-green-100 dark:bg-green-950/40 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-900');
       case 'closed':
-        return themeClass('bg-[#ffc400] text-black border-2 border-black', 'bg-yellow-100 text-yellow-700 border border-yellow-200');
+        return themeClass('bg-[#ffc400] text-black border-2 border-black', 'bg-yellow-100 dark:bg-yellow-950/40 text-yellow-700 dark:text-yellow-300 border border-yellow-200 dark:border-yellow-900');
       case 'completed':
-        return themeClass('bg-gray-300 text-black border-2 border-black', 'bg-gray-100 text-gray-700 border border-gray-200');
+        return themeClass('bg-gray-300 text-black border-2 border-black', 'bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-slate-300 border border-gray-200 dark:border-slate-600');
       case 'cancelled':
-        return themeClass('bg-[#ff90e8] text-black border-2 border-black', 'bg-red-100 text-red-700 border border-red-200');
+        return themeClass('bg-[#ff90e8] text-black border-2 border-black', 'bg-red-100 dark:bg-red-950/40 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-900');
       default:
-        return themeClass('bg-gray-200 text-black border-2 border-black', 'bg-gray-100 text-gray-600 border border-gray-200');
+        return themeClass('bg-gray-200 text-black border-2 border-black', 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-slate-300 border border-gray-200 dark:border-slate-600');
     }
   };
 
@@ -40,8 +40,8 @@ export default function MatchingPostCard({ post }: MatchingPostCardProps) {
       <div className={cn(
         'relative overflow-hidden transition-all',
         themeClass(
-          'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] p-5 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000]',
-          'bg-white rounded-2xl border border-gray-100 p-5 shadow-sm hover:shadow-md hover:-translate-y-1'
+          'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] p-5 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000]',
+          'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 p-5 shadow-sm hover:shadow-md hover:-translate-y-1'
         )
       )}>
         <div className="flex justify-between items-start mb-3">
@@ -54,49 +54,49 @@ export default function MatchingPostCard({ post }: MatchingPostCardProps) {
             </span>
             <span className={cn(
               'px-2 py-0.5 text-xs font-bold rounded',
-              themeClass('bg-black text-white', 'bg-gray-100 text-gray-700')
+              themeClass('bg-black text-white', 'bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-slate-300')
             )}>
               {post.district}
             </span>
             <span className={cn(
               'px-2 py-0.5 text-xs font-bold rounded',
-              themeClass('bg-[#88aaee] text-black border-2 border-black', 'bg-blue-50 text-blue-700 border border-blue-100')
+              themeClass('bg-[#88aaee] text-black border-2 border-black', 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border border-blue-100 dark:border-blue-900')
             )}>
               {MATCH_TYPE_LABELS[post.match_type]}
             </span>
           </div>
-          <span className={cn('text-xs', themeClass('font-bold text-black/50', 'text-gray-400'))}>
+          <span className={cn('text-xs', themeClass('font-bold text-black/50 dark:text-slate-400', 'text-gray-400 dark:text-slate-500'))}>
             {new Date(post.created_at).toLocaleDateString('ko-KR', { month: 'numeric', day: 'numeric' })}
           </span>
         </div>
 
-        <h3 className={cn('text-lg mb-4 line-clamp-1', themeClass('font-black text-black', 'font-bold text-gray-900'))}>
+        <h3 className={cn('text-lg mb-4 line-clamp-1', themeClass('font-black text-black dark:text-slate-100', 'font-bold text-gray-900 dark:text-slate-100'))}>
           {post.title}
         </h3>
 
         <div className="grid grid-cols-2 gap-y-3 mb-4">
           <div className="flex items-center gap-2">
             <span className={themeClass('text-xl', 'text-gray-400 text-lg')}>📅</span>
-            <span className={cn('text-sm', themeClass('font-bold text-black', 'font-medium text-gray-700'))}>
+            <span className={cn('text-sm', themeClass('font-bold text-black dark:text-slate-100', 'font-medium text-gray-700 dark:text-slate-200'))}>
               {formattedDate} {formatTime(post.play_time_start)}
             </span>
           </div>
           <div className="flex items-center gap-2">
             <span className={themeClass('text-xl', 'text-gray-400 text-lg')}>🏟️</span>
-            <span className={cn('text-sm line-clamp-1', themeClass('font-bold text-black', 'font-medium text-gray-700'))}>
+            <span className={cn('text-sm line-clamp-1', themeClass('font-bold text-black dark:text-slate-100', 'font-medium text-gray-700 dark:text-slate-200'))}>
               {post.court_name}
             </span>
           </div>
           <div className="flex items-center gap-2">
             <span className={themeClass('text-xl', 'text-gray-400 text-lg')}>👥</span>
-            <span className={cn('text-sm', themeClass('font-bold text-black', 'font-medium text-gray-700'))}>
+            <span className={cn('text-sm', themeClass('font-bold text-black dark:text-slate-100', 'font-medium text-gray-700 dark:text-slate-200'))}>
               {post.skill_level ? MATCH_SKILL_FILTER_LABELS[post.skill_level] : '실력무관'}
               {post.ntrp_min && post.ntrp_max && ` (NTRP ${post.ntrp_min}-${post.ntrp_max})`}
             </span>
           </div>
           <div className="flex items-center gap-2">
             <span className={themeClass('text-xl', 'text-gray-400 text-lg')}>💰</span>
-            <span className={cn('text-sm', themeClass('font-bold text-black', 'font-medium text-gray-700'))}>
+            <span className={cn('text-sm', themeClass('font-bold text-black dark:text-slate-100', 'font-medium text-gray-700 dark:text-slate-200'))}>
               {post.cost_per_person ? `${post.cost_per_person.toLocaleString()}원` : '무료/협의'}
             </span>
           </div>
@@ -104,10 +104,10 @@ export default function MatchingPostCard({ post }: MatchingPostCardProps) {
 
         <div className={cn(
           'pt-3 border-t flex justify-between items-center',
-          themeClass('border-black/10', 'border-gray-100')
+          themeClass('border-black/10 dark:border-white/10', 'border-gray-100 dark:border-slate-700')
         )}>
           <div className="flex items-center gap-2 text-sm">
-            <span className={themeClass('font-bold text-black/60', 'text-gray-500')}>{post.author_name}</span>
+            <span className={themeClass('font-bold text-black/60 dark:text-slate-300', 'text-gray-500 dark:text-slate-400')}>{post.author_name}</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className={cn(

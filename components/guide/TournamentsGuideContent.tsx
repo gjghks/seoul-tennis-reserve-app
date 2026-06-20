@@ -136,24 +136,24 @@ export default function TournamentsGuideContent() {
         className={cn(
           'max-w-3xl mx-auto',
           themeClass(
-            'bg-white border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000] p-8',
-            'bg-white rounded-xl shadow-lg p-8'
+            'bg-white dark:bg-slate-900 border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000] p-8',
+            'bg-white dark:bg-slate-900 rounded-xl shadow-lg p-8'
           )
         )}
       >
         <div className="mb-10 text-center">
           <div className="text-4xl mb-4">🏆</div>
-          <h1 className={cn('text-3xl font-bold mb-3', themeClass('text-black', 'text-gray-900'))}>
+          <h1 className={cn('text-3xl font-bold mb-3', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>
             테니스 대진표 가이드
           </h1>
-          <p className={cn('text-lg', themeClass('text-black/80', 'text-gray-600'))}>
+          <p className={cn('text-lg', themeClass('text-black/80 dark:text-slate-300', 'text-gray-600 dark:text-slate-400'))}>
             동호회 친선 경기부터 클럽 월례대회까지
           </p>
         </div>
 
-        <div className={cn('space-y-12', themeClass('text-black/80', 'text-gray-600'))}>
+        <div className={cn('space-y-12', themeClass('text-black/80 dark:text-slate-300', 'text-gray-600 dark:text-slate-400'))}>
           <section>
-            <h2 className={cn('text-xl font-bold mb-4 flex items-center gap-2', themeClass('text-black', 'text-gray-900'))}>
+            <h2 className={cn('text-xl font-bold mb-4 flex items-center gap-2', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>
               <span className="text-2xl">🎬</span> 대진표 진행 과정
             </h2>
             <p className="leading-relaxed mb-4">
@@ -161,14 +161,14 @@ export default function TournamentsGuideContent() {
             </p>
             <div className={cn(
               'p-4 rounded-lg',
-              themeClass('bg-gray-50 border-2 border-black/10', 'bg-gray-50 border border-gray-200')
+              themeClass('bg-gray-50 dark:bg-slate-800 border-2 border-black/10 dark:border-slate-700', 'bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700')
             )}>
               <TournamentLifecycleDemo autoPlay />
             </div>
           </section>
 
           <section>
-            <h2 className={cn('text-xl font-bold mb-4 flex items-center gap-2', themeClass('text-black', 'text-gray-900'))}>
+            <h2 className={cn('text-xl font-bold mb-4 flex items-center gap-2', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>
               <span className="text-2xl">✨</span> 주요 기능
             </h2>
             <p className="leading-relaxed mb-6">
@@ -192,19 +192,19 @@ export default function TournamentsGuideContent() {
                       className={cn(
                         'w-full flex items-center gap-4 p-4 text-left cursor-pointer select-none transition-all',
                         themeClass(
-                          'bg-white border-2 border-black rounded-[6px] shadow-[2px_2px_0px_0px_#000] hover:shadow-[4px_4px_0px_0px_#000] hover:-translate-y-[1px]',
-                          'bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100 hover:border-gray-300'
+                          'bg-white dark:bg-slate-800 border-2 border-black rounded-[6px] shadow-[2px_2px_0px_0px_#000] hover:shadow-[4px_4px_0px_0px_#000] hover:-translate-y-[1px]',
+                          'bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 hover:border-gray-300 dark:hover:border-slate-600'
                         ),
                         isOpen &&
                           themeClass(
-                            'shadow-[4px_4px_0px_0px_#000] -translate-y-[1px] bg-red-50',
-                            'bg-white border-red-300 shadow-md'
+                            'shadow-[4px_4px_0px_0px_#000] -translate-y-[1px] bg-red-50 dark:bg-red-950/40',
+                            'bg-white dark:bg-slate-900 border-red-300 dark:border-red-700 shadow-md'
                           )
                       )}
                     >
                       <div className="text-2xl shrink-0">{feature.emoji}</div>
                       <div className="flex-1 min-w-0">
-                        <div className={cn('font-bold mb-0.5', themeClass('text-black', 'text-gray-900'))}>
+                        <div className={cn('font-bold mb-0.5', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>
                           {feature.title}
                         </div>
                         <p className="text-sm leading-relaxed">{feature.desc}</p>
@@ -212,7 +212,7 @@ export default function TournamentsGuideContent() {
                       <div
                         className={cn(
                           'shrink-0 text-xs font-bold transition-transform duration-300',
-                          themeClass('text-black', 'text-gray-400'),
+                          themeClass('text-black dark:text-slate-100', 'text-gray-400 dark:text-slate-500'),
                           isOpen && 'rotate-180'
                         )}
                       >
@@ -233,21 +233,21 @@ export default function TournamentsGuideContent() {
                         className={cn(
                           'p-4 rounded-b-lg',
                           themeClass(
-                            'bg-gray-50 border-2 border-t-0 border-black rounded-[6px]',
-                            'bg-white border border-gray-200 rounded-lg shadow-inner'
+                            'bg-gray-50 dark:bg-slate-800 border-2 border-t-0 border-black rounded-[6px]',
+                            'bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg shadow-inner'
                           )
                         )}
                       >
                         {feature.id === 'create' && (
                           <div className="space-y-3">
                             <span className={cn('inline-block text-xs font-bold px-2 py-1 rounded', themeClass('bg-black text-white', 'bg-red-100 text-red-700'))}>대회 설정 예시</span>
-                            <div className={cn('p-4 rounded-lg space-y-2 text-sm', themeClass('bg-white border-2 border-black', 'bg-white border border-gray-200'))}>
-                              <div className="flex justify-between"><span className="text-gray-500">대회명</span><span className={cn('font-bold', themeClass('text-black', 'text-gray-900'))}>3월 월례 친선대회</span></div>
-                              <div className="flex justify-between"><span className="text-gray-500">형식</span><span>싱글 엘리미네이션</span></div>
-                              <div className="flex justify-between"><span className="text-gray-500">종목</span><span>남복 (남자 복식)</span></div>
-                              <div className="flex justify-between"><span className="text-gray-500">스코어</span><span>4게임 (노애드)</span></div>
-                              <div className="flex justify-between"><span className="text-gray-500">참가자</span><span>8팀</span></div>
-                              <div className="flex justify-between"><span className="text-gray-500">사용 코트</span><span>3면 (자동 배정)</span></div>
+                            <div className={cn('p-4 rounded-lg space-y-2 text-sm', themeClass('bg-white dark:bg-slate-900 border-2 border-black', 'bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700'))}>
+                              <div className="flex justify-between"><span className="text-gray-500 dark:text-slate-400">대회명</span><span className={cn('font-bold', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>3월 월례 친선대회</span></div>
+                              <div className="flex justify-between"><span className="text-gray-500 dark:text-slate-400">형식</span><span>싱글 엘리미네이션</span></div>
+                              <div className="flex justify-between"><span className="text-gray-500 dark:text-slate-400">종목</span><span>남복 (남자 복식)</span></div>
+                              <div className="flex justify-between"><span className="text-gray-500 dark:text-slate-400">스코어</span><span>4게임 (노애드)</span></div>
+                              <div className="flex justify-between"><span className="text-gray-500 dark:text-slate-400">참가자</span><span>8팀</span></div>
+                              <div className="flex justify-between"><span className="text-gray-500 dark:text-slate-400">사용 코트</span><span>3면 (자동 배정)</span></div>
                             </div>
                           </div>
                         )}
@@ -255,12 +255,12 @@ export default function TournamentsGuideContent() {
                           <div className="space-y-3">
                             <span className={cn('inline-block text-xs font-bold px-2 py-1 rounded', themeClass('bg-black text-white', 'bg-red-100 text-red-700'))}>추첨 방식</span>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                              <div className={cn('p-3 rounded-lg', themeClass('bg-white border-2 border-black', 'bg-white border border-gray-200'))}>
-                                <div className={cn('font-bold text-sm mb-1', themeClass('text-black', 'text-gray-900'))}>🎲 랜덤 추첨</div>
+                              <div className={cn('p-3 rounded-lg', themeClass('bg-white dark:bg-slate-900 border-2 border-black', 'bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700'))}>
+                                <div className={cn('font-bold text-sm mb-1', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>🎲 랜덤 추첨</div>
                                 <p className="text-xs">모든 참가자를 무작위로 배치합니다. 완전 공정한 방식.</p>
                               </div>
-                              <div className={cn('p-3 rounded-lg', themeClass('bg-white border-2 border-black', 'bg-white border border-gray-200'))}>
-                                <div className={cn('font-bold text-sm mb-1', themeClass('text-black', 'text-gray-900'))}>🎯 시드 배정</div>
+                              <div className={cn('p-3 rounded-lg', themeClass('bg-white dark:bg-slate-900 border-2 border-black', 'bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700'))}>
+                                <div className={cn('font-bold text-sm mb-1', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>🎯 시드 배정</div>
                                 <p className="text-xs">상위 시드가 일찍 만나지 않도록 대진표 상하단에 배치합니다.</p>
                               </div>
                             </div>
@@ -269,17 +269,17 @@ export default function TournamentsGuideContent() {
                         {feature.id === 'live' && (
                           <div className="space-y-3">
                             <span className={cn('inline-block text-xs font-bold px-2 py-1 rounded', themeClass('bg-black text-white', 'bg-red-100 text-red-700'))}>점수 입력 예시</span>
-                            <div className={cn('p-4 rounded-lg', themeClass('bg-white border-2 border-black', 'bg-white border border-gray-200'))}>
-                              <div className={cn('text-sm font-bold mb-3 text-center', themeClass('text-black', 'text-gray-900'))}>1라운드 - 매치 1</div>
+                            <div className={cn('p-4 rounded-lg', themeClass('bg-white dark:bg-slate-900 border-2 border-black', 'bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700'))}>
+                              <div className={cn('text-sm font-bold mb-3 text-center', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>1라운드 - 매치 1</div>
                               <div className="flex items-center justify-center gap-4 mb-3">
                                 <div className="text-center">
-                                  <div className={cn('font-bold', themeClass('text-black', 'text-gray-900'))}>김철수</div>
-                                  <div className={cn('text-2xl font-black mt-1', themeClass('text-black', 'text-green-600'))}>4</div>
+                                  <div className={cn('font-bold', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>김철수</div>
+                                  <div className={cn('text-2xl font-black mt-1', themeClass('text-black dark:text-slate-100', 'text-green-600'))}>4</div>
                                 </div>
-                                <div className="text-gray-400 text-sm">vs</div>
+                                <div className="text-gray-400 dark:text-slate-500 text-sm">vs</div>
                                 <div className="text-center">
-                                  <div className={cn('font-bold', themeClass('text-black', 'text-gray-900'))}>이영희</div>
-                                  <div className={cn('text-2xl font-black mt-1', themeClass('text-black', 'text-gray-500'))}>2</div>
+                                  <div className={cn('font-bold', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>이영희</div>
+                                  <div className={cn('text-2xl font-black mt-1', themeClass('text-black dark:text-slate-100', 'text-gray-500 dark:text-slate-400'))}>2</div>
                                 </div>
                               </div>
                               <div className={cn('text-center text-xs px-3 py-1 rounded-full inline-block', themeClass('bg-green-200 text-green-800 border border-black font-bold', 'bg-green-100 text-green-700'))}>
@@ -292,18 +292,18 @@ export default function TournamentsGuideContent() {
                           <div className="space-y-3">
                             <span className={cn('inline-block text-xs font-bold px-2 py-1 rounded', themeClass('bg-black text-white', 'bg-red-100 text-red-700'))}>공유 방법</span>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                              <div className={cn('p-3 rounded-lg flex items-center gap-3', themeClass('bg-white border-2 border-black', 'bg-white border border-gray-200'))}>
+                              <div className={cn('p-3 rounded-lg flex items-center gap-3', themeClass('bg-white dark:bg-slate-900 border-2 border-black', 'bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700'))}>
                                 <span className="text-2xl">💬</span>
                                 <div>
-                                  <div className={cn('font-bold text-sm', themeClass('text-black', 'text-gray-900'))}>카카오톡 공유</div>
-                                  <p className="text-xs text-gray-500">대진표 미리보기와 함께 전송</p>
+                                  <div className={cn('font-bold text-sm', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>카카오톡 공유</div>
+                                  <p className="text-xs text-gray-500 dark:text-slate-400">대진표 미리보기와 함께 전송</p>
                                 </div>
                               </div>
-                              <div className={cn('p-3 rounded-lg flex items-center gap-3', themeClass('bg-white border-2 border-black', 'bg-white border border-gray-200'))}>
+                              <div className={cn('p-3 rounded-lg flex items-center gap-3', themeClass('bg-white dark:bg-slate-900 border-2 border-black', 'bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700'))}>
                                 <span className="text-2xl">🔗</span>
                                 <div>
-                                  <div className={cn('font-bold text-sm', themeClass('text-black', 'text-gray-900'))}>링크 공유</div>
-                                  <p className="text-xs text-gray-500">공유 링크로 실시간 확인</p>
+                                  <div className={cn('font-bold text-sm', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>링크 공유</div>
+                                  <p className="text-xs text-gray-500 dark:text-slate-400">공유 링크로 실시간 확인</p>
                                 </div>
                               </div>
                             </div>
@@ -318,7 +318,7 @@ export default function TournamentsGuideContent() {
           </section>
 
           <section>
-            <h2 className={cn('text-xl font-bold mb-4 flex items-center gap-2', themeClass('text-black', 'text-gray-900'))}>
+            <h2 className={cn('text-xl font-bold mb-4 flex items-center gap-2', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>
               <span className="text-2xl">✍️</span> 이용 방법
             </h2>
             <div className="space-y-4">
@@ -328,8 +328,8 @@ export default function TournamentsGuideContent() {
                   className={cn(
                     'flex items-start gap-4 p-4',
                     themeClass(
-                      'bg-white border-2 border-black rounded-[6px]',
-                      'bg-white border border-gray-200 rounded-lg'
+                      'bg-white dark:bg-slate-800 border-2 border-black rounded-[6px]',
+                      'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg'
                     )
                   )}
                 >
@@ -342,7 +342,7 @@ export default function TournamentsGuideContent() {
                     {step.step}
                   </div>
                   <div>
-                    <h3 className={cn('font-bold mb-1', themeClass('text-black', 'text-gray-900'))}>
+                    <h3 className={cn('font-bold mb-1', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>
                       {step.title}
                     </h3>
                     <p className="text-sm">{step.desc}</p>
@@ -354,7 +354,7 @@ export default function TournamentsGuideContent() {
           </section>
 
           <section>
-            <h2 className={cn('text-xl font-bold mb-4 flex items-center gap-2', themeClass('text-black', 'text-gray-900'))}>
+            <h2 className={cn('text-xl font-bold mb-4 flex items-center gap-2', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>
               <span className="text-2xl">🎾</span> 경기 종류
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -364,12 +364,12 @@ export default function TournamentsGuideContent() {
                   className={cn(
                     'p-3',
                     themeClass(
-                      'bg-white border-2 border-black rounded-[6px]',
-                      'bg-white border border-gray-200 rounded-lg'
+                      'bg-white dark:bg-slate-800 border-2 border-black rounded-[6px]',
+                      'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg'
                     )
                   )}
                 >
-                  <div className={cn('font-bold text-sm mb-1', themeClass('text-black', 'text-gray-900'))}>{mt.type}</div>
+                  <div className={cn('font-bold text-sm mb-1', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>{mt.type}</div>
                   <p className="text-xs">{mt.desc}</p>
                 </div>
               ))}
@@ -377,7 +377,7 @@ export default function TournamentsGuideContent() {
           </section>
 
           <section>
-            <h2 className={cn('text-xl font-bold mb-4 flex items-center gap-2', themeClass('text-black', 'text-gray-900'))}>
+            <h2 className={cn('text-xl font-bold mb-4 flex items-center gap-2', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>
               <span className="text-2xl">📋</span> 스코어 형식
             </h2>
             <div className="space-y-2">
@@ -387,12 +387,12 @@ export default function TournamentsGuideContent() {
                   className={cn(
                     'flex items-start gap-3 p-3',
                     themeClass(
-                      'bg-white border-2 border-black rounded-[6px]',
-                      'bg-white border border-gray-200 rounded-lg'
+                      'bg-white dark:bg-slate-800 border-2 border-black rounded-[6px]',
+                      'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg'
                     )
                   )}
                 >
-                  <span className={cn('inline-block text-xs font-bold px-2 py-1 rounded shrink-0', themeClass('bg-yellow-200 border border-black', 'bg-gray-100 text-gray-700'))}>{sf.format}</span>
+                  <span className={cn('inline-block text-xs font-bold px-2 py-1 rounded shrink-0', themeClass('bg-yellow-200 border border-black', 'bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-slate-200'))}>{sf.format}</span>
                   <p className="text-sm">{sf.desc}</p>
                 </div>
               ))}
@@ -400,7 +400,7 @@ export default function TournamentsGuideContent() {
           </section>
 
           <section>
-            <h2 className={cn('text-xl font-bold mb-4 flex items-center gap-2', themeClass('text-black', 'text-gray-900'))}>
+            <h2 className={cn('text-xl font-bold mb-4 flex items-center gap-2', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>
               <span className="text-2xl">💡</span> 대진표 팁
             </h2>
             <ul className="space-y-3">
@@ -408,7 +408,7 @@ export default function TournamentsGuideContent() {
                 <li key={tip.title} className="flex items-start gap-2">
                   <span className="text-red-500 font-bold shrink-0">✓</span>
                   <span>
-                    <strong className={themeClass('text-black', 'text-gray-900')}>
+                    <strong className={themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}>
                       {tip.title}
                     </strong>
                     <span className="block text-sm mt-1">{tip.desc}</span>
@@ -418,7 +418,7 @@ export default function TournamentsGuideContent() {
             </ul>
           </section>
 
-          <section className="pt-4 border-t border-gray-200">
+          <section className="pt-4 border-t border-gray-200 dark:border-slate-700">
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link
                 href="/tournaments"
@@ -437,8 +437,8 @@ export default function TournamentsGuideContent() {
                 className={cn(
                   'px-6 py-3 rounded-lg text-center font-bold transition-all',
                   themeClass(
-                    'bg-white text-black border-2 border-black hover:bg-gray-100 shadow-[4px_4px_0px_0px_#000] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000]',
-                    'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 shadow-sm hover:shadow'
+                    'bg-white dark:bg-slate-800 text-black dark:text-slate-100 border-2 border-black hover:bg-gray-100 dark:hover:bg-slate-700 shadow-[4px_4px_0px_0px_#000] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000]',
+                    'bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-200 border border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700 shadow-sm hover:shadow'
                   )
                 )}
               >

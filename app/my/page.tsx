@@ -98,7 +98,7 @@ export default function MyPage() {
     return (
       <div className={`container mx-auto px-4 py-6 scrollbar-hide ${themeClass('bg-nb-bg min-h-screen', '')}`}>
         <div className="flex items-center justify-center min-h-[400px]">
-          <div className={themeClass('text-black font-bold', 'text-gray-400')}>로딩중...</div>
+          <div className={themeClass('text-black dark:text-slate-100 font-bold', 'text-gray-400 dark:text-slate-500')}>로딩중...</div>
         </div>
       </div>
     );
@@ -107,12 +107,12 @@ export default function MyPage() {
   return (
     <div className={`container mx-auto px-4 py-6 min-h-screen scrollbar-hide ${themeClass('bg-nb-bg', '')}`}>
       <div className="mb-6">
-        <h1 className={`text-2xl mb-2 ${themeClass('font-black text-black uppercase', 'font-bold text-gray-900')} `}>
+        <h1 className={`text-2xl mb-2 ${themeClass('font-black text-black dark:text-slate-100 uppercase', 'font-bold text-gray-900 dark:text-slate-100')} `}>
           {isNeoBrutalism ? '👤 마이페이지' : '마이페이지'}
         </h1>
         {user && (
           <div className="flex items-center gap-2 flex-wrap">
-            <p className={themeClass('text-black/70 font-medium', 'text-gray-500')}>{user.email}</p>
+            <p className={themeClass('text-black/70 dark:text-slate-300 font-medium', 'text-gray-500 dark:text-slate-400')}>{user.email}</p>
             <ProviderBadge />
           </div>
         )}
@@ -122,7 +122,7 @@ export default function MyPage() {
       {isHydrated && recentCourts.length > 0 && (
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
-            <h2 className={`text-lg flex items-center gap-2 ${themeClass('font-black text-black uppercase', 'font-semibold text-gray-900')} `}>
+            <h2 className={`text-lg flex items-center gap-2 ${themeClass('font-black text-black dark:text-slate-100 uppercase', 'font-semibold text-gray-900 dark:text-slate-100')} `}>
               {isNeoBrutalism ? '🕐' : (
                 <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -133,7 +133,7 @@ export default function MyPage() {
             <button
               type="button"
               onClick={clearRecentCourts}
-              className={`text-sm ${themeClass('font-bold text-black/60 hover:text-red-600', 'text-gray-400 hover:text-red-500')} transition-colors`}
+              className={`text-sm ${themeClass('font-bold text-black/60 dark:text-slate-400 hover:text-red-600', 'text-gray-400 dark:text-slate-500 hover:text-red-500')} transition-colors`}
             >
               전체 삭제
             </button>
@@ -143,18 +143,18 @@ export default function MyPage() {
               <div
                 key={court.svcId}
                 className={isNeoBrutalism
-                  ? 'bg-white border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] p-4 flex items-center justify-between gap-4'
-                  : 'bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between gap-4'
+                  ? 'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] p-4 flex items-center justify-between gap-4'
+                  : 'bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700 p-4 flex items-center justify-between gap-4'
                 }
               >
                 <Link
                   href={`/${court.districtSlug}/${encodeURIComponent(court.svcId)}`}
                   className="flex-1 min-w-0"
                 >
-                  <h3 className={`truncate transition-colors ${themeClass('font-bold text-black hover:text-[#16a34a]', 'font-medium text-gray-900 hover:text-green-600')} `}>
+                  <h3 className={`truncate transition-colors ${themeClass('font-bold text-black dark:text-slate-100 hover:text-[#16a34a]', 'font-medium text-gray-900 dark:text-slate-100 hover:text-green-600')} `}>
                     {court.svcName}
                   </h3>
-                  <p className={`text-sm truncate ${themeClass('text-black/60', 'text-gray-500')} `}>
+                  <p className={`text-sm truncate ${themeClass('text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400')} `}>
                     {court.district} {court.placeName && `· ${court.placeName}`}
                   </p>
                 </Link>
@@ -165,8 +165,8 @@ export default function MyPage() {
                 type="button"
                 onClick={() => setShowAllRecent(!showAllRecent)}
                 className={`w-full py-2.5 text-sm transition-colors ${themeClass(
-                  'font-bold text-black/70 hover:text-black bg-white border-2 border-black rounded-[5px] shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all',
-                  'font-medium text-gray-500 hover:text-green-600 bg-gray-50 rounded-xl hover:bg-gray-100'
+                  'font-bold text-black/70 dark:text-slate-300 hover:text-black dark:hover:text-slate-100 bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all',
+                  'font-medium text-gray-500 dark:text-slate-400 hover:text-green-600 bg-gray-50 dark:bg-slate-800 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700'
                 )}`}
               >
                 {showAllRecent ? '접기' : `더보기 (${hiddenCount}개)`}
@@ -179,8 +179,8 @@ export default function MyPage() {
 
       {isHydrated && recentCourts.length === 0 && !user && (
         <div className={isNeoBrutalism
-          ? 'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] py-12 px-6 text-center mb-8'
-          : 'bg-white rounded-2xl border border-gray-100 py-12 px-6 text-center mb-8'
+          ? 'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] py-12 px-6 text-center mb-8'
+          : 'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 py-12 px-6 text-center mb-8'
         }>
           <svg className={themeClass('w-20 h-20 mx-auto mb-4', 'w-16 h-16 mx-auto mb-4')} viewBox="0 0 80 80" fill="none" aria-hidden="true">
             <g style={{ animation: 'gentle-float 3s ease-in-out infinite' }}>
@@ -193,10 +193,10 @@ export default function MyPage() {
             <circle cx="68" cy="20" r="2" className={themeClass('fill-black', 'fill-blue-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.7s' }} />
             <path d="M66 60 Q66 64 70 64 Q66 64 66 68 Q66 64 62 64 Q66 64 66 60 Z" className={themeClass('fill-black', 'fill-blue-300')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.4s' }} />
           </svg>
-          <h3 className={`text-lg mb-2 ${themeClass('font-black text-black', 'font-semibold text-gray-900')} `}>
+          <h3 className={`text-lg mb-2 ${themeClass('font-black text-black dark:text-slate-100', 'font-semibold text-gray-900 dark:text-slate-100')} `}>
             최근 본 코트가 없습니다
           </h3>
-          <p className={`mb-6 ${themeClass('text-black/60 font-medium', 'text-gray-500')} `}>
+          <p className={`mb-6 ${themeClass('text-black/60 dark:text-slate-400 font-medium', 'text-gray-500 dark:text-slate-400')} `}>
             테니스장을 둘러보면 여기에 표시됩니다
           </p>
           <Link href="/" className={isNeoBrutalism
@@ -222,26 +222,26 @@ export default function MyPage() {
               className={cn(
                 'p-4 flex items-center gap-4 transition-all',
                 themeClass(
-                  'bg-white border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[1px_1px_0px_0px_#000]',
-                  'bg-white rounded-xl border border-gray-200 hover:border-green-300 hover:shadow-sm'
+                  'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[1px_1px_0px_0px_#000]',
+                  'bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700 hover:border-green-300 hover:shadow-sm'
                 )
               )}
             >
               <div className={cn(
                 'w-10 h-10 rounded-full flex items-center justify-center text-lg shrink-0',
-                themeClass('bg-[#ff90e8] border-2 border-black', 'bg-green-50')
+                themeClass('bg-[#ff90e8] border-2 border-black', 'bg-green-50 dark:bg-green-950/40')
               )}>
                 🤝
               </div>
               <div className="flex-1 min-w-0">
-                <div className={cn('text-sm', themeClass('font-black text-black', 'font-semibold text-gray-900'))}>
+                <div className={cn('text-sm', themeClass('font-black text-black dark:text-slate-100', 'font-semibold text-gray-900 dark:text-slate-100'))}>
                   내 매칭
                 </div>
-                <div className={cn('text-xs', themeClass('text-black/60 font-bold', 'text-gray-500'))}>
+                <div className={cn('text-xs', themeClass('text-black/60 dark:text-slate-400 font-bold', 'text-gray-500 dark:text-slate-400'))}>
                   {myMatchingTotal}건 참여 중
                 </div>
               </div>
-              <svg className={cn('w-4 h-4 shrink-0', themeClass('text-black', 'text-gray-400'))} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <svg className={cn('w-4 h-4 shrink-0', themeClass('text-black dark:text-slate-100', 'text-gray-400 dark:text-slate-500'))} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </Link>
@@ -251,26 +251,26 @@ export default function MyPage() {
               className={cn(
                 'p-4 flex items-center gap-4 transition-all',
                 themeClass(
-                  'bg-white border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[1px_1px_0px_0px_#000]',
-                  'bg-white rounded-xl border border-gray-200 hover:border-green-300 hover:shadow-sm'
+                  'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[1px_1px_0px_0px_#000]',
+                  'bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700 hover:border-green-300 hover:shadow-sm'
                 )
               )}
             >
               <div className={cn(
                 'w-10 h-10 rounded-full flex items-center justify-center text-lg shrink-0',
-                themeClass('bg-[#facc15] border-2 border-black', 'bg-orange-50')
+                themeClass('bg-[#facc15] border-2 border-black', 'bg-orange-50 dark:bg-orange-950/40')
               )}>
                 🔄
               </div>
               <div className="flex-1 min-w-0">
-                <div className={cn('text-sm', themeClass('font-black text-black', 'font-semibold text-gray-900'))}>
+                <div className={cn('text-sm', themeClass('font-black text-black dark:text-slate-100', 'font-semibold text-gray-900 dark:text-slate-100'))}>
                   내 양도
                 </div>
-                <div className={cn('text-xs', themeClass('text-black/60 font-bold', 'text-gray-500'))}>
+                <div className={cn('text-xs', themeClass('text-black/60 dark:text-slate-400 font-bold', 'text-gray-500 dark:text-slate-400'))}>
                   {myTransfersTotal}건 참여 중
                 </div>
               </div>
-              <svg className={cn('w-4 h-4 shrink-0', themeClass('text-black', 'text-gray-400'))} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <svg className={cn('w-4 h-4 shrink-0', themeClass('text-black dark:text-slate-100', 'text-gray-400 dark:text-slate-500'))} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </Link>
@@ -279,7 +279,7 @@ export default function MyPage() {
 
         <AlertSettingsSection />
 
-        <h2 className={`text-lg mb-4 flex items-center gap-2 ${themeClass('font-black text-black uppercase', 'font-semibold text-gray-900')} `}>
+        <h2 className={`text-lg mb-4 flex items-center gap-2 ${themeClass('font-black text-black dark:text-slate-100 uppercase', 'font-semibold text-gray-900 dark:text-slate-100')} `}>
           {isNeoBrutalism ? '❤️' : (
             <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
@@ -295,7 +295,7 @@ export default function MyPage() {
             ))}
           </div>
         ) : fetchError ? (
-          <div className={`p-8 text-center ${themeClass('bg-white border-2 border-black rounded-[5px]', 'bg-white rounded-2xl border border-gray-100')} `}>
+          <div className={`p-8 text-center ${themeClass('bg-white dark:bg-slate-800 border-2 border-black rounded-[5px]', 'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700')} `}>
             <p className={`mb-4 ${themeClass('text-red-600 font-bold', 'text-red-500')} `}>
               데이터를 불러오는데 실패했습니다.
             </p>
@@ -309,8 +309,8 @@ export default function MyPage() {
           </div>
         ) : favorites.length === 0 ? (
           <div className={isNeoBrutalism
-            ? 'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] py-12 px-6 text-center'
-            : 'bg-white rounded-2xl border border-gray-100 py-12 px-6 text-center'
+            ? 'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] py-12 px-6 text-center'
+            : 'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 py-12 px-6 text-center'
           }>
             <svg
               className={themeClass('w-24 h-24 mx-auto mb-4', 'w-20 h-20 mx-auto mb-4')}
@@ -355,10 +355,10 @@ export default function MyPage() {
                 style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite 0.3s' }}
               />
             </svg>
-            <h3 className={`text-lg mb-2 ${themeClass('font-black text-black', 'font-semibold text-gray-900')} `}>
+            <h3 className={`text-lg mb-2 ${themeClass('font-black text-black dark:text-slate-100', 'font-semibold text-gray-900 dark:text-slate-100')} `}>
               즐겨찾기가 비어있습니다
             </h3>
-            <p className={`mb-6 ${themeClass('text-black/60 font-medium', 'text-gray-500')} `}>
+            <p className={`mb-6 ${themeClass('text-black/60 dark:text-slate-400 font-medium', 'text-gray-500 dark:text-slate-400')} `}>
               자주 가는 테니스장을 즐겨찾기에 추가해보세요!
             </p>
             <Link href="/" className={isNeoBrutalism
@@ -379,25 +379,25 @@ export default function MyPage() {
                 <div
                   key={fav.id}
                   className={isNeoBrutalism
-                    ? 'bg-white border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] p-4 flex items-center justify-between gap-4'
-                    : 'bg-white rounded-xl border border-gray-200 p-4 flex items-center justify-between gap-4'
+                    ? 'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] p-4 flex items-center justify-between gap-4'
+                    : 'bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700 p-4 flex items-center justify-between gap-4'
                   }
                 >
                   <Link
                     href={`/${districtSlug}/${encodeURIComponent(fav.svc_id)}`}
                     className="flex-1 min-w-0"
                   >
-                    <h3 className={`truncate transition-colors ${themeClass('font-bold text-black hover:text-[#16a34a]', 'font-medium text-gray-900 hover:text-green-600')} `}>
+                    <h3 className={`truncate transition-colors ${themeClass('font-bold text-black dark:text-slate-100 hover:text-[#16a34a]', 'font-medium text-gray-900 dark:text-slate-100 hover:text-green-600')} `}>
                       {fav.svc_name}
                     </h3>
-                    <p className={`text-sm truncate ${themeClass('text-black/60', 'text-gray-500')} `}>
+                    <p className={`text-sm truncate ${themeClass('text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400')} `}>
                       {fav.district} {fav.place_name && `· ${fav.place_name}`}
                     </p>
                   </Link>
                   <button
                     type="button"
                     onClick={() => handleDeleteFavorite(fav.svc_id)}
-                    className={`shrink-0 p-2 transition-colors ${themeClass('text-black/60 hover:text-red-600', 'text-gray-400 hover:text-red-500')} `}
+                    className={`shrink-0 p-2 transition-colors ${themeClass('text-black/60 dark:text-slate-400 hover:text-red-600', 'text-gray-400 dark:text-slate-500 hover:text-red-500')} `}
                     aria-label={`${fav.svc_name} 즐겨찾기 삭제`}
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -414,8 +414,8 @@ export default function MyPage() {
 
       {!user && (
         <div className={isNeoBrutalism
-          ? 'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] py-12 px-6 text-center'
-          : 'bg-white rounded-2xl border border-gray-100 py-12 px-6 text-center'
+          ? 'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] py-12 px-6 text-center'
+          : 'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 py-12 px-6 text-center'
         }>
           <svg className={themeClass('w-20 h-20 mx-auto mb-4', 'w-16 h-16 mx-auto mb-4')} viewBox="0 0 80 80" fill="none" aria-hidden="true">
             <g style={{ animation: 'gentle-float 3s ease-in-out infinite' }}>
@@ -431,10 +431,10 @@ export default function MyPage() {
             <circle cx="70" cy="24" r="2" className={themeClass('fill-black', 'fill-red-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.8s' }} />
             <path d="M64 66 Q64 70 68 70 Q64 70 64 74 Q64 70 60 70 Q64 70 64 66 Z" className={themeClass('fill-black', 'fill-red-300')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.4s' }} />
           </svg>
-          <h3 className={`text-lg mb-2 ${themeClass('font-black text-black', 'font-semibold text-gray-900')} `}>
+          <h3 className={`text-lg mb-2 ${themeClass('font-black text-black dark:text-slate-100', 'font-semibold text-gray-900 dark:text-slate-100')} `}>
             로그인이 필요합니다
           </h3>
-          <p className={`mb-6 ${themeClass('text-black/60 font-medium', 'text-gray-500')} `}>
+          <p className={`mb-6 ${themeClass('text-black/60 dark:text-slate-400 font-medium', 'text-gray-500 dark:text-slate-400')} `}>
             로그인하면 즐겨찾기를 이용할 수 있습니다
           </p>
           <Link href="/" className={isNeoBrutalism

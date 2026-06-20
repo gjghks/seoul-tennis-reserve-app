@@ -16,10 +16,7 @@ import { convertToWeatherGrid } from '@/lib/utils/weatherGrid';
 import HomeWeatherCard from '@/components/weather/HomeWeatherCard';
 import CourtSearch from '@/components/home/CourtSearch';
 import DustAlertBanner from '@/components/weather/DustAlertBanner';
-import CherryBlossomBanner from '@/components/seasonal/CherryBlossomBanner';
-import TennisSeasonBanner from '@/components/seasonal/TennisSeasonBanner';
-import SummerSeasonBanner from '@/components/seasonal/SummerSeasonBanner';
-import WinterSeasonBanner from '@/components/seasonal/WinterSeasonBanner';
+import SeasonBanner from '@/components/seasonal/SeasonBanner';
 
 const SEOUL_WEATHER_GRID = convertToWeatherGrid(126.978, 37.5665);
 
@@ -104,7 +101,7 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
   const animTotal = useCountUp(totalCourts, dataReady);
 
   const RefreshIndicator = (
-    <div className={`flex items-center justify-center py-4 ${themeClass('text-black font-bold', 'text-green-600')}`}>
+    <div className={`flex items-center justify-center py-4 ${themeClass('text-black dark:text-slate-100 font-bold', 'text-green-600')}`}>
       <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24" aria-hidden="true">
         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
@@ -117,17 +114,14 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
     <PullToRefresh
       onRefresh={handleRefresh}
       pullingContent={
-        <div className={`flex items-center justify-center py-4 ${themeClass('text-black font-bold', 'text-green-600')}`}>
+        <div className={`flex items-center justify-center py-4 ${themeClass('text-black dark:text-slate-100 font-bold', 'text-green-600')}`}>
           <span>↓ 당겨서 새로고침</span>
         </div>
       }
       refreshingContent={RefreshIndicator}
       className={`min-h-[var(--main-height)] flex flex-col ${themeClass('bg-nb-bg', '')}`}
     >
-      <CherryBlossomBanner />
-      <TennisSeasonBanner />
-      <SummerSeasonBanner />
-      <WinterSeasonBanner />
+      <SeasonBanner />
       <DustAlertBanner />
       <section className={themeClass('relative z-20 court-pattern-nb text-white py-4 lg:py-3', 'relative z-20 court-pattern text-white py-4 lg:py-3')}>
         <div className="container relative">
@@ -218,17 +212,17 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
       <section className="container pt-4 pb-6 lg:pt-3 lg:pb-4 flex-1 flex flex-col">
         <div className="mb-4 lg:mb-3">
           <div className="flex items-center gap-1.5 mb-2">
-            <h2 className={themeClass('text-xl font-black text-black uppercase tracking-tight', 'text-lg font-semibold text-gray-900')}>
+            <h2 className={themeClass('text-xl font-black text-black dark:text-slate-100 uppercase tracking-tight', 'text-lg font-semibold text-gray-900 dark:text-slate-100')}>
               지역 선택
             </h2>
           </div>
-          <p className={themeClass('text-sm text-black/70 font-medium', 'text-sm text-gray-500')}>
+          <p className={themeClass('text-sm text-black/70 dark:text-slate-400 font-medium', 'text-sm text-gray-500 dark:text-slate-400')}>
             원하는 지역을 선택하면 해당 지역의 테니스장 목록을 확인할 수 있습니다
           </p>
         </div>
 
         {error && (
-          <div className={themeClass('card-nb p-8 text-center bg-white', 'card p-8 text-center')}>
+          <div className={themeClass('card-nb p-8 text-center bg-white dark:bg-slate-800', 'card p-8 text-center')}>
             <p className={themeClass('text-red-600 font-bold mb-4', 'text-red-500 mb-4')}>데이터를 불러오는데 실패했습니다.</p>
             <button
               type="button"

@@ -2,6 +2,7 @@
 
 import { ReactNode, useEffect } from 'react';
 import { AuthProvider } from '@/contexts/AuthContext';
+import { ModeProvider } from '@/contexts/ModeContext';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { SeasonalProvider } from '@/contexts/SeasonalContext';
 import { TennisDataProvider } from '@/contexts/TennisDataContext';
@@ -39,6 +40,7 @@ export default function Providers({ children }: ProvidersProps) {
 
   return (
     <AuthProvider>
+      <ModeProvider>
       <ThemeProvider>
         <SeasonalProvider>
           <ToastProvider>
@@ -55,6 +57,7 @@ export default function Providers({ children }: ProvidersProps) {
           </ToastProvider>
         </SeasonalProvider>
       </ThemeProvider>
+      </ModeProvider>
     </AuthProvider>
   );
 }

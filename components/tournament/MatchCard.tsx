@@ -47,7 +47,7 @@ function PlayerRow({
 }) {
   if (!participant && !isBye) {
     return (
-      <div className="flex h-[30px] items-center px-2.5 text-[11px] text-gray-300 italic">
+      <div className="flex h-[30px] items-center px-2.5 text-[11px] text-gray-300 dark:text-slate-500 italic">
         대진 미정
       </div>
     );
@@ -55,7 +55,7 @@ function PlayerRow({
 
   if (isBye && !participant) {
     return (
-      <div className="flex h-[30px] items-center px-2.5 text-[11px] text-gray-400 italic opacity-60">
+      <div className="flex h-[30px] items-center px-2.5 text-[11px] text-gray-400 dark:text-slate-500 italic opacity-60">
         BYE
       </div>
     );
@@ -68,7 +68,7 @@ function PlayerRow({
         isWinner &&
           themeClass(
             'bg-[#dcfce7]',
-            'bg-green-50'
+            'bg-green-50 dark:bg-green-950/40'
           )
       )}
     >
@@ -77,7 +77,7 @@ function PlayerRow({
           <span
             className={cn(
               'shrink-0 text-[9px] font-bold',
-              themeClass('text-black/50', 'text-gray-400')
+              themeClass('text-black/50 dark:text-slate-400', 'text-gray-400 dark:text-slate-500')
             )}
           >
             [{participant.seed}]
@@ -87,8 +87,8 @@ function PlayerRow({
           className={cn(
             'truncate text-[12px]',
             isWinner
-              ? themeClass('font-black text-black', 'font-bold text-gray-900')
-              : themeClass('font-bold text-black/70', 'font-medium text-gray-600')
+              ? themeClass('font-black text-black', 'font-bold text-gray-900 dark:text-slate-100')
+              : themeClass('font-bold text-black/70 dark:text-slate-200', 'font-medium text-gray-600 dark:text-slate-400')
           )}
         >
           {participant?.name ?? ''}
@@ -113,8 +113,8 @@ function PlayerRow({
                 className={cn(
                   'text-[10px] tabular-nums',
                   isWinner
-                    ? themeClass('font-black text-black', 'font-bold text-gray-800')
-                    : themeClass('font-bold text-black/40', 'font-medium text-gray-400')
+                    ? themeClass('font-black text-black', 'font-bold text-gray-800 dark:text-slate-200')
+                    : themeClass('font-bold text-black/40 dark:text-slate-500', 'font-medium text-gray-400 dark:text-slate-500')
                 )}
                 style={{ '--score-delay': `${setIndex * 0.1}s` } as React.CSSProperties}
               >
@@ -163,14 +163,14 @@ export default function MatchCard({
           'bracket-match-card h-full w-full cursor-pointer select-none overflow-hidden text-left',
           themeClass(
             cn(
-              'rounded-[5px] border-2 border-black bg-white',
+              'rounded-[5px] border-2 border-black bg-white dark:bg-slate-800',
               isCompleted && (isP1Winner || isP2Winner)
                 ? 'shadow-[4px_4px_0px_#22c55e]'
                 : 'shadow-[4px_4px_0px_#000]'
             ),
             cn(
-              'rounded-lg border border-gray-200 bg-white shadow-sm hover:shadow-md',
-              isCompleted && 'border-gray-300'
+              'rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm hover:shadow-md',
+              isCompleted && 'border-gray-300 dark:border-slate-600'
             )
           ),
           isActive && 'bracket-match-active',
@@ -191,7 +191,7 @@ export default function MatchCard({
               'flex items-center gap-1 px-2 py-[2px] text-[9px] font-bold',
               themeClass(
                 'bg-red-500 text-white',
-                'bg-red-50 text-red-600'
+                'bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-300'
               )
             )}
           >
@@ -206,7 +206,7 @@ export default function MatchCard({
               'flex items-center gap-1 px-2 py-[2px] text-[9px] font-bold',
               themeClass(
                 'bg-[#facc15] text-black',
-                'bg-yellow-50 text-yellow-700'
+                'bg-yellow-50 dark:bg-yellow-950/40 text-yellow-700 dark:text-yellow-300'
               )
             )}
           >
@@ -224,8 +224,8 @@ export default function MatchCard({
 
         <div
           className={themeClass(
-            'h-[1px] bg-black/20',
-            'h-[1px] bg-gray-100'
+            'h-[1px] bg-black/20 dark:bg-slate-700',
+            'h-[1px] bg-gray-100 dark:bg-slate-700'
           )}
         />
 

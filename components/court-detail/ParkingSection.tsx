@@ -70,13 +70,13 @@ function formatRates(payYn: boolean, rates: number, timeRates: number, addRates:
 function formatParkingType(type: string): { label: string; color: string; colorNeo: string } {
   switch (type) {
     case '노상':
-      return { label: '노상', color: 'bg-blue-100 text-blue-700', colorNeo: 'bg-[#88aaee] text-black border-black' };
+      return { label: '노상', color: 'bg-blue-100 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300', colorNeo: 'bg-[#88aaee] text-black border-black' };
     case '노외':
-      return { label: '노외', color: 'bg-green-100 text-green-700', colorNeo: 'bg-[#a3e635] text-black border-black' };
+      return { label: '노외', color: 'bg-green-100 dark:bg-green-950/40 text-green-700 dark:text-green-300', colorNeo: 'bg-[#a3e635] text-black border-black' };
     case '부설':
-      return { label: '부설', color: 'bg-gray-100 text-gray-600', colorNeo: 'bg-gray-200 text-black border-black' };
+      return { label: '부설', color: 'bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-400', colorNeo: 'bg-gray-200 text-black border-black' };
     default:
-      return { label: type || '기타', color: 'bg-gray-100 text-gray-600', colorNeo: 'bg-gray-200 text-black border-black' };
+      return { label: type || '기타', color: 'bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-400', colorNeo: 'bg-gray-200 text-black border-black' };
   }
 }
 
@@ -124,33 +124,33 @@ export default function ParkingSection({ lat, lng, isNeoBrutalism }: ParkingSect
 
   return (
     <div className={isNeoBrutalism
-      ? 'bg-white border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] overflow-hidden mb-6'
-      : 'bg-white rounded-2xl border border-gray-100 overflow-hidden mb-6'
+      ? 'bg-white dark:bg-slate-900 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[3px_3px_0px_0px_#000] dark:shadow-[3px_3px_0px_0px_#f1f3f8] overflow-hidden mb-6'
+      : 'bg-white dark:bg-slate-900 rounded-2xl border border-gray-100 dark:border-slate-800 overflow-hidden mb-6'
     }>
       <button
         type="button"
         onClick={() => setExpanded(prev => !prev)}
         className={isNeoBrutalism
           ? 'w-full p-5 flex items-center justify-between border-b-2 border-black'
-          : `w-full p-5 flex items-center justify-between ${expanded ? 'border-b border-gray-100' : ''}`
+          : `w-full p-5 flex items-center justify-between ${expanded ? 'border-b border-gray-100 dark:border-slate-800' : ''}`
         }
         aria-expanded={expanded}
       >
         <h2 className={themeClass(
-          'font-black text-black flex items-center gap-2 uppercase',
-          'font-bold text-gray-900 flex items-center gap-2'
+          'font-black text-black dark:text-slate-100 flex items-center gap-2 uppercase',
+          'font-bold text-gray-900 dark:text-slate-100 flex items-center gap-2'
         )}>
           <span className="text-lg">🅿️</span>
           주변 주차장
           <span className={themeClass(
             'inline-flex items-center justify-center w-6 h-6 rounded-[3px] border-2 border-black bg-[#88aaee] text-xs font-black',
-            'inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 text-green-700 text-xs font-bold'
+            'inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-950/40 text-green-700 dark:text-green-300 text-xs font-bold'
           )}>
             {sortedParking.length}
           </span>
         </h2>
         <svg
-          className={`w-5 h-5 transition-transform ${expanded ? 'rotate-180' : ''} ${themeClass('text-black', 'text-gray-400')}`}
+          className={`w-5 h-5 transition-transform ${expanded ? 'rotate-180' : ''} ${themeClass('text-black dark:text-slate-100', 'text-gray-400 dark:text-slate-500')}`}
           fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" aria-hidden="true"
         >
           <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
@@ -159,20 +159,20 @@ export default function ParkingSection({ lat, lng, isNeoBrutalism }: ParkingSect
 
       {expanded && (
         <div>
-          <div className="divide-y divide-gray-50">
+          <div className="divide-y divide-gray-50 dark:divide-slate-800">
             {visibleParking.map((p, idx) => {
               const typeInfo = formatParkingType(p.type);
               const rateText = formatRates(p.payYn, p.rates, p.timeRates, p.addRates, p.addTimeRates);
               const isFree = !p.payYn || (p.rates === 0 && p.addRates === 0);
 
               return (
-                <div key={`${p.name}-${p.lat}-${p.lng}-${idx}`} className="p-4 hover:bg-gray-50/50 transition-colors">
+                <div key={`${p.name}-${p.lat}-${p.lng}-${idx}`} className="p-4 hover:bg-gray-50/50 dark:hover:bg-slate-800/50 transition-colors">
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
                         <span className={themeClass(
-                          'font-black text-sm text-black truncate',
-                          'font-semibold text-sm text-gray-800 truncate'
+                          'font-black text-sm text-black dark:text-slate-100 truncate',
+                          'font-semibold text-sm text-gray-800 dark:text-slate-200 truncate'
                         )}>
                           {p.name}
                         </span>
@@ -184,8 +184,8 @@ export default function ParkingSection({ lat, lng, isNeoBrutalism }: ParkingSect
                         </span>
                       </div>
                       <div className={themeClass(
-                        'flex items-center gap-1.5 text-[11px] font-bold text-black/60',
-                        'flex items-center gap-1.5 text-[11px] text-gray-400'
+                        'flex items-center gap-1.5 text-[11px] font-bold text-black/60 dark:text-slate-400',
+                        'flex items-center gap-1.5 text-[11px] text-gray-400 dark:text-slate-400'
                       )}>
                         <span>{formatDistance(p.distance)}</span>
                         <span>·</span>
@@ -197,8 +197,8 @@ export default function ParkingSection({ lat, lng, isNeoBrutalism }: ParkingSect
                       </div>
                       {p.address && (
                         <p className={themeClass(
-                          'text-[11px] text-black/30 font-bold mt-0.5 truncate',
-                          'text-[11px] text-gray-300 mt-0.5 truncate'
+                          'text-[11px] text-black/30 dark:text-slate-500 font-bold mt-0.5 truncate',
+                          'text-[11px] text-gray-300 dark:text-slate-500 mt-0.5 truncate'
                         )}>
                           {p.address}
                         </p>
@@ -209,7 +209,7 @@ export default function ParkingSection({ lat, lng, isNeoBrutalism }: ParkingSect
                       onClick={() => handleDirections(p.lat, p.lng, p.name)}
                       className={themeClass(
                         'shrink-0 flex items-center gap-1 px-2.5 py-1.5 text-[11px] font-black rounded-[3px] border-2 border-black bg-[#88aaee] text-black hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none shadow-[2px_2px_0px_0px_#000] transition-all',
-                        'shrink-0 flex items-center gap-1 px-2.5 py-1.5 text-[11px] font-semibold rounded-lg border border-gray-200 text-gray-600 hover:border-green-500 hover:text-green-600 transition-colors'
+                        'shrink-0 flex items-center gap-1 px-2.5 py-1.5 text-[11px] font-semibold rounded-lg border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-400 hover:border-green-500 hover:text-green-600 transition-colors'
                       )}
                     >
                       <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -229,7 +229,7 @@ export default function ParkingSection({ lat, lng, isNeoBrutalism }: ParkingSect
               onClick={() => setShowAll(prev => !prev)}
               className={themeClass(
                 'w-full py-3 text-center text-xs font-black text-black/60 border-t-2 border-black/15 hover:bg-black/5 transition-colors',
-                'w-full py-3 text-center text-xs text-gray-400 border-t border-gray-100 hover:bg-gray-50 transition-colors'
+                'w-full py-3 text-center text-xs text-gray-400 dark:text-slate-500 border-t border-gray-100 dark:border-slate-800 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors'
               )}
             >
               {showAll ? '접기' : `나머지 ${sortedParking.length - INITIAL_SHOW_COUNT}개 더보기`}

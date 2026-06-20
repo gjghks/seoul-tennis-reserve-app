@@ -48,16 +48,16 @@ const sectionStyles: Record<string, { emoji: string; color: string }> = {
 };
 
 const colorClasses: Record<string, { bg: string; border: string; title: string; headerBg: string }> = {
-  teal: { bg: 'bg-teal-50', border: 'border-teal-200', title: 'text-teal-700', headerBg: 'bg-teal-100/50' },
-  blue: { bg: 'bg-blue-50', border: 'border-blue-200', title: 'text-blue-700', headerBg: 'bg-blue-100/50' },
-  emerald: { bg: 'bg-emerald-50', border: 'border-emerald-200', title: 'text-emerald-700', headerBg: 'bg-emerald-100/50' },
-  rose: { bg: 'bg-rose-50', border: 'border-rose-200', title: 'text-rose-700', headerBg: 'bg-rose-100/50' },
-  amber: { bg: 'bg-amber-50', border: 'border-amber-200', title: 'text-amber-700', headerBg: 'bg-amber-100/50' },
-  green: { bg: 'bg-green-50', border: 'border-green-200', title: 'text-green-700', headerBg: 'bg-green-100/50' },
-  indigo: { bg: 'bg-indigo-50', border: 'border-indigo-200', title: 'text-indigo-700', headerBg: 'bg-indigo-100/50' },
-  sky: { bg: 'bg-sky-50', border: 'border-sky-200', title: 'text-sky-700', headerBg: 'bg-sky-100/50' },
-  pink: { bg: 'bg-pink-50', border: 'border-pink-200', title: 'text-pink-700', headerBg: 'bg-pink-100/50' },
-  gray: { bg: 'bg-gray-50', border: 'border-gray-200', title: 'text-gray-700', headerBg: 'bg-gray-100/50' },
+  teal: { bg: 'bg-teal-50 dark:bg-teal-950/40', border: 'border-teal-200 dark:border-teal-900', title: 'text-teal-700 dark:text-teal-300', headerBg: 'bg-teal-100/50 dark:bg-teal-900/30' },
+  blue: { bg: 'bg-blue-50 dark:bg-blue-950/40', border: 'border-blue-200 dark:border-blue-900', title: 'text-blue-700 dark:text-blue-300', headerBg: 'bg-blue-100/50 dark:bg-blue-900/30' },
+  emerald: { bg: 'bg-emerald-50 dark:bg-emerald-950/40', border: 'border-emerald-200 dark:border-emerald-900', title: 'text-emerald-700 dark:text-emerald-300', headerBg: 'bg-emerald-100/50 dark:bg-emerald-900/30' },
+  rose: { bg: 'bg-rose-50 dark:bg-rose-950/40', border: 'border-rose-200 dark:border-rose-900', title: 'text-rose-700 dark:text-rose-300', headerBg: 'bg-rose-100/50 dark:bg-rose-900/30' },
+  amber: { bg: 'bg-amber-50 dark:bg-amber-950/40', border: 'border-amber-200 dark:border-amber-900', title: 'text-amber-700 dark:text-amber-300', headerBg: 'bg-amber-100/50 dark:bg-amber-900/30' },
+  green: { bg: 'bg-green-50 dark:bg-green-950/40', border: 'border-green-200 dark:border-green-900', title: 'text-green-700 dark:text-green-300', headerBg: 'bg-green-100/50 dark:bg-green-900/30' },
+  indigo: { bg: 'bg-indigo-50 dark:bg-indigo-950/40', border: 'border-indigo-200 dark:border-indigo-900', title: 'text-indigo-700 dark:text-indigo-300', headerBg: 'bg-indigo-100/50 dark:bg-indigo-900/30' },
+  sky: { bg: 'bg-sky-50 dark:bg-sky-950/40', border: 'border-sky-200 dark:border-sky-900', title: 'text-sky-700 dark:text-sky-300', headerBg: 'bg-sky-100/50 dark:bg-sky-900/30' },
+  pink: { bg: 'bg-pink-50 dark:bg-pink-950/40', border: 'border-pink-200 dark:border-pink-900', title: 'text-pink-700 dark:text-pink-300', headerBg: 'bg-pink-100/50 dark:bg-pink-900/30' },
+  gray: { bg: 'bg-gray-50 dark:bg-slate-900', border: 'border-gray-200 dark:border-slate-700', title: 'text-gray-700 dark:text-slate-200', headerBg: 'bg-gray-100/50 dark:bg-slate-800/50' },
 };
 
 const getStyle = (title: string) => {
@@ -80,16 +80,16 @@ const renderInfoCards = (cards: InfoCard[]) => {
       {cards.map((card, idx) => {
         const cardKey = `${card.label}-${idx}`;
         return (
-          <div key={cardKey} className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+          <div key={cardKey} className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-700 p-4 shadow-sm">
             <div className="flex items-center gap-2 mb-2">
               <span className="text-lg">{iconMap[card.label] || '📌'}</span>
-              <h4 className="font-bold text-gray-800 text-sm">{card.label}</h4>
+              <h4 className="font-bold text-gray-800 dark:text-slate-200 text-sm">{card.label}</h4>
             </div>
             <ul className="space-y-1">
               {card.items.map((item, itemIdx) => {
                 const itemKey = `${card.label}-${item}-${itemIdx}`;
                 return (
-                  <li key={itemKey} className="text-sm text-gray-600 flex items-start gap-2">
+                  <li key={itemKey} className="text-sm text-gray-600 dark:text-slate-400 flex items-start gap-2">
                     <span className="text-blue-400 mt-1">•</span>
                     <span>{highlight(item)}</span>
                   </li>
@@ -138,16 +138,16 @@ function DetailContent({ content }: { content: string }) {
   return (
     <div className="mb-6">
       <div className="flex items-center justify-between mb-5">
-        <h2 className="font-bold text-gray-900 flex items-center gap-2 text-lg">
+        <h2 className="font-bold text-gray-900 dark:text-slate-100 flex items-center gap-2 text-lg">
           <span className="text-xl">📖</span>
           상세 안내
         </h2>
       </div>
 
       {shouldRenderAsHtml ? (
-        <div className="rounded-xl border border-gray-200 bg-white overflow-hidden">
-          <div 
-            className="p-5 prose prose-sm max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-li:text-gray-700 prose-table:border-collapse prose-td:border prose-td:border-gray-200 prose-td:p-2 prose-th:border prose-th:border-gray-200 prose-th:p-2 prose-th:bg-gray-100"
+        <div className="rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 overflow-hidden">
+          <div
+            className="p-5 prose prose-sm max-w-none prose-headings:text-gray-900 dark:prose-headings:text-slate-100 prose-p:text-gray-700 dark:prose-p:text-slate-200 prose-li:text-gray-700 dark:prose-li:text-slate-200 prose-table:border-collapse prose-td:border prose-td:border-gray-200 dark:prose-td:border-slate-700 prose-td:p-2 prose-th:border prose-th:border-gray-200 dark:prose-th:border-slate-700 prose-th:p-2 prose-th:bg-gray-100 dark:prose-th:bg-slate-800"
             {...sanitizedHtmlProps}
           />
         </div>
@@ -171,7 +171,7 @@ function DetailContent({ content }: { content: string }) {
                     </h3>
                   </div>
 
-                  <div className="px-4 py-3 bg-white/80">
+                  <div className="px-4 py-3 bg-white/80 dark:bg-slate-900/60">
                     {section.infoCards && section.infoCards.length > 0 && renderInfoCards(section.infoCards)}
                     {section.feeTable && section.feeTable.length > 0 && <FeeTable fees={section.feeTable} />}
                     {section.items.length > 0 && (
@@ -191,14 +191,14 @@ function DetailContent({ content }: { content: string }) {
               {standaloneTables.map((table, idx) => {
                 const tableKey = `table-${idx}-${table[0]?.join('|') || 'data'}`;
                 return (
-                  <div key={tableKey} className="rounded-xl border border-gray-200 bg-gray-50 overflow-hidden">
-                    <div className="px-4 py-3 bg-gray-100/50 border-b border-gray-200">
-                      <h3 className="font-bold text-gray-700 flex items-center gap-2">
+                  <div key={tableKey} className="rounded-xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900 overflow-hidden">
+                    <div className="px-4 py-3 bg-gray-100/50 dark:bg-slate-800/50 border-b border-gray-200 dark:border-slate-700">
+                      <h3 className="font-bold text-gray-700 dark:text-slate-200 flex items-center gap-2">
                         <span>📊</span>
                         참고 정보
                       </h3>
                     </div>
-                    <div className="px-4 py-3 bg-white/80">
+                    <div className="px-4 py-3 bg-white/80 dark:bg-slate-900/60">
                       <TableRenderer rows={table} />
                     </div>
                   </div>
@@ -209,7 +209,7 @@ function DetailContent({ content }: { content: string }) {
         </>
       )}
 
-      <div className="mt-5 flex items-start gap-2 text-xs text-gray-500 bg-gray-100 rounded-lg p-3">
+      <div className="mt-5 flex items-start gap-2 text-xs text-gray-500 dark:text-slate-400 bg-gray-100 dark:bg-slate-800 rounded-lg p-3">
         <span>💡</span>
         <span>자세한 내용은 예약 페이지에서 확인해 주세요. 정보는 변경될 수 있습니다.</span>
       </div>

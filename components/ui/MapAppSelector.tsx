@@ -139,7 +139,7 @@ export default function MapAppSelector({ isOpen, onClose, destination }: MapAppS
             'relative w-full max-w-lg animate-slide-up',
             themeClass(
               'bg-[#fffbeb] border-t-[3px] border-x-[3px] border-black rounded-t-[8px] shadow-[0_-4px_0px_0px_#000]',
-              'bg-white rounded-t-2xl shadow-xl border-t border-x border-gray-200',
+              'bg-white dark:bg-slate-900 rounded-t-2xl shadow-xl border-t border-x border-gray-200 dark:border-slate-700',
             ),
           )}
         >
@@ -147,7 +147,7 @@ export default function MapAppSelector({ isOpen, onClose, destination }: MapAppS
           <div className="flex justify-center pt-3 pb-1">
             <div className={cn(
               'w-10 h-1 rounded-full',
-              themeClass('bg-black/30', 'bg-gray-300'),
+              themeClass('bg-black/30', 'bg-gray-300 dark:bg-slate-700'),
             )} />
           </div>
 
@@ -157,7 +157,7 @@ export default function MapAppSelector({ isOpen, onClose, destination }: MapAppS
               id={titleId}
               className={cn(
                 'text-base',
-                themeClass('font-black text-black uppercase', 'font-semibold text-gray-900'),
+                themeClass('font-black text-black uppercase', 'font-semibold text-gray-900 dark:text-slate-100'),
               )}
             >
               길찾기 앱 선택
@@ -168,8 +168,8 @@ export default function MapAppSelector({ isOpen, onClose, destination }: MapAppS
               className={cn(
                 'w-7 h-7 flex items-center justify-center text-sm',
                 themeClass(
-                  'border-2 border-black bg-white hover:bg-red-100 font-black',
-                  'text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100',
+                  'border-2 border-black dark:border-[#f1f3f8] bg-white dark:bg-slate-800 hover:bg-red-100 font-black',
+                  'text-gray-400 dark:text-slate-500 hover:text-gray-600 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800',
                 ),
               )}
             >
@@ -182,7 +182,7 @@ export default function MapAppSelector({ isOpen, onClose, destination }: MapAppS
             'mx-5 mb-3 px-3 py-2 rounded-md text-xs truncate',
             themeClass(
               'bg-black/10 font-bold text-black/70 border border-black/20',
-              'bg-gray-50 text-gray-500 border border-gray-100',
+              'bg-gray-50 dark:bg-slate-800 text-gray-500 dark:text-slate-400 border border-gray-100 dark:border-slate-700',
             ),
           )}>
             <span className="mr-1.5">📍</span>
@@ -194,11 +194,11 @@ export default function MapAppSelector({ isOpen, onClose, destination }: MapAppS
             <div className="px-5 pb-5 flex flex-col items-center gap-2 py-6">
               <div className={cn(
                 'w-5 h-5 border-2 border-t-transparent rounded-full animate-spin',
-                themeClass('border-black', 'border-gray-400'),
+                themeClass('border-black', 'border-gray-400 dark:border-slate-500'),
               )} />
               <span className={cn(
                 'text-xs',
-                themeClass('font-bold text-black/60', 'text-gray-400'),
+                themeClass('font-bold text-black/60', 'text-gray-400 dark:text-slate-400'),
               )}>
                 위치 확인 중...
               </span>

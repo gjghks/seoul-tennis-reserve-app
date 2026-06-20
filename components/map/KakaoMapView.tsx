@@ -140,8 +140,8 @@ export default function KakaoMapView({ courts, district, focusPlaceName, onPlace
 
   if (!process.env.NEXT_PUBLIC_KAKAO_MAP_KEY) {
     return (
-      <div className={`p-8 text-center ${isNeoBrutalism ? 'bg-white border-2 border-black rounded-[5px]' : 'bg-gray-50 rounded-xl'}`}>
-        <p className={isNeoBrutalism ? 'text-black/60 font-medium' : 'text-gray-400'}>
+      <div className={`p-8 text-center ${isNeoBrutalism ? 'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px]' : 'bg-gray-50 dark:bg-slate-800 rounded-xl'}`}>
+        <p className={isNeoBrutalism ? 'text-black/60 dark:text-slate-400 font-medium' : 'text-gray-400 dark:text-slate-500'}>
           지도를 표시하려면 카카오 맵 API 키가 필요합니다.
         </p>
       </div>
@@ -150,7 +150,7 @@ export default function KakaoMapView({ courts, district, focusPlaceName, onPlace
 
   if (courtGroups.length === 0) {
     return (
-      <div className={`p-8 text-center ${isNeoBrutalism ? 'bg-white border-2 border-black rounded-[5px]' : 'bg-gray-50 rounded-xl'}`}>
+      <div className={`p-8 text-center ${isNeoBrutalism ? 'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px]' : 'bg-gray-50 dark:bg-slate-800 rounded-xl'}`}>
         <svg className={isNeoBrutalism ? 'w-12 h-12 mx-auto mb-2' : 'w-10 h-10 mx-auto mb-2'} viewBox="0 0 64 64" fill="none" aria-hidden="true">
           <g style={{ animation: 'gentle-float 3s ease-in-out infinite' }}>
             <path d="M32 8 C22 8 14 16 14 26 C14 40 32 56 32 56 C32 56 50 40 50 26 C50 16 42 8 32 8 Z" className={isNeoBrutalism ? 'fill-[#a3e635] stroke-black stroke-[2.5]' : 'fill-green-100 stroke-gray-300 stroke-[1.5]'} />
@@ -159,7 +159,7 @@ export default function KakaoMapView({ courts, district, focusPlaceName, onPlace
           <circle cx="54" cy="12" r="2" className={isNeoBrutalism ? 'fill-black' : 'fill-gray-400'} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0s' }} />
           <circle cx="10" cy="42" r="1.5" className={isNeoBrutalism ? 'fill-black' : 'fill-gray-400'} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.5s' }} />
         </svg>
-        <p className={isNeoBrutalism ? 'text-black/60 font-medium' : 'text-gray-400'}>
+        <p className={isNeoBrutalism ? 'text-black/60 dark:text-slate-400 font-medium' : 'text-gray-400 dark:text-slate-500'}>
           위치 정보가 있는 테니스장이 없습니다.
         </p>
       </div>
@@ -167,7 +167,7 @@ export default function KakaoMapView({ courts, district, focusPlaceName, onPlace
   }
 
   return (
-    <div className={`overflow-hidden ${isNeoBrutalism ? 'border-2 border-black rounded-[5px]' : 'border border-gray-200 rounded-xl'}`}>
+    <div className={`overflow-hidden ${isNeoBrutalism ? 'border-2 border-black rounded-[5px]' : 'border border-gray-200 dark:border-slate-700 rounded-xl'}`}>
       <KakaoMap
         center={mapCenter || initialCenter}
         style={{ width: '100%', height: '400px' }}
@@ -221,7 +221,7 @@ export default function KakaoMapView({ courts, district, focusPlaceName, onPlace
                className={
                  isNeoBrutalism
                    ? 'bg-white border-2 border-black rounded-[5px] shadow-[2px_2px_0px_0px_#000]'
-                   : 'bg-white border border-gray-200 rounded-lg shadow-md'
+                   : 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg shadow-md'
                }
              >
                <span style={{ color: isNeoBrutalism ? '#000' : '#111' }}>
@@ -251,7 +251,7 @@ export default function KakaoMapView({ courts, district, focusPlaceName, onPlace
                 className={
                   isNeoBrutalism
                     ? 'bg-white border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000]'
-                  : 'bg-white border border-gray-200 rounded-xl shadow-lg'
+                  : 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl shadow-lg'
               }
             >
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>

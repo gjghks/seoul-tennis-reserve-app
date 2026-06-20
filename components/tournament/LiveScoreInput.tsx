@@ -131,22 +131,22 @@ export default function LiveScoreInput({
         className={cn(
           'w-full max-w-lg max-h-[90vh] overflow-y-auto p-5',
           themeClass(
-            'bg-white border-2 border-black rounded-[5px] shadow-[6px_6px_0px_0px_#000]',
-            'bg-white border border-gray-100 rounded-2xl shadow-xl'
+            'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[6px_6px_0px_0px_#000]',
+            'bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl shadow-xl'
           )
         )}
       >
         <div className="flex items-start justify-between gap-3 mb-5">
           <div>
-            <h3 className={cn('text-lg', themeClass('font-black text-black', 'font-bold text-gray-900'))}>실시간 점수 입력</h3>
-            <p className={cn('text-sm mt-1', themeClass('font-bold text-black/60', 'text-gray-500'))}>
+            <h3 className={cn('text-lg', themeClass('font-black text-black dark:text-slate-100', 'font-bold text-gray-900 dark:text-slate-100'))}>실시간 점수 입력</h3>
+            <p className={cn('text-sm mt-1', themeClass('font-bold text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400'))}>
               {player1Name} vs {player2Name}
             </p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className={cn('text-sm', themeClass('font-black text-black', 'font-bold text-gray-500 hover:text-gray-700'))}
+            className={cn('text-sm', themeClass('font-black text-black dark:text-slate-100', 'font-bold text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-200'))}
           >
             닫기
           </button>
@@ -158,10 +158,10 @@ export default function LiveScoreInput({
               key={`set-${index + 1}`}
               className={cn(
                 'p-3',
-                themeClass('bg-gray-50 border-2 border-black rounded-[5px]', 'bg-gray-50 border border-gray-200 rounded-lg')
+                themeClass('bg-gray-50 dark:bg-slate-900 border-2 border-black rounded-[5px]', 'bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg')
               )}
             >
-              <p className={cn('text-xs mb-2', themeClass('font-black text-black/70', 'font-bold text-gray-500'))}>SET {index + 1}</p>
+              <p className={cn('text-xs mb-2', themeClass('font-black text-black/70 dark:text-slate-300', 'font-bold text-gray-500 dark:text-slate-400'))}>SET {index + 1}</p>
               <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2">
                 <input
                   type="number"
@@ -171,12 +171,12 @@ export default function LiveScoreInput({
                   className={cn(
                     'w-full text-center px-2 py-2 outline-none',
                     themeClass(
-                      'bg-white border-2 border-black rounded-[5px] font-black text-black',
-                      'bg-white border border-gray-300 rounded-md font-semibold text-gray-900 focus:ring-2 focus:ring-green-500'
+                      'bg-white dark:bg-slate-900 border-2 border-black rounded-[5px] font-black text-black dark:text-slate-100',
+                      'bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-md font-semibold text-gray-900 dark:text-slate-100 focus:ring-2 focus:ring-green-500'
                     )
                   )}
                 />
-                <span className={cn('text-lg', themeClass('font-black text-black', 'font-medium text-gray-400'))}>-</span>
+                <span className={cn('text-lg', themeClass('font-black text-black dark:text-slate-100', 'font-medium text-gray-400 dark:text-slate-500'))}>-</span>
                 <input
                   type="number"
                   min={0}
@@ -185,8 +185,8 @@ export default function LiveScoreInput({
                   className={cn(
                     'w-full text-center px-2 py-2 outline-none',
                     themeClass(
-                      'bg-white border-2 border-black rounded-[5px] font-black text-black',
-                      'bg-white border border-gray-300 rounded-md font-semibold text-gray-900 focus:ring-2 focus:ring-green-500'
+                      'bg-white dark:bg-slate-900 border-2 border-black rounded-[5px] font-black text-black dark:text-slate-100',
+                      'bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-md font-semibold text-gray-900 dark:text-slate-100 focus:ring-2 focus:ring-green-500'
                     )
                   )}
                 />
@@ -196,7 +196,7 @@ export default function LiveScoreInput({
         </div>
 
         <div className="mt-5">
-          <p className={cn('text-sm mb-2', themeClass('font-black text-black', 'font-bold text-gray-700'))}>승자 선택</p>
+          <p className={cn('text-sm mb-2', themeClass('font-black text-black dark:text-slate-100', 'font-bold text-gray-700 dark:text-slate-200'))}>승자 선택</p>
           <div className="grid grid-cols-2 gap-2">
             <button
               type="button"
@@ -206,7 +206,7 @@ export default function LiveScoreInput({
                 'px-3 py-2 text-sm transition-all disabled:opacity-50',
                 winnerId === match.participant1_id
                   ? themeClass('bg-[#22c55e] border-2 border-black rounded-[5px] font-black text-black', 'bg-green-600 rounded-lg font-bold text-white')
-                  : themeClass('bg-white border-2 border-black rounded-[5px] font-bold text-black', 'bg-white border border-gray-300 rounded-lg font-medium text-gray-700')
+                  : themeClass('bg-white dark:bg-slate-900 border-2 border-black rounded-[5px] font-bold text-black dark:text-slate-100', 'bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-lg font-medium text-gray-700 dark:text-slate-200')
               )}
             >
               {player1Name}
@@ -219,7 +219,7 @@ export default function LiveScoreInput({
                 'px-3 py-2 text-sm transition-all disabled:opacity-50',
                 winnerId === match.participant2_id
                   ? themeClass('bg-[#22c55e] border-2 border-black rounded-[5px] font-black text-black', 'bg-green-600 rounded-lg font-bold text-white')
-                  : themeClass('bg-white border-2 border-black rounded-[5px] font-bold text-black', 'bg-white border border-gray-300 rounded-lg font-medium text-gray-700')
+                  : themeClass('bg-white dark:bg-slate-900 border-2 border-black rounded-[5px] font-bold text-black dark:text-slate-100', 'bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-lg font-medium text-gray-700 dark:text-slate-200')
               )}
             >
               {player2Name}
@@ -234,8 +234,8 @@ export default function LiveScoreInput({
             className={cn(
               'flex-1 py-3 text-sm transition-all',
               themeClass(
-                'bg-white border-2 border-black rounded-[5px] font-black text-black',
-                'bg-white border border-gray-300 rounded-lg font-bold text-gray-700 hover:bg-gray-50'
+                'bg-white dark:bg-slate-900 border-2 border-black rounded-[5px] font-black text-black dark:text-slate-100',
+                'bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-lg font-bold text-gray-700 dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-800'
               )
             )}
           >

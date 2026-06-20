@@ -7,14 +7,14 @@ export default function PrivacyPage() {
 
   return (
     <div className="container py-8 scrollbar-hide">
-      <div className={`max-w-3xl mx-auto ${themeClass('bg-white border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000] p-8', 'bg-white rounded-xl shadow-lg p-8')}`}>
-        <h1 className={`text-2xl font-bold mb-6 ${themeClass('text-black', 'text-gray-900')}`}>
+      <div className={`max-w-3xl mx-auto ${themeClass('bg-white dark:bg-slate-900 border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000] p-8', 'bg-white dark:bg-slate-900 rounded-xl shadow-lg p-8')}`}>
+        <h1 className={`text-2xl font-bold mb-6 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
           개인정보처리방침
         </h1>
 
-        <div className={`space-y-6 ${themeClass('text-black/80', 'text-gray-600')}`}>
+        <div className={`space-y-6 ${themeClass('text-black/80 dark:text-slate-300', 'text-gray-600 dark:text-slate-400')}`}>
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               1. 개인정보의 처리 목적
             </h2>
             <p>
@@ -33,7 +33,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               2. 수집하는 개인정보 항목
             </h2>
             <p className="mb-2">서비스는 소셜 로그인(OAuth) 방식을 통해 최소한의 정보만 수집합니다.</p>
@@ -48,7 +48,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               3. 개인정보의 처리 및 보유 기간
             </h2>
             <p>
@@ -67,7 +67,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               4. 개인정보의 제3자 제공 및 위탁
             </h2>
             <p className="mb-2">
@@ -86,7 +86,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               5. 정보주체의 권리·의무 및 행사방법
             </h2>
             <p>정보주체는 서비스에 대해 언제든지 다음 각 호의 개인정보 보호 관련 권리를 행사할 수 있습니다.</p>
@@ -102,7 +102,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               6. 개인정보의 안전성 확보조치
             </h2>
             <p>서비스는 개인정보의 안전성 확보를 위해 다음과 같은 조치를 취하고 있습니다.</p>
@@ -115,7 +115,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               7. 쿠키 및 자동 수집 장치의 사용
             </h2>
             <p className="mb-2">
@@ -133,7 +133,7 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               8. 개인정보 보호책임자
             </h2>
             <p>
@@ -141,12 +141,12 @@ export default function PrivacyPage() {
               정보주체의 불만처리 및 피해구제 등을 위하여 아래와 같이 개인정보 보호책임자를 지정하고 있습니다.
             </p>
             <p className="mt-2">
-              문의: <a href="mailto:gjghks84@gmail.com" className={`font-medium hover:underline ${themeClass('text-black', 'text-green-600')}`}>gjghks84@gmail.com</a>
+              문의: <a href="mailto:gjghks84@gmail.com" className={`font-medium hover:underline ${themeClass('text-black dark:text-slate-100', 'text-green-600')}`}>gjghks84@gmail.com</a>
             </p>
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               9. 개인정보처리방침의 변경
             </h2>
             <p>

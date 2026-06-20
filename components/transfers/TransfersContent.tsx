@@ -31,9 +31,9 @@ export default function TransfersContent() {
   };
 
   return (
-    <div className={cn('container mx-auto px-4 py-6 min-h-screen scrollbar-hide', themeClass('bg-nb-bg', 'bg-gray-50'))}>
+    <div className={cn('container mx-auto px-4 py-6 min-h-screen scrollbar-hide', themeClass('bg-nb-bg', 'bg-gray-50 dark:bg-slate-900'))}>
       <div className="flex items-center justify-between mb-4">
-        <h1 className={cn('text-xl', themeClass('font-black text-black', 'font-bold text-gray-900'))}>
+        <h1 className={cn('text-xl', themeClass('font-black text-black dark:text-slate-100', 'font-bold text-gray-900 dark:text-slate-100'))}>
           양도 마켓
         </h1>
         <Link
@@ -42,7 +42,7 @@ export default function TransfersContent() {
             'flex items-center gap-1.5 text-sm px-3.5 py-2 rounded-lg transition-all',
             themeClass(
               'bg-[#facc15] border-2 border-black font-bold text-black shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none',
-              'bg-green-50 text-green-700 font-semibold border border-green-200 hover:bg-green-100'
+              'bg-green-50 dark:bg-green-950/40 text-green-700 dark:text-green-300 font-semibold border border-green-200 dark:border-green-900 hover:bg-green-100 dark:hover:bg-green-900/50'
             )
           )}
         >
@@ -67,7 +67,7 @@ export default function TransfersContent() {
                   'px-4 py-2 rounded-full text-sm font-bold transition-colors',
                   !myMode
                     ? themeClass('bg-black text-white', 'bg-gray-900 text-white')
-                    : themeClass('bg-white border-2 border-black hover:bg-gray-100', 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50')
+                    : themeClass('bg-white dark:bg-slate-800 dark:text-slate-100 border-2 border-black hover:bg-gray-100 dark:hover:bg-slate-700', 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700')
                 )}
               >
                 전체 양도
@@ -79,7 +79,7 @@ export default function TransfersContent() {
                   'px-4 py-2 rounded-full text-sm font-bold transition-colors',
                   myMode
                     ? themeClass('bg-black text-white', 'bg-gray-900 text-white')
-                    : themeClass('bg-white border-2 border-black hover:bg-gray-100', 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50')
+                    : themeClass('bg-white dark:bg-slate-800 dark:text-slate-100 border-2 border-black hover:bg-gray-100 dark:hover:bg-slate-700', 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700')
                 )}
               >
                 내 양도
@@ -97,8 +97,8 @@ export default function TransfersContent() {
                 district === ''
                   ? themeClass('bg-black text-white', 'bg-gray-900 text-white')
                   : themeClass(
-                      'bg-white border-2 border-black hover:bg-gray-100',
-                      'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50'
+                      'bg-white dark:bg-slate-800 dark:text-slate-100 border-2 border-black hover:bg-gray-100 dark:hover:bg-slate-700',
+                      'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700'
                     )
               )}
             >
@@ -115,7 +115,7 @@ export default function TransfersContent() {
                     ? themeClass('bg-black text-white', 'bg-gray-900 text-white')
                     : themeClass(
                         'bg-white border-2 border-black hover:bg-gray-100',
-                        'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50'
+                        'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-400 hover:bg-gray-50 dark:hover:bg-slate-700'
                       )
                 )}
               >
@@ -132,12 +132,12 @@ export default function TransfersContent() {
                 'px-4 py-2 rounded-lg text-sm font-bold flex-1 transition-colors',
                 status === 'available'
                   ? themeClass(
-                      'bg-green-100 text-green-800 border-2 border-black shadow-[2px_2px_0px_0px_#000]',
-                      'bg-green-50 text-green-700 border-green-200 shadow-sm'
+                      'bg-green-100 dark:bg-green-950/40 text-green-800 dark:text-green-300 border-2 border-black shadow-[2px_2px_0px_0px_#000]',
+                      'bg-green-50 dark:bg-green-950/40 text-green-700 dark:text-green-300 border-green-200 dark:border-green-900 shadow-sm'
                     )
                   : themeClass(
-                      'bg-white text-gray-600 border-2 border-black hover:bg-gray-50',
-                      'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'
+                      'bg-white dark:bg-slate-800 text-gray-600 dark:text-slate-300 border-2 border-black hover:bg-gray-50 dark:hover:bg-slate-700',
+                      'bg-white dark:bg-slate-800 text-gray-500 dark:text-slate-400 border border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700'
                     )
               )}
             >
@@ -150,12 +150,12 @@ export default function TransfersContent() {
                 'px-4 py-2 rounded-lg text-sm font-bold flex-1 transition-colors',
                 status === 'completed'
                   ? themeClass(
-                      'bg-gray-200 text-gray-800 border-2 border-black shadow-[2px_2px_0px_0px_#000]',
-                      'bg-gray-100 text-gray-700 border-gray-300 shadow-sm'
+                      'bg-gray-200 dark:bg-slate-700 text-gray-800 dark:text-slate-200 border-2 border-black shadow-[2px_2px_0px_0px_#000]',
+                      'bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-slate-200 border-gray-300 dark:border-slate-600 shadow-sm'
                     )
                   : themeClass(
-                      'bg-white text-gray-600 border-2 border-black hover:bg-gray-50',
-                      'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'
+                      'bg-white dark:bg-slate-800 text-gray-600 dark:text-slate-300 border-2 border-black hover:bg-gray-50 dark:hover:bg-slate-700',
+                      'bg-white dark:bg-slate-800 text-gray-500 dark:text-slate-400 border border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700'
                     )
               )}
             >
@@ -168,12 +168,12 @@ export default function TransfersContent() {
                 'px-4 py-2 rounded-lg text-sm font-bold flex-1 transition-colors',
                 status === 'expired'
                   ? themeClass(
-                      'bg-orange-100 text-orange-800 border-2 border-black shadow-[2px_2px_0px_0px_#000]',
-                      'bg-orange-50 text-orange-700 border-orange-300 shadow-sm'
+                      'bg-orange-100 dark:bg-orange-950/40 text-orange-800 dark:text-orange-300 border-2 border-black shadow-[2px_2px_0px_0px_#000]',
+                      'bg-orange-50 dark:bg-orange-950/40 text-orange-700 dark:text-orange-300 border-orange-300 dark:border-orange-900 shadow-sm'
                     )
                   : themeClass(
-                      'bg-white text-gray-600 border-2 border-black hover:bg-gray-50',
-                      'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'
+                      'bg-white dark:bg-slate-800 text-gray-600 dark:text-slate-300 border-2 border-black hover:bg-gray-50 dark:hover:bg-slate-700',
+                      'bg-white dark:bg-slate-800 text-gray-500 dark:text-slate-400 border border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700'
                     )
               )}
             >
@@ -190,8 +190,8 @@ export default function TransfersContent() {
             <div className={cn(
               'relative mb-4 transition-all',
               themeClass(
-                'bg-white border-2 border-dashed border-black/30 rounded-[10px] overflow-hidden',
-                'bg-gray-50/80 border border-dashed border-gray-300 rounded-xl overflow-hidden'
+                'bg-white dark:bg-slate-800 border-2 border-dashed border-black/30 dark:border-slate-600 rounded-[10px] overflow-hidden',
+                'bg-gray-50/80 dark:bg-slate-800/80 border border-dashed border-gray-300 dark:border-slate-600 rounded-xl overflow-hidden'
               )
             )}>
               <button
@@ -202,13 +202,13 @@ export default function TransfersContent() {
                 <div className="p-4 flex-1">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
-                      <span className={cn('px-2 py-0.5 text-xs font-bold rounded-full', themeClass('bg-green-100/50 text-green-800/50 border border-green-800/30', 'bg-green-100/70 text-green-800/60'))}>양도 가능</span>
-                      <span className="text-xs font-medium text-gray-400">송파구</span>
+                      <span className={cn('px-2 py-0.5 text-xs font-bold rounded-full', themeClass('bg-green-100/50 dark:bg-green-950/30 text-green-800/50 dark:text-green-300/60 border border-green-800/30 dark:border-green-900/50', 'bg-green-100/70 dark:bg-green-950/30 text-green-800/60 dark:text-green-300/60'))}>양도 가능</span>
+                      <span className="text-xs font-medium text-gray-400 dark:text-slate-500">송파구</span>
                     </div>
-                    <span className={cn('flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold rounded', themeClass('bg-black/10 text-black/50', 'bg-gray-200 text-gray-500'))}>예시 {exampleOpen ? '▲' : '▼'}</span>
+                    <span className={cn('flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold rounded', themeClass('bg-black/10 text-black/50 dark:bg-white/10 dark:text-slate-300', 'bg-gray-200 dark:bg-slate-700 text-gray-500 dark:text-slate-400'))}>예시 {exampleOpen ? '▲' : '▼'}</span>
                   </div>
-                  <h3 className={cn('font-bold text-base mb-1 line-clamp-2', themeClass('text-black/50', 'text-gray-400'))}>올림픽공원 테니스장 주말 오전 코트</h3>
-                  <div className="text-sm text-gray-400 mb-3 space-y-1">
+                  <h3 className={cn('font-bold text-base mb-1 line-clamp-2', themeClass('text-black/50 dark:text-slate-400', 'text-gray-400 dark:text-slate-500'))}>올림픽공원 테니스장 주말 오전 코트</h3>
+                  <div className="text-sm text-gray-400 dark:text-slate-500 mb-3 space-y-1">
                     <div className="flex items-center gap-1.5">
                       <span className="opacity-50">🏟️</span>
                       <span>올림픽공원 테니스장 A코트</span>
@@ -219,24 +219,24 @@ export default function TransfersContent() {
                     </div>
                   </div>
                 </div>
-                <div className={cn('p-4 flex items-center justify-between border-t', themeClass('border-black/10 bg-gray-50/50', 'border-gray-100 bg-gray-50/30'))}>
-                  <span className="text-sm font-medium text-gray-400 truncate max-w-[80px]">테니스러버</span>
-                  <span className={cn('font-black text-lg', themeClass('text-black/40', 'text-gray-400'))}>15,000원</span>
+                <div className={cn('p-4 flex items-center justify-between border-t', themeClass('border-black/10 dark:border-white/10 bg-gray-50/50 dark:bg-slate-900/40', 'border-gray-100 dark:border-slate-700 bg-gray-50/30 dark:bg-slate-900/30'))}>
+                  <span className="text-sm font-medium text-gray-400 dark:text-slate-500 truncate max-w-[80px]">테니스러버</span>
+                  <span className={cn('font-black text-lg', themeClass('text-black/40 dark:text-slate-400', 'text-gray-400 dark:text-slate-500'))}>15,000원</span>
                 </div>
                 {!exampleOpen && (
-                  <p className={cn('pb-3 text-xs text-center', themeClass('text-black/40 font-bold', 'text-gray-400'))}>눌러서 예시 상세 보기</p>
+                  <p className={cn('pb-3 text-xs text-center', themeClass('text-black/40 font-bold dark:text-slate-400', 'text-gray-400 dark:text-slate-500'))}>눌러서 예시 상세 보기</p>
                 )}
               </button>
               <div className={cn(
                 'transition-all duration-300 ease-in-out overflow-hidden',
                 exampleOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
               )}>
-                <div className={cn('px-4 pb-4 pt-0 space-y-4', themeClass('border-t border-dashed border-black/20', 'border-t border-dashed border-gray-200'))}>
-                  <div className={cn('pt-3 text-sm leading-relaxed', themeClass('text-black/50', 'text-gray-400'))}>
+                <div className={cn('px-4 pb-4 pt-0 space-y-4', themeClass('border-t border-dashed border-black/20 dark:border-white/15', 'border-t border-dashed border-gray-200 dark:border-slate-700'))}>
+                  <div className={cn('pt-3 text-sm leading-relaxed', themeClass('text-black/50 dark:text-slate-400', 'text-gray-400 dark:text-slate-500'))}>
                     <p>급한 일정으로 코트를 양도합니다. 코트비 15,000원(2시간 기준)에 캔볼 1캔 포함 가격입니다. 올림픽공원 내 하드코트이며 조명 시설 완비되어 있습니다.</p>
                   </div>
-                  <div className={cn('p-3 rounded-lg', themeClass('bg-black/5', 'bg-gray-100'))}>
-                    <p className={cn('text-[10px] mb-2 text-center', themeClass('font-bold text-black/40', 'font-semibold text-gray-400'))}>양도 진행 과정</p>
+                  <div className={cn('p-3 rounded-lg', themeClass('bg-black/5 dark:bg-white/5', 'bg-gray-100 dark:bg-slate-700'))}>
+                    <p className={cn('text-[10px] mb-2 text-center', themeClass('font-bold text-black/40 dark:text-slate-400', 'font-semibold text-gray-400 dark:text-slate-400'))}>양도 진행 과정</p>
                     <div className="flex items-center justify-between gap-1">
                       {[
                         { step: '등록', icon: '📝', active: true },
@@ -247,12 +247,12 @@ export default function TransfersContent() {
                         <div key={s.step} className="flex items-center gap-1 flex-1">
                           <div className={cn(
                             'flex flex-col items-center flex-1',
-                            s.active ? themeClass('text-black/60', 'text-green-600/70') : themeClass('text-black/25', 'text-gray-300')
+                            s.active ? themeClass('text-black/60 dark:text-slate-300', 'text-green-600/70') : themeClass('text-black/25 dark:text-slate-500', 'text-gray-300 dark:text-slate-600')
                           )}>
                             <span className="text-base">{s.icon}</span>
                             <span className={cn('text-[9px] mt-0.5', s.active ? 'font-bold' : 'font-medium')}>{s.step}</span>
                           </div>
-                          {i < 3 && <span className={cn('text-[10px] -mt-3', themeClass('text-black/20', 'text-gray-300'))}>→</span>}
+                          {i < 3 && <span className={cn('text-[10px] -mt-3', themeClass('text-black/20 dark:text-slate-600', 'text-gray-300 dark:text-slate-600'))}>→</span>}
                         </div>
                       ))}
                     </div>
@@ -261,7 +261,7 @@ export default function TransfersContent() {
                     href="/transfers/new"
                     className={cn(
                       'block w-full py-2.5 text-center text-sm font-bold rounded-lg transition-all',
-                      themeClass('bg-black/10 text-black/60 hover:bg-black/20', 'bg-gray-200 text-gray-600 hover:bg-gray-300')
+                      themeClass('bg-black/10 text-black/60 dark:bg-white/10 dark:text-slate-300 hover:bg-black/20 dark:hover:bg-white/20', 'bg-gray-200 dark:bg-slate-700 text-gray-600 dark:text-slate-300 hover:bg-gray-300 dark:hover:bg-slate-600')
                     )}
                   >
                     나도 양도글 작성하기 →
@@ -279,10 +279,10 @@ export default function TransfersContent() {
             ) : transfers.length === 0 ? (
               <div className="py-20 text-center">
                 <div className="text-4xl mb-4">🎾</div>
-                <h3 className={cn('text-lg font-bold mb-2', themeClass('text-black', 'text-gray-900'))}>
+                <h3 className={cn('text-lg font-bold mb-2', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>
                   {myMode ? '참여한 양도가 없습니다' : '등록된 양도글이 없습니다'}
                 </h3>
-                <p className="text-gray-500 text-sm">
+                <p className="text-gray-500 dark:text-slate-400 text-sm">
                   {myMode ? '양도글을 등록하거나 관심 표시를 해보세요.' : '첫 양도글을 등록해보세요!'}
                 </p>
               </div>

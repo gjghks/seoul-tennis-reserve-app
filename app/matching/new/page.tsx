@@ -16,7 +16,7 @@ export default function NewMatchingPage() {
     return (
       <div className={`container mx-auto px-4 py-8 min-h-screen ${themeClass('bg-nb-bg', '')}`}>
         <div className="flex items-center justify-center min-h-[400px]">
-          <div className={themeClass('text-black font-bold', 'text-gray-400')}>로딩중...</div>
+          <div className={themeClass('text-black dark:text-slate-100 font-bold', 'text-gray-400 dark:text-slate-500')}>로딩중...</div>
         </div>
       </div>
     );
@@ -26,19 +26,19 @@ export default function NewMatchingPage() {
     return (
       <div className={`container mx-auto px-4 py-8 min-h-screen ${themeClass('bg-nb-bg', '')}`}>
         <div className={themeClass(
-          'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] py-12 px-6 text-center max-w-md mx-auto',
-          'bg-white rounded-2xl border border-gray-100 py-12 px-6 text-center max-w-md mx-auto'
+          'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] py-12 px-6 text-center max-w-md mx-auto',
+          'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-800 py-12 px-6 text-center max-w-md mx-auto'
         )}>
           <div className={`w-16 h-16 mx-auto mb-4 flex items-center justify-center ${themeClass(
             'bg-[#a3e635] border-2 border-black rounded-[5px]',
-            'bg-green-50 rounded-full'
+            'bg-green-50 dark:bg-green-950/40 rounded-full'
           )}`}>
             <span className="text-3xl">🤝</span>
           </div>
-          <h3 className={`text-lg mb-2 ${themeClass('font-black text-black', 'font-semibold text-gray-900')}`}>
+          <h3 className={`text-lg mb-2 ${themeClass('font-black text-black dark:text-slate-100', 'font-semibold text-gray-900 dark:text-slate-100')}`}>
             로그인이 필요합니다
           </h3>
-          <p className={`mb-6 ${themeClass('text-black/60 font-medium', 'text-gray-500')}`}>
+          <p className={`mb-6 ${themeClass('text-black/60 dark:text-slate-400 font-medium', 'text-gray-500 dark:text-slate-400')}`}>
             매칭 모집글을 작성하려면 로그인해주세요
           </p>
           <div className="flex flex-col gap-3 items-center">
@@ -54,7 +54,7 @@ export default function NewMatchingPage() {
             </button>
             <Link
               href="/matching"
-              className={`text-sm ${themeClass('text-black/50 font-bold hover:text-black', 'text-gray-400 hover:text-gray-600')} transition-colors`}
+              className={`text-sm ${themeClass('text-black/50 dark:text-slate-400 font-bold hover:text-black dark:hover:text-slate-100', 'text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:hover:text-slate-300')} transition-colors`}
             >
               매칭 목록으로 돌아가기
             </Link>
@@ -70,15 +70,15 @@ export default function NewMatchingPage() {
   }
 
   return (
-    <div className={cn('min-h-screen py-8', themeClass('bg-nb-bg', 'bg-gray-50'))}>
+    <div className={cn('min-h-screen py-8', themeClass('bg-nb-bg', 'bg-gray-50 dark:bg-slate-900'))}>
       <div className="container mx-auto px-4 max-w-2xl">
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center">
             <Link
               href="/matching"
               className={themeClass(
-                'mr-4 p-2 hover:bg-gray-200 transition-colors rounded-[5px]',
-                'mr-4 p-2 hover:bg-gray-100 transition-colors rounded-full'
+                'mr-4 p-2 hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors rounded-[5px]',
+                'mr-4 p-2 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors rounded-full'
               )}
               aria-label="뒤로 가기"
             >
@@ -86,7 +86,7 @@ export default function NewMatchingPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="m15 18-6-6 6-6"/>
               </svg>
             </Link>
-            <h1 className={cn('text-2xl', themeClass('font-black text-black uppercase', 'font-bold text-gray-900'))}>
+            <h1 className={cn('text-2xl', themeClass('font-black text-black dark:text-slate-100 uppercase', 'font-bold text-gray-900 dark:text-slate-100'))}>
               새 매칭 모집글 작성
             </h1>
           </div>
@@ -96,7 +96,7 @@ export default function NewMatchingPage() {
               'flex items-center gap-1.5 text-sm px-3.5 py-2 rounded-lg transition-all',
               themeClass(
                 'bg-[#facc15] border-2 border-black font-bold text-black shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none',
-                'bg-green-50 text-green-700 font-semibold border border-green-200 hover:bg-green-100'
+                'bg-green-50 dark:bg-green-950/40 text-green-700 dark:text-green-300 font-semibold border border-green-200 dark:border-green-900 hover:bg-green-100 dark:hover:bg-green-900/40'
               )
             )}
           >

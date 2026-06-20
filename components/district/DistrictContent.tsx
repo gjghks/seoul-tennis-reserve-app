@@ -182,7 +182,7 @@ export default function DistrictContent({
   }, [mutate]);
 
   const RefreshIndicator = (
-    <div className={`flex items-center justify-center py-4 ${themeClass('text-black font-bold', 'text-green-600')}`}>
+    <div className={`flex items-center justify-center py-4 ${themeClass('text-black dark:text-slate-100 font-bold', 'text-green-600')}`}>
       <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24" aria-hidden="true">
         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
@@ -195,28 +195,28 @@ export default function DistrictContent({
     <PullToRefresh
       onRefresh={handleRefresh}
       pullingContent={
-        <div className={`flex items-center justify-center py-4 ${themeClass('text-black font-bold', 'text-green-600')}`}>
+        <div className={`flex items-center justify-center py-4 ${themeClass('text-black dark:text-slate-100 font-bold', 'text-green-600')}`}>
           <span>↓ 당겨서 새로고침</span>
         </div>
       }
       refreshingContent={RefreshIndicator}
     >
-     <div className={`min-h-screen scrollbar-hide ${themeClass('bg-nb-bg', 'bg-gray-50')} `}>
+     <div className={`min-h-screen scrollbar-hide ${themeClass('bg-nb-bg', 'bg-gray-50 dark:bg-slate-900')} `}>
       <div className={`sticky top-14 z-40 ${
-        isNeoBrutalism 
-          ? 'bg-[#88aaee] border-b-[3px] border-black' 
-          : 'bg-white border-b border-gray-200'
+        isNeoBrutalism
+          ? 'bg-[#88aaee] border-b-[3px] border-black'
+          : 'bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-700'
       }`}>
         <div className="container py-3">
           <div className="grid grid-cols-[auto_1fr_auto] items-center gap-2">
             <Link href="/" className={`text-sm shrink-0 ${
-              isNeoBrutalism 
-                ? 'text-black font-bold hover:underline underline-offset-4' 
-                : 'text-gray-500 hover:text-green-600'
+              isNeoBrutalism
+                ? 'text-black font-bold hover:underline underline-offset-4'
+                : 'text-gray-500 dark:text-slate-400 hover:text-green-600'
             }`}>
               ← 전체 지역
             </Link>
-            <h1 className={`text-center text-lg min-w-0 ${themeClass('font-black text-black uppercase', 'font-bold text-gray-900')}`}>
+            <h1 className={`text-center text-lg min-w-0 ${themeClass('font-black text-black uppercase', 'font-bold text-gray-900 dark:text-slate-100')}`}>
               {districtName}
             </h1>
             <div className="flex items-center gap-2 shrink-0">
@@ -224,8 +224,8 @@ export default function DistrictContent({
                 type="button"
                 onClick={() => toggleView(viewMode === 'map' ? 'list' : 'map')}
                 className={themeClass(
-                  'inline-flex items-center gap-1.5 h-8 px-2.5 rounded-[5px] border-2 border-black transition-all bg-white text-xs font-black hover:bg-[#facc15]/30',
-                  'inline-flex items-center gap-1.5 h-8 px-2.5 rounded-lg border border-gray-300 transition-colors bg-white text-xs font-medium text-gray-700 hover:border-green-300 hover:text-green-700'
+                  'inline-flex items-center gap-1.5 h-8 px-2.5 rounded-[5px] border-2 border-black dark:border-[#f1f3f8] transition-all bg-white dark:bg-slate-800 text-xs font-black hover:bg-[#facc15]/30',
+                  'inline-flex items-center gap-1.5 h-8 px-2.5 rounded-lg border border-gray-300 dark:border-slate-700 transition-colors bg-white dark:bg-slate-800 text-xs font-medium text-gray-700 dark:text-slate-200 hover:border-green-300 hover:text-green-700'
                 )}
               >
                 {viewMode === 'map' ? (
@@ -253,8 +253,8 @@ export default function DistrictContent({
                       'h-8 rounded-lg border border-green-600 bg-green-600 px-2.5 text-xs font-semibold text-white transition-colors hover:bg-green-700'
                     )
                   : themeClass(
-                      'h-8 rounded-lg border-2 border-black bg-white px-2.5 text-xs font-black text-black transition-colors hover:bg-[#facc15]/30',
-                      'h-8 rounded-lg border border-gray-300 bg-white px-2.5 text-xs font-medium text-gray-700 transition-colors hover:border-green-300 hover:text-green-700'
+                      'h-8 rounded-lg border-2 border-black dark:border-[#f1f3f8] bg-white dark:bg-slate-800 px-2.5 text-xs font-black text-black dark:text-slate-100 transition-colors hover:bg-[#facc15]/30',
+                      'h-8 rounded-lg border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-2.5 text-xs font-medium text-gray-700 dark:text-slate-200 transition-colors hover:border-green-300 hover:text-green-700'
                     )
                 }
               >
@@ -277,8 +277,8 @@ export default function DistrictContent({
                           'h-7 rounded-full border border-green-600 bg-green-600 px-3 text-xs font-semibold text-white transition-colors whitespace-nowrap'
                         )
                       : themeClass(
-                          'h-7 rounded-full border-2 border-black bg-white px-3 text-xs font-black text-black transition-colors hover:bg-[#facc15]/30 whitespace-nowrap',
-                          'h-7 rounded-full border border-gray-300 bg-white px-3 text-xs font-medium text-gray-700 transition-colors hover:border-green-300 hover:text-green-700 whitespace-nowrap'
+                          'h-7 rounded-full border-2 border-black bg-white dark:bg-slate-800 px-3 text-xs font-black text-black dark:text-slate-100 transition-colors hover:bg-[#facc15]/30 whitespace-nowrap',
+                          'h-7 rounded-full border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 text-xs font-medium text-gray-700 dark:text-slate-200 transition-colors hover:border-green-300 hover:text-green-700 whitespace-nowrap'
                         )
                     }
                   >
@@ -293,7 +293,7 @@ export default function DistrictContent({
                   <LastUpdated timestamp={lastUpdated} className="mt-0" />
                 )}
                 {lastUpdated && districtWeatherGrid && (
-                  <span className={themeClass('text-black/30', 'text-gray-300')}>·</span>
+                  <span className={themeClass('text-black/30 dark:text-slate-600', 'text-gray-300 dark:text-slate-600')}>·</span>
                 )}
                 {districtWeatherGrid && (
                   <WeatherBadge nx={districtWeatherGrid.nx} ny={districtWeatherGrid.ny} compact district={koreanDistrict} />
@@ -332,9 +332,9 @@ export default function DistrictContent({
           </div>
         ) : filteredCourts.length === 0 ? (
           <div className={`text-center py-16 ${
-            isNeoBrutalism 
-              ? 'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]' 
-              : 'bg-white rounded-2xl border border-gray-100'
+            isNeoBrutalism
+              ? 'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8]'
+              : 'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-800'
           }`}>
             <svg className={themeClass('w-24 h-24 mx-auto mb-6', 'w-20 h-20 mx-auto mb-6')} viewBox="0 0 96 96" fill="none" aria-hidden="true">
               <g style={{ animation: 'search-drift 4s ease-in-out infinite' }}>
@@ -350,10 +350,10 @@ export default function DistrictContent({
               <circle cx="80" cy="28" r="2" className={themeClass('fill-black', 'fill-gray-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.6s' }} />
               <path d="M76 70 Q76 74 80 74 Q76 74 76 78 Q76 74 72 74 Q76 74 76 70 Z" className={themeClass('fill-black', 'fill-gray-300')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.3s' }} />
             </svg>
-            <h3 className={`text-lg mb-2 ${themeClass('font-black text-black uppercase', 'font-semibold text-gray-900')} `}>
+            <h3 className={`text-lg mb-2 ${themeClass('font-black text-black dark:text-slate-100 uppercase', 'font-semibold text-gray-900 dark:text-slate-100')} `}>
               {showAvailableOnly ? '접수중인 테니스장이 없습니다' : '등록된 테니스장이 없습니다'}
             </h3>
-            <p className={`mb-6 ${themeClass('text-black/60 font-medium', 'text-gray-500')} `}>
+            <p className={`mb-6 ${themeClass('text-black/60 dark:text-slate-400 font-medium', 'text-gray-500 dark:text-slate-400')} `}>
               {showAvailableOnly
                 ? `${districtName}에 현재 접수중인 테니스장이 없습니다. 필터를 해제하면 전체 목록을 볼 수 있습니다.`
                 : `${districtName}에는 아직 공공 테니스장 정보가 등록되지 않았습니다.`}
@@ -399,7 +399,7 @@ export default function DistrictContent({
 
                   return (
                     <div className="mt-8">
-                      <p className={`text-xs mb-3 ${themeClass('text-black/60 font-bold uppercase', 'text-gray-400')}`}>
+                      <p className={`text-xs mb-3 ${themeClass('text-black/60 dark:text-slate-400 font-bold uppercase', 'text-gray-400 dark:text-slate-500')}`}>
                         접수중인 코트가 있는 다른 지역
                       </p>
                       <div className="flex flex-wrap justify-center gap-2">
@@ -408,8 +408,8 @@ export default function DistrictContent({
                             key={name}
                             href={`/${KOREAN_TO_SLUG[name]}`}
                             className={themeClass(
-                              'px-3 py-1.5 text-sm font-bold border-2 border-black rounded-[5px] bg-white hover:bg-[#a3e635] transition-colors',
-                              'px-3 py-1.5 text-sm font-medium border border-gray-200 rounded-lg bg-white hover:border-green-300 hover:text-green-700 transition-colors'
+                              'px-3 py-1.5 text-sm font-bold border-2 border-black rounded-[5px] bg-white dark:bg-slate-800 text-black dark:text-slate-100 hover:bg-[#a3e635] hover:text-black transition-colors',
+                              'px-3 py-1.5 text-sm font-medium border border-gray-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-200 hover:border-green-300 hover:text-green-700 transition-colors'
                             )}
                           >
                             {name} ({count})
@@ -433,14 +433,14 @@ export default function DistrictContent({
                     onClick={() => handlePlaceClick(placeName)}
                     className={`flex items-center gap-2 mb-3 group ${themeClass('', '')}`}
                   >
-                    <svg className={`w-4 h-4 shrink-0 ${themeClass('text-black/70', 'text-gray-400 group-hover:text-green-600')}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <svg className={`w-4 h-4 shrink-0 ${themeClass('text-black/70 dark:text-slate-300', 'text-gray-400 group-hover:text-green-600')}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
-                    <h2 className={`text-base ${themeClass('font-black text-black uppercase tracking-tight group-hover:text-[#16a34a]', 'font-semibold text-gray-800 group-hover:text-green-600')}`}>
+                    <h2 className={`text-base ${themeClass('font-black text-black dark:text-slate-100 uppercase tracking-tight group-hover:text-[#16a34a]', 'font-semibold text-gray-800 dark:text-slate-200 group-hover:text-green-600')}`}>
                       {placeName}
                     </h2>
-                    <span className={`text-xs ${themeClass('font-bold text-black/60', 'text-gray-400')}`}>
+                    <span className={`text-xs ${themeClass('font-bold text-black/60 dark:text-slate-400', 'text-gray-400 dark:text-slate-500')}`}>
                       {placeCourts.length}개{placeAvailable > 0 && ` · 접수중 ${placeAvailable}`}
                     </span>
                   </button>
@@ -456,8 +456,8 @@ export default function DistrictContent({
                         return (
                           <div
                             key={court.SVCID}
-                            className={`p-5 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] transition-all ${
-                              isAvailable || isExternal ? 'bg-white' : 'bg-gray-100'
+                            className={`p-5 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#f1f3f8] transition-all ${
+                              isAvailable || isExternal ? 'bg-white dark:bg-slate-800' : 'bg-gray-100 dark:bg-slate-800'
                             }`}
                           >
                             <div className="flex justify-between items-start mb-3">
@@ -466,7 +466,7 @@ export default function DistrictContent({
                                   href={`/${district}/${encodeURIComponent(court.SVCID)}`}
                                   className="group"
                                 >
-                                  <h3 className="text-lg font-black text-black group-hover:text-[#16a34a] uppercase tracking-tight">
+                                  <h3 className="text-lg font-black text-black dark:text-slate-100 group-hover:text-[#16a34a] uppercase tracking-tight">
                                     {court.SVCNM}
                                   </h3>
                                 </Link>
@@ -528,7 +528,7 @@ export default function DistrictContent({
                       return (
                         <div
                           key={court.SVCID}
-                          className="card p-5 bg-white"
+                          className="card p-5 bg-white dark:bg-slate-800"
                         >
                           <div className="flex justify-between items-start mb-2">
                             <div className="flex-1">
@@ -536,7 +536,7 @@ export default function DistrictContent({
                                 href={`/${district}/${encodeURIComponent(court.SVCID)}`}
                                 className="group"
                               >
-                                <h3 className="text-lg font-bold text-gray-900 group-hover:text-green-700">
+                                <h3 className="text-lg font-bold text-gray-900 dark:text-slate-100 group-hover:text-green-700">
                                   {court.SVCNM}
                                 </h3>
                               </Link>
@@ -554,11 +554,11 @@ export default function DistrictContent({
                           </div>
 
                           <div className="flex items-center justify-between mt-4">
-                            <div className="flex gap-2 text-xs text-gray-400">
-                              <span className="bg-gray-100 px-2 py-1 rounded">
+                            <div className="flex gap-2 text-xs text-gray-400 dark:text-slate-500">
+                              <span className="bg-gray-100 dark:bg-slate-700 px-2 py-1 rounded">
                                 {court.PAYATNM}
                               </span>
-                              <span className="bg-gray-100 px-2 py-1 rounded">
+                              <span className="bg-gray-100 dark:bg-slate-700 px-2 py-1 rounded">
                                 {court.V_MIN}~{court.V_MAX}
                               </span>
                             </div>
@@ -567,7 +567,7 @@ export default function DistrictContent({
                                 <button
                                   type="button"
                                   onClick={(e) => { e.stopPropagation(); handleNavClick(court); }}
-                                  className="w-9 h-9 flex items-center justify-center border border-gray-200 rounded-lg bg-white text-gray-500 hover:border-green-300 hover:text-green-600 transition-colors"
+                                  className="w-9 h-9 flex items-center justify-center border border-gray-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-gray-500 dark:text-slate-400 hover:border-green-300 hover:text-green-600 transition-colors"
                                   aria-label="길찾기"
                                   title="길찾기"
                                 >
@@ -602,15 +602,15 @@ export default function DistrictContent({
         {seoulApiAcceptingCount > 0 && <ReservationNotice />}
 
         <div className={`mt-6 p-4 ${themeClass(
-          'bg-[#fef3c7] border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000]',
-          'bg-amber-50 rounded-xl border border-amber-100'
+          'bg-[#fef3c7] dark:bg-amber-950/40 border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000]',
+          'bg-amber-50 dark:bg-amber-950/40 rounded-xl border border-amber-100 dark:border-amber-900/40'
         )}`}>
           <div className="flex items-center justify-between flex-wrap gap-3">
             <div>
-              <h3 className={`font-bold ${themeClass('text-black uppercase', 'text-gray-900')}`}>
+              <h3 className={`font-bold ${themeClass('text-black dark:text-amber-100 uppercase', 'text-gray-900 dark:text-amber-100')}`}>
                 {districtName} 테니스장 가이드
               </h3>
-              <p className={`text-sm mt-1 ${themeClass('text-black/70', 'text-gray-600')}`}>
+              <p className={`text-sm mt-1 ${themeClass('text-black/70 dark:text-amber-200/80', 'text-gray-600 dark:text-amber-200/80')}`}>
                 시설 비교, 예약 팁, 서울 평균과의 비교를 확인하세요.
               </p>
             </div>

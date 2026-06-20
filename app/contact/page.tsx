@@ -16,12 +16,12 @@ export default function ContactPage() {
 
   return (
     <div className="container py-8 scrollbar-hide">
-      <div className={`max-w-3xl mx-auto ${themeClass('bg-white border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000] p-8', 'bg-white rounded-xl shadow-lg p-8')}`}>
-        <h1 className={`text-2xl font-bold mb-6 ${themeClass('text-black', 'text-gray-900')}`}>
+      <div className={`max-w-3xl mx-auto ${themeClass('bg-white dark:bg-slate-900 border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000] p-8', 'bg-white dark:bg-slate-900 rounded-xl shadow-lg p-8')}`}>
+        <h1 className={`text-2xl font-bold mb-6 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
           문의하기
         </h1>
 
-        <div className={`space-y-8 ${themeClass('text-black/80', 'text-gray-600')}`}>
+        <div className={`space-y-8 ${themeClass('text-black/80 dark:text-slate-300', 'text-gray-600 dark:text-slate-400')}`}>
           <section>
             <p className="leading-relaxed">
               서울 테니스 서비스에 대한 문의, 건의사항, 오류 신고 등
@@ -29,11 +29,11 @@ export default function ContactPage() {
             </p>
           </section>
 
-          <section className={`p-6 rounded-lg ${themeClass('bg-green-100 border-2 border-black', 'bg-green-50')}`}>
-            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
+          <section className={`p-6 rounded-lg ${themeClass('bg-green-100 dark:bg-green-950/40 border-2 border-black', 'bg-green-50 dark:bg-green-950/40')}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               간단한 의견은 의견 보내기로!
             </h2>
-            <p className={`text-sm mb-4 ${themeClass('text-black/70', 'text-gray-500')}`}>
+            <p className={`text-sm mb-4 ${themeClass('text-black/70 dark:text-slate-300', 'text-gray-500 dark:text-slate-400')}`}>
               로그인 없이 간편하게 개선 제안, 오류 신고, 기타 의견을 보낼 수 있어요.
             </p>
             <button
@@ -50,18 +50,18 @@ export default function ContactPage() {
             </button>
           </section>
 
-          <section className={`p-6 rounded-lg ${themeClass('bg-yellow-100 border-2 border-black', 'bg-gray-50')}`}>
-            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black', 'text-gray-900')}`}>
+          <section className={`p-6 rounded-lg ${themeClass('bg-yellow-100 dark:bg-yellow-950/40 border-2 border-black', 'bg-gray-50 dark:bg-slate-900')}`}>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               상세한 문의는 이메일로
             </h2>
-            <p className={`text-sm mb-3 ${themeClass('text-black/70', 'text-gray-500')}`}>
+            <p className={`text-sm mb-3 ${themeClass('text-black/70 dark:text-slate-300', 'text-gray-500 dark:text-slate-400')}`}>
               답변이 필요한 문의나 상세한 설명이 필요한 경우 이메일로 연락해 주세요.
             </p>
             <div className="flex items-center gap-3">
               <span className="text-2xl">📧</span>
               <a
                 href="mailto:gjghks84@gmail.com"
-                className={`text-lg font-semibold hover:underline ${themeClass('text-black', 'text-green-600')}`}
+                className={`text-lg font-semibold hover:underline ${themeClass('text-black dark:text-slate-100', 'text-green-600')}`}
               >
                 gjghks84@gmail.com
               </a>
@@ -69,7 +69,7 @@ export default function ContactPage() {
           </section>
 
           <section>
-            <h2 className={`text-lg font-bold mb-4 ${themeClass('text-black', 'text-gray-900')} `}>
+            <h2 className={`text-lg font-bold mb-4 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')} `}>
               문의 유형
             </h2>
             <ul className="space-y-3">
@@ -78,7 +78,7 @@ export default function ContactPage() {
                   💡
                 </span>
                 <div>
-                  <strong className={themeClass('text-black', 'text-gray-900')}>
+                  <strong className={themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}>
                     서비스 개선 제안
                   </strong>
                   <p className="text-sm mt-1">
@@ -91,7 +91,7 @@ export default function ContactPage() {
                   🐛
                 </span>
                 <div>
-                  <strong className={themeClass('text-black', 'text-gray-900')}>
+                  <strong className={themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}>
                     오류 신고
                   </strong>
                   <p className="text-sm mt-1">
@@ -104,7 +104,7 @@ export default function ContactPage() {
                   ❓
                 </span>
                 <div>
-                  <strong className={themeClass('text-black', 'text-gray-900')}>
+                  <strong className={themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}>
                     이용 문의
                   </strong>
                   <p className="text-sm mt-1">
@@ -117,7 +117,7 @@ export default function ContactPage() {
                   🌤️
                 </span>
                 <div>
-                  <strong className={themeClass('text-black', 'text-gray-900')}>
+                  <strong className={themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}>
                     날씨·미세먼지 정보 문의
                   </strong>
                   <p className="text-sm mt-1">
@@ -128,11 +128,11 @@ export default function ContactPage() {
             </ul>
           </section>
 
-          <section className={`p-4 rounded-lg ${themeClass('bg-gray-100 border-2 border-black', 'bg-gray-50')} `}>
-            <h2 className={`text-sm font-bold mb-2 ${themeClass('text-black', 'text-gray-900')} `}>
+          <section className={`p-4 rounded-lg ${themeClass('bg-gray-100 dark:bg-slate-800 border-2 border-black', 'bg-gray-50 dark:bg-slate-900')} `}>
+            <h2 className={`text-sm font-bold mb-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')} `}>
               📌 참고 사항
             </h2>
-            <ul className={`text-sm space-y-1 ${themeClass('text-black/70', 'text-gray-500')} `}>
+            <ul className={`text-sm space-y-1 ${themeClass('text-black/70 dark:text-slate-300', 'text-gray-500 dark:text-slate-400')} `}>
               <li>• 실제 테니스장 예약은 서울시 공공서비스예약 시스템에서 진행됩니다.</li>
               <li>• 예약 관련 문의는 해당 시설에 직접 연락해 주세요.</li>
               <li>• 문의에 대한 답변은 영업일 기준 1~2일 내에 드립니다.</li>
@@ -143,7 +143,7 @@ export default function ContactPage() {
             <Link
               href="/about"
               className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
-                themeClass('bg-black text-white border-2 border-black hover:bg-gray-800', 'bg-gray-100 text-gray-600 hover:bg-gray-200')
+                themeClass('bg-black text-white border-2 border-black hover:bg-gray-800', 'bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-300 hover:bg-gray-200 dark:hover:bg-slate-700')
               }`}
             >
               ← 서비스 소개 보기

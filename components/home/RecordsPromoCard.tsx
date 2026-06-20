@@ -38,13 +38,13 @@ export default function RecordsPromoCard({ user, authLoading }: RecordsPromoCard
   if (!user) {
     return (
       <div className="container my-6 lg:my-4">
-        <div className={`relative overflow-hidden rounded-xl p-5 ${themeClass('bg-white border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]', 'bg-white border border-gray-200 shadow-sm')}`}>
+        <div className={`relative overflow-hidden rounded-xl p-5 ${themeClass('bg-white dark:bg-slate-800 border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]', 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 shadow-sm')}`}>
           <div className="flex items-center justify-between relative z-10">
             <div>
-              <h3 className={`text-lg font-bold mb-1 ${themeClass('text-black', 'text-gray-900')}`}>
+              <h3 className={`text-lg font-bold mb-1 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
                 나만의 테니스 기록을 시작하세요
               </h3>
-              <p className={`text-sm mb-3 ${themeClass('text-gray-600 font-medium', 'text-gray-500')}`}>
+              <p className={`text-sm mb-3 ${themeClass('text-gray-600 dark:text-slate-400 font-medium', 'text-gray-500 dark:text-slate-400')}`}>
                 경기 결과를 기록하고 승률과 통계를 확인해보세요.
               </p>
               <div className="flex items-center gap-4">
@@ -59,7 +59,7 @@ export default function RecordsPromoCard({ user, authLoading }: RecordsPromoCard
                 </Link>
                 <Link
                   href="/guide/records"
-                  className={`text-xs ${themeClass('text-black/40 font-bold hover:text-black/60', 'text-gray-400 hover:text-gray-600')}`}
+                  className={`text-xs ${themeClass('text-black/40 dark:text-slate-500 font-bold hover:text-black/60 dark:hover:text-slate-300', 'text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:hover:text-slate-300')}`}
                 >
                   사용법 보기
                 </Link>
@@ -81,15 +81,15 @@ export default function RecordsPromoCard({ user, authLoading }: RecordsPromoCard
     return (
       <div className="container my-6 lg:my-4">
         <div className={`relative overflow-hidden rounded-xl p-5 ${themeClass(
-          `${emptyNeoBg} border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]`,
+          `${emptyNeoBg} dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8] shadow-[4px_4px_0_0_rgba(0,0,0,1)] dark:shadow-[4px_4px_0_0_#f1f3f8]`,
           emptyMinBg
         )}`}>
           <div className="flex items-center justify-between relative z-10">
             <div>
-              <h3 className={`text-lg font-bold mb-1 ${themeClass('text-black', 'text-gray-900')}`}>
+              <h3 className={`text-lg font-bold mb-1 ${themeClass('text-black dark:text-slate-100', 'text-gray-900')}`}>
                 첫 경기를 기록해보세요!
               </h3>
-              <p className={`text-sm mb-3 ${themeClass('text-gray-700 font-medium', 'text-gray-600')}`}>
+              <p className={`text-sm mb-3 ${themeClass('text-gray-700 dark:text-slate-300 font-medium', 'text-gray-600')}`}>
                 아직 기록된 경기가 없습니다.
               </p>
               <div className="flex items-center gap-4">
@@ -104,14 +104,14 @@ export default function RecordsPromoCard({ user, authLoading }: RecordsPromoCard
                 </Link>
                 <Link
                   href="/guide/records"
-                  className={`text-xs ${themeClass('text-black/40 font-bold hover:text-black/60', 'text-gray-400 hover:text-gray-600')}`}
+                  className={`text-xs ${themeClass('text-black/40 dark:text-slate-500 font-bold hover:text-black/60 dark:hover:text-slate-300', 'text-gray-400 hover:text-gray-600')}`}
                 >
                   사용법 보기
                 </Link>
               </div>
             </div>
             <div className={`hidden sm:flex w-16 h-16 items-center justify-center rounded-full ${themeClass(
-              'bg-white border-2 border-black',
+              'bg-white dark:bg-slate-800 border-2 border-black dark:border-[#f1f3f8]',
               `bg-white shadow-sm ${emptyIconText}`
             )}`}>
               <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -126,28 +126,28 @@ export default function RecordsPromoCard({ user, authLoading }: RecordsPromoCard
 
   return (
     <div className="container my-6 lg:my-4">
-      <div className={`relative overflow-hidden rounded-xl p-5 ${themeClass('bg-white border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]', 'bg-white border border-gray-200 shadow-sm')}`}>
+      <div className={`relative overflow-hidden rounded-xl p-5 ${themeClass('bg-white dark:bg-slate-800 border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]', 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 shadow-sm')}`}>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <h3 className={`text-lg font-bold ${themeClass('text-black', 'text-gray-900')}`}>
+              <h3 className={`text-lg font-bold ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
                 나의 테니스 기록
               </h3>
-              <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${themeClass('bg-black text-white', 'bg-gray-100 text-gray-600')}`}>
+              <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${themeClass('bg-black text-white', 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-slate-300')}`}>
                 {stats.total_matches}경기
               </span>
             </div>
             
             <div className="flex items-center gap-4 mt-2">
               <div>
-                <div className={`text-xs ${themeClass('text-gray-500 font-bold uppercase', 'text-gray-500')}`}>승률</div>
+                <div className={`text-xs ${themeClass('text-gray-500 dark:text-slate-400 font-bold uppercase', 'text-gray-500 dark:text-slate-400')}`}>승률</div>
                 <div className={`text-xl font-black ${statText}`}>
                   {stats.win_rate}%
                 </div>
               </div>
-              <div className={`w-px h-8 ${themeClass('bg-gray-200', 'bg-gray-100')}`} />
+              <div className={`w-px h-8 ${themeClass('bg-gray-200 dark:bg-slate-700', 'bg-gray-100 dark:bg-slate-700')}`} />
               <div>
-                <div className={`text-xs ${themeClass('text-gray-500 font-bold uppercase', 'text-gray-500')}`}>최근 전적</div>
+                <div className={`text-xs ${themeClass('text-gray-500 dark:text-slate-400 font-bold uppercase', 'text-gray-500 dark:text-slate-400')}`}>최근 전적</div>
                 <div className="flex gap-1 mt-1">
                   {stats.recent_form.slice(0, 5).map((result, i) => (
                     (() => {
@@ -159,7 +159,7 @@ export default function RecordsPromoCard({ user, authLoading }: RecordsPromoCard
                       key={`${result}-${occurrence}`}
                       className={`w-2 h-2 rounded-full ${
                         result === 'win' ? winDot :
-                        result === 'loss' ? 'bg-red-500' : 'bg-gray-300'
+                        result === 'loss' ? 'bg-red-500' : 'bg-gray-300 dark:bg-slate-600'
                       }`}
                     />
                       );
@@ -182,7 +182,7 @@ export default function RecordsPromoCard({ user, authLoading }: RecordsPromoCard
             </Link>
             <Link
               href="/guide/records"
-              className={`inline-flex justify-center items-center px-4 py-2 text-xs transition-colors ${themeClass('text-black/40 font-bold hover:text-black/60', 'text-gray-400 hover:text-gray-600')}`}
+              className={`inline-flex justify-center items-center px-4 py-2 text-xs transition-colors ${themeClass('text-black/40 dark:text-slate-500 font-bold hover:text-black/60 dark:hover:text-slate-300', 'text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:hover:text-slate-300')}`}
             >
               사용법 보기
             </Link>

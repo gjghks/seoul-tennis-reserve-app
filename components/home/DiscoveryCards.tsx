@@ -49,8 +49,8 @@ export default function DiscoveryCards() {
   return (
     <section className="container py-4 lg:py-3">
       <h2 className={`mb-3 ${themeClass(
-        'text-lg font-black text-black uppercase tracking-tight',
-        'text-base font-semibold text-gray-900'
+        'text-lg font-black text-black dark:text-slate-100 uppercase tracking-tight',
+        'text-base font-semibold text-gray-900 dark:text-slate-100'
       )}`}>
         더 알아보기
       </h2>
@@ -60,21 +60,21 @@ export default function DiscoveryCards() {
             key={card.href}
             href={card.href}
             className={`group flex flex-col items-center gap-2 p-3 sm:p-4 text-center transition-colors ${themeClass(
-              'bg-white border-[3px] border-black rounded-[10px] hover:bg-[#facc15]/20 shadow-[3px_3px_0_0_rgba(0,0,0,1)]',
-              'bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-green-200'
+              'bg-white dark:bg-slate-800 border-[3px] border-black dark:border-[#f1f3f8] rounded-[10px] hover:bg-[#facc15]/20 shadow-[3px_3px_0_0_rgba(0,0,0,1)] dark:shadow-[3px_3px_0_0_#f1f3f8]',
+              'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-700 hover:border-green-200'
             )}`}
           >
             <div className={`w-10 h-10 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300 ${themeClass(
               'bg-[#facc15] text-black',
-              'bg-green-50 text-green-600'
+              'bg-green-50 dark:bg-green-950/40 text-green-600 dark:text-green-300'
             )}`}>
               {card.icon}
             </div>
             <div>
-              <p className={`text-sm font-semibold ${themeClass('text-black', 'text-gray-900')}`}>
+              <p className={`text-sm font-semibold ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
                 {card.title}
               </p>
-              <p className={`text-[11px] mt-0.5 hidden sm:block ${themeClass('text-black/60', 'text-gray-500')}`}>
+              <p className={`text-[11px] mt-0.5 hidden sm:block ${themeClass('text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400')}`}>
                 {card.description}
               </p>
             </div>

@@ -42,7 +42,7 @@ export default function ProfileAvatar({
     );
   }
 
-  const bgColor = gender === 'male' ? 'bg-blue-100' : gender === 'female' ? 'bg-pink-100' : 'bg-gray-100';
+  const bgColor = gender === 'male' ? 'bg-blue-100 dark:bg-blue-950/40' : gender === 'female' ? 'bg-pink-100 dark:bg-pink-950/40' : 'bg-gray-100 dark:bg-slate-700';
   const strokeColor = gender === 'male' ? '#3b82f6' : gender === 'female' ? '#ec4899' : '#9ca3af';
 
   return (

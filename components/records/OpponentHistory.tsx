@@ -41,14 +41,14 @@ export default function OpponentHistory({ opponents }: OpponentHistoryProps) {
   return (
     <section
       className={themeClass(
-        'rounded-[5px] border-2 border-black bg-white p-4 shadow-[3px_3px_0px_0px_#000]',
-        'rounded-xl border border-gray-200 bg-white p-4 shadow-sm'
+        'rounded-[5px] border-2 border-black bg-white dark:bg-slate-800 p-4 shadow-[3px_3px_0px_0px_#000]',
+        'rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm'
       )}
     >
-      <h3 className="text-sm font-bold text-gray-500">상대 전적</h3>
+      <h3 className="text-sm font-bold text-gray-500 dark:text-slate-400">상대 전적</h3>
 
       {opponents.length === 0 ? (
-        <p className="mt-3 text-sm text-gray-500">상대 정보가 있는 기록이 없습니다</p>
+        <p className="mt-3 text-sm text-gray-500 dark:text-slate-400">상대 정보가 있는 기록이 없습니다</p>
       ) : (
         <>
           <div ref={listRef} className="mt-2">
@@ -61,21 +61,21 @@ export default function OpponentHistory({ opponents }: OpponentHistoryProps) {
                 <div
                   key={`${opponent.name}-${opponent.lastPlayed}-${index}`}
                   className={cn(
-                    themeClass('border-b-2 border-black/15 py-3', 'border-b border-gray-100 py-3'),
+                    themeClass('border-b-2 border-black/15 py-3', 'border-b border-gray-100 dark:border-slate-800 py-3'),
                     index === visibleOpponents.length - 1 && 'border-b-0 pb-1'
                   )}
                 >
                   <div className="mb-1 flex items-center justify-between gap-2">
-                    <span className="truncate text-sm font-bold text-gray-900">{opponent.name}</span>
-                    <span className="shrink-0 text-xs font-medium text-gray-500">{opponent.total}경기</span>
+                    <span className="truncate text-sm font-bold text-gray-900 dark:text-slate-100">{opponent.name}</span>
+                    <span className="shrink-0 text-xs font-medium text-gray-500 dark:text-slate-400">{opponent.total}경기</span>
                   </div>
 
-                  <div className="mb-2 flex items-center justify-between gap-2 text-xs text-gray-600">
+                  <div className="mb-2 flex items-center justify-between gap-2 text-xs text-gray-600 dark:text-slate-400">
                     <span>{opponent.wins}승 {opponent.losses}패 {opponent.draws}무</span>
                     <span>{opponent.winRate}%</span>
                   </div>
 
-                  <div className="h-1 w-full overflow-hidden rounded-full bg-gray-100">
+                  <div className="h-1 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-slate-700">
                     <div
                       className="flex h-full"
                       style={{
@@ -89,7 +89,7 @@ export default function OpponentHistory({ opponents }: OpponentHistoryProps) {
                     </div>
                   </div>
 
-                  <p className="mt-2 text-right text-[11px] text-gray-500">
+                  <p className="mt-2 text-right text-[11px] text-gray-500 dark:text-slate-400">
                     최근 대결 {formatLastPlayed(opponent.lastPlayed)}
                   </p>
                 </div>
@@ -103,7 +103,7 @@ export default function OpponentHistory({ opponents }: OpponentHistoryProps) {
               onClick={() => setExpanded((prev) => !prev)}
               className={cn(
                 'mt-3 text-sm font-semibold transition-colors',
-                isNeoBrutalism ? 'text-black hover:text-gray-600' : 'text-gray-700 hover:text-gray-500'
+                isNeoBrutalism ? 'text-black dark:text-slate-100 hover:text-gray-600 dark:hover:text-slate-400' : 'text-gray-700 dark:text-slate-200 hover:text-gray-500 dark:hover:text-slate-400'
               )}
             >
               {expanded ? '접기' : '더보기'}

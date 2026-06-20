@@ -52,7 +52,7 @@ export default function AlertSettingsSection() {
 
   return (
     <div className="mb-8">
-      <h2 className={`text-lg mb-4 flex items-center gap-2 ${themeClass('font-black text-black uppercase', 'font-semibold text-gray-900')}`}>
+      <h2 className={`text-lg mb-4 flex items-center gap-2 ${themeClass('font-black text-black dark:text-slate-100 uppercase', 'font-semibold text-gray-900 dark:text-slate-100')}`}>
         {isNeoBrutalism ? '🔔' : (
           <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
@@ -64,14 +64,14 @@ export default function AlertSettingsSection() {
       {permission !== 'unsupported' && (
         <div className={`flex items-center justify-between p-4 mb-4 ${
           isNeoBrutalism
-            ? 'bg-white border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000]'
-            : 'bg-white rounded-xl border border-gray-200'
+            ? 'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000]'
+            : 'bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700'
         }`}>
           <div>
-            <p className={themeClass('font-bold text-black', 'font-medium text-gray-900')}>
+            <p className={themeClass('font-bold text-black dark:text-slate-100', 'font-medium text-gray-900 dark:text-slate-100')}>
               푸시 알림
             </p>
-            <p className={`text-sm ${themeClass('text-black/60', 'text-gray-500')}`}>
+            <p className={`text-sm ${themeClass('text-black/60', 'text-gray-500 dark:text-slate-400')}`}>
               {permission === 'denied'
                 ? '브라우저 설정에서 알림을 허용해주세요'
                 : isSubscribed ? '활성화됨' : '비활성화됨'}
@@ -89,8 +89,8 @@ export default function AlertSettingsSection() {
               } disabled:opacity-50 disabled:cursor-not-allowed`,
               `px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                 isSubscribed
-                  ? 'bg-red-50 text-red-600 hover:bg-red-100'
-                  : 'bg-green-50 text-green-600 hover:bg-green-100'
+                  ? 'bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-300 hover:bg-red-100 dark:hover:bg-red-900/40'
+                  : 'bg-green-50 dark:bg-green-950/40 text-green-600 dark:text-green-300 hover:bg-green-100 dark:hover:bg-green-900/40'
               } disabled:opacity-50 disabled:cursor-not-allowed`
             )}
           >
@@ -108,8 +108,8 @@ export default function AlertSettingsSection() {
       ) : alerts.length === 0 ? (
         <div className={`py-8 px-6 text-center ${
           isNeoBrutalism
-            ? 'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]'
-            : 'bg-white rounded-2xl border border-gray-100'
+            ? 'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]'
+            : 'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-800'
         }`}>
           <svg
             className={themeClass('w-20 h-20 mx-auto mb-3', 'w-16 h-16 mx-auto mb-3')}
@@ -168,10 +168,10 @@ export default function AlertSettingsSection() {
               style={{ animation: 'fav-sparkle 3s ease-in-out infinite 1.6s' }}
             />
           </svg>
-          <p className={themeClass('font-bold text-black', 'text-gray-500')}>
+          <p className={themeClass('font-bold text-black dark:text-slate-100', 'text-gray-500 dark:text-slate-400')}>
             설정된 알림이 없습니다
           </p>
-          <p className={`text-sm mt-1 ${themeClass('text-black/60', 'text-gray-400')}`}>
+          <p className={`text-sm mt-1 ${themeClass('text-black/60', 'text-gray-400 dark:text-slate-500')}`}>
             코트 상세 페이지에서 알림을 설정해보세요
           </p>
         </div>
@@ -181,23 +181,23 @@ export default function AlertSettingsSection() {
             const href = getAlertHref(alert);
             const cardClass = `flex items-center justify-between p-4 ${
               isNeoBrutalism
-                ? 'bg-white border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000]'
-                : 'bg-white rounded-xl border border-gray-200'
+                ? 'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000]'
+                : 'bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700'
             }`;
             const content = (
               <>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1">
-                    <p className={`truncate ${themeClass('font-bold text-black', 'font-medium text-gray-900')}`}>
+                    <p className={`truncate ${themeClass('font-bold text-black dark:text-slate-100', 'font-medium text-gray-900 dark:text-slate-100')}`}>
                       {alert.target_name}
                     </p>
                     {href && (
-                      <svg className={`w-4 h-4 shrink-0 ${themeClass('text-black/60', 'text-gray-300')}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <svg className={`w-4 h-4 shrink-0 ${themeClass('text-black/60', 'text-gray-300 dark:text-slate-500')}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
                     )}
                   </div>
-                  <p className={`text-sm ${themeClass('text-black/60', 'text-gray-500')}`}>
+                  <p className={`text-sm ${themeClass('text-black/60', 'text-gray-500 dark:text-slate-400')}`}>
                     <AlertTypeLabel type={alert.alert_type} />
                     {' · '}
                     {alert.enabled ? '활성' : '비활성'}
@@ -210,7 +210,7 @@ export default function AlertSettingsSection() {
                     e.stopPropagation();
                     handleRemoveAlert(alert);
                   }}
-                  className={`shrink-0 p-2 transition-colors ${themeClass('text-black/60 hover:text-red-600', 'text-gray-400 hover:text-red-500')}`}
+                  className={`shrink-0 p-2 transition-colors ${themeClass('text-black/60 hover:text-red-600', 'text-gray-400 dark:text-slate-500 hover:text-red-500')}`}
                   aria-label={`${alert.target_name} 알림 삭제`}
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

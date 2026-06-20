@@ -221,13 +221,13 @@ export default function ProfileGate({ children, feature }: ProfileGateProps) {
         </div>
 
         <div className={themeClass(
-          'bg-white border-2 border-black rounded-[5px] p-5 mb-4 shadow-[2px_2px_0px_0px_#000]',
-          'bg-white rounded-lg p-5 mb-4 shadow-sm border border-gray-100'
+          'bg-white dark:bg-slate-800 border-2 border-black dark:border-slate-700 rounded-[5px] p-5 mb-4 shadow-[2px_2px_0px_0px_#000]',
+          'bg-white dark:bg-slate-800 rounded-lg p-5 mb-4 shadow-sm border border-gray-100 dark:border-slate-700'
         )}>
           <div className="space-y-4">
             {missingNickname && (
               <div>
-                <label htmlFor="nickname" className={themeClass('block font-bold mb-1 text-sm', 'block text-sm font-medium text-gray-700 mb-1')}>
+                <label htmlFor="nickname" className={themeClass('block font-bold mb-1 text-sm dark:text-slate-100', 'block text-sm font-medium text-gray-700 dark:text-slate-200 mb-1')}>
                   닉네임
                 </label>
                 <input
@@ -238,18 +238,18 @@ export default function ProfileGate({ children, feature }: ProfileGateProps) {
                   placeholder="닉네임을 입력해주세요"
                   maxLength={NICKNAME_MAX}
                   className={themeClass(
-                    'w-full p-2 border-2 border-black rounded-[5px] font-bold focus:outline-none focus:shadow-[2px_2px_0px_0px_#000] transition-all',
-                    `w-full p-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-${config.minimalColor}-500 focus:border-transparent outline-none`
+                    'w-full p-2 border-2 border-black dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 rounded-[5px] font-bold focus:outline-none focus:shadow-[2px_2px_0px_0px_#000] transition-all',
+                    `w-full p-2 border border-gray-300 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 rounded-md text-sm focus:ring-2 focus:ring-${config.minimalColor}-500 focus:border-transparent outline-none`
                   )}
                 />
                 <div className="flex justify-between mt-1">
                   <span className={themeClass(
-                    cn('text-xs font-bold', nicknameError ? 'text-red-500' : 'text-gray-500'),
-                    cn('text-xs', nicknameError ? 'text-red-500' : 'text-gray-500')
+                    cn('text-xs font-bold', nicknameError ? 'text-red-500 dark:text-red-400' : 'text-gray-500 dark:text-slate-400'),
+                    cn('text-xs', nicknameError ? 'text-red-500 dark:text-red-400' : 'text-gray-500 dark:text-slate-400')
                   )}>
                     {nicknameError || '닉네임은 2~10자로 입력해주세요'}
                   </span>
-                  <span className={themeClass('text-xs font-bold text-gray-500', 'text-xs text-gray-500')}>
+                  <span className={themeClass('text-xs font-bold text-gray-500 dark:text-slate-400', 'text-xs text-gray-500 dark:text-slate-400')}>
                     {formData.nickname.length}/{NICKNAME_MAX}
                   </span>
                 </div>
@@ -258,7 +258,7 @@ export default function ProfileGate({ children, feature }: ProfileGateProps) {
 
             {missingNtrp && (
               <div>
-                <span className={themeClass('block font-bold mb-2 text-sm', 'block text-sm font-medium text-gray-700 mb-2')}>
+                <span className={themeClass('block font-bold mb-2 text-sm dark:text-slate-100', 'block text-sm font-medium text-gray-700 dark:text-slate-200 mb-2')}>
                   NTRP
                 </span>
                 <div className="space-y-2">
@@ -269,33 +269,33 @@ export default function ProfileGate({ children, feature }: ProfileGateProps) {
                       onClick={() => setFormData({ ...formData, ntrp_rating: opt.value })}
                       className={cn(
                         themeClass(
-                          'w-full text-left p-3 border-2 border-black rounded-[5px] transition-all',
+                          'w-full text-left p-3 border-2 border-black dark:border-slate-700 rounded-[5px] transition-all',
                           `w-full text-left p-3 border rounded-lg transition-colors ${
                             formData.ntrp_rating === opt.value
                               ? `bg-${config.minimalColor}-50 border-${config.minimalColor}-500`
-                              : 'border-gray-200 bg-white hover:bg-gray-50'
+                              : 'border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700'
                           }`
                         ),
                         formData.ntrp_rating === opt.value
                           ? themeClass('bg-[#a3e635] shadow-[2px_2px_0px_0px_#000]', '')
-                          : themeClass('bg-white hover:bg-gray-50', '')
+                          : themeClass('bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700', '')
                       )}
                     >
                       <div className="flex items-center gap-2">
-                        <span className={themeClass('font-black text-sm', 'font-bold text-sm text-gray-900')}>
+                        <span className={themeClass('font-black text-sm dark:text-slate-100', 'font-bold text-sm text-gray-900 dark:text-slate-100')}>
                           {opt.value}
                         </span>
-                        <span className={themeClass('font-bold text-sm', 'font-medium text-sm text-gray-700')}>
+                        <span className={themeClass('font-bold text-sm dark:text-slate-200', 'font-medium text-sm text-gray-700 dark:text-slate-200')}>
                           {opt.label}
                         </span>
                       </div>
-                      <p className={themeClass('text-xs text-black/60 mt-0.5', 'text-xs text-gray-500 mt-0.5')}>
+                      <p className={themeClass('text-xs text-black/60 dark:text-slate-400 mt-0.5', 'text-xs text-gray-500 dark:text-slate-400 mt-0.5')}>
                         {opt.description}
                       </p>
                     </button>
                   ))}
                 </div>
-                <p className={themeClass('text-xs text-black/50 mt-2', 'text-xs text-gray-400 mt-2')}>
+                <p className={themeClass('text-xs text-black/50 dark:text-slate-400 mt-2', 'text-xs text-gray-400 dark:text-slate-500 mt-2')}>
                   나중에 언제든지 변경할 수 있어요
                 </p>
               </div>

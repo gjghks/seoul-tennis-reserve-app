@@ -39,12 +39,12 @@ export default function CompareContent({ stats }: CompareContentProps) {
     <PullToRefresh
       onRefresh={handleRefresh}
       pullingContent={
-        <div className={`flex items-center justify-center py-4 ${themeClass('text-black font-bold', 'text-green-600')}`}>
+        <div className={`flex items-center justify-center py-4 ${themeClass('text-black dark:text-slate-100 font-bold', 'text-green-600')}`}>
           <span>↓ 당겨서 새로고침</span>
         </div>
       }
       refreshingContent={
-        <div className={`flex items-center justify-center py-4 ${themeClass('text-black font-bold', 'text-green-600')}`}>
+        <div className={`flex items-center justify-center py-4 ${themeClass('text-black dark:text-slate-100 font-bold', 'text-green-600')}`}>
           <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24" aria-hidden="true">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
@@ -53,7 +53,7 @@ export default function CompareContent({ stats }: CompareContentProps) {
         </div>
       }
     >
-    <div className={`min-h-screen scrollbar-hide ${themeClass('bg-nb-bg', 'bg-gray-50')}`}>
+    <div className={`min-h-screen scrollbar-hide ${themeClass('bg-nb-bg', 'bg-gray-50 dark:bg-slate-900')}`}>
       <section className={themeClass('court-pattern-nb text-white py-6', 'court-pattern text-white py-6')}>
         <div className="container relative z-10">
           <nav className="mb-3">
@@ -100,51 +100,51 @@ export default function CompareContent({ stats }: CompareContentProps) {
 
       <section className="container py-6">
         <div ref={avgRef} className={`mb-6 p-4 ${themeClass(
-          'bg-[#fef3c7] border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000]',
-          'bg-amber-50 rounded-xl border border-amber-100'
+          'bg-[#fef3c7] dark:bg-amber-950/40 border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000]',
+          'bg-amber-50 dark:bg-amber-950/40 rounded-xl border border-amber-100 dark:border-amber-900/40'
         )}`}>
-          <h2 className={`font-bold mb-2 ${themeClass('text-black uppercase', 'text-gray-900')}`}>
+          <h2 className={`font-bold mb-2 ${themeClass('text-black dark:text-amber-100 uppercase', 'text-gray-900 dark:text-amber-100')}`}>
             서울 평균
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
             <div className={avgInView ? 'anim-fade-up' : 'opacity-0'} style={{ animationDelay: '0ms' }}>
-              <span className={themeClass('text-black/60 font-bold', 'text-gray-500')}>구당 평균 시설</span>
-              <p className={`text-lg font-bold ${themeClass('text-black', 'text-gray-900')}`}>
+              <span className={themeClass('text-black/60 dark:text-amber-200/80 font-bold', 'text-gray-500 dark:text-amber-200/80')}>구당 평균 시설</span>
+              <p className={`text-lg font-bold ${themeClass('text-black dark:text-amber-100', 'text-gray-900 dark:text-amber-100')}`}>
                 {animAvgCourts}개
               </p>
             </div>
             <div className={avgInView ? 'anim-fade-up' : 'opacity-0'} style={{ animationDelay: '80ms' }}>
-              <span className={themeClass('text-black/60 font-bold', 'text-gray-500')}>평균 예약가능률</span>
-              <p className={`text-lg font-bold ${themeClass('text-black', 'text-gray-900')}`}>
+              <span className={themeClass('text-black/60 dark:text-amber-200/80 font-bold', 'text-gray-500 dark:text-amber-200/80')}>평균 예약가능률</span>
+              <p className={`text-lg font-bold ${themeClass('text-black dark:text-amber-100', 'text-gray-900 dark:text-amber-100')}`}>
                 {animAvgAvailableRate}%
               </p>
             </div>
             <div className={avgInView ? 'anim-fade-up' : 'opacity-0'} style={{ animationDelay: '160ms' }}>
-              <span className={themeClass('text-black/60 font-bold', 'text-gray-500')}>평균 무료 비율</span>
-              <p className={`text-lg font-bold ${themeClass('text-black', 'text-gray-900')}`}>
+              <span className={themeClass('text-black/60 dark:text-amber-200/80 font-bold', 'text-gray-500 dark:text-amber-200/80')}>평균 무료 비율</span>
+              <p className={`text-lg font-bold ${themeClass('text-black dark:text-amber-100', 'text-gray-900 dark:text-amber-100')}`}>
                 {animAvgFreeRate}%
               </p>
             </div>
             <div className={avgInView ? 'anim-fade-up' : 'opacity-0'} style={{ animationDelay: '240ms' }}>
-              <span className={themeClass('text-black/60 font-bold', 'text-gray-500')}>평균 경쟁률</span>
-              <p className={`text-lg font-bold ${themeClass('text-black', 'text-gray-900')}`}>
+              <span className={themeClass('text-black/60 dark:text-amber-200/80 font-bold', 'text-gray-500 dark:text-amber-200/80')}>평균 경쟁률</span>
+              <p className={`text-lg font-bold ${themeClass('text-black dark:text-amber-100', 'text-gray-900 dark:text-amber-100')}`}>
                 {animAvgCompetition}%
               </p>
             </div>
           </div>
         </div>
 
-        <h2 className={`text-xl mb-4 ${themeClass('font-black text-black uppercase tracking-tight', 'font-bold text-gray-900')}`}>
+        <h2 className={`text-xl mb-4 ${themeClass('font-black text-black dark:text-slate-100 uppercase tracking-tight', 'font-bold text-gray-900 dark:text-slate-100')}`}>
           구별 상세 비교
         </h2>
 
         <div ref={tableRef} className="overflow-x-auto -mx-4 px-4">
           <table className={`w-full text-sm ${themeClass(
             'border-[3px] border-black',
-            'border border-gray-200 rounded-xl overflow-hidden'
+            'border border-gray-200 dark:border-slate-700 rounded-xl overflow-hidden'
           )}`}>
             <thead>
-              <tr className={themeClass('bg-black text-white', 'bg-gray-100 text-gray-600')}>
+              <tr className={themeClass('bg-black text-white', 'bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-300')}>
                 <th className={`px-3 py-3 text-left font-bold ${themeClass('uppercase', '')}`}>구</th>
                 <th className="px-3 py-3 text-center font-bold whitespace-nowrap">시설 수</th>
                 <th className="px-3 py-3 text-center font-bold whitespace-nowrap">예약 가능</th>
@@ -159,20 +159,20 @@ export default function CompareContent({ stats }: CompareContentProps) {
                 <tr
                   key={d.slug}
                   className={`${themeClass(
-                    i % 2 === 0 ? 'bg-white' : 'bg-gray-50',
-                    i % 2 === 0 ? 'bg-white' : 'bg-gray-50'
-                  )} ${themeClass('border-t-2 border-black', 'border-t border-gray-100')}`}
+                    i % 2 === 0 ? 'bg-white dark:bg-slate-800' : 'bg-gray-50 dark:bg-slate-900',
+                    i % 2 === 0 ? 'bg-white dark:bg-slate-800' : 'bg-gray-50 dark:bg-slate-900'
+                  )} ${themeClass('border-t-2 border-black', 'border-t border-gray-100 dark:border-slate-800')}`}
                 >
                   <td className="px-3 py-3">
                     <Link
                       href={`/${d.slug}`}
-                      className={`font-bold ${themeClass('text-black hover:underline', 'text-gray-900 hover:text-green-600')}`}
+                      className={`font-bold ${themeClass('text-black dark:text-slate-100 hover:underline', 'text-gray-900 dark:text-slate-100 hover:text-green-600')}`}
                     >
                       {d.nameKo}
                     </Link>
                   </td>
                   <td className="px-3 py-3 text-center">
-                    <span className={`font-bold ${themeClass('text-black', 'text-gray-900')}`}>
+                    <span className={`font-bold ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
                       {d.totalCourts}
                     </span>
                     {d.externalCourts > 0 && (
@@ -183,9 +183,9 @@ export default function CompareContent({ stats }: CompareContentProps) {
                   </td>
                   <td className="px-3 py-3 text-center">
                     <div className="flex items-center justify-center gap-2">
-                      <div className="w-16 h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div className="w-16 h-2 bg-gray-200 dark:bg-slate-700 rounded-full overflow-hidden">
                         <div
-                          className={`h-full ${d.availableCourts > 0 ? themeClass('bg-[#16a34a]', 'bg-green-500') : themeClass('bg-gray-400', 'bg-gray-300')} ${tableInView ? 'anim-bar-x' : 'w-0'}`}
+                          className={`h-full ${d.availableCourts > 0 ? themeClass('bg-[#16a34a]', 'bg-green-500') : themeClass('bg-gray-400 dark:bg-slate-600', 'bg-gray-300 dark:bg-slate-600')} ${tableInView ? 'anim-bar-x' : 'w-0'}`}
                           style={{
                             width: `${Math.min(d.availableRate, 100)}%`,
                             animationDelay: `${i * 30}ms`,
@@ -194,20 +194,20 @@ export default function CompareContent({ stats }: CompareContentProps) {
                       </div>
                       <span className={`font-bold text-sm ${d.availableCourts > 0
                         ? themeClass('text-[#16a34a]', 'text-green-600')
-                        : themeClass('text-black/60', 'text-gray-400')
+                        : themeClass('text-black/60 dark:text-slate-400', 'text-gray-400 dark:text-slate-500')
                       }`}>
                         {d.availableCourts}
                       </span>
                     </div>
-                    <span className={`text-xs ml-1 ${themeClass('text-black/60', 'text-gray-400')}`}>
+                    <span className={`text-xs ml-1 ${themeClass('text-black/60 dark:text-slate-400', 'text-gray-400 dark:text-slate-500')}`}>
                       ({d.availableRate}%)
                     </span>
                   </td>
                   <td className="px-3 py-3 text-center hidden sm:table-cell">
-                    <span className={themeClass('text-black', 'text-gray-700')}>
+                    <span className={themeClass('text-black dark:text-slate-100', 'text-gray-700 dark:text-slate-200')}>
                       {d.freeCourts}
                     </span>
-                    <span className={`text-xs ml-1 ${themeClass('text-black/60', 'text-gray-400')}`}>
+                    <span className={`text-xs ml-1 ${themeClass('text-black/60 dark:text-slate-400', 'text-gray-400 dark:text-slate-500')}`}>
                       ({d.freeRate}%)
                     </span>
                   </td>
@@ -217,7 +217,7 @@ export default function CompareContent({ stats }: CompareContentProps) {
                     </span>
                   </td>
                   <td className="px-3 py-3 text-center hidden md:table-cell whitespace-nowrap">
-                    <span className={themeClass('text-black/70 text-xs', 'text-gray-500 text-xs')}>
+                    <span className={themeClass('text-black/70 dark:text-slate-300 text-xs', 'text-gray-500 dark:text-slate-400 text-xs')}>
                       {d.earliestOpen || '-'} ~ {d.latestClose || '-'}
                     </span>
                   </td>
@@ -262,13 +262,13 @@ export default function CompareContent({ stats }: CompareContentProps) {
         </div>
 
         <div className={`mt-8 p-5 ${themeClass(
-          'bg-white border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000]',
-          'bg-white rounded-xl border border-gray-100'
+          'bg-white dark:bg-slate-800 border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000]',
+          'bg-white dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-slate-800'
         )}`}>
-          <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black uppercase', 'text-gray-900')}`}>
+          <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black dark:text-slate-100 uppercase', 'text-gray-900 dark:text-slate-100')}`}>
             구별 가이드 바로가기
           </h2>
-          <p className={`mb-4 text-sm ${themeClass('text-black/70 font-medium', 'text-gray-500')}`}>
+          <p className={`mb-4 text-sm ${themeClass('text-black/70 dark:text-slate-300 font-medium', 'text-gray-500 dark:text-slate-400')}`}>
             각 구별 상세 정보와 예약 팁을 확인하세요.
           </p>
           <div className="flex flex-wrap gap-2">
@@ -278,7 +278,7 @@ export default function CompareContent({ stats }: CompareContentProps) {
                 href={`/guide/${d.slug}`}
                 className={`px-3 py-1.5 text-sm font-bold transition-all ${themeClass(
                   'bg-[#a3e635] text-black border-2 border-black rounded-[5px] shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none',
-                  'bg-gray-100 text-gray-700 rounded-lg hover:bg-green-100 hover:text-green-700'
+                  'bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-slate-200 rounded-lg hover:bg-green-100 hover:text-green-700'
                 )}`}
               >
                 {d.nameKo}
@@ -309,10 +309,10 @@ function TopCard({
 }) {
   return (
     <div className={themeClass(
-      'bg-white border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000] p-4',
-      'bg-white rounded-xl border border-gray-100 p-4'
+      'bg-white dark:bg-slate-800 border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000] p-4',
+      'bg-white dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-slate-800 p-4'
     )}>
-      <h3 className={`font-bold mb-3 flex items-center gap-2 ${themeClass('text-black uppercase', 'text-gray-900')}`}>
+      <h3 className={`font-bold mb-3 flex items-center gap-2 ${themeClass('text-black dark:text-slate-100 uppercase', 'text-gray-900 dark:text-slate-100')}`}>
         <span>{emoji}</span> {title}
       </h3>
       <ol className="space-y-2">
@@ -322,18 +322,18 @@ function TopCard({
               <span className={`w-6 h-6 flex items-center justify-center rounded-full text-xs font-bold ${
                 i === 0
                   ? themeClass('bg-[#facc15] text-black border-2 border-black', 'bg-amber-100 text-amber-800')
-                  : themeClass('bg-gray-200 text-black', 'bg-gray-100 text-gray-600')
+                  : themeClass('bg-gray-200 dark:bg-slate-700 text-black dark:text-slate-100', 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-slate-300')
               }`}>
                 {i + 1}
               </span>
               <Link
                 href={`/guide/${d.slug}`}
-                className={`font-bold ${themeClass('text-black hover:underline', 'text-gray-800 hover:text-green-600')}`}
+                className={`font-bold ${themeClass('text-black dark:text-slate-100 hover:underline', 'text-gray-800 dark:text-slate-200 hover:text-green-600')}`}
               >
                 {d.nameKo}
               </Link>
             </div>
-            <span className={`font-bold ${themeClass('text-black', 'text-gray-900')}`}>
+            <span className={`font-bold ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               {getValue(d)}{unit}
             </span>
           </li>

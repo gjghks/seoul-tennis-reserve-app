@@ -22,8 +22,12 @@ function generateBalls() {
 export default function TennisBallOverlay() {
   const { isTennisSeason } = useSeason();
   const balls = useMemo(() => generateBalls(), []);
+  const reduceMotion =
+    typeof window !== 'undefined' &&
+    window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
-  if (!isTennisSeason) return null;
+  // reduced-motion: build zero DOM (defense-in-depth with the CSS guard).
+  if (!isTennisSeason || reduceMotion) return null;
 
   return (
     <div className="tennis-overlay" aria-hidden="true">

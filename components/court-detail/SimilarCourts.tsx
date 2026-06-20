@@ -97,16 +97,16 @@ export default function SimilarCourts({
   return (
     <div className={
       isNeoBrutalism
-        ? 'bg-white border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] mb-6'
-        : 'bg-white rounded-2xl border border-gray-100 overflow-hidden mb-6'
+        ? 'bg-white dark:bg-slate-900 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[3px_3px_0px_0px_#000] dark:shadow-[3px_3px_0px_0px_#f1f3f8] mb-6'
+        : 'bg-white dark:bg-slate-900 rounded-2xl border border-gray-100 dark:border-slate-800 overflow-hidden mb-6'
     }>
       <div className={
         isNeoBrutalism
           ? 'p-5 border-b-2 border-black'
-          : 'p-5 border-b border-gray-100'
+          : 'p-5 border-b border-gray-100 dark:border-slate-800'
       }>
         <h2 className={`font-bold flex items-center gap-2 ${
-          isNeoBrutalism ? 'text-black font-black uppercase tracking-tight' : 'text-gray-900'
+          isNeoBrutalism ? 'text-black dark:text-slate-100 font-black uppercase tracking-tight' : 'text-gray-900 dark:text-slate-100'
         }`}>
           {isNeoBrutalism ? (
             <span className="w-6 h-6 bg-[#facc15] border-2 border-black rounded-[3px] flex items-center justify-center text-xs">🎾</span>
@@ -118,7 +118,7 @@ export default function SimilarCourts({
           비슷한 테니스장
         </h2>
         <p className={`text-sm mt-1 ${
-          isNeoBrutalism ? 'text-black/60' : 'text-gray-500'
+          isNeoBrutalism ? 'text-black/60 dark:text-slate-400' : 'text-gray-500 dark:text-slate-400'
         }`}>
           같은 지역 또는 인근 지역의 다른 테니스장을 확인해보세요
         </p>
@@ -137,47 +137,47 @@ export default function SimilarCourts({
                 href={`/${courtSlug}/${encodeURIComponent(court.SVCID)}`}
                 className={`group relative snap-start shrink-0 min-w-[240px] sm:min-w-0 transition-all ${
                   isNeoBrutalism
-                    ? 'border-2 border-black rounded-[5px] p-4 bg-white hover:shadow-[4px_4px_0px_0px_#000] hover:translate-x-[-2px] hover:translate-y-[-2px]'
-                    : 'rounded-xl p-4 bg-gray-50 hover:bg-white hover:shadow-md border border-transparent hover:border-green-200'
+                    ? 'border-2 border-black dark:border-[#f1f3f8] rounded-[5px] p-4 bg-white dark:bg-slate-800 hover:shadow-[4px_4px_0px_0px_#000] dark:hover:shadow-[4px_4px_0px_0px_#f1f3f8] hover:translate-x-[-2px] hover:translate-y-[-2px]'
+                    : 'rounded-xl p-4 bg-gray-50 dark:bg-slate-800 hover:bg-white dark:hover:bg-slate-700 hover:shadow-md border border-transparent hover:border-green-200'
                 }`}
               >
                 <span className={`inline-block text-xs font-bold px-2 py-0.5 rounded-full mb-3 ${
                   isNeoBrutalism
                     ? `border border-black ${isAvailable ? 'bg-[#a3e635] text-black' : 'bg-[#fca5a5] text-black'}`
                     : isAvailable
-                      ? 'bg-green-100 text-green-700'
-                      : 'bg-red-50 text-red-600'
+                      ? 'bg-green-100 dark:bg-green-950/40 text-green-700 dark:text-green-300'
+                      : 'bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-300'
                 }`}>
                   {court.SVCSTATNM}
                 </span>
 
                 <h3 className={`font-bold text-sm mb-1 line-clamp-2 ${
-                  isNeoBrutalism ? 'text-black' : 'text-gray-900'
+                  isNeoBrutalism ? 'text-black dark:text-slate-100' : 'text-gray-900 dark:text-slate-100'
                 }`}>
                   {court.SVCNM}
                 </h3>
 
                 <p className={`text-xs truncate mb-3 ${
-                  isNeoBrutalism ? 'text-black/60' : 'text-gray-500'
+                  isNeoBrutalism ? 'text-black/60 dark:text-slate-400' : 'text-gray-500 dark:text-slate-400'
                 }`}>
                   {court.PLACENM}
                 </p>
 
                 <div className={`flex items-center gap-1.5 text-xs flex-wrap ${
-                  isNeoBrutalism ? 'text-black/60' : 'text-gray-600'
+                  isNeoBrutalism ? 'text-black/60 dark:text-slate-400' : 'text-gray-600 dark:text-slate-400'
                 }`}>
                   <span className={`px-2 py-0.5 rounded-full ${
                     isNeoBrutalism
-                      ? 'bg-white border border-black/20'
-                      : 'bg-white border border-gray-200'
+                      ? 'bg-white dark:bg-slate-800 border border-black/20 dark:border-slate-700'
+                      : 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700'
                   }`}>
                     {court.PAYATNM}
                   </span>
                   {court.V_MIN && court.V_MAX && (
                     <span className={`px-2 py-0.5 rounded-full ${
                       isNeoBrutalism
-                        ? 'bg-white border border-black/20'
-                        : 'bg-white border border-gray-200'
+                        ? 'bg-white dark:bg-slate-800 border border-black/20 dark:border-slate-700'
+                        : 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700'
                     }`}>
                       {court.V_MIN} - {court.V_MAX}
                     </span>
@@ -185,11 +185,11 @@ export default function SimilarCourts({
                   <span className={`px-2 py-0.5 rounded-full ${
                     isSameDistrict
                       ? isNeoBrutalism
-                        ? 'bg-white border border-black/20'
-                        : 'bg-white border border-gray-200'
+                        ? 'bg-white dark:bg-slate-800 border border-black/20 dark:border-slate-700'
+                        : 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700'
                       : isNeoBrutalism
-                        ? 'bg-[#facc15]/30 border border-black/20 font-bold'
-                        : 'bg-blue-50 text-blue-600 border border-blue-100'
+                        ? 'bg-[#facc15]/30 border border-black/20 dark:border-slate-700 font-bold'
+                        : 'bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-300 border border-blue-100 dark:border-blue-900'
                   }`}>
                     {isSameDistrict ? '' : '📍 '}{court.AREANM}
                   </span>
@@ -229,7 +229,7 @@ export default function SimilarCourts({
                 className={`rounded-full transition-all ${
                   i === activeIndex
                     ? `w-5 h-2 ${isNeoBrutalism ? 'bg-black' : 'bg-green-500'}`
-                    : `w-2 h-2 ${isNeoBrutalism ? 'bg-black/25' : 'bg-gray-300'}`
+                    : `w-2 h-2 ${isNeoBrutalism ? 'bg-black/25 dark:bg-slate-600' : 'bg-gray-300 dark:bg-slate-600'}`
                 }`}
               />
             ))}
@@ -238,13 +238,13 @@ export default function SimilarCourts({
 
         {districtSlug && (
           <div className={`mt-4 pt-4 text-center ${
-            isNeoBrutalism ? 'border-t-2 border-black/15' : 'border-t border-gray-100'
+            isNeoBrutalism ? 'border-t-2 border-black/15 dark:border-slate-700' : 'border-t border-gray-100 dark:border-slate-800'
           }`}>
             <Link
               href={`/${districtSlug}`}
               className={`inline-flex items-center gap-1 text-sm font-medium transition-colors ${
                 isNeoBrutalism
-                  ? 'text-black hover:underline underline-offset-4 font-bold'
+                  ? 'text-black dark:text-slate-100 hover:underline underline-offset-4 font-bold'
                   : 'text-green-600 hover:text-green-700'
               }`}
             >

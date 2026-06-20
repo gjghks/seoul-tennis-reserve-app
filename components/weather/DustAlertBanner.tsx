@@ -52,8 +52,8 @@ export default function DustAlertBanner() {
         }`,
         `relative ${
           isGyeongbo
-            ? 'bg-red-50 text-red-800 border-b border-red-200'
-            : 'bg-orange-50 text-orange-800 border-b border-orange-200'
+            ? 'bg-red-50 dark:bg-red-950/40 text-red-800 dark:text-red-300 border-b border-red-200 dark:border-red-900'
+            : 'bg-orange-50 dark:bg-orange-950/40 text-orange-800 dark:text-orange-300 border-b border-orange-200 dark:border-orange-900'
         }`
       )}
     >
@@ -82,7 +82,7 @@ export default function DustAlertBanner() {
           <span className={themeClass(
             'shrink-0 text-xs font-black bg-black/10 px-2 py-0.5 rounded-[3px]',
             `shrink-0 text-xs font-semibold px-2 py-0.5 rounded-full ${
-              isGyeongbo ? 'bg-red-100 text-red-700' : 'bg-orange-100 text-orange-700'
+              isGyeongbo ? 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300' : 'bg-orange-100 dark:bg-orange-900/40 text-orange-700 dark:text-orange-300'
             }`
           )}>
             {data.highestValue}㎍/㎥

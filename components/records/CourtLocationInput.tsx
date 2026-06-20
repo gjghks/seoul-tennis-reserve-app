@@ -128,7 +128,7 @@ export default function CourtLocationInput({ locationType, courtId, courtName, d
 
   const inputClass = themeClass(
     'w-full border-2 border-black rounded-[5px] p-2.5 font-bold text-black placeholder:text-black/60 focus:outline-none focus:ring-2 focus:ring-[#88aaee]',
-    'w-full border border-gray-300 rounded-lg p-2.5 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500'
+    'w-full border border-gray-300 dark:border-slate-700 rounded-lg p-2.5 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500'
   );
 
   return (
@@ -148,8 +148,8 @@ export default function CourtLocationInput({ locationType, courtId, courtName, d
                 'px-3 py-1.5 rounded-lg font-medium bg-green-600 text-white text-sm'
               )
             : themeClass(
-                'px-3 py-1.5 border-2 border-black rounded-[5px] font-bold bg-white text-black text-sm',
-                'px-3 py-1.5 rounded-lg font-medium bg-gray-100 text-gray-600 text-sm'
+                'px-3 py-1.5 border-2 border-black rounded-[5px] font-bold bg-white dark:bg-slate-800 text-black dark:text-slate-100 text-sm',
+                'px-3 py-1.5 rounded-lg font-medium bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-400 text-sm'
               )
           }
         >
@@ -169,8 +169,8 @@ export default function CourtLocationInput({ locationType, courtId, courtName, d
                 'px-3 py-1.5 rounded-lg font-medium bg-green-600 text-white text-sm'
               )
             : themeClass(
-                'px-3 py-1.5 border-2 border-black rounded-[5px] font-bold bg-white text-black text-sm',
-                'px-3 py-1.5 rounded-lg font-medium bg-gray-100 text-gray-600 text-sm'
+                'px-3 py-1.5 border-2 border-black rounded-[5px] font-bold bg-white dark:bg-slate-800 text-black dark:text-slate-100 text-sm',
+                'px-3 py-1.5 rounded-lg font-medium bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-400 text-sm'
               )
           }
         >
@@ -183,11 +183,11 @@ export default function CourtLocationInput({ locationType, courtId, courtName, d
           {courtId ? (
             <div className={themeClass(
               'flex items-center justify-between border-2 border-black rounded-[5px] p-2.5 bg-[#a3e635]/20',
-              'flex items-center justify-between border border-green-200 rounded-lg p-2.5 bg-green-50'
+              'flex items-center justify-between border border-green-200 dark:border-green-900/50 rounded-lg p-2.5 bg-green-50 dark:bg-green-950/40'
             )}>
               <div>
-                <p className={themeClass('font-bold text-black', 'font-medium text-gray-900')}>{courtName}</p>
-                {district && <p className={themeClass('text-sm text-black/60', 'text-sm text-gray-500')}>{district}</p>}
+                <p className={themeClass('font-bold text-black', 'font-medium text-gray-900 dark:text-slate-100')}>{courtName}</p>
+                {district && <p className={themeClass('text-sm text-black/60', 'text-sm text-gray-500 dark:text-slate-400')}>{district}</p>}
               </div>
               <button
                 type="button"
@@ -197,7 +197,7 @@ export default function CourtLocationInput({ locationType, courtId, courtName, d
                   setDebouncedSearch('');
                   noResultTrackedRef.current = '';
                 }}
-                className={themeClass('text-black/60 hover:text-red-600 font-bold', 'text-gray-400 hover:text-red-500')}
+                className={themeClass('text-black/60 hover:text-red-600 font-bold', 'text-gray-400 dark:text-slate-500 hover:text-red-500')}
               >
                 변경
               </button>
@@ -235,8 +235,8 @@ export default function CourtLocationInput({ locationType, courtId, courtName, d
               />
               {showDropdown && canSearch && (
                 <div className={themeClass(
-                  'absolute z-20 w-full mt-1 border-2 border-black rounded-[5px] bg-white shadow-[3px_3px_0px_0px_#000] max-h-48 overflow-y-auto',
-                  'absolute z-20 w-full mt-1 border border-gray-200 rounded-lg bg-white shadow-lg max-h-48 overflow-y-auto'
+                  'absolute z-20 w-full mt-1 border-2 border-black rounded-[5px] bg-white dark:bg-slate-800 shadow-[3px_3px_0px_0px_#000] max-h-48 overflow-y-auto',
+                  'absolute z-20 w-full mt-1 border border-gray-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 shadow-lg max-h-48 overflow-y-auto'
                 )}>
                   {filteredCourts.length > 0 ? (
                     <ul>
@@ -246,7 +246,7 @@ export default function CourtLocationInput({ locationType, courtId, courtName, d
                             type="button"
                             className={themeClass(
                               'w-full text-left px-3 py-2 hover:bg-[#88aaee]/20 font-bold',
-                              'w-full text-left px-3 py-2 hover:bg-gray-50'
+                              'w-full text-left px-3 py-2 hover:bg-gray-50 dark:hover:bg-slate-700'
                             )}
                             onClick={() => {
                               trackSearchEvent('search_select', {
@@ -272,18 +272,18 @@ export default function CourtLocationInput({ locationType, courtId, courtName, d
                               noResultTrackedRef.current = '';
                             }}
                           >
-                            <span className={themeClass('text-black', 'text-gray-900')}>
+                            <span className={themeClass('text-black', 'text-gray-900 dark:text-slate-100')}>
                               {renderHighlightedText(
                                 court.SVCNM,
                                 debouncedSearch,
-                                themeClass('rounded bg-[#facc15] px-0.5 text-black', 'rounded bg-green-100 px-0.5 text-green-900')
+                                themeClass('rounded bg-[#facc15] px-0.5 text-black', 'rounded bg-green-100 dark:bg-green-900/40 px-0.5 text-green-900 dark:text-green-200')
                               )}
                             </span>
-                            <span className={themeClass('text-black/60 text-sm ml-2', 'text-gray-400 text-sm ml-2')}>
+                            <span className={themeClass('text-black/60 text-sm ml-2', 'text-gray-400 dark:text-slate-500 text-sm ml-2')}>
                               {renderHighlightedText(
                                 court.AREANM,
                                 debouncedSearch,
-                                themeClass('rounded bg-[#facc15] px-0.5 text-black', 'rounded bg-green-100 px-0.5 text-gray-700')
+                                themeClass('rounded bg-[#facc15] px-0.5 text-black', 'rounded bg-green-100 dark:bg-green-900/40 px-0.5 text-gray-700 dark:text-green-200')
                               )}
                             </span>
                           </button>
@@ -291,7 +291,7 @@ export default function CourtLocationInput({ locationType, courtId, courtName, d
                       ))}
                     </ul>
                   ) : (
-                    <div className={themeClass('px-3 py-2 text-sm font-bold text-black/60', 'px-3 py-2 text-sm text-gray-500')}>
+                    <div className={themeClass('px-3 py-2 text-sm font-bold text-black/60', 'px-3 py-2 text-sm text-gray-500 dark:text-slate-400')}>
                       검색 결과가 없습니다
                     </div>
                   )}

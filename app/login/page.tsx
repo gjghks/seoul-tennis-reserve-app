@@ -84,8 +84,8 @@ function LoginContent() {
   const handleKakaoLogin = () => handleOAuthLogin('kakao', 'kakao');
 
   return (
-    <div className={`min-h-screen flex items-center justify-center p-4 scrollbar-hide ${themeClass('bg-nb-bg', 'bg-gray-50')}`}>
-      <div className={themeClass('w-full max-w-md bg-white border-[3px] border-black rounded-[5px] shadow-[8px_8px_0px_0px_#000] p-8', 'w-full max-w-md bg-white rounded-2xl shadow-lg p-8 border border-gray-100')}>
+    <div className={`min-h-screen flex items-center justify-center p-4 scrollbar-hide ${themeClass('bg-nb-bg', 'bg-gray-50 dark:bg-slate-900')}`}>
+      <div className={themeClass('w-full max-w-md bg-white dark:bg-slate-900 border-[3px] border-black rounded-[5px] shadow-[8px_8px_0px_0px_#000] p-8', 'w-full max-w-md bg-white dark:bg-slate-900 rounded-2xl shadow-lg p-8 border border-gray-100 dark:border-slate-800')}>
         {/* Tennis court welcome illustration */}
         <svg className={themeClass('w-20 h-20 mx-auto mb-4', 'w-16 h-16 mx-auto mb-4')} viewBox="0 0 96 96" fill="none" aria-hidden="true">
           <g style={{ animation: 'gentle-float 3s ease-in-out infinite' }}>
@@ -107,18 +107,18 @@ function LoginContent() {
           <circle cx="82" cy="32" r="2" className={themeClass('fill-black', 'fill-green-400')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.7s' }} />
           <path d="M78 68 Q78 72 82 72 Q78 72 78 76 Q78 72 74 72 Q78 72 78 68 Z" className={themeClass('fill-black', 'fill-green-300')} style={{ animation: 'fav-sparkle 2.5s ease-in-out infinite', animationDelay: '0.3s' }} />
         </svg>
-        <h1 className={`text-2xl mb-2 text-center ${themeClass('font-black text-black uppercase', 'font-bold text-gray-900')}`}>
+        <h1 className={`text-2xl mb-2 text-center ${themeClass('font-black text-black dark:text-slate-100 uppercase', 'font-bold text-gray-900 dark:text-slate-100')}`}>
           {isNeoBrutalism ? '🎾 로그인' : '로그인'}
         </h1>
-        <p className={`text-center mb-8 ${themeClass('text-black/60 font-medium', 'text-gray-500')}`}>
+        <p className={`text-center mb-8 ${themeClass('text-black/60 dark:text-slate-400 font-medium', 'text-gray-500 dark:text-slate-400')}`}>
           소셜 계정으로 간편하게 로그인하세요
         </p>
 
         {inAppBrowser && (
           <div
             className={themeClass(
-              'bg-amber-100 border-2 border-black text-amber-900 font-bold p-4 rounded-[5px] mb-6',
-              'bg-amber-50 border border-amber-200 text-amber-800 p-4 rounded-lg mb-6'
+              'bg-amber-100 dark:bg-amber-950/40 border-2 border-black text-amber-900 dark:text-amber-300 font-bold p-4 rounded-[5px] mb-6',
+              'bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/50 text-amber-800 dark:text-amber-300 p-4 rounded-lg mb-6'
             )}
           >
             <p className="text-sm font-semibold mb-1">
@@ -146,7 +146,7 @@ function LoginContent() {
           <div
             role="alert"
             aria-live="assertive"
-            className={themeClass('bg-red-100 border-2 border-black text-red-700 font-bold p-4 rounded-[5px] mb-6 text-center', 'bg-red-50 border border-red-200 text-red-600 p-4 rounded-lg mb-6 text-center')}
+            className={themeClass('bg-red-100 dark:bg-red-950/40 border-2 border-black text-red-700 dark:text-red-300 font-bold p-4 rounded-[5px] mb-6 text-center', 'bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800/50 text-red-600 dark:text-red-300 p-4 rounded-lg mb-6 text-center')}
           >
             {error || authErrorMessage}
           </div>
@@ -169,7 +169,7 @@ function LoginContent() {
             type="button"
             onClick={handleGoogleLogin}
             disabled={loadingProvider !== null || inAppBrowser}
-            className={themeClass('w-full py-4 bg-white text-black font-black uppercase border-[3px] border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none transition-all disabled:opacity-50 flex items-center justify-center gap-3', 'w-full py-4 bg-white text-gray-700 font-semibold rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors disabled:opacity-50 flex items-center justify-center gap-3 shadow-sm')}
+            className={themeClass('w-full py-4 bg-white dark:bg-slate-800 text-black dark:text-slate-100 font-black uppercase border-[3px] border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000] hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none transition-all disabled:opacity-50 flex items-center justify-center gap-3', 'w-full py-4 bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-200 font-semibold rounded-lg border border-gray-300 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-3 shadow-sm')}
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24" aria-hidden="true">
               <path
@@ -195,21 +195,21 @@ function LoginContent() {
         </div>
 
         <div className={themeClass(
-          'bg-gray-100 border-2 border-black/15 rounded-[5px] p-3 mt-6',
-          'bg-gray-50 border border-gray-200 rounded-lg p-3 mt-6'
+          'bg-gray-100 dark:bg-slate-800 border-2 border-black/15 rounded-[5px] p-3 mt-6',
+          'bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg p-3 mt-6'
         )}>
-          <p className={`text-xs text-center ${themeClass('text-black/60 font-medium', 'text-gray-500')}`}>
+          <p className={`text-xs text-center ${themeClass('text-black/60 dark:text-slate-400 font-medium', 'text-gray-500 dark:text-slate-400')}`}>
             서울시 공공서비스 예약 시 서울시 통합회원 로그인이 필요합니다.{' '}
             <Link
               href="/guide/reservation"
-              className={`underline underline-offset-2 ${themeClass('hover:text-black/80', 'hover:text-gray-700')}`}
+              className={`underline underline-offset-2 ${themeClass('hover:text-black/80 dark:hover:text-slate-200', 'hover:text-gray-700 dark:hover:text-slate-200')}`}
             >
               예약 가이드 보기
             </Link>
           </p>
         </div>
 
-        <p className={`text-center text-xs mt-4 ${themeClass('text-black/60 font-medium', 'text-gray-400')}`}>
+        <p className={`text-center text-xs mt-4 ${themeClass('text-black/60 dark:text-slate-400 font-medium', 'text-gray-400 dark:text-slate-500')}`}>
           로그인 시 <Link href="/terms" className="underline">이용약관</Link> 및 <Link href="/privacy" className="underline">개인정보처리방침</Link>에 동의하게 됩니다.
         </p>
       </div>
@@ -227,14 +227,14 @@ export default function Login() {
 
 function LoginFallback() {
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50" aria-busy="true">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8 border border-gray-100 skeleton">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50 dark:bg-slate-900" aria-busy="true">
+      <div className="w-full max-w-md bg-white dark:bg-slate-900 rounded-2xl shadow-lg p-8 border border-gray-100 dark:border-slate-800 skeleton">
         <span className="sr-only">로그인 페이지 로딩 중</span>
-        <div className="h-8 bg-gray-200 rounded w-32 mx-auto mb-2" />
-        <div className="h-4 bg-gray-200 rounded w-48 mx-auto mb-8" />
+        <div className="h-8 bg-gray-200 dark:bg-slate-700 rounded w-32 mx-auto mb-2" />
+        <div className="h-4 bg-gray-200 dark:bg-slate-700 rounded w-48 mx-auto mb-8" />
         <div className="space-y-3">
-          <div className="h-14 bg-gray-200 rounded-lg" />
-          <div className="h-14 bg-gray-200 rounded-lg" />
+          <div className="h-14 bg-gray-200 dark:bg-slate-700 rounded-lg" />
+          <div className="h-14 bg-gray-200 dark:bg-slate-700 rounded-lg" />
         </div>
       </div>
     </div>

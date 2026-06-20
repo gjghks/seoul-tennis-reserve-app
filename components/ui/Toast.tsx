@@ -66,8 +66,8 @@ function ToastItem({ id, message, type, isNeoBrutalism, onRemove }: ToastItemPro
   };
 
   const baseClasses = isNeoBrutalism
-    ? 'bg-white border-2 border-black rounded-[5px] shadow-[3px_3px_0px_0px_#000] px-4 py-3 font-bold text-black'
-    : 'bg-white border border-gray-200 rounded-xl shadow-lg px-4 py-3 text-gray-800';
+    ? 'bg-white dark:bg-slate-900 border-2 border-black dark:border-[#f1f3f8] rounded-[5px] shadow-[3px_3px_0px_0px_#000] dark:shadow-[3px_3px_0px_0px_#f1f3f8] px-4 py-3 font-bold text-black dark:text-slate-100'
+    : 'bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl shadow-lg px-4 py-3 text-gray-800 dark:text-slate-200';
 
   const typeClasses = isNeoBrutalism
     ? {
@@ -76,9 +76,9 @@ function ToastItem({ id, message, type, isNeoBrutalism, onRemove }: ToastItemPro
         info: 'border-[#88aaee] shadow-[3px_3px_0px_0px_#88aaee]',
       }
     : {
-        success: 'border-green-200 bg-green-50',
-        error: 'border-red-200 bg-red-50',
-        info: 'border-blue-200 bg-blue-50',
+        success: 'border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-950/40',
+        error: 'border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950/40',
+        info: 'border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/40',
       };
 
   return (

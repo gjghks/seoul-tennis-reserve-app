@@ -97,20 +97,20 @@ export default function ReservationGuideContent() {
 
   return (
     <div className="container py-8 scrollbar-hide">
-      <div className={`max-w-3xl mx-auto ${themeClass('bg-white border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000] p-8', 'bg-white rounded-xl shadow-lg p-8')}`}>
+      <div className={`max-w-3xl mx-auto ${themeClass('bg-white dark:bg-slate-900 border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000] p-8', 'bg-white dark:bg-slate-900 rounded-xl shadow-lg p-8')}`}>
         <div className="mb-10 text-center">
           <div className="text-4xl mb-4">🎾</div>
-          <h1 className={`text-3xl font-bold mb-3 ${themeClass('text-black', 'text-gray-900')}`}>
+          <h1 className={`text-3xl font-bold mb-3 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
             예약 가이드
           </h1>
-          <p className={`text-lg ${themeClass('text-black/80', 'text-gray-600')}`}>
+          <p className={`text-lg ${themeClass('text-black/80 dark:text-slate-300', 'text-gray-600 dark:text-slate-400')}`}>
             서울시 공공 테니스장 예약 방법을 알려드립니다
           </p>
         </div>
 
-        <div className={`space-y-12 ${themeClass('text-black/80', 'text-gray-600')}`}>
+        <div className={`space-y-12 ${themeClass('text-black/80 dark:text-slate-300', 'text-gray-600 dark:text-slate-400')}`}>
           <section>
-            <h2 className={`text-xl font-bold mb-4 flex items-center gap-2 ${themeClass('text-black', 'text-gray-900')}`}>
+            <h2 className={`text-xl font-bold mb-4 flex items-center gap-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               <span className="text-2xl">👋</span> 시작하기 전에
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -118,12 +118,12 @@ export default function ReservationGuideContent() {
                 <div
                   key={feature.title}
                   className={`p-4 ${themeClass(
-                    'bg-white border-2 border-black rounded-[6px] shadow-[2px_2px_0px_0px_#000]',
-                    'bg-gray-50 border border-gray-200 rounded-lg'
+                    'bg-white dark:bg-slate-800 border-2 border-black rounded-[6px] shadow-[2px_2px_0px_0px_#000]',
+                    'bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg'
                   )}`}
                 >
                   <div className="text-2xl mb-2">{feature.emoji}</div>
-                  <div className={`font-bold mb-1 ${themeClass('text-black', 'text-gray-900')}`}>
+                  <div className={`font-bold mb-1 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
                     {feature.title}
                   </div>
                   <p className="text-sm leading-relaxed">{feature.desc}</p>
@@ -133,7 +133,7 @@ export default function ReservationGuideContent() {
           </section>
 
           <section>
-            <h2 className={`text-xl font-bold mb-4 flex items-center gap-2 ${themeClass('text-black', 'text-gray-900')}`}>
+            <h2 className={`text-xl font-bold mb-4 flex items-center gap-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               <span className="text-2xl">👤</span> 통합회원 가입 방법
             </h2>
             <div className="space-y-4">
@@ -141,8 +141,8 @@ export default function ReservationGuideContent() {
                 <div
                   key={step.step}
                   className={`flex items-start gap-4 p-4 ${themeClass(
-                    'bg-white border-2 border-black rounded-[6px]',
-                    'bg-white border border-gray-200 rounded-lg'
+                    'bg-white dark:bg-slate-800 border-2 border-black rounded-[6px]',
+                    'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg'
                   )}`}
                 >
                   <div className={`flex items-center justify-center w-8 h-8 rounded-full shrink-0 font-bold ${themeClass(
@@ -152,7 +152,7 @@ export default function ReservationGuideContent() {
                     {step.step}
                   </div>
                   <div>
-                    <h3 className={`font-bold mb-1 ${themeClass('text-black', 'text-gray-900')}`}>
+                    <h3 className={`font-bold mb-1 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
                       {step.title}
                     </h3>
                     <p className="text-sm">{step.desc}</p>
@@ -164,7 +164,7 @@ export default function ReservationGuideContent() {
           </section>
 
           <section>
-            <h2 className={`text-xl font-bold mb-4 flex items-center gap-2 ${themeClass('text-black', 'text-gray-900')}`}>
+            <h2 className={`text-xl font-bold mb-4 flex items-center gap-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               <span className="text-2xl">🗓️</span> 예약 방법
             </h2>
             <div className="space-y-4">
@@ -172,8 +172,8 @@ export default function ReservationGuideContent() {
                 <div
                   key={step.step}
                   className={`flex items-start gap-4 p-4 ${themeClass(
-                    'bg-white border-2 border-black rounded-[6px]',
-                    'bg-white border border-gray-200 rounded-lg'
+                    'bg-white dark:bg-slate-800 border-2 border-black rounded-[6px]',
+                    'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg'
                   )}`}
                 >
                   <div className={`flex items-center justify-center w-8 h-8 rounded-full shrink-0 font-bold ${themeClass(
@@ -183,7 +183,7 @@ export default function ReservationGuideContent() {
                     {step.step}
                   </div>
                   <div>
-                    <h3 className={`font-bold mb-1 ${themeClass('text-black', 'text-gray-900')}`}>
+                    <h3 className={`font-bold mb-1 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
                       {step.title}
                     </h3>
                     <p className="text-sm">{step.desc}</p>
@@ -195,7 +195,7 @@ export default function ReservationGuideContent() {
           </section>
 
           <section>
-            <h2 className={`text-xl font-bold mb-4 flex items-center gap-2 ${themeClass('text-black', 'text-gray-900')}`}>
+            <h2 className={`text-xl font-bold mb-4 flex items-center gap-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               <span className="text-2xl">💡</span> 알아두면 좋은 팁
             </h2>
             <ul className="space-y-3">
@@ -203,7 +203,7 @@ export default function ReservationGuideContent() {
                 <li key={tip.title} className="flex items-start gap-2">
                   <span className="text-green-600 font-bold shrink-0">✓</span>
                   <span>
-                    <strong className={themeClass('text-black', 'text-gray-900')}>{tip.title}</strong>
+                    <strong className={themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}>{tip.title}</strong>
                     <span className="block text-sm mt-1">{tip.desc}</span>
                   </span>
                 </li>
@@ -211,7 +211,7 @@ export default function ReservationGuideContent() {
             </ul>
           </section>
 
-          <section className="pt-4 border-t border-gray-200">
+          <section className="pt-4 border-t border-gray-200 dark:border-slate-700">
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link
                 href="/"
@@ -225,8 +225,8 @@ export default function ReservationGuideContent() {
               <Link
                 href="/guide/school-courts"
                 className={`px-6 py-3 rounded-lg text-center font-bold transition-all ${themeClass(
-                  'bg-white text-black border-2 border-black hover:bg-gray-100 shadow-[4px_4px_0px_0px_#000] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000]',
-                  'bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-md hover:shadow-lg'
+                  'bg-white dark:bg-slate-800 text-black dark:text-slate-100 border-2 border-black hover:bg-gray-100 dark:hover:bg-slate-700 shadow-[4px_4px_0px_0px_#000] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000]',
+                  'bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-200 hover:bg-gray-200 dark:hover:bg-slate-700 shadow-md hover:shadow-lg'
                 )}`}
               >
                 학교 테니스장 안내

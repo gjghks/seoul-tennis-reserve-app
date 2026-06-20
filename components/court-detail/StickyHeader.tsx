@@ -27,9 +27,9 @@ function StickyHeader({
       isVisible ? 'translate-y-0' : '-translate-y-full'
     }`}>
       <div className={`${
-        isNeoBrutalism 
-          ? 'bg-white border-b-[3px] border-black' 
-          : 'bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm'
+        isNeoBrutalism
+          ? 'bg-white dark:bg-slate-900 border-b-[3px] border-black'
+          : 'bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-gray-200 dark:border-slate-700 shadow-sm'
       }`}>
         <div className="container py-3">
           <div className="flex items-center justify-between gap-3">
@@ -41,20 +41,20 @@ function StickyHeader({
                         ? 'bg-[#93c5fd] text-black font-black'
                         : isAvailable
                           ? 'bg-[#a3e635] text-black font-black'
-                          : 'bg-gray-200 text-black/60'
+                          : 'bg-gray-200 dark:bg-slate-700 text-black/60 dark:text-slate-300'
                     }`
                   : `rounded-full ${
                       isExternal
-                        ? 'bg-blue-100 text-blue-700 border border-blue-200'
+                        ? 'bg-blue-100 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-900'
                         : isAvailable
-                          ? 'bg-green-100 text-green-700'
-                          : 'bg-gray-100 text-gray-500'
+                          ? 'bg-green-100 dark:bg-green-950/40 text-green-700 dark:text-green-300'
+                          : 'bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-slate-400'
                     }`
               }`}>
                 {!isNeoBrutalism && <span className={`w-1.5 h-1.5 rounded-full ${isExternal ? 'bg-blue-500' : isAvailable ? 'bg-green-500' : 'bg-gray-400'}`} />}
                 {court.SVCSTATNM}
               </span>
-              <h2 className={cn('truncate text-sm font-bold', isNeoBrutalism && 'text-black', !isNeoBrutalism && 'text-gray-900')}>
+              <h2 className={cn('truncate text-sm font-bold', isNeoBrutalism && 'text-black dark:text-slate-100', !isNeoBrutalism && 'text-gray-900 dark:text-slate-100')}>
                 {court.SVCNM}
               </h2>
             </div>

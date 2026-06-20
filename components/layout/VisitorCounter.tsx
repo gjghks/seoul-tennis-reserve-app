@@ -51,10 +51,10 @@ export default function VisitorCounter() {
   if (!counts) return null;
 
   return (
-    <div className={`flex items-center justify-center gap-3 text-[clamp(10px,2.5vw,12px)] ${themeClass('text-white/40', 'text-gray-300')}`}>
-      <span>오늘 <strong className={themeClass('text-white/70', 'text-gray-400')}>{formatNumber(counts.today)}</strong></span>
-      <span className={themeClass('text-white/20', 'text-gray-200')}>·</span>
-      <span>전체 <strong className={themeClass('text-white/70', 'text-gray-400')}>{formatNumber(counts.total)}</strong></span>
+    <div className={`flex items-center justify-center gap-3 text-[clamp(10px,2.5vw,12px)] ${themeClass('text-white/40', 'text-gray-300 dark:text-slate-400')}`}>
+      <span>오늘 <strong className={themeClass('text-white/70', 'text-gray-400 dark:text-slate-300')}>{formatNumber(counts.today)}</strong></span>
+      <span className={themeClass('text-white/20', 'text-gray-200 dark:text-slate-600')}>·</span>
+      <span>전체 <strong className={themeClass('text-white/70', 'text-gray-400 dark:text-slate-300')}>{formatNumber(counts.total)}</strong></span>
     </div>
   );
 }

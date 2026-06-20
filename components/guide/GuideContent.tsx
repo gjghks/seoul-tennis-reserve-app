@@ -27,7 +27,7 @@ export default function GuideContent({
   const totalDistricts = allStats.districts.length;
 
   return (
-    <div className={`min-h-screen scrollbar-hide ${themeClass('bg-nb-bg', 'bg-gray-50')}`}>
+    <div className={`min-h-screen scrollbar-hide ${themeClass('bg-nb-bg', 'bg-gray-50 dark:bg-slate-900')}`}>
       <section className={themeClass('court-pattern-nb text-white py-6', 'court-pattern text-white py-6')}>
         <div className="container relative z-10">
           <nav className="mb-3">
@@ -58,9 +58,9 @@ export default function GuideContent({
       <section className="container py-6 space-y-6">
         <div className={`p-5 ${themeClass(
           'bg-[#a3e635] border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000]',
-          'bg-green-50 rounded-xl border border-green-100'
+          'bg-green-50 dark:bg-green-950/40 rounded-xl border border-green-100 dark:border-green-900/50'
         )}`}>
-          <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black uppercase', 'text-gray-900')}`}>
+          <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black uppercase', 'text-gray-900 dark:text-slate-100')}`}>
             {stat.nameKo} 한눈에 보기
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -92,13 +92,13 @@ export default function GuideContent({
         </div>
 
         <div className={`p-5 ${themeClass(
-          'bg-white border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000]',
-          'bg-white rounded-xl border border-gray-100'
+          'bg-white dark:bg-slate-900 border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000]',
+          'bg-white dark:bg-slate-900 rounded-xl border border-gray-100 dark:border-slate-800'
         )}`}>
-          <h2 className={`text-lg font-bold mb-4 ${themeClass('text-black uppercase', 'text-gray-900')}`}>
+          <h2 className={`text-lg font-bold mb-4 ${themeClass('text-black dark:text-slate-100 uppercase', 'text-gray-900 dark:text-slate-100')}`}>
             {stat.nameKo} 테니스장 특징
           </h2>
-          <div className={`space-y-3 text-sm leading-relaxed ${themeClass('text-black/80', 'text-gray-700')}`}>
+          <div className={`space-y-3 text-sm leading-relaxed ${themeClass('text-black/80 dark:text-slate-300', 'text-gray-700 dark:text-slate-200')}`}>
             <p>
               <strong>{stat.nameKo}</strong>에는 총 <strong>{stat.totalCourts}개</strong>의 공공 테니스장 프로그램이 운영되고 있으며,
               서울 {totalDistricts}개 구 중 <strong>{facilityRank}번째</strong>로 시설이{' '}
@@ -143,12 +143,12 @@ export default function GuideContent({
 
         <div className={`p-5 ${themeClass(
           'bg-[#fef3c7] border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000]',
-          'bg-amber-50 rounded-xl border border-amber-100'
+          'bg-amber-50 dark:bg-amber-950/40 rounded-xl border border-amber-100 dark:border-amber-900/50'
         )}`}>
-          <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black uppercase', 'text-gray-900')}`}>
+          <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black uppercase', 'text-gray-900 dark:text-slate-100')}`}>
             예약 팁
           </h2>
-          <ul className={`space-y-2 text-sm ${themeClass('text-black/80', 'text-gray-700')}`}>
+          <ul className={`space-y-2 text-sm ${themeClass('text-black/80', 'text-gray-700 dark:text-slate-200')}`}>
             {stat.competitionRate >= 50 && (
               <li className="flex items-start gap-2">
                 <span className="shrink-0">💡</span>
@@ -180,10 +180,10 @@ export default function GuideContent({
         </div>
 
         <div className={`p-5 ${themeClass(
-          'bg-white border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000]',
-          'bg-white rounded-xl border border-gray-100'
+          'bg-white dark:bg-slate-900 border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000]',
+          'bg-white dark:bg-slate-900 rounded-xl border border-gray-100 dark:border-slate-800'
         )}`}>
-          <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black uppercase', 'text-gray-900')}`}>
+          <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black dark:text-slate-100 uppercase', 'text-gray-900 dark:text-slate-100')}`}>
             서울 평균과 비교
           </h2>
           <div className="space-y-3">
@@ -196,10 +196,10 @@ export default function GuideContent({
 
         {stat.placeNames.length > 0 && (
           <div className={`p-5 ${themeClass(
-            'bg-white border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000]',
-            'bg-white rounded-xl border border-gray-100'
+            'bg-white dark:bg-slate-900 border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000]',
+            'bg-white dark:bg-slate-900 rounded-xl border border-gray-100 dark:border-slate-800'
           )}`}>
-            <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black uppercase', 'text-gray-900')}`}>
+            <h2 className={`text-lg font-bold mb-3 ${themeClass('text-black dark:text-slate-100 uppercase', 'text-gray-900 dark:text-slate-100')}`}>
               {stat.nameKo} 테니스장 시설 목록
             </h2>
             <div className="flex flex-wrap gap-2">
@@ -207,8 +207,8 @@ export default function GuideContent({
                 <span
                   key={name}
                   className={`px-3 py-1.5 text-sm ${themeClass(
-                    'bg-gray-100 text-black font-bold border-2 border-black rounded-[5px]',
-                    'bg-gray-100 text-gray-700 rounded-lg'
+                    'bg-gray-100 dark:bg-slate-800 text-black dark:text-slate-100 font-bold border-2 border-black rounded-[5px]',
+                    'bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-200 rounded-lg'
                   )}`}
                 >
                   {name}
@@ -231,8 +231,8 @@ export default function GuideContent({
           <Link
             href="/compare"
             className={`flex-1 text-center px-5 py-3 font-bold transition-all ${themeClass(
-              'bg-white text-black border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000] hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none',
-              'bg-white text-gray-700 rounded-xl border border-gray-200 hover:bg-gray-50'
+              'bg-white dark:bg-slate-800 text-black dark:text-slate-100 border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000] hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none',
+              'bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-200 rounded-xl border border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700'
             )}`}
           >
             다른 구와 비교하기
@@ -257,15 +257,15 @@ function StatBox({
   return (
     <div className={`p-3 ${themeClass(
       'bg-white/80 border-2 border-black rounded-[5px]',
-      'bg-white rounded-lg'
+      'bg-white dark:bg-slate-800 rounded-lg'
     )}`}>
-      <div className={`text-xs mb-1 ${themeClass('font-bold text-black/60 uppercase', 'text-gray-500')}`}>
+      <div className={`text-xs mb-1 ${themeClass('font-bold text-black/60 uppercase', 'text-gray-500 dark:text-slate-400')}`}>
         {label}
       </div>
-      <div className={`text-lg font-bold ${themeClass('text-black', 'text-gray-900')}`}>
+      <div className={`text-lg font-bold ${themeClass('text-black', 'text-gray-900 dark:text-slate-100')}`}>
         {value}
       </div>
-      <div className={`text-xs ${themeClass('text-black/60', 'text-gray-400')}`}>
+      <div className={`text-xs ${themeClass('text-black/60', 'text-gray-400 dark:text-slate-500')}`}>
         {sub}
       </div>
     </div>
@@ -295,19 +295,19 @@ function CompareBar({
   return (
     <div>
       <div className="flex items-center justify-between mb-1">
-        <span className={`text-sm font-bold ${themeClass('text-black', 'text-gray-700')}`}>{label}</span>
+        <span className={`text-sm font-bold ${themeClass('text-black dark:text-slate-100', 'text-gray-700 dark:text-slate-200')}`}>{label}</span>
         <span className={`text-sm font-bold ${
           isAboveAvg
             ? themeClass('text-[#16a34a]', 'text-green-600')
-            : themeClass('text-black/60', 'text-gray-500')
+            : themeClass('text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400')
         }`}>
           {value}{unit}
-          <span className={`text-xs ml-1 ${themeClass('text-black/60', 'text-gray-400')}`}>
+          <span className={`text-xs ml-1 ${themeClass('text-black/60 dark:text-slate-400', 'text-gray-400 dark:text-slate-500')}`}>
             (평균 {avg}{unit})
           </span>
         </span>
       </div>
-      <div className={`h-3 rounded-full overflow-hidden ${themeClass('bg-gray-200 border border-black', 'bg-gray-100')}`}>
+      <div className={`h-3 rounded-full overflow-hidden ${themeClass('bg-gray-200 dark:bg-slate-700 border border-black', 'bg-gray-100 dark:bg-slate-800')}`}>
         <div className="relative h-full">
           <div
             className={`absolute inset-y-0 left-0 rounded-full ${themeClass(

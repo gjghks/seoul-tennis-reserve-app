@@ -53,32 +53,32 @@ export default function LadderGuideContent() {
         className={cn(
           'max-w-3xl mx-auto',
           themeClass(
-            'bg-white border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000] p-8',
-            'bg-white rounded-xl shadow-lg p-8'
+            'bg-white dark:bg-slate-900 border-[3px] border-black rounded-[10px] shadow-[6px_6px_0px_0px_#000] p-8',
+            'bg-white dark:bg-slate-900 rounded-xl shadow-lg p-8'
           )
         )}
       >
         <div className="mb-10 text-center">
           <div className="text-4xl mb-4">🏆</div>
-          <h1 className={cn('text-3xl font-bold mb-3', themeClass('text-black', 'text-gray-900'))}>
+          <h1 className={cn('text-3xl font-bold mb-3', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>
             래더 랭킹 가이드
           </h1>
-          <p className={cn('text-lg', themeClass('text-black/80', 'text-gray-600'))}>
+          <p className={cn('text-lg', themeClass('text-black/80 dark:text-slate-300', 'text-gray-600 dark:text-slate-400'))}>
             승패에 따른 ELO 점수와 티어 시스템
           </p>
         </div>
 
-        <div className={cn('space-y-12', themeClass('text-black/80', 'text-gray-600'))}>
+        <div className={cn('space-y-12', themeClass('text-black/80 dark:text-slate-300', 'text-gray-600 dark:text-slate-400'))}>
           
           <section>
-            <h2 className={cn('text-xl font-bold mb-4 flex items-center gap-2', themeClass('text-black', 'text-gray-900'))}>
+            <h2 className={cn('text-xl font-bold mb-4 flex items-center gap-2', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>
               <span className="text-2xl">⚡</span> ELO 시스템 체험하기
             </h2>
-            <div className={cn('p-6 rounded-lg text-center', themeClass('bg-gray-50 border-2 border-black shadow-[4px_4px_0px_0px_#000]', 'bg-gray-50 border border-gray-200'))}>
+            <div className={cn('p-6 rounded-lg text-center', themeClass('bg-gray-50 dark:bg-slate-800 border-2 border-black shadow-[4px_4px_0px_0px_#000]', 'bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700'))}>
               <div className="mb-6">
-                <div className="text-sm font-bold text-gray-500 mb-2">나의 예상 점수</div>
-                <div className={cn('text-5xl font-black mb-2', themeClass('text-black', 'text-gray-900'))}>
-                  {currentElo} <span className="text-xl text-gray-400">점</span>
+                <div className="text-sm font-bold text-gray-500 dark:text-slate-400 mb-2">나의 예상 점수</div>
+                <div className={cn('text-5xl font-black mb-2', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>
+                  {currentElo} <span className="text-xl text-gray-400 dark:text-slate-500">점</span>
                 </div>
                 <div className="inline-block px-4 py-1 rounded-full text-white font-bold text-sm" style={{ backgroundColor: currentTier.color }}>
                   {currentTier.label} 티어
@@ -89,21 +89,21 @@ export default function LadderGuideContent() {
                 <button
                   type="button"
                   onClick={() => setDemoWins(w => w + 1)}
-                  className={cn('px-4 py-2 rounded-lg font-bold', themeClass('bg-white border-2 border-black hover:-translate-y-[2px] shadow-[2px_2px_0px_0px_#000]', 'bg-white border border-gray-200 hover:bg-gray-100 shadow-sm'))}
+                  className={cn('px-4 py-2 rounded-lg font-bold', themeClass('bg-white dark:bg-slate-900 border-2 border-black hover:-translate-y-[2px] shadow-[2px_2px_0px_0px_#000]', 'bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 hover:bg-gray-100 dark:hover:bg-slate-700 shadow-sm'))}
                 >
                   <span className="text-green-600 mr-2">승리</span>+25
                 </button>
                 <button
                   type="button"
                   onClick={() => setDemoLosses(l => l + 1)}
-                  className={cn('px-4 py-2 rounded-lg font-bold', themeClass('bg-white border-2 border-black hover:-translate-y-[2px] shadow-[2px_2px_0px_0px_#000]', 'bg-white border border-gray-200 hover:bg-gray-100 shadow-sm'))}
+                  className={cn('px-4 py-2 rounded-lg font-bold', themeClass('bg-white dark:bg-slate-900 border-2 border-black hover:-translate-y-[2px] shadow-[2px_2px_0px_0px_#000]', 'bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 hover:bg-gray-100 dark:hover:bg-slate-700 shadow-sm'))}
                 >
                   <span className="text-red-600 mr-2">패배</span>-15
                 </button>
                 <button
                   type="button"
                   onClick={() => { setDemoWins(0); setDemoLosses(0); }}
-                  className="text-sm text-gray-400 hover:text-gray-600 underline"
+                  className="text-sm text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:hover:text-slate-300 underline"
                 >
                   초기화
                 </button>
@@ -112,7 +112,7 @@ export default function LadderGuideContent() {
           </section>
 
           <section>
-            <h2 className={cn('text-xl font-bold mb-4 flex items-center gap-2', themeClass('text-black', 'text-gray-900'))}>
+            <h2 className={cn('text-xl font-bold mb-4 flex items-center gap-2', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>
               <span className="text-2xl">🎖️</span> 티어 소개
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -121,11 +121,11 @@ export default function LadderGuideContent() {
                   key={tier.key}
                   className={cn(
                     'p-4 rounded-lg text-center flex flex-col items-center justify-center',
-                    themeClass('bg-white border-2 border-black shadow-[2px_2px_0px_0px_#000]', 'bg-white border border-gray-200 shadow-sm')
+                    themeClass('bg-white dark:bg-slate-800 border-2 border-black shadow-[2px_2px_0px_0px_#000]', 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 shadow-sm')
                   )}
                 >
                   <div className="w-4 h-4 rounded-full mb-2" style={{ backgroundColor: tier.color }} />
-                  <div className={cn('font-bold', themeClass('text-black', 'text-gray-900'))}>
+                  <div className={cn('font-bold', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>
                     {tier.label}
                   </div>
                 </div>
@@ -134,7 +134,7 @@ export default function LadderGuideContent() {
           </section>
 
           <section>
-            <h2 className={cn('text-xl font-bold mb-4 flex items-center gap-2', themeClass('text-black', 'text-gray-900'))}>
+            <h2 className={cn('text-xl font-bold mb-4 flex items-center gap-2', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>
               <span className="text-2xl">🚀</span> 시작하기
             </h2>
             <div className="space-y-4">
@@ -144,8 +144,8 @@ export default function LadderGuideContent() {
                   className={cn(
                     'flex items-start gap-4 p-4',
                     themeClass(
-                      'bg-white border-2 border-black rounded-[6px]',
-                      'bg-white border border-gray-200 rounded-lg'
+                      'bg-white dark:bg-slate-800 border-2 border-black rounded-[6px]',
+                      'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg'
                     )
                   )}
                 >
@@ -158,7 +158,7 @@ export default function LadderGuideContent() {
                     {step.step}
                   </div>
                   <div>
-                    <h3 className={cn('font-bold mb-1', themeClass('text-black', 'text-gray-900'))}>
+                    <h3 className={cn('font-bold mb-1', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>
                       {step.title}
                     </h3>
                     <p className="text-sm">{step.desc}</p>
@@ -170,7 +170,7 @@ export default function LadderGuideContent() {
           </section>
 
           <section>
-            <h2 className={cn('text-xl font-bold mb-4 flex items-center gap-2', themeClass('text-black', 'text-gray-900'))}>
+            <h2 className={cn('text-xl font-bold mb-4 flex items-center gap-2', themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100'))}>
               <span className="text-2xl">💡</span> 래더 팁
             </h2>
             <ul className="space-y-3">
@@ -178,7 +178,7 @@ export default function LadderGuideContent() {
                 <li key={tip.title} className="flex items-start gap-2">
                   <span className="text-purple-600 font-bold shrink-0">✓</span>
                   <span>
-                    <strong className={themeClass('text-black', 'text-gray-900')}>
+                    <strong className={themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}>
                       {tip.title}
                     </strong>
                     <span className="block text-sm mt-1">{tip.desc}</span>
@@ -188,7 +188,7 @@ export default function LadderGuideContent() {
             </ul>
           </section>
 
-          <section className="pt-4 border-t border-gray-200">
+          <section className="pt-4 border-t border-gray-200 dark:border-slate-700">
             <div className="flex justify-center">
               <Link
                 href="/ladder"

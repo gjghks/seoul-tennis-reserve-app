@@ -121,7 +121,7 @@ const BracketView = dynamic<BracketViewProps>(
     } catch {
       return function BracketFallback() {
         return (
-          <div className="w-full py-10 text-center text-sm text-gray-500">
+          <div className="w-full py-10 text-center text-sm text-gray-500 dark:text-slate-400">
             브래킷 뷰를 불러올 수 없습니다.
           </div>
         );
@@ -178,9 +178,9 @@ export default function TournamentDetail({ id }: { id: string }) {
 
   if (isLoading) {
     return (
-      <div className={cn('min-h-screen py-10', themeClass('bg-nb-bg', 'bg-gray-50'))}>
+      <div className={cn('min-h-screen py-10', themeClass('bg-nb-bg', 'bg-gray-50 dark:bg-slate-900'))}>
         <div className="container mx-auto px-4 max-w-4xl flex items-center justify-center py-28">
-          <Spinner size="md" className={themeClass('text-black', 'text-green-600')} />
+          <Spinner size="md" className={themeClass('text-black dark:text-slate-100', 'text-green-600')} />
         </div>
       </div>
     );
@@ -188,10 +188,10 @@ export default function TournamentDetail({ id }: { id: string }) {
 
   if (error || !tournament) {
     return (
-      <div className={cn('min-h-screen py-10', themeClass('bg-nb-bg', 'bg-gray-50'))}>
+      <div className={cn('min-h-screen py-10', themeClass('bg-nb-bg', 'bg-gray-50 dark:bg-slate-900'))}>
         <div className="container mx-auto px-4 max-w-4xl text-center py-20">
-          <h1 className={cn('text-2xl mb-3', themeClass('font-black text-black', 'font-bold text-gray-900'))}>대회를 찾을 수 없습니다</h1>
-          <p className={cn('mb-5', themeClass('font-bold text-black/60', 'text-gray-500'))}>{error?.message}</p>
+          <h1 className={cn('text-2xl mb-3', themeClass('font-black text-black dark:text-slate-100', 'font-bold text-gray-900 dark:text-slate-100'))}>대회를 찾을 수 없습니다</h1>
+          <p className={cn('mb-5', themeClass('font-bold text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400'))}>{error?.message}</p>
           <Link href="/tournaments" className="underline font-bold">
             목록으로 돌아가기
           </Link>
@@ -201,9 +201,9 @@ export default function TournamentDetail({ id }: { id: string }) {
   }
 
   return (
-    <div className={cn('min-h-screen py-8', themeClass('bg-nb-bg', 'bg-gray-50'))}>
+    <div className={cn('min-h-screen py-8', themeClass('bg-nb-bg', 'bg-gray-50 dark:bg-slate-900'))}>
       <div className="container mx-auto px-4 max-w-4xl space-y-6">
-        <button type="button" onClick={() => router.push('/tournaments')} className={cn('flex items-center gap-2', themeClass('font-black text-black', 'font-bold text-gray-600 hover:text-gray-900'))}>
+        <button type="button" onClick={() => router.push('/tournaments')} className={cn('flex items-center gap-2', themeClass('font-black text-black dark:text-slate-100', 'font-bold text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-100'))}>
           <span>←</span>
           목록으로
         </button>
@@ -212,8 +212,8 @@ export default function TournamentDetail({ id }: { id: string }) {
           className={cn(
             'p-6',
             themeClass(
-              'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
-              'bg-white rounded-2xl border border-gray-100 shadow-sm'
+              'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
+              'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm'
             )
           )}
         >
@@ -223,19 +223,19 @@ export default function TournamentDetail({ id }: { id: string }) {
                 className={cn(
                   'px-2 py-0.5 text-xs rounded font-bold',
                   tournament.status === 'registration'
-                    ? themeClass('bg-[#88aaee] border-2 border-black text-black', 'bg-blue-100 border border-blue-200 text-blue-700')
+                    ? themeClass('bg-[#88aaee] border-2 border-black text-black', 'bg-blue-100 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900/50 text-blue-700 dark:text-blue-300')
                     : tournament.status === 'in_progress'
-                      ? themeClass('bg-[#22c55e] border-2 border-black text-black', 'bg-green-100 border border-green-200 text-green-700')
+                      ? themeClass('bg-[#22c55e] border-2 border-black text-black', 'bg-green-100 dark:bg-green-950/40 border border-green-200 dark:border-green-900/50 text-green-700 dark:text-green-300')
                       : tournament.status === 'completed'
-                        ? themeClass('bg-[#facc15] border-2 border-black text-black', 'bg-yellow-100 border border-yellow-200 text-yellow-700')
+                        ? themeClass('bg-[#facc15] border-2 border-black text-black', 'bg-yellow-100 dark:bg-yellow-950/40 border border-yellow-200 dark:border-yellow-900/50 text-yellow-700 dark:text-yellow-300')
                         : tournament.status === 'cancelled'
-                          ? themeClass('bg-[#ff90e8] border-2 border-black text-black', 'bg-red-100 border border-red-200 text-red-700')
-                          : themeClass('bg-gray-300 border-2 border-black text-black', 'bg-gray-100 border border-gray-200 text-gray-700')
+                          ? themeClass('bg-[#ff90e8] border-2 border-black text-black', 'bg-red-100 dark:bg-red-950/40 border border-red-200 dark:border-red-900/50 text-red-700 dark:text-red-300')
+                          : themeClass('bg-gray-300 border-2 border-black text-black', 'bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-700 dark:text-slate-300')
                 )}
               >
                 {STATUS_LABELS[tournament.status] || '상태 미정'}
               </span>
-              <span className={cn('text-sm', themeClass('font-bold text-black/60', 'text-gray-500'))}>
+              <span className={cn('text-sm', themeClass('font-bold text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400'))}>
                 주최자: {tournament.creator_name || '익명'}
               </span>
             </div>
@@ -245,8 +245,8 @@ export default function TournamentDetail({ id }: { id: string }) {
             </div>
           </div>
 
-          <h1 className={cn('text-2xl mb-2', themeClass('font-black text-black', 'font-bold text-gray-900'))}>{tournament.title}</h1>
-          <p className={cn('text-sm whitespace-pre-wrap', themeClass('font-bold text-black/70', 'text-gray-600'))}>
+          <h1 className={cn('text-2xl mb-2', themeClass('font-black text-black dark:text-slate-100', 'font-bold text-gray-900 dark:text-slate-100'))}>{tournament.title}</h1>
+          <p className={cn('text-sm whitespace-pre-wrap', themeClass('font-bold text-black/70 dark:text-slate-300', 'text-gray-600 dark:text-slate-400'))}>
             {tournament.description || '대회 설명이 없습니다.'}
           </p>
         </section>
@@ -255,49 +255,49 @@ export default function TournamentDetail({ id }: { id: string }) {
           className={cn(
             'p-6',
             themeClass(
-              'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
-              'bg-white rounded-2xl border border-gray-100 shadow-sm'
+              'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
+              'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm'
             )
           )}
         >
-          <h2 className={cn('text-lg mb-4', themeClass('font-black text-black', 'font-bold text-gray-900'))}>대회 정보</h2>
+          <h2 className={cn('text-lg mb-4', themeClass('font-black text-black dark:text-slate-100', 'font-bold text-gray-900 dark:text-slate-100'))}>대회 정보</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
             <div>
-              <span className={themeClass('font-black text-black/60', 'font-bold text-gray-500')}>형식</span>
-              <p className={themeClass('font-bold text-black', 'text-gray-800')}>{FORMAT_LABELS[tournament.format] || tournament.format}</p>
+              <span className={themeClass('font-black text-black/60 dark:text-slate-400', 'font-bold text-gray-500 dark:text-slate-400')}>형식</span>
+              <p className={themeClass('font-bold text-black dark:text-slate-100', 'text-gray-800 dark:text-slate-200')}>{FORMAT_LABELS[tournament.format] || tournament.format}</p>
             </div>
             <div>
-              <span className={themeClass('font-black text-black/60', 'font-bold text-gray-500')}>경기 종류</span>
-              <p className={themeClass('font-bold text-black', 'text-gray-800')}>
+              <span className={themeClass('font-black text-black/60 dark:text-slate-400', 'font-bold text-gray-500 dark:text-slate-400')}>경기 종류</span>
+              <p className={themeClass('font-bold text-black dark:text-slate-100', 'text-gray-800 dark:text-slate-200')}>
                 {MATCH_TYPE_LABELS[tournament.match_type] || tournament.match_type}
               </p>
             </div>
             <div>
-              <span className={themeClass('font-black text-black/60', 'font-bold text-gray-500')}>스코어 형식</span>
-              <p className={themeClass('font-bold text-black', 'text-gray-800')}>
+              <span className={themeClass('font-black text-black/60 dark:text-slate-400', 'font-bold text-gray-500 dark:text-slate-400')}>스코어 형식</span>
+              <p className={themeClass('font-bold text-black dark:text-slate-100', 'text-gray-800 dark:text-slate-200')}>
                 {SCORING_LABELS[tournament.scoring_format] || tournament.scoring_format}
               </p>
             </div>
             <div>
-              <span className={themeClass('font-black text-black/60', 'font-bold text-gray-500')}>노애드</span>
-              <p className={themeClass('font-bold text-black', 'text-gray-800')}>{tournament.no_ad_scoring ? '사용' : '미사용'}</p>
+              <span className={themeClass('font-black text-black/60 dark:text-slate-400', 'font-bold text-gray-500 dark:text-slate-400')}>노애드</span>
+              <p className={themeClass('font-bold text-black dark:text-slate-100', 'text-gray-800 dark:text-slate-200')}>{tournament.no_ad_scoring ? '사용' : '미사용'}</p>
             </div>
             <div>
-              <span className={themeClass('font-black text-black/60', 'font-bold text-gray-500')}>경기 날짜</span>
-              <p className={themeClass('font-bold text-black', 'text-gray-800')}>
+              <span className={themeClass('font-black text-black/60 dark:text-slate-400', 'font-bold text-gray-500 dark:text-slate-400')}>경기 날짜</span>
+              <p className={themeClass('font-bold text-black dark:text-slate-100', 'text-gray-800 dark:text-slate-200')}>
                 {tournament.play_date ? new Date(tournament.play_date).toLocaleDateString('ko-KR') : '미정'}
               </p>
             </div>
             <div>
-              <span className={themeClass('font-black text-black/60', 'font-bold text-gray-500')}>장소</span>
-              <p className={themeClass('font-bold text-black', 'text-gray-800')}>
+              <span className={themeClass('font-black text-black/60 dark:text-slate-400', 'font-bold text-gray-500 dark:text-slate-400')}>장소</span>
+              <p className={themeClass('font-bold text-black dark:text-slate-100', 'text-gray-800 dark:text-slate-200')}>
                 {[tournament.location, tournament.district, tournament.court_name].filter(Boolean).join(' / ') || '미정'}
               </p>
             </div>
             {tournament.court_count && (
               <div>
-                <span className={themeClass('font-black text-black/60', 'font-bold text-gray-500')}>사용 코트</span>
-                <p className={themeClass('font-bold text-black', 'text-gray-800')}>{tournament.court_count}면</p>
+                <span className={themeClass('font-black text-black/60 dark:text-slate-400', 'font-bold text-gray-500 dark:text-slate-400')}>사용 코트</span>
+                <p className={themeClass('font-bold text-black dark:text-slate-100', 'text-gray-800 dark:text-slate-200')}>{tournament.court_count}면</p>
               </div>
             )}
           </div>
@@ -307,14 +307,14 @@ export default function TournamentDetail({ id }: { id: string }) {
           className={cn(
             'p-6',
             themeClass(
-              'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
-              'bg-white rounded-2xl border border-gray-100 shadow-sm'
+              'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
+              'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm'
             )
           )}
         >
-          <h2 className={cn('text-lg mb-4', themeClass('font-black text-black', 'font-bold text-gray-900'))}>참가자 ({participants.length}/{tournament.max_participants})</h2>
+          <h2 className={cn('text-lg mb-4', themeClass('font-black text-black dark:text-slate-100', 'font-bold text-gray-900 dark:text-slate-100'))}>참가자 ({participants.length}/{tournament.max_participants})</h2>
           {participants.length === 0 ? (
-            <p className={themeClass('font-bold text-black/60', 'text-gray-500')}>아직 참가자가 없습니다.</p>
+            <p className={themeClass('font-bold text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400')}>아직 참가자가 없습니다.</p>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {participants.map((participant) => (
@@ -322,17 +322,17 @@ export default function TournamentDetail({ id }: { id: string }) {
                   key={participant.id}
                   className={cn(
                     'px-3 py-2 flex items-center gap-2',
-                    themeClass('bg-gray-50 border-2 border-black rounded-[5px]', 'bg-gray-50 border border-gray-200 rounded-lg')
+                    themeClass('bg-gray-50 dark:bg-slate-900 border-2 border-black rounded-[5px]', 'bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg')
                   )}
                 >
                   {participant.seed_number ? (
-                    <span className={cn('text-xs px-2 py-0.5 rounded', themeClass('font-black bg-[#facc15] border-2 border-black text-black', 'font-bold bg-yellow-100 border border-yellow-200 text-yellow-700'))}>
+                    <span className={cn('text-xs px-2 py-0.5 rounded', themeClass('font-black bg-[#facc15] border-2 border-black text-black', 'font-bold bg-yellow-100 dark:bg-yellow-950/40 border border-yellow-200 dark:border-yellow-900/50 text-yellow-700 dark:text-yellow-300'))}>
                       #{participant.seed_number}
                     </span>
                   ) : null}
-                  <span className={cn('text-sm', themeClass('font-bold text-black', 'font-medium text-gray-800'))}>{participant.name}</span>
+                  <span className={cn('text-sm', themeClass('font-bold text-black dark:text-slate-100', 'font-medium text-gray-800 dark:text-slate-200'))}>{participant.name}</span>
                   {participant.partner_name ? (
-                    <span className={cn('text-xs', themeClass('font-bold text-black/60', 'text-gray-500'))}>({participant.partner_name})</span>
+                    <span className={cn('text-xs', themeClass('font-bold text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400'))}>({participant.partner_name})</span>
                   ) : null}
                 </div>
               ))}
@@ -345,12 +345,12 @@ export default function TournamentDetail({ id }: { id: string }) {
             className={cn(
               'p-6',
               themeClass(
-                'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
-                'bg-white rounded-2xl border border-gray-100 shadow-sm'
+                'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
+                'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm'
               )
             )}
           >
-            <h2 className={cn('text-lg mb-4', themeClass('font-black text-black', 'font-bold text-gray-900'))}>브래킷</h2>
+            <h2 className={cn('text-lg mb-4', themeClass('font-black text-black dark:text-slate-100', 'font-bold text-gray-900 dark:text-slate-100'))}>브래킷</h2>
             <div className="overflow-x-auto">
               <BracketView tournament={tournament} matches={matches} participants={participants} onMatchClick={(match: TournamentMatch) => {
                 setSelectedMatch(match);
@@ -363,13 +363,13 @@ export default function TournamentDetail({ id }: { id: string }) {
             className={cn(
               'p-6 text-center',
               themeClass(
-                'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
-                'bg-white rounded-2xl border border-gray-100 shadow-sm'
+                'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
+                'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm'
               )
             )}
           >
-            <h2 className={cn('text-lg mb-2', themeClass('font-black text-black', 'font-bold text-gray-900'))}>브래킷</h2>
-            <p className={themeClass('font-bold text-black/60', 'text-gray-500')}>
+            <h2 className={cn('text-lg mb-2', themeClass('font-black text-black dark:text-slate-100', 'font-bold text-gray-900 dark:text-slate-100'))}>브래킷</h2>
+            <p className={themeClass('font-bold text-black/60 dark:text-slate-400', 'text-gray-500 dark:text-slate-400')}>
               대진 추첨 후 브래킷이 표시됩니다.
             </p>
           </section>
@@ -379,12 +379,12 @@ export default function TournamentDetail({ id }: { id: string }) {
           className={cn(
             'p-6',
             themeClass(
-              'bg-white border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
-              'bg-white rounded-2xl border border-gray-100 shadow-sm'
+              'bg-white dark:bg-slate-800 border-2 border-black rounded-[5px] shadow-[4px_4px_0px_0px_#000]',
+              'bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm'
             )
           )}
         >
-          <h2 className={cn('text-lg mb-4', themeClass('font-black text-black', 'font-bold text-gray-900'))}>액션</h2>
+          <h2 className={cn('text-lg mb-4', themeClass('font-black text-black dark:text-slate-100', 'font-bold text-gray-900 dark:text-slate-100'))}>액션</h2>
 
           {isCreator ? (
             <div className="space-y-3">
@@ -395,8 +395,8 @@ export default function TournamentDetail({ id }: { id: string }) {
                   className={cn(
                     'px-4 py-2 text-sm transition-all',
                     themeClass(
-                      'bg-white border-2 border-black rounded-[5px] font-black text-black',
-                      'bg-white border border-gray-300 rounded-lg font-bold text-gray-700 hover:bg-gray-50'
+                      'bg-white dark:bg-slate-900 border-2 border-black rounded-[5px] font-black text-black dark:text-slate-100',
+                      'bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-lg font-bold text-gray-700 dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-800'
                     )
                   )}
                 >

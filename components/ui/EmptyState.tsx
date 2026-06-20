@@ -137,8 +137,8 @@ export default function EmptyState({
         typeof icon === 'string' ? (
           <div
             className={themeClass(
-              `${iconWrapperSizeNeo} bg-white border-2 border-black rounded-full flex items-center justify-center shadow-[4px_4px_0px_0px_#000]`,
-              `${iconWrapperSizeMinimal} bg-gray-50 border border-gray-100 rounded-full flex items-center justify-center`
+              `${iconWrapperSizeNeo} bg-white dark:bg-slate-900 border-2 border-black rounded-full flex items-center justify-center shadow-[4px_4px_0px_0px_#000]`,
+              `${iconWrapperSizeMinimal} bg-gray-50 dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-full flex items-center justify-center`
             )}
             style={{ animation: 'gentle-float 3s ease-in-out infinite' }}
           >
@@ -156,7 +156,7 @@ export default function EmptyState({
       <h3
         className={themeClass(
           `${titleSizeNeo} font-black uppercase mb-2`,
-          `${titleSizeMinimal} font-semibold text-gray-900 mb-1`
+          `${titleSizeMinimal} font-semibold text-gray-900 dark:text-slate-100 mb-1`
         )}
       >
         {title}
@@ -165,8 +165,8 @@ export default function EmptyState({
       {description && (
         <p
           className={themeClass(
-            `${descSizeNeo} text-gray-600 font-bold mb-6`,
-            `${descSizeMinimal} text-gray-500 mb-6`
+            `${descSizeNeo} text-gray-600 dark:text-slate-400 font-bold mb-6`,
+            `${descSizeMinimal} text-gray-500 dark:text-slate-400 mb-6`
           )}
         >
           {description}

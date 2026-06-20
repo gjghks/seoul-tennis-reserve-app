@@ -54,7 +54,7 @@ export default function RecordDetailPage() {
   if (error || !data?.record) {
     return (
       <div className={`min-h-screen flex flex-col items-center justify-center p-4 ${themeClass('bg-nb-bg', '')}`}>
-        <p className={`text-lg mb-4 ${themeClass('font-bold text-black', 'text-gray-600')}`}>기록을 찾을 수 없습니다</p>
+        <p className={`text-lg mb-4 ${themeClass('font-bold text-black dark:text-slate-100', 'text-gray-600 dark:text-slate-400')}`}>기록을 찾을 수 없습니다</p>
         <Link 
           href="/records" 
           className={themeClass(

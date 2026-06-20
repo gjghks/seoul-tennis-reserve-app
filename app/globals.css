@@ -594,8 +594,6 @@ html, body {
   box-shadow: 4px 4px 0px 0px #000;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
   cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
 @media (hover: hover) {
@@ -633,8 +631,6 @@ html, body {
   border-radius: 5px;
   font-size: 12px;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
   border: 2px solid #000;
 }
 
@@ -1477,4 +1473,102 @@ html, body {
     animation: none !important;
     display: none;
   }
+}
+
+/* ============================================
+   DARK MODE — third appearance axis (.dark on <html>)
+   Flips the CSS-variable surfaces so token-driven chrome
+   (theme-card, theme-page-bg, theme-text-*, neo card/input,
+   body bg) darkens automatically. Component-level hardcoded
+   utilities use Tailwind `dark:` variants.
+   ============================================ */
+.dark {
+  color-scheme: dark;
+
+  --bg-primary: #0b1220;
+  --bg-secondary: #131c2e;
+  --bg-card: #131c2e;
+  --text-primary: #e6e9ef;
+  --text-secondary: #aab3c5;
+  --text-muted: #7c869b;
+  --court-line: #cbd5e1;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 12px 20px rgba(0, 0, 0, 0.6);
+
+  --theme-bg-primary: #0b1220;
+  --theme-bg-secondary: #131c2e;
+  --theme-text-primary: #e6e9ef;
+  --theme-text-secondary: #aab3c5;
+  --theme-text-muted: #7c869b;
+  --theme-border: #283449;
+  --theme-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.dark body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* ── Minimal (default) theme — dark ── */
+.dark[data-theme="default"] .card {
+  background: var(--bg-card);
+  border-color: #283449;
+}
+.dark[data-theme="default"] .card:hover {
+  border-color: var(--theme-accent);
+}
+.dark[data-theme="default"] .badge-closed {
+  background: #1f2937;
+  color: #cbd5e1;
+}
+.dark[data-theme="default"] input,
+.dark[data-theme="default"] select {
+  background: #131c2e;
+  border-color: #283449;
+  color: var(--text-primary);
+}
+
+/* ── Neo-Brutalism theme — dark (borders/shadows go LIGHT; bright fills stay) ── */
+.dark[data-theme="neo-brutalism"] {
+  --bg-primary: #11151f;
+  --bg-secondary: #1a2030;
+  --bg-card: #1a2030;
+  --text-primary: #f1f3f8;
+  --text-secondary: rgba(255, 255, 255, 0.72);
+
+  --theme-bg-primary: #11151f;
+  --theme-bg-secondary: #1a2030;
+  --theme-text-primary: #f1f3f8;
+  --theme-text-secondary: rgba(255, 255, 255, 0.72);
+  --theme-text-muted: rgba(255, 255, 255, 0.6);
+  --theme-border: #f1f3f8;
+  --theme-shadow: 3px 3px 0px 0px #f1f3f8;
+}
+.dark[data-theme="neo-brutalism"] .card-nb {
+  background: #1a2030;
+  color: #f1f3f8;
+  border-color: #f1f3f8;
+  box-shadow: 4px 4px 0px 0px #f1f3f8;
+}
+.dark[data-theme="neo-brutalism"] .card-nb:hover {
+  box-shadow: 0px 0px 0px 0px #f1f3f8;
+}
+.dark[data-theme="neo-brutalism"] .theme-card {
+  border-color: #f1f3f8;
+  box-shadow: 3px 3px 0px 0px #f1f3f8;
+}
+.dark[data-theme="neo-brutalism"] .input-nb {
+  background: #1a2030;
+  color: #f1f3f8;
+  border-color: #f1f3f8;
+  box-shadow: 2px 2px 0px 0px #f1f3f8;
+}
+.dark[data-theme="neo-brutalism"] .input-nb:focus {
+  box-shadow: 4px 4px 0px 0px #f1f3f8;
+}
+.dark[data-theme="neo-brutalism"] .badge-nb-closed {
+  background: #2a3344;
+  color: #cbd5e1;
+  border-color: #cbd5e1;
 }

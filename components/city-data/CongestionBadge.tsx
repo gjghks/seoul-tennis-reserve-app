@@ -48,28 +48,28 @@ function resolveCongestionColor(level: string) {
   switch (level) {
     case '여유':
       return {
-        bg: 'bg-green-100', text: 'text-green-700', dot: 'bg-green-500',
+        bg: 'bg-green-100 dark:bg-green-950/40', text: 'text-green-700 dark:text-green-300', dot: 'bg-green-500',
         bgNeo: 'bg-[#a3e635]', textNeo: 'text-black',
       };
     case '보통':
       return {
-        bg: 'bg-blue-100', text: 'text-blue-700', dot: 'bg-blue-500',
+        bg: 'bg-blue-100 dark:bg-blue-950/40', text: 'text-blue-700 dark:text-blue-300', dot: 'bg-blue-500',
         bgNeo: 'bg-[#88aaee]', textNeo: 'text-black',
       };
     case '약간 붐빔':
       return {
-        bg: 'bg-orange-100', text: 'text-orange-700', dot: 'bg-orange-500',
+        bg: 'bg-orange-100 dark:bg-orange-950/40', text: 'text-orange-700 dark:text-orange-300', dot: 'bg-orange-500',
         bgNeo: 'bg-[#facc15]', textNeo: 'text-black',
       };
     case '붐빔':
       return {
-        bg: 'bg-red-100', text: 'text-red-700', dot: 'bg-red-500',
+        bg: 'bg-red-100 dark:bg-red-950/40', text: 'text-red-700 dark:text-red-300', dot: 'bg-red-500',
         bgNeo: 'bg-[#fca5a5]', textNeo: 'text-black',
       };
     default:
       return {
-        bg: 'bg-gray-100', text: 'text-gray-500', dot: 'bg-gray-400',
-        bgNeo: 'bg-gray-200', textNeo: 'text-black/60',
+        bg: 'bg-gray-100 dark:bg-slate-800', text: 'text-gray-500 dark:text-slate-400', dot: 'bg-gray-400',
+        bgNeo: 'bg-gray-200 dark:bg-slate-700', textNeo: 'text-black/60',
       };
   }
 }
@@ -112,7 +112,7 @@ export default function CongestionBadge({ lat, lng, isNeoBrutalism, variant = 'c
     return (
       <div className={isNeoBrutalism
         ? 'border-2 border-black rounded-[5px] p-4 shadow-[3px_3px_0px_0px_#000] skeleton-neo h-20'
-        : 'rounded-xl p-4 border border-gray-100 skeleton h-20'
+        : 'rounded-xl p-4 border border-gray-100 dark:border-slate-800 skeleton h-20'
       } />
     );
   }
@@ -137,7 +137,7 @@ export default function CongestionBadge({ lat, lng, isNeoBrutalism, variant = 'c
   return (
     <div className={isNeoBrutalism
       ? 'bg-white border-2 border-black rounded-[5px] p-4 shadow-[3px_3px_0px_0px_#000]'
-      : 'bg-white rounded-xl p-4 border border-gray-100'
+      : 'bg-white dark:bg-slate-800 rounded-xl p-4 border border-gray-100 dark:border-slate-800'
     }>
       <div className="flex items-stretch gap-4">
         <div className="flex-1 min-w-0">
@@ -146,7 +146,7 @@ export default function CongestionBadge({ lat, lng, isNeoBrutalism, variant = 'c
             <div>
               <p className={themeClass(
                 'text-xs text-black/60 font-bold uppercase',
-                'text-xs text-gray-400'
+                'text-xs text-gray-400 dark:text-slate-500'
               )}>주변 혼잡도</p>
               <div className="flex items-center gap-2">
                 <span className={themeClass(
@@ -158,7 +158,7 @@ export default function CongestionBadge({ lat, lng, isNeoBrutalism, variant = 'c
                 </span>
                 <span className={themeClass(
                   'text-[11px] font-bold text-black/60',
-                  'text-[11px] text-gray-400'
+                  'text-[11px] text-gray-400 dark:text-slate-500'
                 )}>
                   {area}
                 </span>
@@ -167,13 +167,13 @@ export default function CongestionBadge({ lat, lng, isNeoBrutalism, variant = 'c
           </div>
           <p className={themeClass(
             'text-xs font-bold text-black/60 mt-1',
-            'text-xs text-gray-500 mt-1'
+            'text-xs text-gray-500 dark:text-slate-400 mt-1'
           )}>
             {congestion.message}
           </p>
           <div className={themeClass(
             'flex items-center gap-1.5 text-[11px] font-bold text-black/60 mt-1',
-            'flex items-center gap-1.5 text-[11px] text-gray-400 mt-1'
+            'flex items-center gap-1.5 text-[11px] text-gray-400 dark:text-slate-500 mt-1'
           )}>
             <span>현재 약 {formatPopulation(congestion.populationMin)}~{formatPopulation(congestion.populationMax)}명</span>
             <span>·</span>
@@ -189,7 +189,7 @@ export default function CongestionBadge({ lat, lng, isNeoBrutalism, variant = 'c
             onClick={() => setExpanded(prev => !prev)}
             className={themeClass(
               'mt-3 pt-3 border-t-2 border-black/15 w-full flex items-center justify-between text-xs font-black text-black/60',
-              'mt-3 pt-3 border-t border-gray-100 w-full flex items-center justify-between text-xs text-gray-400'
+              'mt-3 pt-3 border-t border-gray-100 dark:border-slate-800 w-full flex items-center justify-between text-xs text-gray-400 dark:text-slate-500'
             )}
             aria-expanded={expanded}
           >
@@ -213,12 +213,12 @@ export default function CongestionBadge({ lat, lng, isNeoBrutalism, variant = 'c
                         key={f.time}
                         className={themeClass(
                           'flex flex-col items-center gap-1 px-2.5 py-2 rounded-[5px] border-2 border-black/15 min-w-[60px]',
-                          'flex flex-col items-center gap-1 px-2.5 py-2 rounded-lg border border-gray-100 min-w-[60px]'
+                          'flex flex-col items-center gap-1 px-2.5 py-2 rounded-lg border border-gray-100 dark:border-slate-800 min-w-[60px]'
                         )}
                       >
                         <span className={themeClass(
                           'text-[10px] font-black text-black/60',
-                          'text-[10px] text-gray-400'
+                          'text-[10px] text-gray-400 dark:text-slate-500'
                         )}>
                           {formatForecastTime(f.time)}
                         </span>
@@ -235,7 +235,7 @@ export default function CongestionBadge({ lat, lng, isNeoBrutalism, variant = 'c
                 </div>
               </div>
               {showForecastFade && (
-                <div className="pointer-events-none absolute top-0 right-0 bottom-0 w-8 bg-gradient-to-l from-white to-transparent" />
+                <div className="pointer-events-none absolute top-0 right-0 bottom-0 w-8 bg-gradient-to-l from-white dark:from-slate-800 to-transparent" />
               )}
             </div>
           )}

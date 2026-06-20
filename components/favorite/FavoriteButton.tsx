@@ -125,9 +125,9 @@ export default function FavoriteButton({
           } ${loading ? 'cursor-not-allowed' : 'active:translate-x-[3px] active:translate-y-[3px] active:shadow-none'} ${className}`,
           `flex items-center gap-2 px-3 py-2 rounded-lg transition-all active:duration-0 ${
             isFavorite
-              ? 'bg-pink-50 text-pink-600'
-              : 'bg-gray-100 text-gray-500 active:text-pink-600'
-          } ${loading ? 'cursor-not-allowed' : 'active:bg-pink-50'} ${className}`
+              ? 'bg-pink-50 dark:bg-pink-950/40 text-pink-600 dark:text-pink-300'
+              : 'bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-slate-400 active:text-pink-600'
+          } ${loading ? 'cursor-not-allowed' : 'active:bg-pink-50 dark:active:bg-pink-950/40'} ${className}`
         )}`}
       >
         {loading ? (

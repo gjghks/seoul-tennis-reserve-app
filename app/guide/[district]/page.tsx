@@ -50,7 +50,7 @@ export async function generateStaticParams() {
 
 function GuideUnavailable({ nameKo, district }: { nameKo: string; district: string }) {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900">
       <section className="court-pattern text-white py-6">
         <div className="container relative z-10">
           <nav className="mb-3">
@@ -74,10 +74,10 @@ function GuideUnavailable({ nameKo, district }: { nameKo: string; district: stri
       <section className="container py-16">
         <div className="max-w-md mx-auto text-center">
           <div className="text-5xl mb-4">🔄</div>
-          <h2 className="text-xl font-bold text-gray-900 mb-2">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-slate-100 mb-2">
             데이터를 불러오는 중입니다
           </h2>
-          <p className="text-gray-600 mb-6">
+          <p className="text-gray-600 dark:text-slate-400 mb-6">
             서울시 공공데이터 API에서 {nameKo} 테니스장 정보를 가져오지 못했습니다.
             잠시 후 다시 방문해 주세요.
           </p>
@@ -90,7 +90,7 @@ function GuideUnavailable({ nameKo, district }: { nameKo: string; district: stri
             </Link>
             <Link
               href="/compare"
-              className="px-5 py-2.5 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors font-medium"
+              className="px-5 py-2.5 bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-200 rounded-lg hover:bg-gray-300 dark:hover:bg-slate-600 transition-colors font-medium"
             >
               구별 비교 보기
             </Link>

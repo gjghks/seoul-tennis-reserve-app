@@ -56,7 +56,7 @@ export default function FavoriteCourtSection() {
   if (!user) {
     return (
       <section className="container">
-        <div className={`${themeClass('bg-[#fef3c7] border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000] p-5', 'bg-amber-50 rounded-xl p-5 border border-amber-100')} `}>
+        <div className={`${themeClass('bg-[#fef3c7] border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000] p-5', 'bg-amber-50 dark:bg-amber-950/40 rounded-xl p-5 border border-amber-100 dark:border-amber-900/40')} `}>
           <div className="flex items-start gap-4">
             <svg
               className={themeClass('w-12 h-12 shrink-0 mt-0.5', 'w-10 h-10 shrink-0 mt-0.5')}
@@ -102,10 +102,10 @@ export default function FavoriteCourtSection() {
               />
             </svg>
             <div>
-              <h2 className={`font-bold mb-2 ${themeClass('text-black uppercase', 'text-gray-900')} `}>
+              <h2 className={`font-bold mb-2 ${themeClass('text-black uppercase', 'text-gray-900 dark:text-slate-100')} `}>
                 즐겨찾기 기능
               </h2>
-              <p className={`mb-4 ${themeClass('text-sm text-black/80', 'text-sm text-gray-600')} `}>
+              <p className={`mb-4 ${themeClass('text-sm text-black/80', 'text-sm text-gray-600 dark:text-slate-300')} `}>
                 로그인하면 자주 이용하는 테니스장을 즐겨찾기에 추가하고 예약 현황을 빠르게 확인할 수 있어요.
               </p>
               <Link
@@ -124,7 +124,7 @@ export default function FavoriteCourtSection() {
   if (favorites.length === 0) {
     return (
       <section className="container">
-        <div className={`${themeClass('bg-white border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000] p-5', 'bg-white rounded-xl p-5 border border-gray-100 shadow-sm')} `}>
+        <div className={`${themeClass('bg-white border-[3px] border-black rounded-[10px] shadow-[4px_4px_0px_0px_#000] p-5', 'bg-white dark:bg-slate-800 rounded-xl p-5 border border-gray-100 dark:border-slate-800 shadow-sm')} `}>
           <EmptyState
             icon="💚"
             title="내 즐겨찾기"
@@ -141,10 +141,10 @@ export default function FavoriteCourtSection() {
   return (
     <section className="container">
       <div className="mb-4">
-        <h2 className={`mb-1 ${themeClass('text-lg font-black text-black uppercase tracking-tight', 'text-base font-semibold text-gray-900')} `}>
+        <h2 className={`mb-1 ${themeClass('text-lg font-black text-black uppercase tracking-tight', 'text-base font-semibold text-gray-900 dark:text-slate-100')} `}>
           내 즐겨찾기
         </h2>
-        <p className={`text-sm ${themeClass('text-black/60 font-medium', 'text-gray-500')} `}>
+        <p className={`text-sm ${themeClass('text-black/60 font-medium', 'text-gray-500 dark:text-slate-400')} `}>
           즐겨찾기한 테니스장의 예약 현황
         </p>
       </div>
@@ -171,9 +171,9 @@ export default function FavoriteCourtSection() {
                           : 'bg-white shadow-[4px_4px_0px_0px_#000] hover:shadow-none'
                       }`
                     : `rounded-xl p-4 border transition-all hover:shadow-md ${
-                        fav.isAvailable 
-                          ? 'bg-green-50 border-green-200' 
-                          : 'bg-white border-gray-100'
+                        fav.isAvailable
+                          ? 'bg-green-50 dark:bg-green-950/40 border-green-200 dark:border-green-900/40'
+                          : 'bg-white dark:bg-slate-800 border-gray-100 dark:border-slate-800'
                       }`
                 }`}
               >
@@ -184,8 +184,8 @@ export default function FavoriteCourtSection() {
                         ? 'bg-black text-white' 
                         : 'bg-gray-200 text-black'
                       : fav.isAvailable
-                        ? 'bg-green-100 text-green-700'
-                        : 'bg-gray-100 text-gray-500'
+                        ? 'bg-green-100 dark:bg-green-950/40 text-green-700 dark:text-green-300'
+                        : 'bg-gray-100 dark:bg-slate-700 text-gray-500 dark:text-slate-300'
                   }`}>
                     {fav.status}
                   </span>
@@ -197,10 +197,10 @@ export default function FavoriteCourtSection() {
                     className="!p-1 !shadow-none"
                   />
                 </div>
-                <h3 className={`font-bold mb-1 line-clamp-1 ${themeClass('text-black', 'text-gray-900')} `}>
+                <h3 className={`font-bold mb-1 line-clamp-1 ${themeClass('text-black', 'text-gray-900 dark:text-slate-100')} `}>
                   {fav.svc_name}
                 </h3>
-                <p className={`text-sm line-clamp-1 ${themeClass('text-black/60', 'text-gray-500')} `}>
+                <p className={`text-sm line-clamp-1 ${themeClass('text-black/60', 'text-gray-500 dark:text-slate-400')} `}>
                   {fav.place_name || fav.district}
                 </p>
               </Link>

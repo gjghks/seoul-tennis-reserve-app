@@ -171,7 +171,7 @@ const RecordImageUploader = forwardRef<RecordImageUploaderHandle, RecordImageUpl
     return (
       <div>
         <span className={labelClass}>
-          사진 <span className="text-gray-400 font-normal text-sm">(선택, 최대 {MAX_IMAGES}장)</span>
+          사진 <span className="text-gray-400 dark:text-slate-500 font-normal text-sm">(선택, 최대 {MAX_IMAGES}장)</span>
         </span>
 
         <label
@@ -180,8 +180,8 @@ const RecordImageUploader = forwardRef<RecordImageUploaderHandle, RecordImageUpl
           className={cn(
             'relative block border-2 border-dashed p-6 text-center transition-colors cursor-pointer',
             themeClass(
-              'border-black/30 hover:border-black/60 bg-gray-50 rounded-[5px]',
-              'border-gray-200 hover:border-gray-400 bg-gray-50 rounded-lg'
+              'border-black/30 hover:border-black/60 bg-gray-50 dark:bg-slate-800 rounded-[5px]',
+              'border-gray-200 dark:border-slate-700 hover:border-gray-400 dark:hover:border-slate-500 bg-gray-50 dark:bg-slate-800 rounded-lg'
             ),
             images.length >= MAX_IMAGES && 'opacity-50 cursor-not-allowed'
           )}
@@ -199,7 +199,7 @@ const RecordImageUploader = forwardRef<RecordImageUploaderHandle, RecordImageUpl
           />
           <div className="flex flex-col items-center gap-2">
             <svg
-              className={themeClass('w-8 h-8 text-black/60', 'w-8 h-8 text-gray-400')}
+              className={themeClass('w-8 h-8 text-black/60 dark:text-slate-400', 'w-8 h-8 text-gray-400 dark:text-slate-500')}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -212,7 +212,7 @@ const RecordImageUploader = forwardRef<RecordImageUploaderHandle, RecordImageUpl
                 d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
               />
             </svg>
-            <p className={themeClass('text-sm text-black/60', 'text-sm text-gray-500')}>
+            <p className={themeClass('text-sm text-black/60 dark:text-slate-400', 'text-sm text-gray-500 dark:text-slate-400')}>
               클릭하거나 이미지를 드래그하세요
             </p>
           </div>
@@ -225,7 +225,7 @@ const RecordImageUploader = forwardRef<RecordImageUploaderHandle, RecordImageUpl
                 key={image.id}
                 className={cn(
                   'relative aspect-square overflow-hidden',
-                  themeClass('border-2 border-black rounded-[5px]', 'border border-gray-200 rounded-lg')
+                  themeClass('border-2 border-black rounded-[5px]', 'border border-gray-200 dark:border-slate-700 rounded-lg')
                 )}
               >
                 <Image
