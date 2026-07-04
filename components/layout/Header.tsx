@@ -67,10 +67,15 @@ export default function Header() {
         <div className="flex items-center justify-between h-14">
           <Link href="/" className="flex items-center gap-2">
             <div className={`w-8 h-8 flex items-center justify-center ${themeClass('bg-black rounded-[5px]', 'rounded-lg bg-green-600')}`}>
-              <svg className={`w-5 h-5 ${themeClass('text-[#84cc16]', 'text-white')}`} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="2"/>
-                <path d="M2 12C7.5 12 12 7.5 12 2" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                <path d="M22 12C16.5 12 12 16.5 12 22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+              <svg className="w-5 h-5" viewBox="0 0 24 24" aria-hidden="true">
+                <defs>
+                  <clipPath id="hdrLogoBall"><circle cx="12" cy="12" r="10" /></clipPath>
+                </defs>
+                <circle cx="12" cy="12" r="10" fill="#d7ff2e" />
+                <g clipPath="url(#hdrLogoBall)" fill="none" stroke="#ffffff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M2 12C7.5 12 12 7.5 12 2" />
+                  <path d="M22 12C16.5 12 12 16.5 12 22" />
+                </g>
               </svg>
             </div>
             <span className={`font-semibold ${themeClass('text-black font-bold', 'text-gray-900 dark:text-slate-100')}`}>

@@ -102,10 +102,15 @@ export default function InstallInstructionsModal({ open, platform, isIOSSafari, 
             'bg-black rounded-[8px]',
             'rounded-xl bg-green-600'
           )}`}>
-            <svg className={`w-7 h-7 ${themeClass('text-[#84cc16]', 'text-white')}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <circle cx="12" cy="12" r="10" />
-              <path d="M2 12C7.5 12 12 7.5 12 2" />
-              <path d="M22 12C16.5 12 12 16.5 12 22" />
+            <svg className="w-7 h-7" viewBox="0 0 24 24" aria-hidden="true">
+              <defs>
+                <clipPath id="mdlLogoBall"><circle cx="12" cy="12" r="10" /></clipPath>
+              </defs>
+              <circle cx="12" cy="12" r="10" fill="#d7ff2e" />
+              <g clipPath="url(#mdlLogoBall)" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M2 12C7.5 12 12 7.5 12 2" />
+                <path d="M22 12C16.5 12 12 16.5 12 22" />
+              </g>
             </svg>
           </div>
           <h2 id="install-guide-title" className={`text-lg font-bold ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
