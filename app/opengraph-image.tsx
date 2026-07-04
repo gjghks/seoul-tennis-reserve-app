@@ -70,22 +70,22 @@ export default async function Image() {
               marginBottom: 12,
             }}
           >
-            <div
-              style={{
-                width: 72,
-                height: 72,
-                background: '#000',
-                borderRadius: 14,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: 36,
-                border: '3px solid #000',
-                boxShadow: '4px 4px 0px 0px #000',
-              }}
+            <svg
+              width="72"
+              height="72"
+              viewBox="0 0 72 72"
+              style={{ display: 'flex' }}
             >
-              🎾
-            </div>
+              <circle cx="36" cy="36" r="31" fill="#d7ff2e" stroke="#000" strokeWidth="5" />
+              <path
+                d="M36 5 C14.92 13.68 14.92 28.25 36 36 C57.08 43.75 57.08 58.32 36 67"
+                fill="none"
+                stroke="#000"
+                strokeWidth="5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
             <span
               style={{
                 fontSize: 56,

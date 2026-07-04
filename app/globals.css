@@ -1201,7 +1201,7 @@ html, body {
 .tennis-ball {
   position: absolute;
   top: -30px;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><radialGradient id='g' cx='35%25' cy='28%25' r='78%25'><stop offset='0%25' stop-color='%23F8FF9C'/><stop offset='30%25' stop-color='%23E0FF40'/><stop offset='68%25' stop-color='%23B8D420'/><stop offset='100%25' stop-color='%23798E12'/></radialGradient></defs><circle cx='50' cy='50' r='48' fill='url(%23g)'/><path d='M50 3 C80 19 80 43 50 53' stroke='%235E7008' stroke-width='6.5' fill='none' stroke-linecap='round' opacity='0.35'/><path d='M50 53 C20 63 20 87 50 97' stroke='%235E7008' stroke-width='6.5' fill='none' stroke-linecap='round' opacity='0.35'/><path d='M50 3 C80 19 80 43 50 53' stroke='white' stroke-width='4.5' fill='none' stroke-linecap='round'/><path d='M50 53 C20 63 20 87 50 97' stroke='white' stroke-width='4.5' fill='none' stroke-linecap='round'/><circle cx='34' cy='28' r='8' fill='white' opacity='0.22'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='47' fill='%23D7FF2E' stroke='%23000000' stroke-width='3'/><path d='M50 5 C80 21 80 45 50 55' stroke='white' stroke-width='5' fill='none' stroke-linecap='round'/><path d='M50 55 C20 65 20 89 50 95' stroke='white' stroke-width='5' fill='none' stroke-linecap='round'/></svg>");
   background-size: cover;
   background-repeat: no-repeat;
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.22));

@@ -69,8 +69,8 @@ export default function Header() {
             <div className={`w-8 h-8 flex items-center justify-center ${themeClass('bg-black rounded-[5px]', 'rounded-lg bg-green-600')}`}>
               <svg className={`w-5 h-5 ${themeClass('text-[#84cc16]', 'text-white')}`} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="2"/>
-                <path d="M12 2C12 12 12 12 22 12" stroke="currentColor" strokeWidth="2" fill="none"/>
-                <path d="M12 22C12 12 12 12 2 12" stroke="currentColor" strokeWidth="2" fill="none"/>
+                <path d="M2 12C7.5 12 12 7.5 12 2" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                <path d="M22 12C16.5 12 12 16.5 12 22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
               </svg>
             </div>
             <span className={`font-semibold ${themeClass('text-black font-bold', 'text-gray-900 dark:text-slate-100')}`}>

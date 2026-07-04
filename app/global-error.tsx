@@ -38,7 +38,19 @@ export default function GlobalError({
             padding: 32,
           }}
         >
-          <div style={{ fontSize: 48, marginBottom: 12 }} aria-hidden="true">🎾</div>
+          <div style={{ marginBottom: 12, display: 'flex' }} aria-hidden="true">
+            <svg width="48" height="48" viewBox="0 0 48 48">
+              <circle cx="24" cy="24" r="21" fill="#d7ff2e" stroke="#000" strokeWidth="3.5" />
+              <path
+                d="M24 3 C9.7 8.9 9.7 18.8 24 24 C38.3 29.3 38.3 39.1 24 45"
+                fill="none"
+                stroke="#000"
+                strokeWidth="3.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
           <h1 style={{ fontSize: 22, fontWeight: 800, margin: '0 0 8px' }}>
             일시적인 오류가 발생했습니다
           </h1>

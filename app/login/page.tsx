@@ -96,8 +96,9 @@ function LoginContent() {
             {/* net line */}
             <line x1="24" y1="48" x2="72" y2="48" className={themeClass('stroke-black stroke-[2]', 'stroke-green-400 stroke-[1.5]')} strokeDasharray="4 3" />
             {/* tennis ball */}
-            <circle cx="56" cy="40" r="7" className={themeClass('fill-[#facc15] stroke-black stroke-[2]', 'fill-green-300 stroke-green-500 stroke-[1.5]')} />
-            <path d="M52 35 A 6 6 0 0 1 52 45" fill="none" className={themeClass('stroke-black stroke-[1.5]', 'stroke-green-500 stroke-[1]')} />
+            <circle cx="56" cy="40" r="7" className={themeClass('fill-[#a3e635] stroke-black stroke-[2]', 'fill-green-300 stroke-green-500 stroke-[1.5]')} />
+            <path d="M49 40 C52.85 40 56 36.85 56 33" fill="none" strokeLinecap="round" className={themeClass('stroke-black stroke-[1.5]', 'stroke-green-500 stroke-[1]')} />
+            <path d="M63 40 C59.15 40 56 43.15 56 47" fill="none" strokeLinecap="round" className={themeClass('stroke-black stroke-[1.5]', 'stroke-green-500 stroke-[1]')} />
             {/* racket */}
             <ellipse cx="36" cy="56" rx="6" ry="8" className={themeClass('fill-none stroke-black stroke-[2]', 'fill-none stroke-green-400 stroke-[1.5]')} transform="rotate(-20 36 56)" />
             <line x1="33" y1="63" x2="28" y2="74" className={themeClass('stroke-black stroke-[2]', 'stroke-green-400 stroke-[1.5]')} strokeLinecap="round" />
