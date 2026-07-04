@@ -49,6 +49,10 @@ next-env.d.ts
 # playwright screenshots and debug snapshots
 *.png
 *-snapshot.md
+# ...but keep the shipped app icon assets (PWA / favicon / apple-touch) tracked
+!public/icons/*.png
+!public/apple-touch-icon.png
+!public/favicon.png
 
 # AI agent work state
 /.sisyphus/

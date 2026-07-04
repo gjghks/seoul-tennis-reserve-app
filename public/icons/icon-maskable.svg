@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="서울 테니스">
+  <!-- C1 Bold Flat Ball — "maskable" master. Ball+seam scaled 0.92 into the r=205 safe zone; NO offset shadow. -->
+  <defs>
+    <clipPath id="ballClipM">
+      <circle cx="256" cy="256" r="200"/>
+    </clipPath>
+  </defs>
+  <rect x="0" y="0" width="512" height="512" fill="#facc15"/>
+  <g transform="translate(256 256) scale(0.92) translate(-256 -256)">
+    <circle cx="256" cy="256" r="200" fill="#d7ff2e"/>
+    <g clip-path="url(#ballClipM)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M256 56 C120 112 120 206 256 256 C392 306 392 400 256 456" stroke="#000000" stroke-width="40"/>
+      <path d="M256 56 C120 112 120 206 256 256 C392 306 392 400 256 456" stroke="#ffffff" stroke-width="22"/>
+    </g>
+    <circle cx="256" cy="256" r="200" fill="none" stroke="#000000" stroke-width="16"/>
+  </g>
+</svg>
