@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import { usePWAInstall } from '@/contexts/PWAInstallContext';
 import { useThemeClass } from '@/lib/cn';
 import AppearanceControls from '@/components/layout/AppearanceControls';
 
@@ -117,6 +118,7 @@ export default function MoreMenu({ isOpen, onClose }: MoreMenuProps) {
   const pathname = usePathname();
   const themeClass = useThemeClass();
   const { user } = useAuth();
+  const { ready: pwaReady, isInstalled, requestInstall } = usePWAInstall();
   const sheetRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
 
@@ -214,6 +216,39 @@ export default function MoreMenu({ isOpen, onClose }: MoreMenuProps) {
               <polyline points="9 18 15 12 9 6" />
             </svg>
           </Link>
+
+          {pwaReady && !isInstalled && (
+            <button
+              type="button"
+              onClick={() => { onClose(); requestInstall(); }}
+              className={`w-full flex items-center gap-3 p-3 mb-3 transition-colors ${themeClass(
+                'bg-[#dbeafe] hover:bg-[#c7ddfb] border-2 border-black dark:border-[#f1f3f8] rounded-[10px]',
+                'bg-blue-50 dark:bg-blue-950/40 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-900/40'
+              )}`}
+            >
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${themeClass(
+                'bg-black text-[var(--nb-icon-accent)]',
+                'bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400'
+              )}`}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5" aria-hidden="true">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+              </div>
+              <div className="min-w-0 flex-1 text-left">
+                <p className={`text-sm font-semibold truncate ${themeClass('text-black', 'text-gray-900 dark:text-slate-100')}`}>
+                  홈 화면에 앱 설치
+                </p>
+                <p className={`text-xs truncate ${themeClass('text-black/60', 'text-gray-500 dark:text-slate-400')}`}>
+                  앱처럼 빠르게 실행 · 설치 방법 안내
+                </p>
+              </div>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className={`w-4 h-4 shrink-0 ${themeClass('text-black/30', 'text-gray-400 dark:text-slate-500')}`} aria-hidden="true">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </button>
+          )}
 
           <div className="space-y-1 mb-3">
             {analysisItems.map((item) => {

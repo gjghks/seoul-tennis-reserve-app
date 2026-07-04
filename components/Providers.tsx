@@ -7,6 +7,7 @@ import { ThemeProvider } from '@/contexts/ThemeContext';
 import { SeasonalProvider } from '@/contexts/SeasonalContext';
 import { TennisDataProvider } from '@/contexts/TennisDataContext';
 import { ToastProvider } from '@/contexts/ToastContext';
+import { PWAInstallProvider } from '@/contexts/PWAInstallContext';
 import Toast from '@/components/ui/Toast';
 import ScrollToTop from '@/components/ui/ScrollToTop';
 import UpdatePrompt from '@/components/pwa/UpdatePrompt';
@@ -44,16 +45,18 @@ export default function Providers({ children }: ProvidersProps) {
       <ThemeProvider>
         <SeasonalProvider>
           <ToastProvider>
-            <TennisDataProvider>
-              {children}
-            </TennisDataProvider>
-            <Toast />
-            <UpdatePrompt />
-            <ScrollToTop />
-            <SakuraOverlay />
-            <TennisBallOverlay />
-            <SummerDropletOverlay />
-            <SnowOverlay />
+            <PWAInstallProvider>
+              <TennisDataProvider>
+                {children}
+              </TennisDataProvider>
+              <Toast />
+              <UpdatePrompt />
+              <ScrollToTop />
+              <SakuraOverlay />
+              <TennisBallOverlay />
+              <SummerDropletOverlay />
+              <SnowOverlay />
+            </PWAInstallProvider>
           </ToastProvider>
         </SeasonalProvider>
       </ThemeProvider>
