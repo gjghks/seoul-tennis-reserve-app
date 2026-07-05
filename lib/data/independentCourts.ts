@@ -1365,7 +1365,7 @@ const INDEPENDENT_COURTS: SeoulService[] = [
     RCPTBGNDT: '',
     RCPTENDDT: '',
     AREANM: '금천구',
-    IMGURL: '',
+    IMGURL: '/images/courts/geumcheon-gasan.jpg',
     DTLCONT:
       '◎ 시설현황\r\n' +
       '- 가산2빗물펌프장 유수지 체육공원 내 다목적구장\r\n' +
@@ -1382,7 +1382,9 @@ const INDEPENDENT_COURTS: SeoulService[] = [
       '◎ 예약방법\r\n' +
       '- 금천구 통합예약(인터넷) 온라인 신청\r\n' +
       '- 이용일 10일 전 09시 ~ 5일 전 09시 접수, 취소는 이용일 1일 전까지\r\n' +
-      '- 문의: 금천구청 치수과 02-2627-2038',
+      '- 문의: 금천구청 치수과 02-2627-2038\r\n\r\n' +
+      '◎ 사진 출처\r\n' +
+      '- 금천구청 (geumcheon.go.kr)',
     TELNO: '02-2627-2038',
     V_MIN: '09:00',
     V_MAX: '22:00',
@@ -1406,11 +1408,11 @@ const INDEPENDENT_COURTS: SeoulService[] = [
     RCPTBGNDT: '',
     RCPTENDDT: '',
     AREANM: '양천구',
-    IMGURL: '',
+    IMGURL: '/images/courts/yangcheon-anyangcheon.jpg',
     DTLCONT:
       '◎ 시설현황\r\n' +
       '- 안양천 신정교 하부 둔치, 양천구청 직영 야외 테니스장\r\n' +
-      '- 인조잔디 코트 3면 (1·2·3코트, 최근 재시공)\r\n\r\n' +
+      '- 하드코트 3면 (1·2·3코트, 2025년 하드코트로 재시공·새단장)\r\n\r\n' +
       '◎ 이용요금\r\n' +
       '- 무료\r\n\r\n' +
       '◎ 운영시간\r\n' +
@@ -1424,7 +1426,9 @@ const INDEPENDENT_COURTS: SeoulService[] = [
       '- 테니스화 착용·테니스공 지참 필수\r\n' +
       '- 문의: 양천구청 체육과 02-2620-3416~9\r\n\r\n' +
       '◎ 주차\r\n' +
-      '- 신정교 하부 무료 주차장 이용',
+      '- 신정교 하부 무료 주차장 이용\r\n\r\n' +
+      '◎ 사진 출처\r\n' +
+      '- 블로그 swanster.tistory.com (카카오맵 등록 사진)',
     TELNO: '02-2620-3416',
     V_MIN: '08:00',
     V_MAX: '18:00',
