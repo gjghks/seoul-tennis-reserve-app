@@ -190,12 +190,8 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
         </div>
       </section>
 
-      <MatchingPromoCard user={user} authLoading={authLoading} />
-      <TransferPromoCard />
-      <TournamentPromoCard />
-      <RecordsPromoCard user={user} authLoading={authLoading} />
-      <LadderPromoCard user={user} authLoading={authLoading} />
-
+      {/* Logged-in users with favorites see them ABOVE the feature menus. The
+          login prompt / empty state stay below (rendered by the fallback further down). */}
       {showFavoritesAbove && (
         <div className="pt-4 pb-2 lg:pt-3 lg:pb-1">
           <FavoriteCourtSection />
@@ -213,7 +209,15 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
         </div>
       )}
 
-      {!showFavoritesAbove && (
+      <MatchingPromoCard user={user} authLoading={authLoading} />
+      <TransferPromoCard />
+      <TournamentPromoCard />
+      <RecordsPromoCard user={user} authLoading={authLoading} />
+      <LadderPromoCard user={user} authLoading={authLoading} />
+
+      {/* Fallback slot (below the menus): login prompt for guests, empty state for
+          logged-in users without favorites. Users WITH favorites render above instead. */}
+      {!showFavoritesAbove && !favoritesLoading && (
         <div className="pt-2 pb-4 lg:pt-1 lg:pb-3">
           <FavoriteCourtSection />
         </div>
