@@ -123,7 +123,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: `${koreanName} 테니스장 완전 가이드`,
-    description: `${koreanName} 공공 테니스장 정보 - 시설 ${districtStat.totalCourts}개, 예약 가능 ${districtStat.availableCourts}개`,
+    description: `${koreanName} 공공 테니스장 정보 - 시설 ${districtStat.totalCourts}곳, 예약 가능 ${districtStat.availableCourts}곳`,
     url: `https://seoul-tennis.com/guide/${district}`,
     publisher: {
       '@type': 'Organization',

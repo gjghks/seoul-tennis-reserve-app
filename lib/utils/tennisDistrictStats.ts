@@ -4,6 +4,24 @@ import { isCourtAvailable } from '@/lib/utils/courtStatus';
 import { isIndependentCourt } from '@/lib/data/independentCourts';
 
 /**
+ * Identity key for a physical facility, used to collapse the many reservation
+ * "service" rows (court × time-block × date-range) the Seoul API returns into
+ * one entry per real court.
+ *
+ * Uses RAW (trim-only) PLACENM — do NOT swap in facilityEnrichment's
+ * normalizePlacenm(). On the live dataset the raw (AREANM|PLACENM) partition is
+ * identical to the (AREANM|X,Y) coordinate partition (both = 79 facilities), so
+ * raw PLACENM already maps 1:1 to physical courts. normalizePlacenm strips a
+ * trailing "N면", which would wrongly MERGE coordinate-distinct courts such as
+ * 양천구 "…목동 테니스장 1면" and "…2면" into one — under-counting facilities.
+ *
+ * Falls back to SVCID so rows with a missing place name are never collapsed.
+ */
+export function facilityKeyOf(svc: SeoulService): string {
+  return svc.PLACENM?.trim() || svc.SVCID;
+}
+
+/**
  * Build per-district headline stats keyed by **physical facility**, not by
  * reservation service row.
  *
@@ -35,16 +53,7 @@ export function buildByDistrict(services: SeoulService[]): Record<string, Distri
 
   for (const svc of services) {
     const area = svc.AREANM;
-    // PLACENM identifies the physical facility; fall back to SVCID so rows with a
-    // missing place name are never collapsed together.
-    //
-    // Use RAW (trim-only) PLACENM here — do NOT reuse facilityEnrichment's
-    // normalizePlacenm(). On the live dataset the raw (AREANM|PLACENM) partition is
-    // identical to the (AREANM|X,Y) coordinate partition (both = 79 facilities), so
-    // raw PLACENM already maps 1:1 to physical courts. normalizePlacenm strips a
-    // trailing "N면", which would wrongly MERGE coordinate-distinct courts such as
-    // 양천구 "…목동 테니스장 1면" and "…2면" into one — under-counting facilities.
-    const facilityKey = svc.PLACENM?.trim() || svc.SVCID;
+    const facilityKey = facilityKeyOf(svc);
 
     let byFacility = facilities.get(area);
     if (!byFacility) {

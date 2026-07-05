@@ -110,7 +110,7 @@ export default function CompareContent({ stats }: CompareContentProps) {
             <div className={avgInView ? 'anim-fade-up' : 'opacity-0'} style={{ animationDelay: '0ms' }}>
               <span className={themeClass('text-black/60 dark:text-amber-200/80 font-bold', 'text-gray-500 dark:text-amber-200/80')}>구당 평균 시설</span>
               <p className={`text-lg font-bold ${themeClass('text-black dark:text-amber-100', 'text-gray-900 dark:text-amber-100')}`}>
-                {animAvgCourts}개
+                {animAvgCourts}곳
               </p>
             </div>
             <div className={avgInView ? 'anim-fade-up' : 'opacity-0'} style={{ animationDelay: '80ms' }}>
@@ -240,9 +240,9 @@ export default function CompareContent({ stats }: CompareContentProps) {
 
         <div ref={topRef} className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[
-            { title: '시설이 가장 많은 구', emoji: '🏆', districts: [...stats.districts].sort((a, b) => b.totalCourts - a.totalCourts).slice(0, 3), getValue: (d: DistrictGuideStats) => d.totalCourts, unit: '개' },
+            { title: '시설이 가장 많은 구', emoji: '🏆', districts: [...stats.districts].sort((a, b) => b.totalCourts - a.totalCourts).slice(0, 3), getValue: (d: DistrictGuideStats) => d.totalCourts, unit: '곳' },
             { title: '예약 가능률 높은 구', emoji: '✅', districts: [...stats.districts].sort((a, b) => b.availableRate - a.availableRate).slice(0, 3), getValue: (d: DistrictGuideStats) => d.availableRate, unit: '%' },
-            { title: '무료 코트 많은 구', emoji: '🆓', districts: [...stats.districts].sort((a, b) => b.freeCourts - a.freeCourts).slice(0, 3), getValue: (d: DistrictGuideStats) => d.freeCourts, unit: '개' },
+            { title: '무료 코트 많은 구', emoji: '🆓', districts: [...stats.districts].sort((a, b) => b.freeCourts - a.freeCourts).slice(0, 3), getValue: (d: DistrictGuideStats) => d.freeCourts, unit: '곳' },
           ].map((card, i) => (
             <div
               key={card.title}

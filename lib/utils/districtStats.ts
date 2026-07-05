@@ -1,6 +1,7 @@
 import { SeoulService } from '@/lib/seoulApi';
 import { isIndependentCourt } from '@/lib/data/independentCourts';
 import { isCourtAvailable } from '@/lib/utils/courtStatus';
+import { facilityKeyOf } from '@/lib/utils/tennisDistrictStats';
 import { DISTRICTS, KOREAN_TO_SLUG } from '@/lib/constants/districts';
 
 export interface DistrictGuideStats {
@@ -52,12 +53,44 @@ function minutesToTime(minutes: number): string {
 }
 
 export function computeDistrictStats(services: SeoulService[]): DistrictGuideStats {
-  const total = services.length;
-  const available = services.filter(s => isCourtAvailable(s.SVCSTATNM)).length;
-  const externalCount = services.filter(s => isIndependentCourt(s.SVCID)).length;
-  const free = services.filter(s => s.PAYATNM === '무료').length;
-  const closedCount = services.filter(s => s.SVCSTATNM === '예약마감').length;
-  const seoulApiTotal = total - externalCount;
+  // Facility-level aggregation: collapse reservation rows (court × time-block ×
+  // date-range) to physical facilities via PLACENM, matching the home page. Counts
+  // and their paired rates (available/free) are therefore per-facility, so "시설 수"
+  // means real courts, not the volatile number of open reservation windows.
+  const facilities = new Map<string, { available: boolean; external: boolean; free: boolean }>();
+  for (const s of services) {
+    const key = facilityKeyOf(s);
+    const available = isCourtAvailable(s.SVCSTATNM);
+    const external = isIndependentCourt(s.SVCID);
+    const free = s.PAYATNM === '무료';
+    const prev = facilities.get(key);
+    if (prev) {
+      // A facility qualifies if ANY of its reservation services qualifies.
+      prev.available = prev.available || available;
+      prev.external = prev.external || external;
+      prev.free = prev.free || free;
+    } else {
+      facilities.set(key, { available, external, free });
+    }
+  }
+
+  let total = 0;
+  let available = 0;
+  let externalCount = 0;
+  let free = 0;
+  for (const f of facilities.values()) {
+    total++;
+    if (f.available) available++;
+    if (f.external) externalCount++;
+    if (f.free) free++;
+  }
+  const seoulApiTotal = total - externalCount; // Seoul-API facilities (exclude external)
+
+  // Competition (마감 비율) stays ROW-based on purpose: it measures how booked-up the
+  // actual reservation windows are. A facility-level closed-rate would collapse to the
+  // mere complement of availability and lose that signal.
+  const seoulApiRows = services.filter(s => !isIndependentCourt(s.SVCID)).length;
+  const closedRows = services.filter(s => s.SVCSTATNM === '예약마감' && !isIndependentCourt(s.SVCID)).length;
 
   let earliestMinutes: number | null = null;
   let latestMinutes: number | null = null;
@@ -86,12 +119,12 @@ export function computeDistrictStats(services: SeoulService[]): DistrictGuideSta
     freeCourts: free,
     freeRate: total > 0 ? Math.round((free / total) * 100) : 0,
     paidCourts: total - free,
-    competitionRate: seoulApiTotal > 0 ? Math.round((closedCount / seoulApiTotal) * 100) : 0,
+    competitionRate: seoulApiRows > 0 ? Math.round((closedRows / seoulApiRows) * 100) : 0,
     earliestOpen: earliestMinutes !== null ? minutesToTime(earliestMinutes) : null,
     latestClose: latestMinutes !== null ? minutesToTime(latestMinutes) : null,
     courtNames: [...new Set(services.map(s => s.SVCNM))],
     placeNames: [...new Set(services.map(s => s.PLACENM))],
-    hasExternalOnly: total > 0 && services.every(s => isIndependentCourt(s.SVCID)),
+    hasExternalOnly: total > 0 && externalCount === total,
   };
 }
 
@@ -114,11 +147,16 @@ export function computeAllDistrictStats(allServices: SeoulService[]): AllDistric
 
   districtStats.sort((a, b) => b.totalCourts - a.totalCourts);
 
+  // Facility-based totals (counts + available/free rates).
   const totalCourts = districtStats.reduce((sum, d) => sum + d.totalCourts, 0);
   const totalAvailable = districtStats.reduce((sum, d) => sum + d.availableCourts, 0);
   const totalFree = districtStats.reduce((sum, d) => sum + d.freeCourts, 0);
   const totalExternal = districtStats.reduce((sum, d) => sum + d.externalCourts, 0);
-  const totalSeoulApi = totalCourts - totalExternal;
+  const totalSeoulApi = totalCourts - totalExternal; // Seoul-API facilities
+
+  // Competition stays ROW-based, so its denominator must also be rows (Seoul-API
+  // reservation windows), NOT the facility count — otherwise rows/facilities > 100%.
+  const totalSeoulApiRows = districtServices.filter(s => !isIndependentCourt(s.SVCID)).length;
   const totalClosed = districtServices.filter(
     s => s.SVCSTATNM === '예약마감' && !isIndependentCourt(s.SVCID)
   ).length;
@@ -129,7 +167,7 @@ export function computeAllDistrictStats(allServices: SeoulService[]): AllDistric
       totalCourts: districtStats.length > 0 ? Math.round(totalCourts / districtStats.length) : 0,
       availableRate: totalSeoulApi > 0 ? Math.round((totalAvailable / totalSeoulApi) * 100) : 0,
       freeRate: totalCourts > 0 ? Math.round((totalFree / totalCourts) * 100) : 0,
-      competitionRate: totalSeoulApi > 0 ? Math.round((totalClosed / totalSeoulApi) * 100) : 0,
+      competitionRate: totalSeoulApiRows > 0 ? Math.round((totalClosed / totalSeoulApiRows) * 100) : 0,
     },
     totalCourtsSeoul: totalCourts,
     totalAvailableSeoul: totalAvailable,

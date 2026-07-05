@@ -67,19 +67,19 @@ export default function GuideContent({
             <StatBox
               themeClass={themeClass}
               label="전체 시설"
-              value={`${stat.totalCourts}개`}
+              value={`${stat.totalCourts}곳`}
               sub={`서울 ${facilityRank}위 / ${totalDistricts}구`}
             />
             <StatBox
               themeClass={themeClass}
               label="예약 가능"
-              value={`${stat.availableCourts}개`}
+              value={`${stat.availableCourts}곳`}
               sub={`가능률 ${stat.availableRate}%`}
             />
             <StatBox
               themeClass={themeClass}
               label="무료 코트"
-              value={`${stat.freeCourts}개`}
+              value={`${stat.freeCourts}곳`}
               sub={`무료 비율 ${stat.freeRate}%`}
             />
             <StatBox
@@ -100,14 +100,14 @@ export default function GuideContent({
           </h2>
           <div className={`space-y-3 text-sm leading-relaxed ${themeClass('text-black/80 dark:text-slate-300', 'text-gray-700 dark:text-slate-200')}`}>
             <p>
-              <strong>{stat.nameKo}</strong>에는 총 <strong>{stat.totalCourts}개</strong>의 공공 테니스장 프로그램이 운영되고 있으며,
+              <strong>{stat.nameKo}</strong>에는 총 <strong>{stat.totalCourts}곳</strong>의 공공 테니스장이 운영되고 있으며,
               서울 {totalDistricts}개 구 중 <strong>{facilityRank}번째</strong>로 시설이{' '}
               {facilityRank <= Math.ceil(totalDistricts / 3) ? '많습니다' :
                facilityRank <= Math.ceil(totalDistricts * 2 / 3) ? '있습니다' : '적은 편입니다'}.
             </p>
 
             <p>
-              현재 예약 가능한 시설은 <strong>{stat.availableCourts}개</strong>로
+              현재 예약 가능한 시설은 <strong>{stat.availableCourts}곳</strong>으로
               예약 가능률은 <strong>{stat.availableRate}%</strong>입니다.
               서울 평균({avg.availableRate}%)
               {stat.availableRate > avg.availableRate ? '보다 높아 비교적 여유롭게 예약할 수 있습니다.' :
@@ -116,7 +116,7 @@ export default function GuideContent({
             </p>
 
             <p>
-              무료 시설은 <strong>{stat.freeCourts}개({stat.freeRate}%)</strong>로,
+              무료 시설은 <strong>{stat.freeCourts}곳({stat.freeRate}%)</strong>으로,
               서울 평균({avg.freeRate}%)
               {stat.freeRate > avg.freeRate ? '보다 높습니다. 비용 부담 없이 테니스를 즐기기 좋은 지역입니다.' :
                stat.freeRate < avg.freeRate ? '보다 낮습니다.' :
@@ -163,7 +163,7 @@ export default function GuideContent({
               <li className="flex items-start gap-2">
                 <span className="shrink-0">💡</span>
                 <span>
-                  {stat.nameKo}에는 무료 코트가 {stat.freeCourts}개 있습니다.
+                  {stat.nameKo}에는 무료 코트가 {stat.freeCourts}곳 있습니다.
                   비용을 절약하고 싶다면 무료 시설을 먼저 확인해 보세요.
                 </span>
               </li>
@@ -187,7 +187,7 @@ export default function GuideContent({
             서울 평균과 비교
           </h2>
           <div className="space-y-3">
-            <CompareBar themeClass={themeClass} label="시설 수" value={stat.totalCourts} avg={avg.totalCourts} unit="개" />
+            <CompareBar themeClass={themeClass} label="시설 수" value={stat.totalCourts} avg={avg.totalCourts} unit="곳" />
             <CompareBar themeClass={themeClass} label="예약가능률" value={stat.availableRate} avg={avg.availableRate} unit="%" max={100} />
             <CompareBar themeClass={themeClass} label="무료 비율" value={stat.freeRate} avg={avg.freeRate} unit="%" max={100} />
             <CompareBar themeClass={themeClass} label="경쟁률" value={stat.competitionRate} avg={avg.competitionRate} unit="%" max={100} />

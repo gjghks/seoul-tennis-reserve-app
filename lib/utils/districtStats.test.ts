@@ -66,10 +66,10 @@ describe('computeDistrictStats — aggregation basics', () => {
 
   it('treats both "접수중" and statuses containing "예약가능" as available', () => {
     const services = [
-      svc({ SVCID: 'S1', SVCSTATNM: '접수중' }),
-      svc({ SVCID: 'S2', SVCSTATNM: '예약가능' }),
-      svc({ SVCID: 'S3', SVCSTATNM: '일부 예약가능' }), // .includes('예약가능')
-      svc({ SVCID: 'S4', SVCSTATNM: '예약마감' }), // not available
+      svc({ SVCID: 'S1', SVCSTATNM: '접수중', PLACENM: 'P1' }),
+      svc({ SVCID: 'S2', SVCSTATNM: '예약가능', PLACENM: 'P2' }),
+      svc({ SVCID: 'S3', SVCSTATNM: '일부 예약가능', PLACENM: 'P3' }), // .includes('예약가능')
+      svc({ SVCID: 'S4', SVCSTATNM: '예약마감', PLACENM: 'P4' }), // not available
     ];
     const stats = computeDistrictStats(services);
 
@@ -81,9 +81,9 @@ describe('computeDistrictStats — aggregation basics', () => {
   it('computes availableRate/freeRate/competitionRate as rounded percentages', () => {
     // 3 Seoul-API courts: 1 접수중, 1 예약마감, 1 안내중; 1 free
     const services = [
-      svc({ SVCID: 'S1', SVCSTATNM: '접수중', PAYATNM: '무료' }),
-      svc({ SVCID: 'S2', SVCSTATNM: '예약마감', PAYATNM: '유료' }),
-      svc({ SVCID: 'S3', SVCSTATNM: '안내중', PAYATNM: '유료' }),
+      svc({ SVCID: 'S1', SVCSTATNM: '접수중', PAYATNM: '무료', PLACENM: 'P1' }),
+      svc({ SVCID: 'S2', SVCSTATNM: '예약마감', PAYATNM: '유료', PLACENM: 'P2' }),
+      svc({ SVCID: 'S3', SVCSTATNM: '안내중', PAYATNM: '유료', PLACENM: 'P3' }),
     ];
     const stats = computeDistrictStats(services);
 
@@ -91,7 +91,7 @@ describe('computeDistrictStats — aggregation basics', () => {
     // seoulApiTotal = 3 (no external)
     expect(stats.availableRate).toBe(33); // round(1/3*100) = 33
     expect(stats.freeRate).toBe(33); // round(1/3*100) over TOTAL courts
-    expect(stats.competitionRate).toBe(33); // round(1 closed / 3 seoulApi *100)
+    expect(stats.competitionRate).toBe(33); // round(1 closed / 3 seoulApi rows *100)
   });
 
   it('deduplicates court and place names preserving first-seen order', () => {
@@ -104,6 +104,51 @@ describe('computeDistrictStats — aggregation basics', () => {
 
     expect(stats.courtNames).toEqual(['코트A', '코트B']);
     expect(stats.placeNames).toEqual(['공원1', '공원2']);
+  });
+});
+
+describe('computeDistrictStats — facility dedup (PLACENM)', () => {
+  it('collapses many reservation rows of one facility into a single court count', () => {
+    const services = [
+      svc({ SVCID: 'S1', PLACENM: '삼청테니스장', SVCSTATNM: '접수중', PAYATNM: '무료' }),
+      svc({ SVCID: 'S2', PLACENM: '삼청테니스장', SVCSTATNM: '예약마감', PAYATNM: '유료' }),
+      svc({ SVCID: 'S3', PLACENM: '삼청테니스장', SVCSTATNM: '예약마감', PAYATNM: '유료' }),
+      svc({ SVCID: 'S4', PLACENM: '삼청테니스장', SVCSTATNM: '접수종료', PAYATNM: '유료' }),
+    ];
+    const stats = computeDistrictStats(services);
+
+    expect(stats.totalCourts).toBe(1); // 4 rows -> 1 facility
+    expect(stats.availableCourts).toBe(1); // facility has a 접수중 row
+    expect(stats.freeCourts).toBe(1); // facility has a 무료 row
+    expect(stats.paidCourts).toBe(0); // total(1) - free(1)
+    expect(stats.availableRate).toBe(100); // 1/1 Seoul-API facility
+    expect(stats.freeRate).toBe(100); // 1/1
+  });
+
+  it('keeps competitionRate ROW-based (booking pressure) regardless of facility dedup', () => {
+    // 1 facility, 4 reservation rows, 2 마감 -> 50% booked even though 시설 수 = 1
+    const services = [
+      svc({ SVCID: 'S1', PLACENM: '한강코트', SVCSTATNM: '접수중' }),
+      svc({ SVCID: 'S2', PLACENM: '한강코트', SVCSTATNM: '접수중' }),
+      svc({ SVCID: 'S3', PLACENM: '한강코트', SVCSTATNM: '예약마감' }),
+      svc({ SVCID: 'S4', PLACENM: '한강코트', SVCSTATNM: '예약마감' }),
+    ];
+    const stats = computeDistrictStats(services);
+
+    expect(stats.totalCourts).toBe(1);
+    expect(stats.competitionRate).toBe(50); // 2 closed rows / 4 Seoul-API rows
+  });
+
+  it('marks a facility free/available if ANY of its rows qualifies', () => {
+    const services = [
+      svc({ SVCID: 'S1', PLACENM: '혼합코트', SVCSTATNM: '예약마감', PAYATNM: '유료' }),
+      svc({ SVCID: 'S2', PLACENM: '혼합코트', SVCSTATNM: '접수중', PAYATNM: '무료' }),
+    ];
+    const stats = computeDistrictStats(services);
+
+    expect(stats.totalCourts).toBe(1);
+    expect(stats.availableCourts).toBe(1);
+    expect(stats.freeCourts).toBe(1);
   });
 });
 
@@ -156,8 +201,8 @@ describe('computeDistrictStats — open/close time window', () => {
 describe('computeDistrictStats — external (외부예약) rule', () => {
   it('marks hasExternalOnly=true and zeroes Seoul-API rates when ALL courts are external', () => {
     const services = [
-      svc({ SVCID: 'INDEP_A1', SVCSTATNM: '외부예약', PAYATNM: '유료' }),
-      svc({ SVCID: 'INDEP_A2', SVCSTATNM: '외부예약', PAYATNM: '무료' }),
+      svc({ SVCID: 'INDEP_A1', SVCSTATNM: '외부예약', PAYATNM: '유료', PLACENM: 'P1' }),
+      svc({ SVCID: 'INDEP_A2', SVCSTATNM: '외부예약', PAYATNM: '무료', PLACENM: 'P2' }),
     ];
     const stats = computeDistrictStats(services);
 
@@ -176,29 +221,29 @@ describe('computeDistrictStats — external (외부예약) rule', () => {
   it('externalCount uses the INDEP_ id prefix, not the SVCSTATNM label', () => {
     // A Seoul-API court whose status text happens to be '외부예약' is NOT counted external.
     const services = [
-      svc({ SVCID: 'SEOUL_X', SVCSTATNM: '외부예약' }),
-      svc({ SVCID: 'INDEP_Y', SVCSTATNM: '외부예약' }),
+      svc({ SVCID: 'SEOUL_X', SVCSTATNM: '외부예약', PLACENM: 'P1' }),
+      svc({ SVCID: 'INDEP_Y', SVCSTATNM: '외부예약', PLACENM: 'P2' }),
     ];
     const stats = computeDistrictStats(services);
 
     expect(stats.externalCourts).toBe(1); // only the INDEP_ one
-    expect(stats.hasExternalOnly).toBe(false); // not ALL ids are INDEP_
+    expect(stats.hasExternalOnly).toBe(false); // not ALL facilities are external
   });
 
   it('mixes external + Seoul-API: rates use only the Seoul-API denominator', () => {
     const services = [
-      svc({ SVCID: 'INDEP_E1', SVCSTATNM: '외부예약', PAYATNM: '유료' }),
-      svc({ SVCID: 'S1', SVCSTATNM: '접수중', PAYATNM: '유료' }),
-      svc({ SVCID: 'S2', SVCSTATNM: '예약마감', PAYATNM: '무료' }),
+      svc({ SVCID: 'INDEP_E1', SVCSTATNM: '외부예약', PAYATNM: '유료', PLACENM: 'P1' }),
+      svc({ SVCID: 'S1', SVCSTATNM: '접수중', PAYATNM: '유료', PLACENM: 'P2' }),
+      svc({ SVCID: 'S2', SVCSTATNM: '예약마감', PAYATNM: '무료', PLACENM: 'P3' }),
     ];
     const stats = computeDistrictStats(services);
 
     expect(stats.totalCourts).toBe(3);
     expect(stats.externalCourts).toBe(1);
     expect(stats.availableCourts).toBe(1);
-    // seoulApiTotal = 3 - 1 = 2
+    // seoulApiTotal = 3 - 1 = 2 facilities
     expect(stats.availableRate).toBe(50); // round(1/2*100)
-    expect(stats.competitionRate).toBe(50); // round(1 closed/2*100)
+    expect(stats.competitionRate).toBe(50); // round(1 closed / 2 seoulApi rows *100)
     expect(stats.freeRate).toBe(33); // round(1 free / 3 TOTAL *100)
     expect(stats.hasExternalOnly).toBe(false);
   });
@@ -255,15 +300,15 @@ describe('computeAllDistrictStats — grouping, sorting, seoul averages', () => 
 
   it('groups by AREANM and sorts districts by totalCourts descending', () => {
     const services = [
-      // 강남구: 3 courts
-      svc({ SVCID: 'G1', AREANM: '강남구', SVCSTATNM: '접수중' }),
-      svc({ SVCID: 'G2', AREANM: '강남구', SVCSTATNM: '예약마감' }),
-      svc({ SVCID: 'G3', AREANM: '강남구', SVCSTATNM: '접수중' }),
+      // 강남구: 3 courts (distinct PLACENM = distinct facilities)
+      svc({ SVCID: 'G1', AREANM: '강남구', SVCSTATNM: '접수중', PLACENM: 'GP1' }),
+      svc({ SVCID: 'G2', AREANM: '강남구', SVCSTATNM: '예약마감', PLACENM: 'GP2' }),
+      svc({ SVCID: 'G3', AREANM: '강남구', SVCSTATNM: '접수중', PLACENM: 'GP3' }),
       // 송파구: 1 court
-      svc({ SVCID: 'P1', AREANM: '송파구', SVCSTATNM: '접수중' }),
+      svc({ SVCID: 'P1', AREANM: '송파구', SVCSTATNM: '접수중', PLACENM: 'PP1' }),
       // 강동구: 2 courts
-      svc({ SVCID: 'D1', AREANM: '강동구', SVCSTATNM: '예약마감' }),
-      svc({ SVCID: 'D2', AREANM: '강동구', SVCSTATNM: '접수중' }),
+      svc({ SVCID: 'D1', AREANM: '강동구', SVCSTATNM: '예약마감', PLACENM: 'DP1' }),
+      svc({ SVCID: 'D2', AREANM: '강동구', SVCSTATNM: '접수중', PLACENM: 'DP2' }),
     ];
     const all = computeAllDistrictStats(services);
 
@@ -276,10 +321,10 @@ describe('computeAllDistrictStats — grouping, sorting, seoul averages', () => 
 
   it('computes seoulAverage from summed totals', () => {
     const services = [
-      svc({ SVCID: 'G1', AREANM: '강남구', SVCSTATNM: '접수중', PAYATNM: '무료' }),
-      svc({ SVCID: 'G2', AREANM: '강남구', SVCSTATNM: '예약마감', PAYATNM: '유료' }),
-      svc({ SVCID: 'D1', AREANM: '강동구', SVCSTATNM: '접수중', PAYATNM: '유료' }),
-      svc({ SVCID: 'D2', AREANM: '강동구', SVCSTATNM: '예약마감', PAYATNM: '유료' }),
+      svc({ SVCID: 'G1', AREANM: '강남구', SVCSTATNM: '접수중', PAYATNM: '무료', PLACENM: 'GP1' }),
+      svc({ SVCID: 'G2', AREANM: '강남구', SVCSTATNM: '예약마감', PAYATNM: '유료', PLACENM: 'GP2' }),
+      svc({ SVCID: 'D1', AREANM: '강동구', SVCSTATNM: '접수중', PAYATNM: '유료', PLACENM: 'DP1' }),
+      svc({ SVCID: 'D2', AREANM: '강동구', SVCSTATNM: '예약마감', PAYATNM: '유료', PLACENM: 'DP2' }),
     ];
     const all = computeAllDistrictStats(services);
 
@@ -295,14 +340,14 @@ describe('computeAllDistrictStats — grouping, sorting, seoul averages', () => 
 
   it('excludes external courts from competition/availability denominators in seoulAverage', () => {
     const services = [
-      svc({ SVCID: 'INDEP_E1', AREANM: '강남구', SVCSTATNM: '외부예약', PAYATNM: '유료' }),
-      svc({ SVCID: 'INDEP_E2', AREANM: '강남구', SVCSTATNM: '외부예약', PAYATNM: '유료' }),
-      svc({ SVCID: 'S1', AREANM: '강동구', SVCSTATNM: '예약마감', PAYATNM: '유료' }),
-      svc({ SVCID: 'S2', AREANM: '강동구', SVCSTATNM: '접수중', PAYATNM: '무료' }),
+      svc({ SVCID: 'INDEP_E1', AREANM: '강남구', SVCSTATNM: '외부예약', PAYATNM: '유료', PLACENM: 'EP1' }),
+      svc({ SVCID: 'INDEP_E2', AREANM: '강남구', SVCSTATNM: '외부예약', PAYATNM: '유료', PLACENM: 'EP2' }),
+      svc({ SVCID: 'S1', AREANM: '강동구', SVCSTATNM: '예약마감', PAYATNM: '유료', PLACENM: 'DP1' }),
+      svc({ SVCID: 'S2', AREANM: '강동구', SVCSTATNM: '접수중', PAYATNM: '무료', PLACENM: 'DP2' }),
     ];
     const all = computeAllDistrictStats(services);
 
-    // totalCourts=4, totalExternal=2 -> totalSeoulApi=2
+    // totalCourts=4, totalExternal=2 -> totalSeoulApi=2 facilities
     expect(all.totalCourtsSeoul).toBe(4);
     // available: only 강동 S2 접수중 = 1
     expect(all.totalAvailableSeoul).toBe(1);
@@ -311,6 +356,23 @@ describe('computeAllDistrictStats — grouping, sorting, seoul averages', () => 
     expect(all.seoulAverage.competitionRate).toBe(50);
     // freeRate over TOTAL 4 -> 1/4 = 25
     expect(all.seoulAverage.freeRate).toBe(25);
+  });
+
+  it('facility-dedups counts but keeps seoulAverage.competitionRate over reservation rows', () => {
+    // 강남: 1 facility (2 rows, 1 마감); 강동: 1 facility (2 rows, 1 마감)
+    const services = [
+      svc({ SVCID: 'G1', AREANM: '강남구', PLACENM: '강남코트', SVCSTATNM: '접수중' }),
+      svc({ SVCID: 'G2', AREANM: '강남구', PLACENM: '강남코트', SVCSTATNM: '예약마감' }),
+      svc({ SVCID: 'D1', AREANM: '강동구', PLACENM: '강동코트', SVCSTATNM: '접수중' }),
+      svc({ SVCID: 'D2', AREANM: '강동구', PLACENM: '강동코트', SVCSTATNM: '예약마감' }),
+    ];
+    const all = computeAllDistrictStats(services);
+
+    expect(all.totalCourtsSeoul).toBe(2); // 2 facilities, not 4 rows
+    expect(all.totalAvailableSeoul).toBe(2); // both facilities have an opening
+    expect(all.seoulAverage.totalCourts).toBe(1); // 2 facilities / 2 districts
+    expect(all.seoulAverage.availableRate).toBe(100); // 2/2 facilities
+    expect(all.seoulAverage.competitionRate).toBe(50); // 2 closed rows / 4 rows (NOT / 2 facilities)
   });
 
   it('returns zeroed seoulAverage and empty districts for empty input', () => {
