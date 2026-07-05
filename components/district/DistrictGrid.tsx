@@ -21,6 +21,7 @@ interface DistrictStats {
   count: number;
   available: number;
   externalCount: number;
+  availableSlots: number;
 }
 
 interface DistrictGridProps {
@@ -43,7 +44,9 @@ const DistrictCard = memo(function DistrictCard({
   season: Season;
   index: number;
 }) {
-  const available = stats?.available || 0;
+  // Badge shows the open reservation-service count (회차) so it matches the district
+  // detail page's "접수중만 (N)". The home headline above uses facility-based `available`.
+  const available = stats?.availableSlots || 0;
   const total = stats?.count || 0;
   const externalCount = stats?.externalCount || 0;
   const hasAvailable = available > 0;

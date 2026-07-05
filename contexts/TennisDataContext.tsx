@@ -6,9 +6,14 @@ import { SeoulService } from '@/lib/seoulApi';
 import { sortByAvailability } from '@/lib/utils/courtStatus';
 
 export interface DistrictStats {
+  /** distinct physical facilities (PLACENM-deduped) — used for the home headline */
   count: number;
+  /** facilities with at least one open reservation — used for the home headline */
   available: number;
+  /** facilities reserved outside the Seoul API (independent courts) */
   externalCount: number;
+  /** open reservation SERVICE rows (회차) — used for the per-district grid badge */
+  availableSlots: number;
 }
 
 export interface TennisApiResponse {

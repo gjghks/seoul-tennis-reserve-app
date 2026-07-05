@@ -151,7 +151,7 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
                 <div className={themeClass('w-[2px] bg-white/30', 'w-px bg-green-400/30')} />
                 <div className="text-center">
                   <div className={`font-bold ${themeClass('text-2xl sm:text-3xl md:text-4xl', 'text-2xl sm:text-3xl md:text-4xl')}`}>{animTotal}</div>
-                  <div className={`text-[10px] sm:text-xs mt-0.5 sm:mt-1 ${themeClass('text-white/70 font-semibold uppercase', 'text-green-200')}`}>전체 시설</div>
+                  <div className={`text-[10px] sm:text-xs mt-0.5 sm:mt-1 ${themeClass('text-white/70 font-semibold uppercase', 'text-green-200')}`}>공공 테니스장</div>
                 </div>
               </div>
             )}
