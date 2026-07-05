@@ -96,9 +96,15 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
     ? Object.values(displayStats).reduce((sum, s) => sum + s.count, 0)
     : 0;
 
+  // 열린 예약 회차(행) 합계 — 헤더에 '129건'으로 표기 (시설 기준 31곳과 함께)
+  const totalAvailableSlots = displayStats
+    ? Object.values(displayStats).reduce((sum, s) => sum + s.availableSlots, 0)
+    : 0;
+
   const dataReady = !showLoading && !error;
   const animAvailable = useCountUp(totalAvailable, dataReady);
   const animTotal = useCountUp(totalCourts, dataReady);
+  const animSlots = useCountUp(totalAvailableSlots, dataReady);
 
   const RefreshIndicator = (
     <div className={`flex items-center justify-center py-4 ${themeClass('text-black dark:text-slate-100 font-bold', 'text-green-700')}`}>
@@ -127,7 +133,7 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
         <div className="container relative">
           <div className="flex flex-row items-center justify-between gap-2 sm:gap-4">
             <div className="min-w-0">
-              <h1 className={`${themeClass('text-2xl sm:text-2xl md:text-3xl font-black uppercase tracking-tight', 'text-2xl sm:text-2xl md:text-2xl font-bold')}`}>
+              <h1 className={`break-keep ${themeClass('text-2xl sm:text-2xl md:text-3xl font-black uppercase tracking-tight', 'text-2xl sm:text-2xl md:text-2xl font-bold')}`}>
                 {isNeoBrutalism ? '서울 공공 테니스장' : '서울시 공공 테니스장'}
               </h1>
               <p className={`text-xs sm:text-sm hidden sm:block ${themeClass('text-white/80 font-medium', 'text-green-100')}`}>
@@ -143,14 +149,21 @@ export default function HomeContent({ initialStats }: HomeContentProps) {
             </div>
 
             {!showLoading && !error && (
-              <div className={`flex gap-3 sm:gap-6 md:gap-8 shrink-0 ${themeClass('bg-black/20 backdrop-blur-sm px-3 sm:px-5 py-2 sm:py-3 rounded-[5px] border-2 border-white/30', '')}`}>
+              <div className={`flex gap-2.5 sm:gap-6 md:gap-8 shrink-0 ${themeClass('bg-black/20 backdrop-blur-sm px-2.5 sm:px-5 py-2 sm:py-3 rounded-[5px] border-2 border-white/30', '')}`}>
                 <div className="text-center">
-                  <div className={`font-bold ${themeClass('text-2xl sm:text-3xl md:text-4xl text-[var(--nb-accent-text)]', 'text-2xl sm:text-3xl md:text-4xl')}`}>{animAvailable}</div>
+                  <div className={`font-bold whitespace-nowrap ${themeClass('text-[var(--nb-accent-text)]', '')}`}>
+                    <span className="text-2xl sm:text-3xl md:text-4xl">{animAvailable}</span>
+                    <span className="text-xs sm:text-base">곳</span>
+                    <span className="text-xs sm:text-base opacity-70"> · {animSlots}건</span>
+                  </div>
                   <div className={`text-[10px] sm:text-xs mt-0.5 sm:mt-1 ${themeClass('text-white/70 font-semibold uppercase', 'text-green-200')}`}>예약 가능</div>
                 </div>
                 <div className={themeClass('w-[2px] bg-white/30', 'w-px bg-green-400/30')} />
                 <div className="text-center">
-                  <div className={`font-bold ${themeClass('text-2xl sm:text-3xl md:text-4xl', 'text-2xl sm:text-3xl md:text-4xl')}`}>{animTotal}</div>
+                  <div className="font-bold whitespace-nowrap">
+                    <span className="text-2xl sm:text-3xl md:text-4xl">{animTotal}</span>
+                    <span className="text-sm sm:text-base">곳</span>
+                  </div>
                   <div className={`text-[10px] sm:text-xs mt-0.5 sm:mt-1 ${themeClass('text-white/70 font-semibold uppercase', 'text-green-200')}`}>공공 테니스장</div>
                 </div>
               </div>
