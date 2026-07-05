@@ -1348,6 +1348,89 @@ const INDEPENDENT_COURTS: SeoulService[] = [
     REVSTDDAYNM: '',
     REVSTDDAY: '',
   },
+  {
+    SVCID: 'INDEP_GC001',
+    MAXCLASSNM: '체육시설',
+    MINCLASSNM: '테니스장',
+    SVCSTATNM: '외부예약',
+    SVCNM: '가산유수지 체육공원 테니스장',
+    PAYATNM: '무료',
+    PLACENM: '가산유수지 체육공원',
+    USETGTINFO: '제한없음',
+    SVCURL: 'https://www.geumcheon.go.kr/reserve/webErntList.do?key=115&rep=1',
+    X: '126.8754',
+    Y: '37.4826',
+    SVCOPNBGNDT: '',
+    SVCOPNENDDT: '',
+    RCPTBGNDT: '',
+    RCPTENDDT: '',
+    AREANM: '금천구',
+    IMGURL: '',
+    DTLCONT:
+      '◎ 시설현황\r\n' +
+      '- 가산2빗물펌프장 유수지 체육공원 내 다목적구장\r\n' +
+      '- 테니스장 2면 (테니스·농구 겸용 34m×21m 포장코트), 야간조명 완비\r\n' +
+      '- 배드민턴장 2면, 농구장 1면, 족구장 1면 병설 (유수지 약 3,827㎡)\r\n' +
+      '- 금천구청 치수과 직영 (자율이용)\r\n\r\n' +
+      '◎ 이용요금\r\n' +
+      '- 무료 (자율이용) ※ 별도 요금표 미고지, 이용 전 확인 권장\r\n\r\n' +
+      '◎ 운영시간\r\n' +
+      '- 평일 09:00~22:00\r\n' +
+      '- 주말 07:00~22:00 (4~9월) / 08:00~22:00 (10~3월)\r\n' +
+      '- 1회 최대 2시간, 정원 4명\r\n' +
+      '- ※ 우기·수방기간(5.15~10.15)에는 유수지 치수기능 유지를 위해 이용이 제한될 수 있음\r\n\r\n' +
+      '◎ 예약방법\r\n' +
+      '- 금천구 통합예약(인터넷) 온라인 신청\r\n' +
+      '- 이용일 10일 전 09시 ~ 5일 전 09시 접수, 취소는 이용일 1일 전까지\r\n' +
+      '- 문의: 금천구청 치수과 02-2627-2038',
+    TELNO: '02-2627-2038',
+    V_MIN: '09:00',
+    V_MAX: '22:00',
+    REVSTDDAYNM: '',
+    REVSTDDAY: '',
+  },
+  {
+    SVCID: 'INDEP_YC002',
+    MAXCLASSNM: '체육시설',
+    MINCLASSNM: '테니스장',
+    SVCSTATNM: '외부예약',
+    SVCNM: '안양천 테니스장 (신정교 하부)',
+    PAYATNM: '무료',
+    PLACENM: '안양천 테니스장',
+    USETGTINFO: '제한없음',
+    SVCURL: 'https://www.yangcheon.go.kr/reservation/reservation/main.do',
+    X: '126.8781',
+    Y: '37.5220',
+    SVCOPNBGNDT: '',
+    SVCOPNENDDT: '',
+    RCPTBGNDT: '',
+    RCPTENDDT: '',
+    AREANM: '양천구',
+    IMGURL: '',
+    DTLCONT:
+      '◎ 시설현황\r\n' +
+      '- 안양천 신정교 하부 둔치, 양천구청 직영 야외 테니스장\r\n' +
+      '- 인조잔디 코트 3면 (1·2·3코트, 최근 재시공)\r\n\r\n' +
+      '◎ 이용요금\r\n' +
+      '- 무료\r\n\r\n' +
+      '◎ 운영시간\r\n' +
+      '- 08:00~18:00 (2시간 단위 예약)\r\n' +
+      '- 주말 14:00~18:00은 1·2코트 주말리그·대회 운영, 3코트는 매월 2·4주 토 08:00~10:00 구민 무료강좌\r\n' +
+      '- ※ 우천 시 사용 금지, 하천부지 특성상 집중호우·증수 시 통제될 수 있음\r\n\r\n' +
+      '◎ 예약방법\r\n' +
+      '- 서울시 공공서비스예약(yeyak.seoul.go.kr) 아님\r\n' +
+      '- 양천구청 통합예약포털(yangcheon.go.kr/reservation)에서 온라인 선착순\r\n' +
+      '- 당월분은 전월 마지막 주 수요일 오전 10시 오픈 (주중 2타임·주말 1타임, 양천구민·관내 직장인 우선)\r\n' +
+      '- 테니스화 착용·테니스공 지참 필수\r\n' +
+      '- 문의: 양천구청 체육과 02-2620-3416~9\r\n\r\n' +
+      '◎ 주차\r\n' +
+      '- 신정교 하부 무료 주차장 이용',
+    TELNO: '02-2620-3416',
+    V_MIN: '08:00',
+    V_MAX: '18:00',
+    REVSTDDAYNM: '',
+    REVSTDDAY: '',
+  },
 ];
 
 export function getIndependentCourts(): SeoulService[] {
