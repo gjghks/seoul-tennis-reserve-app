@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerSupabaseClient } from '@/lib/supabaseServer';
 import { createRateLimiter } from '@/lib/rateLimit';
+import { logDbError } from '@/lib/logDbError';
 import { DISTRICTS } from '@/lib/constants/districts';
 
 const limiter = createRateLimiter({ windowMs: 60_000, maxRequests: 10 });
@@ -21,7 +22,7 @@ export async function GET() {
     .single();
 
   if (error && error.code !== 'PGRST116') {
-    console.error('Error fetching ladder profile:', error);
+    logDbError('fetch ladder profile', error);
     return NextResponse.json({ error: '래더 프로필을 불러오는데 실패했습니다.' }, { status: 500 });
   }
 
@@ -76,7 +77,7 @@ export async function PUT(request: NextRequest) {
     .single();
 
   if (error) {
-    console.error('Error updating ladder profile:', error);
+    logDbError('upsert ladder profile', error);
     return NextResponse.json({ error: '래더 프로필 업데이트에 실패했습니다.' }, { status: 500 });
   }
 

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerSupabaseClient } from '@/lib/supabaseServer';
 import { createRateLimiter } from '@/lib/rateLimit';
+import { logDbError } from '@/lib/logDbError';
 import { VALID_SKILL_LEVELS, VALID_PREFERRED_HANDS, VALID_AGE_GROUPS } from '@/lib/constants/tennis';
 
 const limiter = createRateLimiter({ windowMs: 60_000, maxRequests: 10 });
@@ -20,7 +21,7 @@ export async function GET() {
     .maybeSingle();
 
   if (error) {
-    console.error('Error fetching profile:', error);
+    logDbError('fetch tennis profile', error);
     return NextResponse.json({ error: '프로필을 불러오는데 실패했습니다.' }, { status: 500 });
   }
 
@@ -88,7 +89,7 @@ export async function PUT(request: NextRequest) {
       .single();
 
     if (error) {
-      console.error('Error upserting profile:', error);
+      logDbError('upsert tennis profile', error);
       return NextResponse.json({ error: '프로필 저장에 실패했습니다.' }, { status: 500 });
     }
 

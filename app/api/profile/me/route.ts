@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerSupabaseClient } from '@/lib/supabaseServer';
 import { createRateLimiter } from '@/lib/rateLimit';
+import { logDbError } from '@/lib/logDbError';
 import { validateNickname, BIO_MAX } from '@/lib/constants/profile';
 
 const limiter = createRateLimiter({ windowMs: 60_000, maxRequests: 10 });
@@ -22,7 +23,7 @@ export async function GET() {
     .maybeSingle();
 
   if (error) {
-    console.error('Error fetching user profile:', error);
+    logDbError('fetch user profile', error);
     return NextResponse.json({ error: '프로필을 불러오는데 실패했습니다.' }, { status: 500 });
   }
 
@@ -103,7 +104,7 @@ export async function PUT(request: NextRequest) {
       if (error.code === '23505') {
         return NextResponse.json({ error: '이미 사용 중인 닉네임입니다.' }, { status: 409 });
       }
-      console.error('Error updating user profile:', error);
+      logDbError('update user profile', error);
       return NextResponse.json({ error: '프로필 저장에 실패했습니다.' }, { status: 500 });
     }
 
