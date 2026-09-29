@@ -12,6 +12,10 @@ export type SurfaceCategory =
   | 'unknown';
 
 export interface LightingInfo {
+  /**
+   * Number of light towers. 0 = night lighting exists but the tower count is not
+   * published (rendered as '야간조명 있음'). Use `lighting: null` when there is no lighting info.
+   */
   count: number;
   lux: number | null;
 }

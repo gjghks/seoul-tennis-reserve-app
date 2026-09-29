@@ -87,8 +87,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "renovation": null,
     "longitude": 126.9650,
     "latitude": 37.5553,
-    "operatingHoursStart": "06:00",
-    "operatingHoursEnd": "21:00",
+    "operatingHoursStart": "07:00",
+    "operatingHoursEnd": "22:00",
     "imageUrl": "/images/courts/junggu-songijeong.jpg"
   },
   {
@@ -122,29 +122,28 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "facilityName": "응봉근린공원 한남테니스장",
     "normalizedName": "응봉근린공원한남",
     "district": "용산구",
-    "address": null,
+    "address": "서울 용산구 다산로 8-12",
     "courtCount": 12,
     "surfaces": [
       {
-        "type": "클레이",
-        "count": 6
-      },
-      {
         "type": "인조잔디",
-        "count": 6
+        "count": 12
       }
     ],
-    "surfaceCategory": "mixed",
-    "surfaceDisplay": "클레이 6면, 인조잔디 6면",
-    "area": 8776,
-    "siteArea": 8776,
+    "surfaceCategory": "artificial_grass",
+    "surfaceDisplay": "인조잔디 12면",
+    "area": 8126,
+    "siteArea": 8126,
     "builtYear": 1999,
     "owner": "서울시",
-    "manager": "용산구",
-    "contact": "서울시한강시민공원사업소(3780-0777~8)",
-    "website": "hangang.seoul.go.kr",
-    "indoorOutdoor": null,
-    "lighting": null,
+    "manager": "용산구시설관리공단",
+    "contact": "용산구시설관리공단 (02-749-2492, 2026-03-09~ 운영)",
+    "website": "yssports.yong-san.or.kr",
+    "indoorOutdoor": "outdoor",
+    "lighting": {
+      "count": 0,
+      "lux": null
+    },
     "spectatorSeats": null,
     "renovation": null
   },
@@ -156,12 +155,12 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "courtCount": 5,
     "surfaces": [
       {
-        "type": "클레이",
-        "count": null
+        "type": "인조잔디",
+        "count": 5
       }
     ],
-    "surfaceCategory": "clay",
-    "surfaceDisplay": "클레이",
+    "surfaceCategory": "artificial_grass",
+    "surfaceDisplay": "인조잔디",
     "area": 2665,
     "siteArea": 2665,
     "builtYear": 2005,
@@ -169,7 +168,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "manager": "동부공원여가센터",
     "contact": "서울시시설관리사업소",
     "website": "stadium.seoul.go.kr",
-    "indoorOutdoor": null,
+    "indoorOutdoor": "outdoor",
     "lighting": null,
     "spectatorSeats": null,
     "renovation": null
@@ -235,27 +234,34 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "facilityName": "응봉 테니스장",
     "normalizedName": "응봉",
     "district": "성동구",
-    "address": "응봉동 237-1",
-    "courtCount": 5,
+    "address": "서울 성동구 응봉동 240-1 (응봉체육공원)",
+    "courtCount": 6,
     "surfaces": [
       {
-        "type": "클레이",
-        "count": null
+        "type": "인조잔디",
+        "count": 6
       }
     ],
-    "surfaceCategory": "clay",
-    "surfaceDisplay": "클레이",
+    "surfaceCategory": "artificial_grass",
+    "surfaceDisplay": "인조잔디",
     "area": 2568,
     "siteArea": 2568,
     "builtYear": 2009,
     "owner": "성동구",
     "manager": "성동구도시관리공단",
-    "contact": null,
-    "website": null,
-    "indoorOutdoor": null,
-    "lighting": null,
+    "contact": "성동구도시관리공단 (02-2204-7676)",
+    "website": "sports.happysd.or.kr",
+    "indoorOutdoor": "outdoor",
+    "lighting": {
+      "count": 0,
+      "lux": null
+    },
     "spectatorSeats": null,
-    "renovation": null
+    "renovation": null,
+    "longitude": 127.0362099,
+    "latitude": 37.5511790,
+    "operatingHoursStart": "06:00",
+    "operatingHoursEnd": "22:00"
   },
   {
     "facilityName": "응봉공원(대현산배수지) 테니스장",
@@ -361,8 +367,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "siteArea": 2398,
     "builtYear": 1973,
     "owner": "서울시",
-    "manager": "서울시설관리공단",
-    "contact": null,
+    "manager": "서울시설공단",
+    "contact": "서울어린이대공원 운영팀 (02-450-9335)",
     "website": null,
     "indoorOutdoor": null,
     "lighting": {
@@ -405,17 +411,17 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "normalizedName": "중랑천제1체육공원",
     "district": "동대문구",
     "address": "장안벚꽃로 74 (장안동)",
-    "courtCount": 2,
+    "courtCount": 4,
     "surfaces": [
       {
         "type": "인조잔디",
-        "count": null
+        "count": 2
       }
     ],
     "surfaceCategory": "artificial_grass",
-    "surfaceDisplay": "인조잔디",
-    "area": 1230,
-    "siteArea": 1230,
+    "surfaceDisplay": "인조잔디 (1·2코트, 3·4코트 표면 미확인)",
+    "area": 3049,
+    "siteArea": 3049,
     "builtYear": 2018,
     "owner": "동대문구",
     "manager": "동대문 시설관리공단",
@@ -613,7 +619,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "builtYear": 2018,
     "owner": "서울시",
     "manager": "도봉구시설관리공단",
-    "contact": "02-901-5198",
+    "contact": "02-901-5188",
     "website": "https://www.dobongsiseol.or.kr/darak_sport/",
     "indoorOutdoor": null,
     "lighting": {
@@ -633,7 +639,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "normalizedName": "창골",
     "district": "도봉구",
     "address": "서울 도봉구 창동 산 48-3",
-    "courtCount": 3,
+    "courtCount": 4,
     "surfaces": [
       {
         "type": "인조잔디",
@@ -655,7 +661,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "renovation": null,
     "longitude": 127.0418,
     "latitude": 37.6491,
-    "operatingHoursStart": "09:00",
+    "operatingHoursStart": "07:00",
     "operatingHoursEnd": "18:00",
     "imageUrl": "/images/courts/dobong-changgol.webp",
     "mapPOIName": "창골테니스장"
@@ -873,7 +879,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "siteArea": 1564,
     "builtYear": 1991,
     "owner": "서대문구",
-    "manager": "서대문구테니스연합회",
+    "manager": "서대문구청 문화체육과 (위탁 에스에스티(SST)클럽)",
     "contact": null,
     "website": null,
     "indoorOutdoor": null,
@@ -885,7 +891,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "facilityName": "현저동 테니스장",
     "normalizedName": "현저동",
     "district": "서대문구",
-    "address": null,
+    "address": "서울 서대문구 현저동 101-313",
     "courtCount": 2,
     "surfaces": [
       {
@@ -899,8 +905,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "siteArea": 1200,
     "builtYear": 1991,
     "owner": "서대문구",
-    "manager": "서대문구테니스연합회",
-    "contact": null,
+    "manager": "서대문구청 문화체육과",
+    "contact": "서대문구청 문화체육과 (02-330-1538)",
     "website": null,
     "indoorOutdoor": null,
     "lighting": null,
@@ -925,7 +931,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "siteArea": 1465,
     "builtYear": 2000,
     "owner": "서대문구",
-    "manager": "서대문구테니스연합회",
+    "manager": "서대문구청 문화체육과 (위탁 에스에스티(SST)클럽)",
     "contact": null,
     "website": null,
     "indoorOutdoor": null,
@@ -1058,7 +1064,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "owner": "양천구",
     "manager": "양천구 시설관리공단",
     "contact": "02)2643-0686",
-    "website": "sisul.yangchon.seoul.kr",
+    "website": "www.ycs.or.kr",
     "indoorOutdoor": "outdoor",
     "lighting": {
       "count": 2,
@@ -1066,6 +1072,32 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     },
     "spectatorSeats": null,
     "renovation": null,
+    "mapPOIName": "목동테니스장"
+  },
+  {
+    "facilityName": "서울에너지공사 목동 테니스장",
+    "normalizedName": "서울에너지공사목동",
+    "district": "양천구",
+    "address": "서울 양천구 목동서로 20",
+    "courtCount": 2,
+    "surfaces": [],
+    "surfaceCategory": "unknown",
+    "surfaceDisplay": "",
+    "area": 2526,
+    "siteArea": 0,
+    "builtYear": null,
+    "owner": "서울에너지공사",
+    "manager": "서울에너지공사",
+    "contact": "서울에너지공사 (02-2640-5173)",
+    "website": "yeyak.seoul.go.kr",
+    "indoorOutdoor": null,
+    "lighting": null,
+    "spectatorSeats": null,
+    "renovation": null,
+    "longitude": 126.884,
+    "latitude": 37.53894,
+    "operatingHoursStart": "08:00",
+    "operatingHoursEnd": "18:00",
     "mapPOIName": "서울에너지공사 목동본사 테니스장"
   },
   {
@@ -1254,17 +1286,21 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "courtCount": 4,
     "surfaces": [
       {
-        "type": "클레이",
-        "count": null
+        "type": "인조잔디",
+        "count": 1
+      },
+      {
+        "type": "하드",
+        "count": 3
       }
     ],
-    "surfaceCategory": "clay",
-    "surfaceDisplay": "클레이",
+    "surfaceCategory": "mixed",
+    "surfaceDisplay": "야외 인조잔디 1면, 실내 하드 3면",
     "area": 2347,
     "siteArea": 2609,
     "builtYear": 2000,
     "owner": "서울시",
-    "manager": "구로구",
+    "manager": "구로구시설관리공단",
     "contact": null,
     "website": null,
     "indoorOutdoor": null,
@@ -1386,18 +1422,18 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "courtCount": 7,
     "surfaces": [
       {
-        "type": "클레이",
+        "type": "인조잔디",
         "count": null
       }
     ],
-    "surfaceCategory": "clay",
-    "surfaceDisplay": "클레이",
+    "surfaceCategory": "artificial_grass",
+    "surfaceDisplay": "인조잔디",
     "area": 4861,
     "siteArea": 5810,
     "builtYear": 2007,
     "owner": "서울시",
-    "manager": "개인",
-    "contact": "개인",
+    "manager": "서부공원여가센터",
+    "contact": "보라매공원 테니스장 운영사무실 (010-9649-3323)",
     "website": null,
     "indoorOutdoor": "outdoor",
     "lighting": {
@@ -1522,7 +1558,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "lighting": null,
     "spectatorSeats": null,
     "renovation": null,
-    "mapPOIName": "선우테니스장"
+    "mapPOIName": "난우공원 테니스장"
   },
   {
     "facilityName": "선우공원테니스장",
@@ -1562,8 +1598,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
         "count": null
       }
     ],
-    "surfaceCategory": "clay",
-    "surfaceDisplay": "클레이",
+    "surfaceCategory": "unknown",
+    "surfaceDisplay": "클레이 6면 (예약 운영 1~3번 3면, 표면 확인 필요)",
     "area": 1304,
     "siteArea": 1304,
     "builtYear": 2009,
@@ -1636,15 +1672,19 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "normalizedName": "내곡동체육시설",
     "district": "서초구",
     "address": "신흥말길 23-5",
-    "courtCount": 6,
+    "courtCount": 8,
     "surfaces": [
       {
         "type": "하드코트",
-        "count": null
+        "count": 6
+      },
+      {
+        "type": "인조잔디",
+        "count": 2
       }
     ],
-    "surfaceCategory": "hard",
-    "surfaceDisplay": "하드코트",
+    "surfaceCategory": "mixed",
+    "surfaceDisplay": "하드 6면, 인조잔디 2면",
     "area": 3419,
     "siteArea": 8730,
     "builtYear": 2012,
@@ -1876,23 +1916,18 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "facilityName": "오금공원 테니스장",
     "normalizedName": "오금공원",
     "district": "송파구",
-    "address": "오금동 51",
+    "address": "동남로 263 (오금공원)",
     "courtCount": 2,
-    "surfaces": [
-      {
-        "type": "클레이",
-        "count": null
-      }
-    ],
-    "surfaceCategory": "clay",
-    "surfaceDisplay": "클레이",
+    "surfaces": [],
+    "surfaceCategory": "unknown",
+    "surfaceDisplay": "",
     "area": 1299,
     "siteArea": 1299,
     "builtYear": 1990,
     "owner": "송파구",
-    "manager": "송파구",
-    "contact": "공원녹지과(410-3395)",
-    "website": "www.songpa.seoul.kr",
+    "manager": "송파구시설관리공단",
+    "contact": "오금공원테니스장 (02-402-3700)",
+    "website": "spc.esongpa.or.kr",
     "indoorOutdoor": "outdoor",
     "lighting": null,
     "spectatorSeats": null,
@@ -1906,12 +1941,12 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "courtCount": 6,
     "surfaces": [
       {
-        "type": "클레이",
+        "type": "인조잔디",
         "count": null
       }
     ],
-    "surfaceCategory": "clay",
-    "surfaceDisplay": "클레이",
+    "surfaceCategory": "artificial_grass",
+    "surfaceDisplay": "인조잔디",
     "area": 3228,
     "siteArea": 7038,
     "builtYear": 1991,
@@ -1921,7 +1956,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "website": "www.songpa.seoul.kr",
     "indoorOutdoor": "outdoor",
     "lighting": {
-      "count": 4,
+      "count": 6,
       "lux": null
     },
     "spectatorSeats": null,
@@ -1936,12 +1971,12 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "courtCount": 2,
     "surfaces": [
       {
-        "type": "클레이",
+        "type": "인조잔디",
         "count": null
       }
     ],
-    "surfaceCategory": "clay",
-    "surfaceDisplay": "클레이",
+    "surfaceCategory": "artificial_grass",
+    "surfaceDisplay": "인조잔디",
     "area": 1378,
     "siteArea": 1472,
     "builtYear": 1989,
@@ -1988,12 +2023,12 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "courtCount": 10,
     "surfaces": [
       {
-        "type": "우레탄",
+        "type": "하드",
         "count": null
       }
     ],
     "surfaceCategory": "hard",
-    "surfaceDisplay": "우레탄",
+    "surfaceDisplay": "하드 (1~4번 아크릴, 2026.8 교체)",
     "area": 5561,
     "siteArea": 18060,
     "builtYear": 2011,
@@ -2031,7 +2066,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "lighting": null,
     "spectatorSeats": null,
     "renovation": null,
-    "mapPOIName": "한강공원광나루지구 테니스장"
+    "mapPOIName": "명일테니스장"
   },
   {
     "facilityName": "한강시민공원 광나루지구 테니스장",
@@ -2057,7 +2092,8 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "indoorOutdoor": null,
     "lighting": null,
     "spectatorSeats": null,
-    "renovation": null
+    "renovation": null,
+    "mapPOIName": "한강공원광나루지구 테니스장"
   },
   {
     "facilityName": "인재개발원 테니스장",
@@ -2090,7 +2126,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "normalizedName": "잠실유수지체육시설",
     "district": "송파구",
     "address": null,
-    "courtCount": 3,
+    "courtCount": 2,
     "surfaces": [
       {
         "type": "인조잔디",
@@ -2109,8 +2145,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "indoorOutdoor": "outdoor",
     "lighting": null,
     "spectatorSeats": null,
-    "renovation": null,
-    "mapPOIName": "테니스마스터 학여울점"
+    "renovation": null
   },
   {
     "facilityName": "동부도로사업소 테니스장",
@@ -2157,7 +2192,7 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "builtYear": null,
     "owner": "서울시",
     "manager": "남부도로사업소",
-    "contact": "010-6451-6672",
+    "contact": "위탁운영자 (010-5488-9464)",
     "website": null,
     "indoorOutdoor": "outdoor",
     "lighting": null,
@@ -2169,15 +2204,15 @@ const FACILITY_DATA: FacilityEnrichment[] = [
     "normalizedName": "난지한강",
     "district": "마포구",
     "address": null,
-    "courtCount": 6,
+    "courtCount": 3,
     "surfaces": [
       {
-        "type": "클레이",
-        "count": null
+        "type": "하드",
+        "count": 3
       }
     ],
-    "surfaceCategory": "clay",
-    "surfaceDisplay": "클레이",
+    "surfaceCategory": "hard",
+    "surfaceDisplay": "하드 3면",
     "area": 0,
     "siteArea": 0,
     "builtYear": null,

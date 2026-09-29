@@ -33,6 +33,13 @@ const SURFACE_FILTER_OPTIONS: Array<{ value: SurfaceCategory | 'all'; label: str
   { value: 'hard', label: '하드코트' },
 ];
 
+// 'mixed' 시설의 surfaces[].type 키워드 → 표면 필터 매칭 (facilityEnrichment.types SurfaceCategory 주석 기준)
+const MIXED_SURFACE_KEYWORDS: Partial<Record<SurfaceCategory, string[]>> = {
+  clay: ['클레이', '앙투카'],
+  artificial_grass: ['인조잔디'],
+  hard: ['하드', '우레탄', '케미칼', '아크릴', '탄성'],
+};
+
 function getCourtCoords(court: SeoulService): { lat: number; lng: number } | null {
   const x = parseFloat(court.X);
   const y = parseFloat(court.Y);
@@ -130,8 +137,13 @@ export default function DistrictContent({
       result = result.filter(court => {
         const e = findEnrichment(court.SVCNM, court.AREANM, court.PLACENM);
         if (!e) return false;
-        if (surfaceFilter === 'clay') return e.surfaceCategory === 'clay' || e.surfaceCategory === 'mixed';
-        return e.surfaceCategory === surfaceFilter;
+        if (e.surfaceCategory === surfaceFilter) return true;
+        // 혼합 표면(예: 내곡 하드 6 + 인조잔디 2)은 실제 포함된 표면 종류로 매칭
+        if (e.surfaceCategory === 'mixed') {
+          const keywords = MIXED_SURFACE_KEYWORDS[surfaceFilter];
+          return !!keywords && e.surfaces.some(sf => keywords.some(kw => sf.type.includes(kw)));
+        }
+        return false;
       });
     }
     return result;
