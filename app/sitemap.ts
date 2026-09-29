@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next';
 import { DISTRICTS, KOREAN_TO_SLUG } from '@/lib/constants/districts';
-import { fetchTennisDataWithStatuses } from '@/lib/seoulApi';
+import { fetchTennisDataWithStatuses, INDEPENDENT_FALLBACK_IDS } from '@/lib/seoulApi';
+import { pickFacilityRepresentatives } from '@/lib/utils/sitemapCourts';
 
 const LAST_MODIFIED = new Date('2026-03-09T00:00:00Z');
 
@@ -162,12 +163,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let courtPages: MetadataRoute.Sitemap = [];
   try {
     const courts = await fetchTennisDataWithStatuses();
-    courtPages = courts
+    courtPages = pickFacilityRepresentatives(courts, INDEPENDENT_FALLBACK_IDS)
       .map((court) => {
         const slug = KOREAN_TO_SLUG[court.AREANM];
         if (!slug) return null;
         return {
-          url: `${baseUrl}/${slug}/${court.SVCID}`,
+          url: `${baseUrl}/${slug}/${encodeURIComponent(court.SVCID)}`,
           lastModified: LAST_MODIFIED,
           changeFrequency: 'daily' as const,
           priority: 0.6,

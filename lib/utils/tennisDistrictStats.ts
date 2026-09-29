@@ -4,21 +4,44 @@ import { isCourtAvailable } from '@/lib/utils/courtStatus';
 import { isIndependentCourt } from '@/lib/data/independentCourts';
 
 /**
+ * Seoul-API places that are split into several PLACENMs (one per bookable court)
+ * but are ONE physical facility. Keyed by `AREANM|PLACENM.trim()` (raw), value is
+ * the shared facility key. Explicit list on purpose — do NOT replace it with
+ * facilityEnrichment's normalizePlacenm(), which would also merge unrelated places.
+ * (2026-09-29 25개 구 감사 #22·#94)
+ */
+const FACILITY_GROUP_KEY: Readonly<Record<string, string>> = {
+  // 서울어린이대공원 테니스장 (서울시설공단): yeyak에 실외 A·B코트가 별도 PLACENM으로 등록
+  '광진구|테니스장 A코트': '서울어린이대공원 테니스장',
+  '광진구|테니스장 B코트': '서울어린이대공원 테니스장',
+  // 서울에너지공사 목동 청사 테니스장 (목동서로 20): 1면·2면이 별도 PLACENM으로 등록
+  '양천구|서울에너지공사 목동 테니스장 1면': '서울에너지공사 목동 청사 테니스장',
+  '양천구|서울에너지공사 목동 테니스장 2면': '서울에너지공사 목동 청사 테니스장',
+};
+
+/**
  * Identity key for a physical facility, used to collapse the many reservation
  * "service" rows (court × time-block × date-range) the Seoul API returns into
  * one entry per real court.
  *
  * Uses RAW (trim-only) PLACENM — do NOT swap in facilityEnrichment's
- * normalizePlacenm(). On the live dataset the raw (AREANM|PLACENM) partition is
- * identical to the (AREANM|X,Y) coordinate partition (both = 79 facilities), so
- * raw PLACENM already maps 1:1 to physical courts. normalizePlacenm strips a
- * trailing "N면", which would wrongly MERGE coordinate-distinct courts such as
- * 양천구 "…목동 테니스장 1면" and "…2면" into one — under-counting facilities.
+ * normalizePlacenm(), which strips suffixes generically and can merge distinct
+ * facilities. Known cases where one facility is split across several PLACENMs
+ * are collapsed through the explicit FACILITY_GROUP_KEY table instead.
  *
+ * Unique within a district only (callers aggregate per AREANM); use
+ * facilityIdentityOf() for a city-wide key.
  * Falls back to SVCID so rows with a missing place name are never collapsed.
  */
 export function facilityKeyOf(svc: SeoulService): string {
-  return svc.PLACENM?.trim() || svc.SVCID;
+  const place = svc.PLACENM?.trim();
+  if (!place) return svc.SVCID;
+  return FACILITY_GROUP_KEY[`${svc.AREANM}|${place}`] ?? place;
+}
+
+/** City-wide facility identity: `AREANM|facilityKeyOf(svc)`. */
+export function facilityIdentityOf(svc: SeoulService): string {
+  return `${svc.AREANM}|${facilityKeyOf(svc)}`;
 }
 
 /**
@@ -32,8 +55,8 @@ export function facilityKeyOf(svc: SeoulService): string {
  * windows. That churn made the home "전체 시설" figure fluctuate even though the
  * number of real courts is stable (~79 city-wide).
  *
- * We collapse rows to facilities using PLACENM (which aligns 1:1 with the court
- * coordinates), so `count`/`available`/`externalCount` all describe facilities:
+ * We collapse rows to facilities using facilityKeyOf() (raw PLACENM plus the explicit
+ * FACILITY_GROUP_KEY merges), so `count`/`available`/`externalCount` all describe facilities:
  *   - count:         distinct facilities in the district
  *   - available:     facilities with at least one currently-open reservation
  *   - externalCount: facilities reserved outside the Seoul API (independent courts)

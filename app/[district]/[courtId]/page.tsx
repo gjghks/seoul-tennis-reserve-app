@@ -1,5 +1,6 @@
-import { fetchTennisDataWithStatuses, SeoulService } from '@/lib/seoulApi';
-import { getDistrictBySlug, SLUG_TO_KOREAN, District } from '@/lib/constants/districts';
+import { fetchTennisDataWithStatuses, getServedDataMeta, SeoulService } from '@/lib/seoulApi';
+import { getDistrictBySlug, District } from '@/lib/constants/districts';
+import { resolveCourtLookup } from '@/lib/utils/courtLookup';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import CourtDetailClient from '@/components/court-detail/CourtDetailClient';
@@ -16,38 +17,34 @@ interface CourtDetailPageProps {
 
 export async function generateMetadata({ params }: CourtDetailPageProps): Promise<Metadata> {
   const { district: districtSlug, courtId } = await params;
-  const decodedCourtId = decodeURIComponent(courtId);
-  const koreanDistrict = SLUG_TO_KOREAN[districtSlug];
-  
-  if (!koreanDistrict) {
-    return { title: '페이지를 찾을 수 없습니다' };
+  const result = await getCourtData(districtSlug, courtId);
+
+  // 404/폴백 페이지는 색인 제외. 루트 layout의 robots(index, follow)를 덮어써서
+  // Next가 notFound 시 넣는 noindex 메타와 서로 충돌하지 않게 한다.
+  if (result.type === 'not-found') {
+    return { title: '테니스장을 찾을 수 없습니다', robots: { index: false } };
+  }
+  if (result.type === 'api-error') {
+    return { title: '테니스장 정보', robots: { index: false } };
   }
 
-  try {
-    const services = await fetchTennisDataWithStatuses();
-    const court = services.find(s => s.SVCID === decodedCourtId);
-    
-    if (!court) {
-      return { title: '테니스장을 찾을 수 없습니다' };
-    }
+  const { court, district } = result;
+  const koreanDistrict = district.nameKo;
 
-    return {
-      title: `${court.SVCNM} | ${koreanDistrict}`,
-      description: `${koreanDistrict} ${court.PLACENM} 테니스장 예약 정보. 운영시간, 이용료, 예약 현황을 확인하고 바로 예약하세요.`,
-      keywords: [court.SVCNM, koreanDistrict, '테니스장', '예약', court.PLACENM],
-      alternates: {
-        canonical: `/${districtSlug}/${courtId}`,
-      },
-      openGraph: {
-        title: `${court.SVCNM} | 서울 테니스`,
-        description: `${koreanDistrict} ${court.PLACENM} 테니스장 예약 정보`,
-        url: `https://seoul-tennis.com/${districtSlug}/${courtId}`,
-        images: court.IMGURL ? [{ url: court.IMGURL }] : undefined,
-      },
-    };
-  } catch {
-    return { title: '테니스장 정보' };
-  }
+  return {
+    title: `${court.SVCNM} | ${koreanDistrict}`,
+    description: `${koreanDistrict} ${court.PLACENM} 테니스장 예약 정보. 운영시간, 이용료, 예약 현황을 확인하고 바로 예약하세요.`,
+    keywords: [court.SVCNM, koreanDistrict, '테니스장', '예약', court.PLACENM],
+    alternates: {
+      canonical: `/${districtSlug}/${courtId}`,
+    },
+    openGraph: {
+      title: `${court.SVCNM} | 서울 테니스`,
+      description: `${koreanDistrict} ${court.PLACENM} 테니스장 예약 정보`,
+      url: `https://seoul-tennis.com/${districtSlug}/${courtId}`,
+      images: court.IMGURL ? [{ url: court.IMGURL }] : undefined,
+    },
+  };
 }
 
 type CourtDataResult =
@@ -65,16 +62,15 @@ async function getCourtData(districtSlug: string, courtId: string): Promise<Cour
   try {
     const services = await fetchTennisDataWithStatuses();
     const decodedCourtId = decodeURIComponent(courtId);
-    const court = services.find(s => s.SVCID === decodedCourtId);
-    
-    if (!court) {
-      // API returned data but court not in results → genuinely not found
-      if (services.length > 0) {
-        return { type: 'not-found' };
-      }
-      // Empty results → likely API failure
+    const lookup = resolveCourtLookup(services, decodedCourtId, getServedDataMeta());
+
+    if (lookup.type === 'not-found') {
+      return { type: 'not-found' };
+    }
+    if (lookup.type === 'api-error') {
       return { type: 'api-error', district };
     }
+    const { court } = lookup;
 
     return { type: 'success', court, district, allCourts: services };
   } catch (error) {

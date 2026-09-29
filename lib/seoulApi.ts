@@ -63,6 +63,8 @@ export interface SeoulApiResponse {
 interface TennisDataCache {
     data: SeoulService[];
     timestamp: number;
+    /** True when some additional Seoul API pages failed, so rows may be missing. */
+    isPartial?: boolean;
 }
 
 let tennisDataCache: TennisDataCache | null = null;
@@ -72,6 +74,11 @@ export interface ServedDataMeta {
     lastUpdatedAt: string;
     /** True when the served data is a fallback / older than the cache TTL. */
     isStale: boolean;
+    /**
+     * True when the served data came from a Seoul API response where some pages
+     * failed (Promise.allSettled), so valid SVCIDs may be missing from it.
+     */
+    isPartial?: boolean;
 }
 
 // Metadata about the most recent fetchTennisAvailability() result so callers can
@@ -84,10 +91,11 @@ export function getServedDataMeta(): ServedDataMeta {
     return lastServedMeta;
 }
 
-function setServedMeta(timestampMs: number, forceStale = false): void {
+function setServedMeta(timestampMs: number, forceStale = false, isPartial = false): void {
     lastServedMeta = {
         lastUpdatedAt: new Date(timestampMs).toISOString(),
         isStale: forceStale || Date.now() - timestampMs >= CACHE_TTL_MS,
+        isPartial,
     };
 }
 
@@ -105,19 +113,171 @@ function isExcludedSeoulApiCourt(court: SeoulService): boolean {
     return SEOUL_API_EXCLUDED_COURTS.some(
         excluded =>
             court.AREANM === excluded.areanm &&
-            (court.PLACENM.includes(excluded.keyword) || court.SVCNM.includes(excluded.keyword))
+            ((court.PLACENM ?? '').includes(excluded.keyword) || (court.SVCNM ?? '').includes(excluded.keyword))
     );
+}
+
+/**
+ * Independent entries that stand in for a Seoul-API (yeyak) facility while the
+ * API has no rows for it. Once the API lists the facility again, the API rows win
+ * and the independent entry is dropped so the facility is not shown twice.
+ */
+const INDEPENDENT_FALLBACK_FOR_SEOUL_API: ReadonlyArray<{ svcId: string; areanm: string; keyword: string }> = [
+    { svcId: 'INDEP_SDM001', areanm: '서대문구', keyword: '현저' },
+];
+
+/** INDEP ids that can disappear once the Seoul API lists the facility again (keep out of the sitemap). */
+export const INDEPENDENT_FALLBACK_IDS: ReadonlySet<string> = new Set(
+    INDEPENDENT_FALLBACK_FOR_SEOUL_API.map(fallback => fallback.svcId)
+);
+
+function hasSeoulApiRowsFor(courts: SeoulService[], areanm: string, keyword: string): boolean {
+    return courts.some(
+        court =>
+            !court.SVCID.startsWith('INDEP_') &&
+            court.AREANM === areanm &&
+            ((court.PLACENM ?? '').includes(keyword) || (court.SVCNM ?? '').includes(keyword))
+    );
+}
+
+/**
+ * Pure merge of Seoul API rows with the independent (non-Seoul-API) courts.
+ *
+ * INDEP_ rows already present in `courts` (e.g. from an in-memory cache or the
+ * durable snapshot written before a data fix was deployed) are DROPPED and replaced
+ * by the current static `independentCourts`, so fallback paths never serve stale
+ * independent data. Scraped statuses are re-applied later by applyScrapedStatuses().
+ */
+export function mergeWithIndependentCourts(
+    courts: SeoulService[],
+    independentCourts: SeoulService[],
+): SeoulService[] {
+    const seoulRows = courts.filter(court => !court.SVCID.startsWith('INDEP_') && !isExcludedSeoulApiCourt(court));
+    const supersededIds = new Set(
+        INDEPENDENT_FALLBACK_FOR_SEOUL_API
+            .filter(fallback => hasSeoulApiRowsFor(seoulRows, fallback.areanm, fallback.keyword))
+            .map(fallback => fallback.svcId)
+    );
+    const existingIds = new Set(seoulRows.map(court => court.SVCID));
+    return [
+        ...seoulRows,
+        ...independentCourts.filter(court => !supersededIds.has(court.SVCID) && !existingIds.has(court.SVCID)),
+    ];
 }
 
 function mergeIndependentCourts(courts: SeoulService[]): SeoulService[] {
     if (!INCLUDE_INDEPENDENT_COURTS) {
         return courts;
     }
+    return mergeWithIndependentCourts(courts, getIndependentCourts());
+}
 
-    const filtered = courts.filter(court => !isExcludedSeoulApiCourt(court));
-    const independentCourts = getIndependentCourts();
-    const existingIds = new Set(filtered.map(court => court.SVCID));
-    return [...filtered, ...independentCourts.filter(court => !existingIds.has(court.SVCID))];
+/**
+ * Facility-level operating hours that must OVERRIDE the Seoul API V_MIN/V_MAX.
+ * The API's V_MIN/V_MAX is the time window of one reservation block (e.g. 삼청
+ * 평일 주간 06:00-16:00), but the detail page and JSON-LD present it as the
+ * facility's 운영시간. Enrichment hours only fill EMPTY values, so wrong non-empty
+ * API hours need this table. Keyed by AREANM + raw PLACENM.trim().
+ * `skipIfSvcnmIncludes`: rows whose SVCNM contains this keep the API hours
+ * (e.g. 삼청 주말 회차 06:00-18:00 is already correct).
+ * (2026-09-29 25개 구 감사 #95·#113)
+ */
+const FACILITY_HOURS_OVERRIDES: ReadonlyArray<{
+    areanm: string;
+    placenm: string;
+    start: string;
+    end: string;
+    skipIfSvcnmIncludes?: string;
+}> = [
+    // 종로구시설관리공단 ijongno.co.kr/fmcs/59: 평일 06:00~21:00, 주말·공휴일 06:00~18:00
+    { areanm: '종로구', placenm: '삼청테니스장', start: '06:00', end: '21:00', skipIfSvcnmIncludes: '주말' },
+    // yeyak S230428115408736358 / S230425174848455942: 주말·공휴일만 개방 08:00~18:00 (API는 08:00/03:00~19:00)
+    { areanm: '양천구', placenm: '서울에너지공사 목동 테니스장 1면', start: '08:00', end: '18:00' },
+    { areanm: '양천구', placenm: '서울에너지공사 목동 테니스장 2면', start: '08:00', end: '18:00' },
+];
+
+function findHoursOverride(court: SeoulService): { start: string; end: string } | null {
+    const place = (court.PLACENM ?? '').trim();
+    const override = FACILITY_HOURS_OVERRIDES.find(
+        o => o.areanm === court.AREANM && o.placenm === place
+    );
+    if (!override) return null;
+    if (override.skipIfSvcnmIncludes && (court.SVCNM ?? '').includes(override.skipIfSvcnmIncludes)) {
+        return null;
+    }
+    return { start: override.start, end: override.end };
+}
+
+/**
+ * Detail text for Seoul API rows whose DTLCONT is EMPTY, keyed by SVCID. Only
+ * fills an empty value, never replaces API text. (2026-09-29 25개 구 감사 #115)
+ */
+const EMPTY_DTLCONT_FALLBACKS: Readonly<Record<string, string>> = {
+    // 손기정문화체육센터 테니스장: V_MIN/V_MAX 공란 → 보강 데이터 평일 07:00~22:00만 표시되므로 주말 시간 보완
+    'XML-son12':
+        '◎ 운영시간\r\n' +
+        '- 평일 07:00~22:00 / 토·일·공휴일 07:00~20:00 (06:00~07:00은 프로그램 전용)\r\n' +
+        '- 정기휴장: 신정, 설·추석 연휴 / 우천 시 미운영',
+};
+
+/**
+ * Some Seoul API rows carry HTML-escaped query separators in SVCURL
+ * (e.g. 손기정 XML-son12: '...?action=list&amp;facilities_type=T'), sometimes
+ * double-escaped ('&amp;amp;'). Decode '&amp;' repeatedly so the link works.
+ */
+export function decodeUrlAmpEntities(url: string): string {
+    let decoded = url;
+    while (/&amp;/i.test(decoded)) {
+        decoded = decoded.replace(/&amp;/gi, '&');
+    }
+    return decoded;
+}
+
+/**
+ * Display normalization shared by EVERY return path (live API, in-memory cache,
+ * durable snapshot, independent-only): hours overrides/enrichment, image
+ * enrichment + https, SVCURL entity decoding, empty-DTLCONT fallbacks. Returns shallow copies so the static
+ * independent-court objects are never mutated. Idempotent.
+ */
+export function normalizeCourts(courts: SeoulService[]): SeoulService[] {
+    return courts.map(original => {
+        const court = { ...original };
+
+        const override = findHoursOverride(court);
+        if (override) {
+            court.V_MIN = override.start;
+            court.V_MAX = override.end;
+        } else if (!court.V_MIN && !court.V_MAX) {
+            // Apply enrichment operating hours for courts with empty/missing V_MIN/V_MAX
+            const hours = getEnrichmentOperatingHours(court.SVCNM, court.AREANM, court.PLACENM);
+            if (hours) {
+                court.V_MIN = hours.start;
+                court.V_MAX = hours.end;
+            }
+        }
+
+        if (!court.IMGURL) {
+            const imageUrl = getEnrichmentImageUrl(court.SVCNM, court.AREANM, court.PLACENM);
+            if (imageUrl) {
+                court.IMGURL = imageUrl;
+            }
+        }
+        if (court.IMGURL && court.IMGURL.startsWith('http://')) {
+            court.IMGURL = court.IMGURL.replace('http://', 'https://');
+        }
+        if (court.SVCURL) {
+            court.SVCURL = decodeUrlAmpEntities(court.SVCURL);
+        }
+        if (!court.DTLCONT?.trim() && EMPTY_DTLCONT_FALLBACKS[court.SVCID]) {
+            court.DTLCONT = EMPTY_DTLCONT_FALLBACKS[court.SVCID];
+        }
+        return court;
+    });
+}
+
+/** merge + normalize: the single pipeline every fetchTennisAvailability() result goes through. */
+function prepareCourts(courts: SeoulService[]): SeoulService[] {
+    return normalizeCourts(mergeIndependentCourts(courts));
 }
 
 function wait(ms: number): Promise<void> {
@@ -210,14 +370,14 @@ async function readSnapshot(): Promise<{ data: SeoulService[]; updatedAt: number
 
 export async function fetchTennisAvailability(): Promise<SeoulService[]> {
     if (isCacheFresh()) {
-        setServedMeta(tennisDataCache!.timestamp);
+        setServedMeta(tennisDataCache!.timestamp, false, tennisDataCache!.isPartial ?? false);
         return tennisDataCache!.data;
     }
 
     if (!API_KEY) {
         console.error('SEOUL_OPEN_DATA_KEY is missing');
         setServedMeta(Date.now(), true);
-        return INCLUDE_INDEPENDENT_COURTS ? getIndependentCourts() : [];
+        return INCLUDE_INDEPENDENT_COURTS ? normalizeCourts(getIndependentCourts()) : [];
     }
 
     let lastError: unknown;
@@ -242,6 +402,7 @@ export async function fetchTennisAvailability(): Promise<SeoulService[]> {
 
             const totalCount = data.ListPublicReservationSport.list_total_count;
             const allServices = [...data.ListPublicReservationSport.row];
+            let isPartial = false;
 
             if (totalCount > PAGE_SIZE) {
                 const cappedTotal = Math.min(totalCount, MAX_FETCHABLE_ROWS);
@@ -261,11 +422,16 @@ export async function fetchTennisAvailability(): Promise<SeoulService[]> {
                             const pageData: SeoulApiResponse = JSON.parse(result.value);
                             if (pageData.ListPublicReservationSport?.row) {
                                 allServices.push(...pageData.ListPublicReservationSport.row);
+                            } else {
+                                isPartial = true;
+                                console.warn('Seoul API: additional page missing rows');
                             }
                         } catch {
+                            isPartial = true;
                             console.warn('Seoul API: failed to parse additional page');
                         }
                     } else {
+                        isPartial = true;
                         console.warn('Seoul API: additional page fetch failed:', result.reason);
                     }
                 }
@@ -276,40 +442,19 @@ export async function fetchTennisAvailability(): Promise<SeoulService[]> {
                 SEOUL_DISTRICTS.includes(svc.AREANM)
             );
 
-            const allCourts = mergeIndependentCourts(tennisServices);
-
-            // Apply enrichment operating hours for courts with empty/missing V_MIN/V_MAX
-            for (const court of allCourts) {
-                if (!court.V_MIN && !court.V_MAX) {
-                    const hours = getEnrichmentOperatingHours(court.SVCNM, court.AREANM, court.PLACENM);
-                    if (hours) {
-                        court.V_MIN = hours.start;
-                        court.V_MAX = hours.end;
-                    }
-                }
-            }
-
-            for (const court of allCourts) {
-                if (!court.IMGURL) {
-                    const imageUrl = getEnrichmentImageUrl(court.SVCNM, court.AREANM, court.PLACENM);
-                    if (imageUrl) {
-                        court.IMGURL = imageUrl;
-                    }
-                }
-                if (court.IMGURL && court.IMGURL.startsWith('http://')) {
-                    court.IMGURL = court.IMGURL.replace('http://', 'https://');
-                }
-            }
+            const allCourts = prepareCourts(tennisServices);
 
             tennisDataCache = {
                 data: allCourts,
                 timestamp: Date.now(),
+                isPartial,
             };
-            setServedMeta(tennisDataCache.timestamp);
+            setServedMeta(tennisDataCache.timestamp, false, isPartial);
 
             // Persist a durable cross-instance snapshot — ONLY when the Seoul API
             // returned a healthy set, so a degraded response never overwrites a good one.
-            if (tennisServices.length >= SNAPSHOT_MIN_SEOUL_COURTS) {
+            // A partial response (some pages failed) is also never persisted.
+            if (!isPartial && tennisServices.length >= SNAPSHOT_MIN_SEOUL_COURTS) {
                 await persistSnapshot(allCourts);
             }
 
@@ -334,18 +479,18 @@ export async function fetchTennisAvailability(): Promise<SeoulService[]> {
 
     if (tennisDataCache && memTs >= snapTs) {
         console.warn('Serving stale in-memory cache after Seoul API failures');
-        setServedMeta(memTs, true);
-        return mergeIndependentCourts(tennisDataCache.data);
+        setServedMeta(memTs, true, tennisDataCache.isPartial ?? false);
+        return prepareCourts(tennisDataCache.data);
     }
     if (snapshotResult) {
         console.warn('Serving last-good durable snapshot after Seoul API failures');
         setServedMeta(snapTs, true);
-        return mergeIndependentCourts(snapshotResult.data);
+        return prepareCourts(snapshotResult.data);
     }
 
     console.error('Seoul API failed with no durable fallback. Returning independent courts only:', lastError);
     setServedMeta(Date.now(), true);
-    return INCLUDE_INDEPENDENT_COURTS ? getIndependentCourts() : [];
+    return INCLUDE_INDEPENDENT_COURTS ? normalizeCourts(getIndependentCourts()) : [];
 }
 
 type CachedIndependentStatusRow = {

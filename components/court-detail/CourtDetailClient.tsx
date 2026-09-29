@@ -366,7 +366,7 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
             </div>
             <p className={themeClass('text-xs text-black/60 dark:text-slate-400 mb-1 font-bold uppercase', 'text-xs text-gray-400 dark:text-slate-400 mb-1')}>예약기준</p>
             <p className={themeClass('font-black text-black dark:text-slate-100 text-sm truncate', 'font-semibold text-gray-800 dark:text-slate-200 text-sm truncate')}>
-              {court.REVSTDDAY === '0' ? '이용 당일' : `이용 ${court.REVSTDDAY || '1'}일 전`}
+              {court.REVSTDDAY === '0' ? '이용 당일' : court.REVSTDDAY ? `이용 ${court.REVSTDDAY}일 전` : '예약처 확인'}
             </p>
           </div>
         </div>
@@ -413,9 +413,10 @@ export default function CourtDetailClient({ court, district, districtSlug, allCo
               {enrichment.lighting && (
                 <div className={`flex flex-col items-center justify-center p-4 ${themeClass('bg-white dark:bg-slate-800', 'bg-white dark:bg-slate-800')}`}>
                   <span className="text-lg mb-1">💡</span>
-                  <p className={themeClass('text-xs text-black/60 dark:text-slate-400 font-bold', 'text-xs text-gray-400 dark:text-slate-400')}>조명탑</p>
+                  <p className={themeClass('text-xs text-black/60 dark:text-slate-400 font-bold', 'text-xs text-gray-400 dark:text-slate-400')}>{enrichment.lighting.count > 0 ? '조명탑' : '조명'}</p>
                   <p className={themeClass('font-black text-black dark:text-slate-100 text-sm', 'font-semibold text-gray-800 dark:text-slate-200 text-sm')}>
-                    {enrichment.lighting.count}기{enrichment.lighting.lux ? ` (${enrichment.lighting.lux}lux)` : ''}
+                    {/* count 0 = 조명은 있으나 기수 미공개 (감사 2026-09-29: 다락원·관악구민·안양천 하드) */}
+                    {enrichment.lighting.count > 0 ? `${enrichment.lighting.count}기` : '야간조명 있음'}{enrichment.lighting.lux ? ` (${enrichment.lighting.lux}lux)` : ''}
                   </p>
                 </div>
               )}

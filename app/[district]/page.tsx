@@ -7,6 +7,10 @@ import { sortByAvailability } from '@/lib/utils/courtStatus';
 
 export const revalidate = 7200;
 
+// 25개 구 slug만 유효. 그 외 slug는 라우팅 단계에서 실제 404 상태로 응답한다.
+// (loading.tsx Suspense 스트리밍 때문에 page 안의 notFound()만으로는 200 + noindex가 나감)
+export const dynamicParams = false;
+
 interface DistrictPageProps {
   params: Promise<{
     district: string;
@@ -18,7 +22,7 @@ export async function generateMetadata({ params }: DistrictPageProps): Promise<M
   const districtInfo = getDistrictBySlug(district);
   
   if (!districtInfo) {
-    return { title: '페이지를 찾을 수 없습니다' };
+    return { title: '페이지를 찾을 수 없습니다', robots: { index: false } };
   }
 
   const { nameKo } = districtInfo;

@@ -5,7 +5,7 @@ vi.mock('@/lib/data/independentCourts', () => ({
   isIndependentCourt: (id: string) => id.startsWith('EXT'),
 }));
 
-import { buildByDistrict } from './tennisDistrictStats';
+import { buildByDistrict, facilityIdentityOf } from './tennisDistrictStats';
 import type { SeoulService } from '@/lib/seoulApi';
 
 function svc(overrides: Partial<SeoulService>): SeoulService {
@@ -117,5 +117,36 @@ describe('buildByDistrict', () => {
 
   it('returns an empty object for no services', () => {
     expect(buildByDistrict([])).toEqual({});
+  });
+});
+
+describe('facility grouping (2026-09-29 audit)', () => {
+  it('counts 어린이대공원 A/B코트 as one 광진구 facility', () => {
+    const services = [
+      svc({ SVCID: 'A1', AREANM: '광진구', PLACENM: '테니스장 A코트', SVCSTATNM: '예약마감' }),
+      svc({ SVCID: 'B1', AREANM: '광진구', PLACENM: '테니스장 B코트', SVCSTATNM: '접수중' }),
+      svc({ SVCID: 'T1', AREANM: '광진구', PLACENM: '뚝섬 한강공원 테니스장', SVCSTATNM: '예약마감' }),
+    ];
+    const stats = buildByDistrict(services);
+    expect(stats['광진구'].count).toBe(2);
+    expect(stats['광진구'].available).toBe(1);
+    expect(stats['광진구'].availableSlots).toBe(1);
+  });
+
+  it('counts 서울에너지공사 목동 1면/2면 as one 양천구 facility', () => {
+    const services = [
+      svc({ SVCID: 'E1', AREANM: '양천구', PLACENM: '서울에너지공사 목동 테니스장 1면' }),
+      svc({ SVCID: 'E2', AREANM: '양천구', PLACENM: '서울에너지공사 목동 테니스장 2면 ' }),
+      svc({ SVCID: 'EXT1', AREANM: '양천구', PLACENM: '목동테니스장' }),
+    ];
+    const stats = buildByDistrict(services);
+    expect(stats['양천구'].count).toBe(2);
+  });
+
+  it('does not group same PLACENM in another district', () => {
+    expect(facilityIdentityOf(svc({ AREANM: '중구', PLACENM: '테니스장 A코트' }))).toBe('중구|테니스장 A코트');
+    expect(facilityIdentityOf(svc({ AREANM: '광진구', PLACENM: '테니스장 A코트' }))).toBe(
+      facilityIdentityOf(svc({ AREANM: '광진구', PLACENM: '테니스장 B코트' })),
+    );
   });
 });
