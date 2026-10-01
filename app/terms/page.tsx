@@ -109,7 +109,18 @@ export default function TermsPage() {
 
           <section>
             <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
-              제7조 (면책조항)
+              제7조 (회원 탈퇴)
+            </h2>
+            <ul className="list-disc list-inside space-y-1">
+              <li>이용자는 언제든지 마이페이지 &gt; 회원 탈퇴에서 직접 탈퇴하거나, 이메일(gjghks84@gmail.com)로 탈퇴를 요청할 수 있습니다.</li>
+              <li>탈퇴 시 이용자의 계정과 이용자가 작성한 후기, 경기 기록, 매칭 게시글, 양도 목록, 대진표 등 관련 데이터는 즉시 삭제되며 복구할 수 없습니다. 파기 범위는 개인정보처리방침을 따릅니다.</li>
+              <li>소셜 로그인 제공자(카카오, 구글)와의 연결 해제는 각 제공자의 계정 설정에서 별도로 할 수 있습니다.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
+              제8조 (면책조항)
             </h2>
             <ul className="list-disc list-inside space-y-1">
               <li>서비스는 천재지변 또는 이에 준하는 불가항력으로 인하여 서비스를 제공할 수 없는 경우에는 서비스 제공에 관한 책임이 면제됩니다.</li>
@@ -121,7 +132,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
-              제8조 (분쟁해결)
+              제9조 (분쟁해결)
             </h2>
             <p>
               서비스와 이용자 간에 발생한 분쟁에 관한 소송은 대한민국 법을 적용하며,
@@ -133,7 +144,8 @@ export default function TermsPage() {
             <h2 className={`text-lg font-bold mb-2 ${themeClass('text-black dark:text-slate-100', 'text-gray-900 dark:text-slate-100')}`}>
               부칙
             </h2>
-            <p>이 약관은 2025년 2월 14일부터 시행합니다.</p>
+            <p>이 약관은 2026년 10월 1일부터 시행합니다.</p>
+            <p className="mt-1 text-sm">종전 약관(2025년 2월 14일 시행)은 2026년 9월 30일까지 적용됩니다. 주요 변경: 제7조(회원 탈퇴) 신설.</p>
           </section>
         </div>
       </div>

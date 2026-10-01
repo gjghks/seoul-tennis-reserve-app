@@ -21,6 +21,10 @@ const UnifiedProfileSection = dynamic(
   () => import('@/components/profile/UnifiedProfileSection'),
   { ssr: false, loading: () => <div className="h-80 skeleton !rounded-xl mb-8" /> }
 );
+const AccountDeleteSection = dynamic(
+  () => import('@/components/profile/AccountDeleteSection'),
+  { ssr: false }
+);
 import { ProviderBadge } from '@/components/auth/ProviderBadge';
 
 interface Favorite {
@@ -409,6 +413,8 @@ export default function MyPage() {
             })}
           </div>
          )}
+
+        <AccountDeleteSection />
        </div>
       )}
 

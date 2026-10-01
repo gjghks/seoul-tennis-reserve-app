@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useCallback, useMemo, ReactNode } from 'react';
+import { createContext, useContext, useState, useCallback, useEffect, useMemo, ReactNode } from 'react';
 
 export type ToastType = 'success' | 'error' | 'info';
 
@@ -17,6 +17,35 @@ interface ToastContextType {
 }
 
 const ToastContext = createContext<ToastContextType | undefined>(undefined);
+
+const PENDING_TOAST_KEY = 'seoul-tennis.pending-toast';
+
+/**
+ * Shows a toast on the next page load — for flows that end in a hard
+ * navigation (e.g. 회원 탈퇴 → window.location.replace), where a toast shown
+ * before navigating would be lost.
+ */
+export function queueToastAfterReload(message: string, type: ToastType = 'success') {
+  try {
+    sessionStorage.setItem(PENDING_TOAST_KEY, JSON.stringify({ message, type }));
+  } catch {
+    /* storage unavailable: skip the toast */
+  }
+}
+
+function takePendingToast(): { message: string; type: ToastType } | null {
+  try {
+    const raw = sessionStorage.getItem(PENDING_TOAST_KEY);
+    if (!raw) return null;
+    sessionStorage.removeItem(PENDING_TOAST_KEY);
+    const parsed = JSON.parse(raw) as { message?: unknown; type?: unknown };
+    if (typeof parsed.message !== 'string') return null;
+    const type: ToastType = parsed.type === 'error' || parsed.type === 'info' ? parsed.type : 'success';
+    return { message: parsed.message, type };
+  } catch {
+    return null;
+  }
+}
 
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
@@ -35,6 +64,16 @@ export function ToastProvider({ children }: { children: ReactNode }) {
       removeToast(id);
     }, 3000);
   }, [removeToast]);
+
+  // Read after mount (sessionStorage is client-only); deferred so the toast
+  // is not set synchronously inside the effect.
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const pending = takePendingToast();
+      if (pending) showToast(pending.message, pending.type);
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [showToast]);
 
   const value = useMemo(() => ({ toasts, showToast, removeToast }), [toasts, showToast, removeToast]);
 

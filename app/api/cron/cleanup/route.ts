@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createServiceRoleClient } from '@/lib/supabaseServer';
 import { verifyCronSecret } from '@/lib/cronAuth';
+import { describeErrorSafely, sweepOrphanedUserStorage, type OrphanSweepSummary } from '@/lib/account/deleteAccount';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 30;
@@ -20,8 +21,9 @@ export async function GET(request: Request) {
     let deletedSnapshots = 0;
     let deletedSubscriptions = 0;
     let deletedCacheEntries = 0;
+    let orphanStorage: OrphanSweepSummary | null = null;
 
-    const [snapshotResult, subscriptionResult, cacheResult] = await Promise.allSettled([
+    const [snapshotResult, subscriptionResult, cacheResult, orphanResult] = await Promise.allSettled([
       (async () => {
         try {
           const { data, error } = await supabase
@@ -79,6 +81,16 @@ export async function GET(request: Request) {
           return 0;
         }
       })(),
+      // Images uploaded under <uid>/ by a deleted account's still-valid access
+      // token after 회원 탈퇴 finished (see lib/account/deleteAccount.ts).
+      (async () => {
+        try {
+          return await sweepOrphanedUserStorage(supabase);
+        } catch (err) {
+          console.error(`Error sweeping orphaned user storage: ${describeErrorSafely(err)}`);
+          return null;
+        }
+      })(),
     ]);
 
     if (snapshotResult.status === 'fulfilled') {
@@ -93,11 +105,16 @@ export async function GET(request: Request) {
       deletedCacheEntries = cacheResult.value;
     }
 
+    if (orphanResult.status === 'fulfilled') {
+      orphanStorage = orphanResult.value;
+    }
+
     return NextResponse.json({
       ok: true,
       deletedSnapshots,
       deletedSubscriptions,
       deletedCacheEntries,
+      orphanStorage,
     });
   } catch (error) {
     console.error('Cleanup cron error:', error);
