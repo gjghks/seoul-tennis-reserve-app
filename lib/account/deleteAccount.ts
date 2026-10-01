@@ -42,7 +42,7 @@ const LIST_PAGE_SIZE = 100;
 const REMOVE_BATCH_SIZE = 100;
 const MAX_FOLDER_DEPTH = 5;
 
-const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+export const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const UUID_ANYWHERE_RE = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi;
 const EMAIL_ANYWHERE_RE = /[^\s@'"<>]+@[^\s@'"<>]+\.[^\s@'"<>]+/g;
 
@@ -97,6 +97,53 @@ function fail(step: AccountDeletionStep, error: unknown): never {
   throw new AccountDeletionError(step, `Account deletion failed at step "${step}": ${detail}`);
 }
 
+export interface StorageObjectEntry {
+  /** Full object path inside the bucket, e.g. `<userId>/<epochMillis>-<name>.webp`. */
+  path: string;
+  /** Object creation time from the list metadata (null when the API omits it). */
+  createdAt: string | null;
+}
+
+/**
+ * Lists every object (not folder) under `prefix` in a bucket — `''` for the
+ * whole bucket. Recurses into sub-folders up to MAX_FOLDER_DEPTH and pages
+ * through results. Read-only.
+ */
+export async function listStorageObjects(
+  client: SupabaseClient,
+  bucket: UserImageBucket,
+  prefix: string,
+): Promise<StorageObjectEntry[]> {
+  const entries: StorageObjectEntry[] = [];
+
+  const walk = async (folder: string, depth: number): Promise<void> => {
+    for (let offset = 0; ; offset += LIST_PAGE_SIZE) {
+      const { data, error } = await client.storage.from(bucket).list(folder, {
+        limit: LIST_PAGE_SIZE,
+        offset,
+        sortBy: { column: 'name', order: 'asc' },
+      });
+      if (error) throw error;
+      const items = data ?? [];
+
+      for (const item of items) {
+        const fullPath = folder === '' ? item.name : `${folder}/${item.name}`;
+        // Folders come back with id === null.
+        if (item.id === null) {
+          if (depth < MAX_FOLDER_DEPTH) await walk(fullPath, depth + 1);
+        } else {
+          entries.push({ path: fullPath, createdAt: item.created_at ?? null });
+        }
+      }
+
+      if (items.length < LIST_PAGE_SIZE) break;
+    }
+  };
+
+  await walk(prefix, prefix === '' ? 0 : 1);
+  return entries;
+}
+
 /**
  * Lists every object path under `<userId>/` in a bucket (recurses into
  * sub-folders, pages through results). Read-only; also used by the admin
@@ -107,34 +154,7 @@ export async function listUserStorageObjects(
   bucket: UserImageBucket,
   userId: string,
 ): Promise<string[]> {
-  const paths: string[] = [];
-
-  const walk = async (prefix: string, depth: number): Promise<void> => {
-    for (let offset = 0; ; offset += LIST_PAGE_SIZE) {
-      const { data, error } = await client.storage.from(bucket).list(prefix, {
-        limit: LIST_PAGE_SIZE,
-        offset,
-        sortBy: { column: 'name', order: 'asc' },
-      });
-      if (error) throw error;
-      const items = data ?? [];
-
-      for (const item of items) {
-        const fullPath = `${prefix}/${item.name}`;
-        // Folders come back with id === null.
-        if (item.id === null) {
-          if (depth < MAX_FOLDER_DEPTH) await walk(fullPath, depth + 1);
-        } else {
-          paths.push(fullPath);
-        }
-      }
-
-      if (items.length < LIST_PAGE_SIZE) break;
-    }
-  };
-
-  await walk(userId, 1);
-  return paths;
+  return (await listStorageObjects(client, bucket, userId)).map((entry) => entry.path);
 }
 
 async function removeUserStorage(
@@ -257,7 +277,8 @@ export interface OrphanSweepSummary {
   truncated: boolean;
 }
 
-async function listTopLevelUserFolders(client: SupabaseClient, bucket: UserImageBucket): Promise<string[]> {
+/** Top-level `<uuid>/` folder names of a bucket (one paged list call per 100 folders). Read-only. */
+export async function listTopLevelUserFolders(client: SupabaseClient, bucket: UserImageBucket): Promise<string[]> {
   const ids: string[] = [];
   for (let offset = 0; ; offset += LIST_PAGE_SIZE) {
     const { data, error } = await client.storage.from(bucket).list('', {

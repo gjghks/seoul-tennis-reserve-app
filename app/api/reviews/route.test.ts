@@ -1,12 +1,23 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { NextRequest } from 'next/server';
+
+const mockStorageRemove = vi.fn();
+const mockStorageFrom = vi.fn(() => ({ remove: mockStorageRemove }));
 
 const mockSupabaseClient = {
   from: vi.fn(),
   auth: {
     getUser: vi.fn(),
   },
+  storage: {
+    from: mockStorageFrom,
+  },
 };
+
+const SUPABASE_URL = 'https://proj.supabase.co';
+const OWNER_ID = '11111111-2222-4333-8444-555555555555';
+const OTHER_ID = '99999999-8888-4777-8666-555555555555';
+const reviewImageUrl = (path: string) => `${SUPABASE_URL}/storage/v1/object/public/review-images/${path}`;
 
 vi.mock('@/lib/supabaseServer', () => ({
   createServerSupabaseClient: vi.fn(async () => mockSupabaseClient),
@@ -370,21 +381,42 @@ describe('DELETE /api/reviews', () => {
     vi.clearAllMocks();
   });
 
-  it('should delete a review successfully', async () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  it('should delete a review and then its own images from storage', async () => {
+    vi.stubEnv('NEXT_PUBLIC_SUPABASE_URL', SUPABASE_URL);
     mockSupabaseClient.auth.getUser.mockResolvedValue({
-      data: { user: { id: 'user1' } },
+      data: { user: { id: OWNER_ID } },
       error: null,
     });
+    mockStorageRemove.mockResolvedValue({ data: [{ name: 'x' }, { name: 'y' }], error: null });
 
-    const mockEq = vi.fn().mockResolvedValue({
-      data: null,
-      error: null,
+    const order: string[] = [];
+    const mockSelect = vi.fn(async () => {
+      order.push('db-delete');
+      return {
+        data: [{
+          images: [
+            reviewImageUrl(`${OWNER_ID}/1-a.webp`),
+            reviewImageUrl(`${OWNER_ID}/2-b.webp`),
+            reviewImageUrl(`${OTHER_ID}/3-c.webp`),
+            `https://evil.example.com/storage/v1/object/public/review-images/${OWNER_ID}/4-d.webp`,
+          ],
+        }],
+        error: null,
+      };
+    });
+    mockStorageRemove.mockImplementation(async (paths: string[]) => {
+      order.push('storage-remove');
+      return { data: paths.map((name) => ({ name })), error: null };
     });
 
     const mockFrom = vi.fn().mockReturnValue({
       delete: vi.fn().mockReturnValue({
         eq: vi.fn().mockReturnValue({
-          eq: mockEq,
+          eq: vi.fn().mockReturnValue({ select: mockSelect }),
         }),
       }),
     });
@@ -398,6 +430,63 @@ describe('DELETE /api/reviews', () => {
 
     expect(response.status).toBe(200);
     expect(data.success).toBe(true);
+    expect(mockSelect).toHaveBeenCalledWith('images');
+    expect(mockStorageFrom).toHaveBeenCalledWith('review-images');
+    expect(mockStorageRemove).toHaveBeenCalledTimes(1);
+    expect(mockStorageRemove).toHaveBeenCalledWith([`${OWNER_ID}/1-a.webp`, `${OWNER_ID}/2-b.webp`]);
+    expect(order).toEqual(['db-delete', 'storage-remove']);
+  });
+
+  it('should not touch storage when the review had no images or was not found', async () => {
+    mockSupabaseClient.auth.getUser.mockResolvedValue({
+      data: { user: { id: OWNER_ID } },
+      error: null,
+    });
+
+    mockSupabaseClient.from = vi.fn().mockReturnValue({
+      delete: vi.fn().mockReturnValue({
+        eq: vi.fn().mockReturnValue({
+          eq: vi.fn().mockReturnValue({ select: vi.fn().mockResolvedValue({ data: [], error: null }) }),
+        }),
+      }),
+    });
+
+    const { DELETE } = await import('./route');
+    const response = await DELETE(new NextRequest('http://localhost:3000/api/reviews?id=1'));
+
+    expect(response.status).toBe(200);
+    expect(mockStorageRemove).not.toHaveBeenCalled();
+  });
+
+  it('should still succeed when storage removal fails (left for the cleanup cron)', async () => {
+    vi.stubEnv('NEXT_PUBLIC_SUPABASE_URL', SUPABASE_URL);
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    mockSupabaseClient.auth.getUser.mockResolvedValue({
+      data: { user: { id: OWNER_ID } },
+      error: null,
+    });
+    mockStorageRemove.mockResolvedValue({ data: null, error: { message: 'storage down' } });
+
+    mockSupabaseClient.from = vi.fn().mockReturnValue({
+      delete: vi.fn().mockReturnValue({
+        eq: vi.fn().mockReturnValue({
+          eq: vi.fn().mockReturnValue({
+            select: vi.fn().mockResolvedValue({
+              data: [{ images: [reviewImageUrl(`${OWNER_ID}/1-a.webp`)] }],
+              error: null,
+            }),
+          }),
+        }),
+      }),
+    });
+
+    const { DELETE } = await import('./route');
+    const response = await DELETE(new NextRequest('http://localhost:3000/api/reviews?id=1'));
+
+    expect(response.status).toBe(200);
+    expect(mockStorageRemove).toHaveBeenCalledWith([`${OWNER_ID}/1-a.webp`]);
+    expect(warn).toHaveBeenCalled();
+    warn.mockRestore();
   });
 
   it('should return 401 when user is not authenticated', async () => {
@@ -436,7 +525,7 @@ describe('DELETE /api/reviews', () => {
       error: null,
     });
 
-    const mockEq = vi.fn().mockResolvedValue({
+    const mockSelect = vi.fn().mockResolvedValue({
       data: null,
       error: { message: 'Database error' },
     });
@@ -444,7 +533,7 @@ describe('DELETE /api/reviews', () => {
     const mockFrom = vi.fn().mockReturnValue({
       delete: vi.fn().mockReturnValue({
         eq: vi.fn().mockReturnValue({
-          eq: mockEq,
+          eq: vi.fn().mockReturnValue({ select: mockSelect }),
         }),
       }),
     });
@@ -458,5 +547,168 @@ describe('DELETE /api/reviews', () => {
 
     expect(response.status).toBe(500);
     expect(data.error).toBe('후기 삭제에 실패했습니다.');
+    expect(mockStorageRemove).not.toHaveBeenCalled();
+  });
+});
+
+describe('PUT /api/reviews', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    vi.stubEnv('NEXT_PUBLIC_SUPABASE_URL', SUPABASE_URL);
+    mockSupabaseClient.auth.getUser.mockResolvedValue({
+      data: { user: { id: OWNER_ID } },
+      error: null,
+    });
+    mockStorageRemove.mockImplementation(async (paths: string[]) => ({
+      data: paths.map((name) => ({ name })),
+      error: null,
+    }));
+  });
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  const kept = reviewImageUrl(`${OWNER_ID}/1-kept.webp`);
+  const dropped = reviewImageUrl(`${OWNER_ID}/2-dropped.webp`);
+  const added = reviewImageUrl(`${OWNER_ID}/3-added.webp`);
+
+  function mockReviewTable({
+    previous,
+    updated,
+    current = updated,
+    updateError = null,
+  }: {
+    previous: { images: string[] } | null;
+    updated: { images: string[] } | null;
+    /** Row seen by the re-read right before removing (defaults to the update result). */
+    current?: { images: string[] } | null;
+    updateError?: { message: string } | null;
+  }) {
+    const order: string[] = [];
+    let reads = 0;
+    const prevMaybeSingle = vi.fn(async () => {
+      order.push(reads++ === 0 ? 'db-read' : 'db-reread');
+      return { data: reads === 1 ? previous : current, error: null };
+    });
+    const updateSingle = vi.fn(async () => {
+      order.push('db-update');
+      return { data: updated, error: updateError };
+    });
+    const update = vi.fn().mockReturnValue({
+      eq: vi.fn().mockReturnValue({
+        eq: vi.fn().mockReturnValue({
+          select: vi.fn().mockReturnValue({ single: updateSingle }),
+        }),
+      }),
+    });
+    mockSupabaseClient.from = vi.fn().mockReturnValue({
+      select: vi.fn().mockReturnValue({
+        eq: vi.fn().mockReturnValue({
+          eq: vi.fn().mockReturnValue({ maybeSingle: prevMaybeSingle }),
+        }),
+      }),
+      update,
+    });
+    mockStorageRemove.mockImplementation(async (paths: string[]) => {
+      order.push('storage-remove');
+      return { data: paths.map((name) => ({ name })), error: null };
+    });
+    return { order, update, prevMaybeSingle };
+  }
+
+  const putRequest = (images?: unknown) =>
+    new NextRequest('http://localhost:3000/api/reviews', {
+      method: 'PUT',
+      body: JSON.stringify({
+        id: '1',
+        rating: 4,
+        content: '수정된 후기 내용입니다. 좋아요.',
+        ...(images !== undefined && { images }),
+      }),
+    });
+
+  it('removes images the edit dropped, after the update succeeds', async () => {
+    const { order, update } = mockReviewTable({
+      previous: { images: [kept, dropped] },
+      updated: { images: [kept, added] },
+    });
+
+    const { PUT } = await import('./route');
+    const response = await PUT(putRequest([kept, added]));
+
+    expect(response.status).toBe(200);
+    expect(update).toHaveBeenCalledWith(expect.objectContaining({ images: [kept, added] }));
+    expect(mockStorageFrom).toHaveBeenCalledWith('review-images');
+    expect(mockStorageRemove).toHaveBeenCalledWith([`${OWNER_ID}/2-dropped.webp`]);
+    expect(order).toEqual(['db-read', 'db-update', 'db-reread', 'storage-remove']);
+  });
+
+  it('keeps a dropped image that a concurrent edit wrote back', async () => {
+    mockReviewTable({
+      previous: { images: [kept, dropped] },
+      updated: { images: [] },
+      current: { images: [dropped] },
+    });
+
+    const { PUT } = await import('./route');
+    const response = await PUT(putRequest([]));
+
+    expect(response.status).toBe(200);
+    expect(mockStorageRemove).toHaveBeenCalledWith([`${OWNER_ID}/1-kept.webp`]);
+  });
+
+  it('leaves images untouched when the body omits `images`', async () => {
+    const { update, prevMaybeSingle } = mockReviewTable({
+      previous: { images: [kept, dropped] },
+      updated: { images: [kept, dropped] },
+    });
+
+    const { PUT } = await import('./route');
+    const response = await PUT(putRequest());
+
+    expect(response.status).toBe(200);
+    expect(update.mock.calls[0][0]).not.toHaveProperty('images');
+    expect(prevMaybeSingle).not.toHaveBeenCalled();
+    expect(mockStorageRemove).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ['null', null],
+    ['more than 3', [kept, dropped, added, reviewImageUrl(`${OWNER_ID}/4-extra.webp`)]],
+    ['foreign host', [kept, `https://evil.example.com/storage/v1/object/public/review-images/${OWNER_ID}/x.webp`]],
+  ])('rejects invalid images (%s) with 400 without touching DB or storage', async (_label, images) => {
+    const { update } = mockReviewTable({ previous: { images: [kept] }, updated: { images: [] } });
+
+    const { PUT } = await import('./route');
+    const response = await PUT(putRequest(images));
+
+    expect(response.status).toBe(400);
+    expect(update).not.toHaveBeenCalled();
+    expect(mockStorageRemove).not.toHaveBeenCalled();
+  });
+
+  it('does not touch storage when images are unchanged', async () => {
+    mockReviewTable({ previous: { images: [kept] }, updated: { images: [kept] } });
+
+    const { PUT } = await import('./route');
+    const response = await PUT(putRequest([kept]));
+
+    expect(response.status).toBe(200);
+    expect(mockStorageRemove).not.toHaveBeenCalled();
+  });
+
+  it('does not touch storage when the update fails', async () => {
+    mockReviewTable({
+      previous: { images: [kept, dropped] },
+      updated: null,
+      updateError: { message: 'Database error' },
+    });
+
+    const { PUT } = await import('./route');
+    const response = await PUT(putRequest([kept]));
+
+    expect(response.status).toBe(500);
+    expect(mockStorageRemove).not.toHaveBeenCalled();
   });
 });

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createServerSupabaseClient, createAnonSupabaseClient } from '@/lib/supabaseServer';
 import { createRateLimiter } from '@/lib/rateLimit';
 import { sanitizeText, validateTextLength, sanitizeImageUrls } from '@/lib/utils/sanitize';
+import { ownedImagePaths, removeDroppedPostImages, removePostImages } from '@/lib/storage/postImages';
 
 const limiter = createRateLimiter({ windowMs: 60_000, maxRequests: 10 });
 
@@ -176,11 +177,13 @@ export async function DELETE(request: NextRequest) {
     );
   }
 
-  const { error } = await supabase
+  // RETURNING the deleted row gives us its images atomically.
+  const { data: deleted, error } = await supabase
     .from('reviews')
     .delete()
     .eq('id', reviewId)
-    .eq('user_id', user.id);
+    .eq('user_id', user.id)
+    .select('images');
 
   if (error) {
     console.error('Error deleting review:', error);
@@ -189,6 +192,13 @@ export async function DELETE(request: NextRequest) {
       { status: 500 }
     );
   }
+
+  // Attached images go with the post (privacy policy). Best-effort: the row is
+  // already gone; leftovers are swept by /api/cron/cleanup.
+  const paths = (deleted ?? []).flatMap((row: { images?: unknown }) =>
+    ownedImagePaths(Array.isArray(row.images) ? row.images : [], 'review-images', user.id)
+  );
+  await removePostImages(supabase, 'review-images', user.id, paths);
 
   return NextResponse.json({ success: true });
 }
@@ -245,15 +255,44 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    const supabaseHost = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co').hostname;
-    const imageUrls = sanitizeImageUrls(images, 3, [supabaseHost]) ?? [];
+    // `images` omitted → the stored images stay as they are. Present but
+    // invalid → 400: falling back to [] would wipe the post's images, and
+    // dropped images are now deleted from storage for good.
+    let imageUrls: string[] | undefined;
+    if (images !== undefined) {
+      const supabaseHost = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co').hostname;
+      const sanitized = sanitizeImageUrls(images, 3, [supabaseHost]);
+      if (!sanitized) {
+        return NextResponse.json(
+          { error: '이미지 정보가 올바르지 않습니다.' },
+          { status: 400 }
+        );
+      }
+      imageUrls = sanitized;
+    }
+
+    // Images before the edit, to remove the ones the edit drops.
+    let previous: { images: unknown } | null = null;
+    if (imageUrls !== undefined) {
+      const { data: prev, error: previousError } = await supabase
+        .from('reviews')
+        .select('images')
+        .eq('id', id)
+        .eq('user_id', user.id)
+        .maybeSingle();
+      if (previousError) {
+        // Not fatal: without the old list we just skip the cleanup (cron sweeps it).
+        console.warn('Error reading review images before update:', previousError.code ?? previousError.message);
+      }
+      previous = prev;
+    }
 
     const { data, error } = await supabase
       .from('reviews')
       .update({
         rating,
         content: sanitizedContent,
-        images: imageUrls,
+        ...(imageUrls !== undefined && { images: imageUrls }),
         updated_at: new Date().toISOString(),
       })
       .eq('id', id)
@@ -267,6 +306,10 @@ export async function PUT(request: NextRequest) {
         { error: '후기 수정에 실패했습니다.' },
         { status: 500 }
       );
+    }
+
+    if (previous && Array.isArray(previous.images)) {
+      await removeDroppedPostImages(supabase, 'reviews', id, user.id, previous.images, data?.images);
     }
 
     return NextResponse.json({ review: data });

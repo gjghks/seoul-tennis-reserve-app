@@ -3,8 +3,11 @@ import { createServerSupabaseClient } from '@/lib/supabaseServer';
 import { createRateLimiter } from '@/lib/rateLimit';
 import { VALID_MATCH_TYPES, VALID_MATCH_FORMATS, VALID_RESULTS, VALID_LOCATION_TYPES, VALID_COURT_SURFACES } from '@/lib/constants/tennis';
 import { validateScore } from '@/lib/utils/tennis';
+import { ownedImagePaths, removeDroppedPostImages, removePostImages } from '@/lib/storage/postImages';
 
 const limiter = createRateLimiter({ windowMs: 60_000, maxRequests: 10 });
+/** Same limit as RecordImageUploader / POST /api/records. */
+const MAX_RECORD_IMAGES = 5;
 
 type RouteContext = {
   params: Promise<{
@@ -185,7 +188,40 @@ export async function PUT(request: NextRequest, context: RouteContext) {
       );
     }
 
-    const imageUrls = Array.isArray(images) ? images.slice(0, 5) : [];
+    // `images` omitted → the stored images stay as they are. Present but
+    // invalid (not an array of strings, more than 5) → 400: silently writing
+    // [] or truncating would drop images, and dropped images are now deleted
+    // from storage for good.
+    let imageUrls: string[] | undefined;
+    if (images !== undefined) {
+      if (
+        !Array.isArray(images) ||
+        images.length > MAX_RECORD_IMAGES ||
+        !images.every((url: unknown) => typeof url === 'string')
+      ) {
+        return NextResponse.json(
+          { error: '이미지 정보가 올바르지 않습니다.' },
+          { status: 400 }
+        );
+      }
+      imageUrls = images as string[];
+    }
+
+    // Images before the edit, to remove the ones the edit drops.
+    let previous: { images: unknown } | null = null;
+    if (imageUrls !== undefined) {
+      const { data: prev, error: previousError } = await supabase
+        .from('game_records')
+        .select('images')
+        .eq('id', id)
+        .eq('user_id', user.id)
+        .maybeSingle();
+      if (previousError) {
+        // Not fatal: without the old list we just skip the cleanup (cron sweeps it).
+        console.warn('Error reading record images before update:', previousError.code ?? previousError.message);
+      }
+      previous = prev;
+    }
 
     const { data, error } = await supabase
       .from('game_records')
@@ -205,7 +241,7 @@ export async function PUT(request: NextRequest, context: RouteContext) {
         opponent_level: opponent_level ?? null,
         cost: cost ?? null,
         notes: notes ?? null,
-        images: imageUrls,
+        ...(imageUrls !== undefined && { images: imageUrls }),
       })
       .eq('id', id)
       .eq('user_id', user.id)
@@ -224,6 +260,10 @@ export async function PUT(request: NextRequest, context: RouteContext) {
         { error: '기록 수정에 실패했습니다.' },
         { status: 500 }
       );
+    }
+
+    if (previous && Array.isArray(previous.images)) {
+      await removeDroppedPostImages(supabase, 'game_records', id, user.id, previous.images, data?.images);
     }
 
     return NextResponse.json({ record: data });
@@ -268,11 +308,13 @@ export async function DELETE(request: NextRequest, context: RouteContext) {
     );
   }
 
-  const { error } = await supabase
+  // RETURNING the deleted row gives us its images atomically.
+  const { data: deleted, error } = await supabase
     .from('game_records')
     .delete()
     .eq('id', id)
-    .eq('user_id', user.id);
+    .eq('user_id', user.id)
+    .select('images');
 
   if (error) {
     console.error('Error deleting record:', error);
@@ -281,6 +323,13 @@ export async function DELETE(request: NextRequest, context: RouteContext) {
       { status: 500 }
     );
   }
+
+  // Attached images go with the post (privacy policy). Best-effort: the row is
+  // already gone; leftovers are swept by /api/cron/cleanup.
+  const paths = (deleted ?? []).flatMap((row: { images?: unknown }) =>
+    ownedImagePaths(Array.isArray(row.images) ? row.images : [], 'record-images', user.id)
+  );
+  await removePostImages(supabase, 'record-images', user.id, paths);
 
   return NextResponse.json({ success: true });
 }
