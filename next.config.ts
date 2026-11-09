@@ -32,7 +32,7 @@ function buildDistrictRedirects() {
 
 // Self-hosted (Oracle/Docker) builds set BUILD_STANDALONE=1 → minimal server bundle.
 // STRICT_CSP mirrors the Vercel production CSP (drops http:// dev-only sources).
-const strictCsp = !!(process.env.VERCEL || process.env.STRICT_CSP);
+const strictCsp = !!process.env.VERCEL || process.env.STRICT_CSP === '1';
 
 const nextConfig: NextConfig = {
   ...(process.env.BUILD_STANDALONE === '1' ? { output: 'standalone' as const } : {}),

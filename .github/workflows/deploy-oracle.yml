@@ -5,6 +5,8 @@ on:
     branches: [master]
   workflow_dispatch:
 
+permissions: {}
+
 concurrency:
   group: deploy-oracle
   cancel-in-progress: false
@@ -14,11 +16,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
+      # The deploy key is restricted server-side (authorized_keys forced command) to
+      # `/opt/seoul-tennis/deploy/deploy.sh master`; `script` below documents intent only.
       - name: Deploy over SSH
-        uses: appleboy/ssh-action@v1.2.5
+        uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
         with:
           host: ${{ secrets.ORACLE_HOST }}
           username: ubuntu
           key: ${{ secrets.ORACLE_SSH_KEY }}
+          fingerprint: ${{ secrets.ORACLE_HOST_FINGERPRINT }}
           command_timeout: 25m
           script: /opt/seoul-tennis/deploy/deploy.sh master

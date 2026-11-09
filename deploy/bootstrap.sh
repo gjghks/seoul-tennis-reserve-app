@@ -13,7 +13,8 @@ sudo systemctl enable --now docker
 
 # Security: automatic security updates, SSH key-only, fail2ban on sshd
 sudo dpkg-reconfigure -f noninteractive unattended-upgrades
-sudo sed -i 's/^#\?PasswordAuthentication .*/PasswordAuthentication no/' /etc/ssh/sshd_config
+# Drop-in wins over cloud-init's sshd_config.d files (first match applies)
+printf 'PasswordAuthentication no\nKbdInteractiveAuthentication no\nPermitRootLogin no\n' | sudo tee /etc/ssh/sshd_config.d/00-hardening.conf >/dev/null
 sudo systemctl reload ssh
 sudo systemctl enable --now fail2ban
 
@@ -25,4 +26,4 @@ fi
 
 sudo mkdir -p "$APP_DIR" && sudo chown "$USER:$USER" "$APP_DIR"
 [ -d "$APP_DIR/.git" ] || git clone --quiet "$REPO" "$APP_DIR"
-echo "bootstrap done. Next: place .env.production and .env.tunnel in $APP_DIR, then run deploy/deploy.sh"
+echo "bootstrap done. Re-login (docker group), place .env.production and .env.tunnel in $APP_DIR, then run deploy/deploy.sh"

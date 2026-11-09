@@ -8,7 +8,7 @@ RUN npm ci --ignore-scripts
 
 FROM node:24-bookworm-slim AS build
 WORKDIR /app
-ENV NEXT_TELEMETRY_DISABLED=1 BUILD_STANDALONE=1 STRICT_CSP=1
+ENV NEXT_TELEMETRY_DISABLED=1 BUILD_STANDALONE=1 STRICT_CSP=1 NODE_OPTIONS=--max-old-space-size=3072
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npm run build
@@ -20,6 +20,9 @@ RUN groupadd -r app && useradd -r -g app app
 COPY --from=build --chown=app:app /app/.next/standalone ./
 COPY --from=build --chown=app:app /app/.next/static ./.next/static
 COPY --from=build --chown=app:app /app/public ./public
+# Next's standalone output copies loaded .env* files into the bundle; runtime values come from
+# compose env_file, so drop them to keep secrets out of the final image layers.
+RUN rm -f /app/.env /app/.env.production /app/.env.local
 USER app
 EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
