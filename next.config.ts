@@ -30,7 +30,12 @@ function buildDistrictRedirects() {
   ]);
 }
 
+// Self-hosted (Oracle/Docker) builds set BUILD_STANDALONE=1 → minimal server bundle.
+// STRICT_CSP mirrors the Vercel production CSP (drops http:// dev-only sources).
+const strictCsp = !!(process.env.VERCEL || process.env.STRICT_CSP);
+
 const nextConfig: NextConfig = {
+  ...(process.env.BUILD_STANDALONE === '1' ? { output: 'standalone' as const } : {}),
   turbopack: {},
   experimental: {
     optimizePackageImports: ['@supabase/supabase-js', 'swr', 'canvas-confetti'],
@@ -66,11 +71,11 @@ const nextConfig: NextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              `script-src 'self' 'unsafe-inline' 'unsafe-eval' https://pagead2.googlesyndication.com https://www.googletagmanager.com https://adservice.google.com https://tpc.googlesyndication.com https://*.adtrafficquality.google https://fundingchoicesmessages.google.com https://*.kakao.com https://*.kakaocdn.net https://*.daumcdn.net${!process.env.VERCEL ? ' http://*.kakao.com http://*.daumcdn.net' : ''}`,
+              `script-src 'self' 'unsafe-inline' 'unsafe-eval' https://pagead2.googlesyndication.com https://www.googletagmanager.com https://adservice.google.com https://tpc.googlesyndication.com https://*.adtrafficquality.google https://fundingchoicesmessages.google.com https://*.kakao.com https://*.kakaocdn.net https://*.daumcdn.net${!strictCsp ? ' http://*.kakao.com http://*.daumcdn.net' : ''}`,
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.daumcdn.net",
-              `img-src 'self' data: blob: https:${!process.env.VERCEL ? ' http://*.daumcdn.net http://*.kakao.com' : ''}`,
+              `img-src 'self' data: blob: https:${!strictCsp ? ' http://*.daumcdn.net http://*.kakao.com' : ''}`,
               "font-src 'self' https://fonts.gstatic.com",
-              `connect-src 'self' https://*.supabase.co https://pagead2.googlesyndication.com https://*.adtrafficquality.google https://csi.gstatic.com https://www.googletagmanager.com https://www.google-analytics.com https://fundingchoicesmessages.google.com https://openAPI.seoul.go.kr:8088 https://*.seoul.go.kr https://apihub.kma.go.kr https://*.kakao.com https://*.kakaocdn.net https://*.daumcdn.net https://*.nowonsc.kr https://*.jungnangimc.or.kr https://*.efmc.or.kr wss://*.supabase.co${!process.env.VERCEL ? ' http://*.kakao.com http://*.kakaocdn.net http://*.daumcdn.net ws://localhost:*' : ''}`,
+              `connect-src 'self' https://*.supabase.co https://pagead2.googlesyndication.com https://*.adtrafficquality.google https://csi.gstatic.com https://www.googletagmanager.com https://www.google-analytics.com https://fundingchoicesmessages.google.com https://openAPI.seoul.go.kr:8088 https://*.seoul.go.kr https://apihub.kma.go.kr https://*.kakao.com https://*.kakaocdn.net https://*.daumcdn.net https://*.nowonsc.kr https://*.jungnangimc.or.kr https://*.efmc.or.kr wss://*.supabase.co${!strictCsp ? ' http://*.kakao.com http://*.kakaocdn.net http://*.daumcdn.net ws://localhost:*' : ''}`,
               "frame-src 'self' https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com https://*.adtrafficquality.google https://fundingchoicesmessages.google.com",
               "object-src 'none'",
               "base-uri 'self'",
