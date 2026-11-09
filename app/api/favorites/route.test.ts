@@ -61,7 +61,7 @@ describe('GET /api/favorites', () => {
 
     const { GET } = await import('./route');
     const request = new NextRequest('http://localhost:3000/api/favorites');
-    const response = await GET(request);
+    const response = await GET();
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -77,7 +77,7 @@ describe('GET /api/favorites', () => {
 
     const { GET } = await import('./route');
     const request = new NextRequest('http://localhost:3000/api/favorites');
-    const response = await GET(request);
+    const response = await GET();
     const data = await response.json();
 
     expect(response.status).toBe(401);
@@ -107,7 +107,7 @@ describe('GET /api/favorites', () => {
 
     const { GET } = await import('./route');
     const request = new NextRequest('http://localhost:3000/api/favorites');
-    const response = await GET(request);
+    const response = await GET();
     const data = await response.json();
 
     expect(response.status).toBe(500);
