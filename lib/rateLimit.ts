@@ -19,6 +19,14 @@ type RateLimitResult = {
 const CLEANUP_INTERVAL_MS = 60_000;
 
 function getClientIp(request: NextRequest): string {
+  // Behind Cloudflare (self-hosted via Tunnel) the edge sets cf-connecting-ip to the real
+  // client and only *appends* to a client-supplied x-forwarded-for, whose first hop is
+  // therefore spoofable. Prefer the Cloudflare header; XFF remains the fallback (Vercel/dev).
+  const cfConnectingIp = request.headers.get('cf-connecting-ip')?.trim();
+  if (cfConnectingIp) {
+    return cfConnectingIp;
+  }
+
   const forwardedFor = request.headers.get('x-forwarded-for');
   if (forwardedFor) {
     const firstIp = forwardedFor.split(',')[0]?.trim();

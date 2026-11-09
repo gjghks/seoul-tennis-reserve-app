@@ -16,11 +16,13 @@ function makeRequest(opts?: {
   path?: string;
   method?: string;
   forwardedFor?: string;
+  cfConnectingIp?: string;
   ip?: string;
 }): NextRequest {
-  const { path = '/p', method = 'GET', forwardedFor, ip } = opts ?? {};
+  const { path = '/p', method = 'GET', forwardedFor, cfConnectingIp, ip } = opts ?? {};
   const headers: Record<string, string> = {};
   if (forwardedFor !== undefined) headers['x-forwarded-for'] = forwardedFor;
+  if (cfConnectingIp !== undefined) headers['cf-connecting-ip'] = cfConnectingIp;
   const req = new NextRequest(`https://example.com${path}`, { method, headers });
   if (ip !== undefined) {
     (req as NextRequest & { ip?: string }).ip = ip;
@@ -349,5 +351,36 @@ describe('createRateLimiter — concurrency-safe accounting (real timers)', () =
     const blocked = results.filter((r) => !r.success).length;
     expect(allowed).toBe(3);
     expect(blocked).toBe(1);
+  });
+});
+
+describe('createRateLimiter — client IP behind Cloudflare', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(NOW);
+  });
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('keys on cf-connecting-ip so a spoofed x-forwarded-for cannot mint fresh buckets', async () => {
+    const limiter = createRateLimiter({ windowMs: 60_000, maxRequests: 2 });
+    // Cloudflare appends to a client-supplied XFF, so the first XFF hop is attacker-controlled.
+    const r1 = await limiter(makeRequest({ cfConnectingIp: '203.0.113.7', forwardedFor: '1.1.1.1, 203.0.113.7' }));
+    const r2 = await limiter(makeRequest({ cfConnectingIp: '203.0.113.7', forwardedFor: '2.2.2.2, 203.0.113.7' }));
+    const r3 = await limiter(makeRequest({ cfConnectingIp: '203.0.113.7', forwardedFor: '3.3.3.3, 203.0.113.7' }));
+    expect([r1.success, r2.success, r3.success]).toEqual([true, true, false]);
+  });
+
+  it('gives different real clients separate buckets', async () => {
+    const limiter = createRateLimiter({ windowMs: 60_000, maxRequests: 1 });
+    expect((await limiter(makeRequest({ cfConnectingIp: '198.51.100.1' }))).success).toBe(true);
+    expect((await limiter(makeRequest({ cfConnectingIp: '198.51.100.2' }))).success).toBe(true);
+  });
+
+  it('ignores a blank cf-connecting-ip and falls back to x-forwarded-for', async () => {
+    const limiter = createRateLimiter({ windowMs: 60_000, maxRequests: 1 });
+    expect((await limiter(makeRequest({ cfConnectingIp: '  ', forwardedFor: '192.0.2.10' }))).success).toBe(true);
+    expect((await limiter(makeRequest({ cfConnectingIp: '  ', forwardedFor: '192.0.2.10' }))).success).toBe(false);
   });
 });
