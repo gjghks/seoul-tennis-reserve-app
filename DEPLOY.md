@@ -19,6 +19,14 @@
 | 도메인 | 등록: Vercel registrar / 네임서버: Cloudflare |
 | 크론 | cron-job.org → `https://seoul-tennis.com/api/cron/*` (`Authorization: Bearer $CRON_SECRET`) |
 
+### Cloudflare 캐시 규칙 (zone `seoul-tennis.com`)
+
+`http_request_cache_settings` 1개 규칙: **GET + 공용 데이터 API 8개 경로**만 엣지 캐시 허용
+(`/api/tennis`, `air-quality`, `city-data`, `dust-alert`, `living-weather`, `popular-courts`, `trends`, `visit`).
+Edge TTL은 `bypass_by_default` — 원본 `Cache-Control`(s-maxage)을 따르고, 헤더가 없으면 캐시하지 않는다.
+사용자별 API는 헤더가 없으므로 `DYNAMIC` 유지. **새 API에 `public, s-maxage`를 붙일 때는 사용자별 데이터가 아닌지 확인하고,
+엣지 캐시가 필요하면 이 규칙의 경로 목록에 추가**한다. 존 API 토큰: 로컬 `~/.oci/cloudflare-ops.env`(Cache Rules·Zone Settings·DNS Edit).
+
 ### 서버에만 있는 파일 (git에 없음, 권한 600)
 
 | 파일 | 용도 |
