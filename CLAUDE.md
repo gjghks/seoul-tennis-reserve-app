@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Seoul Tennis Reserve is a Next.js application that displays real-time availability of Seoul's public tennis courts across all 25 districts. It integrates Seoul Open Data API for court data, weather/air quality APIs for outdoor condition info, and Supabase for auth + user data (reviews, favorites, push alerts, game records). Deployed on Vercel (ICN region) with PWA support.
+Seoul Tennis Reserve is a Next.js application that displays real-time availability of Seoul's public tennis courts across all 25 districts. It integrates Seoul Open Data API for court data, weather/air quality APIs for outdoor condition info, and Supabase for auth + user data (reviews, favorites, push alerts, game records). Self-hosted on an Oracle Cloud ARM VM behind Cloudflare Tunnel (moved off Vercel 2026-11-10; see `DEPLOY.md`) with PWA support.
 
 **Live**: [seoul-tennis.com](https://seoul-tennis.com)
 
@@ -25,14 +25,17 @@ npm run test:coverage  # Coverage report
 ## Development & Deployment Workflow
 
 ### Branch Strategy
-- **`develop`**: Default working branch. Push triggers Vercel Preview deployment.
-- **`master`**: Production branch. Push triggers Vercel Production deployment (seoul-tennis.com).
+- **`develop`**: Default working branch. No preview deployments (Vercel is disconnected); verify locally (`npm run build && npm run start`).
+- **`master`**: Production branch. Push triggers GitHub Actions `Deploy (Oracle)` → `deploy/deploy.sh master` on the server (auto-rollback on failed health check).
 
 ### Workflow
 1. Work on `develop` branch
-2. Commit and push → pre-push hook runs lint/test/build → Vercel creates Preview URL
-3. Verify on Preview URL
-4. Merge `develop` → `master` → Production deployment
+2. Commit and push → pre-push hook runs lint/test/build
+3. Verify locally
+4. Fast-forward `develop` → `master` and push → production deployment (watch the `Deploy (Oracle)` run)
+
+Production runbook (server layout, env files, manual deploy/rollback, troubleshooting): **`DEPLOY.md`**.
+Production env vars live only on the server (`/opt/seoul-tennis/.env.production`); `NEXT_PUBLIC_*` changes require a rebuild.
 
 ### Pre-push Hook (Husky)
 Every `git push` automatically runs:
@@ -54,7 +57,7 @@ To skip in emergencies: `git push --no-verify` (use with caution)
 - **PWA**: Serwist (`@serwist/next`)
 - **Push**: Web Push API (`web-push`)
 - **Testing**: Vitest + @testing-library/react + jsdom
-- **Deployment**: Vercel (ICN region, `vercel.json`)
+- **Deployment**: Docker (Next.js `output: 'standalone'` when `BUILD_STANDALONE=1`) on Oracle Cloud ARM + Cloudflare Tunnel/CDN; GitHub Actions deploy on `master` (`vercel.json` is legacy)
 - **Analytics**: Google Analytics, Google AdSense
 - **Formatting**: Biome (`@biomejs/biome`)
 - **Sanitization**: DOMPurify (XSS prevention)
