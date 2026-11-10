@@ -15,7 +15,8 @@ function buildTennisResponse(services: SeoulService[], district: string | null, 
   if (svcId) {
     const court = services.find(s => s.SVCID === svcId);
     if (!court) {
-      return NextResponse.json({ error: 'Court not found' }, { status: 404, headers: cacheHeaders });
+      // Not edge-cached: an id can (re)appear in the Seoul API at any time.
+      return NextResponse.json({ error: 'Court not found' }, { status: 404, headers: { 'Cache-Control': 'no-store' } });
     }
     return NextResponse.json({
       court,

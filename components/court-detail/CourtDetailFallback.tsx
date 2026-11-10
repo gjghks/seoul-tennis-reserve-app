@@ -25,12 +25,14 @@ export default function CourtDetailFallback({ districtSlug, courtId, district }:
   const { courts, isLoading, error, mutate } = useTennisData();
 
   const listCourt = courts.find(c => c.SVCID === courtId);
-  // List data omits the detail text (DTLCONT); fetch the full record for this one court.
-  const { data: detail } = useSWR<{ court?: SeoulService }>(
-    listCourt ? `/api/tennis?svcId=${encodeURIComponent(courtId)}` : null,
+  // List data omits the detail text (DTLCONT); fetch the full record for this one court in
+  // parallel with the list. Prefer it; use the list record only if that request failed, so the
+  // page never flashes without its detail section.
+  const { data: detail, error: detailError, isLoading: detailLoading } = useSWR<{ court?: SeoulService }>(
+    `/api/tennis?svcId=${encodeURIComponent(courtId)}`,
     fetchJson,
   );
-  const court = detail?.court ?? listCourt;
+  const court = detail?.court ?? (detailError ? listCourt : undefined);
 
   if (court) {
     return (
@@ -43,7 +45,7 @@ export default function CourtDetailFallback({ districtSlug, courtId, district }:
     );
   }
 
-  if (isLoading) {
+  if (isLoading || (detailLoading && listCourt)) {
     return (
       <div className="container py-12 text-center">
         <div className="animate-spin h-8 w-8 border-4 border-green-500 border-t-transparent rounded-full mx-auto mb-4" />

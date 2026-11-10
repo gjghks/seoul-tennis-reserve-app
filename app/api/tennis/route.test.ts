@@ -323,5 +323,7 @@ describe('GET /api/tennis — payload slimming', () => {
 
     const res = await GET(new NextRequest('http://localhost:3000/api/tennis?svcId=nope'));
     expect(res.status).toBe(404);
+    // Must not be edge-cached: an id can (re)appear in the Seoul API at any time.
+    expect(res.headers.get('Cache-Control')).toBe('no-store');
   });
 });

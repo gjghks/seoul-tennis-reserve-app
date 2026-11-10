@@ -59,6 +59,13 @@ describe('toCourtListItem', () => {
     expect(court.FACILITY_TAGS).toBeUndefined();
   });
 
+  it('passes a record with empty DTLCONT through untouched (no tags precomputed)', () => {
+    const court = makeCourt({ DTLCONT: '' });
+    const out = toCourtListItem(court);
+    expect(out).toBe(court);
+    expect(out.FACILITY_TAGS).toBeUndefined();
+  });
+
   it('makes the serialized list much smaller', () => {
     const courts = Array.from({ length: 20 }, (_, i) => makeCourt({ SVCID: `S${i}` }));
     const full = JSON.stringify(courts).length;
