@@ -31,3 +31,6 @@ Server code (JSON-LD, detail page main court, cron) keeps full data — untouche
    `?svcId=` returns full court / 404. Then implement.
 4. Wire pages + CourtDetailFallback. Typecheck, full test suite, build.
 5. Verify sizes locally (standalone) and on production after deploy; compare tags on a district page.
+
+## Status
+Done 2026-11-10 — shipped b76c104 (prod brotli: /api/tennis 24 KB, court detail 46 KB). Review: Ready to merge; minors 1/3/5 fixed, 2 (stale old JS tabs lose tags until reload) accepted, 4/6 deferred.
