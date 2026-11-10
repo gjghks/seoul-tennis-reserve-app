@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import CourtDetailClient from '@/components/court-detail/CourtDetailClient';
 import CourtDetailFallback from '@/components/court-detail/CourtDetailFallback';
+import { toCourtList } from '@/lib/utils/courtListView';
 
 export const revalidate = 86400;
 
@@ -72,7 +73,7 @@ async function getCourtData(districtSlug: string, courtId: string): Promise<Cour
     }
     const { court } = lookup;
 
-    return { type: 'success', court, district, allCourts: services };
+    return { type: 'success', court, district, allCourts: toCourtList(services) };
   } catch (error) {
     console.error('Failed to fetch court data:', error);
     return { type: 'api-error', district };

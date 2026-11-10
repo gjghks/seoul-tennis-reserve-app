@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { fetchTennisDataWithStatuses } from '@/lib/seoulApi';
 import MapDiscoveryContent from '@/components/map/MapDiscoveryContent';
+import { toCourtList } from '@/lib/utils/courtListView';
 
 export const revalidate = 7200;
 
@@ -28,6 +29,6 @@ export const metadata: Metadata = {
 };
 
 export default async function MapPage() {
-  const courts = await fetchTennisDataWithStatuses();
+  const courts = toCourtList(await fetchTennisDataWithStatuses());
   return <MapDiscoveryContent courts={courts} />;
 }

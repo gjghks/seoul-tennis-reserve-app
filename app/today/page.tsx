@@ -3,6 +3,7 @@ import { fetchTennisDataWithStatuses } from '@/lib/seoulApi';
 import { isIndependentCourt } from '@/lib/data/independentCourts';
 import { isCourtAvailable } from '@/lib/utils/courtStatus';
 import TodayContent from '@/components/today/TodayContent';
+import { toCourtList } from '@/lib/utils/courtListView';
 
 export const revalidate = 7200;
 
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
 };
 
 export default async function TodayPage() {
-  const services = await fetchTennisDataWithStatuses();
+  const services = toCourtList(await fetchTennisDataWithStatuses());
 
   const availableCourts = services.filter((court) =>
     isCourtAvailable(court.SVCSTATNM)

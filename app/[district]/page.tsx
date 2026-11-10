@@ -4,6 +4,7 @@ import DistrictContent from '@/components/district/DistrictContent';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { sortByAvailability } from '@/lib/utils/courtStatus';
+import { toCourtList } from '@/lib/utils/courtListView';
 
 export const revalidate = 7200;
 
@@ -58,7 +59,7 @@ async function getDistrictCourts(district: string): Promise<{ courts: SeoulServi
 
   try {
     const services = await fetchTennisDataWithStatuses();
-    const filtered = services.filter(s => s.AREANM === koreanDistrict);
+    const filtered = toCourtList(services.filter(s => s.AREANM === koreanDistrict));
     
     const sorted = sortByAvailability(filtered);
 

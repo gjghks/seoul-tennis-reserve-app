@@ -1,3 +1,4 @@
+import type { FacilityTag } from '@/lib/utils/facilityTags';
 import http from 'node:http';
 import { createClient } from '@supabase/supabase-js';
 import { getIndependentCourts } from '@/lib/data/independentCourts';
@@ -47,6 +48,8 @@ export interface SeoulService {
     V_MAX: string; // End Time
     REVSTDDAYNM: string; // Reservation Standard Day
     REVSTDDAY: string; // Reservation Standard Day Value
+    /** Precomputed by toCourtListItem() when DTLCONT is stripped from list payloads. */
+    FACILITY_TAGS?: FacilityTag[];
 }
 
 export interface SeoulApiResponse {

@@ -85,6 +85,9 @@ function extractReservationTag(text: string): FacilityTag | null {
 }
 
 export function extractFacilityTags(court: SeoulService): FacilityTag[] {
+  // List payloads drop DTLCONT and carry tags computed from the full record (see courtListView).
+  if (court.FACILITY_TAGS) return court.FACILITY_TAGS;
+
   const tags: FacilityTag[] = [];
   const seen = new Set<string>();
 

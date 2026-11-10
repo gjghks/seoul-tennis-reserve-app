@@ -4,15 +4,29 @@ import { SLUG_TO_KOREAN } from '@/lib/constants/districts';
 import type { SeoulService } from '@/lib/seoulApi';
 import { buildByDistrict } from '@/lib/utils/tennisDistrictStats';
 import { createRateLimiter } from '@/lib/rateLimit';
+import { toCourtList } from '@/lib/utils/courtListView';
 
 const limiter = createRateLimiter({ windowMs: 60_000, maxRequests: 60 });
 
-function buildTennisResponse(services: SeoulService[], district: string | null, meta: ServedDataMeta) {
-  const cacheHeaders = { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=3600' };
+const cacheHeaders = { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=3600' };
+
+function buildTennisResponse(services: SeoulService[], district: string | null, meta: ServedDataMeta, svcId: string | null) {
+  // Single-court lookup keeps the full record (detail text) for the detail-page fallback.
+  if (svcId) {
+    const court = services.find(s => s.SVCID === svcId);
+    if (!court) {
+      return NextResponse.json({ error: 'Court not found' }, { status: 404, headers: cacheHeaders });
+    }
+    return NextResponse.json({
+      court,
+      lastUpdated: meta.lastUpdatedAt,
+      ...(meta.isStale ? { stale: true } : {}),
+    }, { headers: cacheHeaders });
+  }
 
   if (district) {
     const koreanDistrict = SLUG_TO_KOREAN[district] || district;
-    const filtered = services.filter(s => s.AREANM === koreanDistrict);
+    const filtered = toCourtList(services.filter(s => s.AREANM === koreanDistrict));
 
     return NextResponse.json({
       district: koreanDistrict,
@@ -28,7 +42,7 @@ function buildTennisResponse(services: SeoulService[], district: string | null, 
   return NextResponse.json({
     total: services.length,
     byDistrict,
-    courts: services,
+    courts: toCourtList(services),
     lastUpdated: meta.lastUpdatedAt,
     ...(meta.isStale ? { stale: true } : {}),
   }, { headers: cacheHeaders });
@@ -50,10 +64,11 @@ export async function GET(request: NextRequest) {
 
   const { searchParams } = new URL(request.url);
   const district = searchParams.get('district'); // slug 또는 한글
+  const svcId = searchParams.get('svcId');
 
   try {
     const services = await fetchTennisDataWithStatuses();
-    return buildTennisResponse(services, district, getServedDataMeta());
+    return buildTennisResponse(services, district, getServedDataMeta(), svcId);
   } catch (error) {
     console.error('Error fetching tennis data:', error);
 
@@ -63,7 +78,7 @@ export async function GET(request: NextRequest) {
       return buildTennisResponse(enhancedCachedServices, district, {
         lastUpdatedAt: new Date(cached.timestamp ?? Date.now()).toISOString(),
         isStale: true,
-      });
+      }, svcId);
     }
 
     return NextResponse.json(

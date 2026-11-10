@@ -269,3 +269,59 @@ describe('GET /api/tennis', () => {
     expect(data.lastUpdated).toBeDefined();
   });
 });
+
+describe('GET /api/tennis — payload slimming', () => {
+  const DETAIL = '<p>◎ 시설현황 - 인조잔디 코트 3면, 야간 조명, 주차 가능</p>';
+  const withDetail = () => mockTennisData.map((c) => ({ ...c, DTLCONT: DETAIL }));
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('strips DTLCONT and adds FACILITY_TAGS in the full list', async () => {
+    const { fetchTennisDataWithStatuses } = await import('@/lib/seoulApi');
+    const { GET } = await import('./route');
+    vi.mocked(fetchTennisDataWithStatuses).mockResolvedValue(withDetail());
+
+    const data = await (await GET(new NextRequest('http://localhost:3000/api/tennis'))).json();
+
+    expect(data.courts.length).toBe(mockTennisData.length);
+    for (const court of data.courts) {
+      expect(court.DTLCONT).toBe('');
+      expect(Array.isArray(court.FACILITY_TAGS)).toBe(true);
+    }
+  });
+
+  it('strips DTLCONT in district-filtered responses', async () => {
+    const { fetchTennisDataWithStatuses } = await import('@/lib/seoulApi');
+    const { GET } = await import('./route');
+    vi.mocked(fetchTennisDataWithStatuses).mockResolvedValue(withDetail());
+
+    const data = await (await GET(new NextRequest('http://localhost:3000/api/tennis?district=gangnam-gu'))).json();
+
+    expect(data.courts.length).toBeGreaterThan(0);
+    expect(data.courts.every((c: { DTLCONT: string }) => c.DTLCONT === '')).toBe(true);
+  });
+
+  it('returns the full record (with DTLCONT) for ?svcId=', async () => {
+    const { fetchTennisDataWithStatuses } = await import('@/lib/seoulApi');
+    const { GET } = await import('./route');
+    vi.mocked(fetchTennisDataWithStatuses).mockResolvedValue(withDetail());
+
+    const res = await GET(new NextRequest('http://localhost:3000/api/tennis?svcId=2'));
+    const data = await res.json();
+
+    expect(res.status).toBe(200);
+    expect(data.court.SVCID).toBe('2');
+    expect(data.court.DTLCONT).toBe(DETAIL);
+  });
+
+  it('returns 404 for an unknown svcId', async () => {
+    const { fetchTennisDataWithStatuses } = await import('@/lib/seoulApi');
+    const { GET } = await import('./route');
+    vi.mocked(fetchTennisDataWithStatuses).mockResolvedValue(withDetail());
+
+    const res = await GET(new NextRequest('http://localhost:3000/api/tennis?svcId=nope'));
+    expect(res.status).toBe(404);
+  });
+});

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { fetchTennisDataWithStatuses } from '@/lib/seoulApi';
 import CalendarContent from '@/components/calendar/CalendarContent';
+import { toCourtList } from '@/lib/utils/courtListView';
 
 export const revalidate = 7200;
 
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
 };
 
 export default async function CalendarPage() {
-  const courts = await fetchTennisDataWithStatuses();
+  const courts = toCourtList(await fetchTennisDataWithStatuses());
 
   const jsonLd = {
     '@context': 'https://schema.org',

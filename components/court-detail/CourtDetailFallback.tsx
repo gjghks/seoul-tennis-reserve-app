@@ -1,6 +1,8 @@
 'use client';
 
 import Link from 'next/link';
+import useSWR from 'swr';
+import type { SeoulService } from '@/lib/seoulApi';
 import { useTennisData } from '@/contexts/TennisDataContext';
 import { District } from '@/lib/constants/districts';
 import { useThemeClass } from '@/lib/cn';
@@ -12,11 +14,23 @@ interface CourtDetailFallbackProps {
   district: District;
 }
 
+async function fetchJson(url: string) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Failed to load ${url}: ${res.status}`);
+  return res.json();
+}
+
 export default function CourtDetailFallback({ districtSlug, courtId, district }: CourtDetailFallbackProps) {
   const themeClass = useThemeClass();
   const { courts, isLoading, error, mutate } = useTennisData();
 
-  const court = courts.find(c => c.SVCID === courtId);
+  const listCourt = courts.find(c => c.SVCID === courtId);
+  // List data omits the detail text (DTLCONT); fetch the full record for this one court.
+  const { data: detail } = useSWR<{ court?: SeoulService }>(
+    listCourt ? `/api/tennis?svcId=${encodeURIComponent(courtId)}` : null,
+    fetchJson,
+  );
+  const court = detail?.court ?? listCourt;
 
   if (court) {
     return (
