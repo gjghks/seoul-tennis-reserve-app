@@ -1,10 +1,12 @@
 import { createServerSupabaseClient } from '@/lib/supabaseServer';
 import { NextRequest, NextResponse } from 'next/server';
+import { getPublicOrigin } from '@/lib/utils/publicOrigin';
 
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get('code');
-  const origin = requestUrl.origin;
+  // Not requestUrl.origin: behind the self-hosted proxy that is the 0.0.0.0:3000 bind address.
+  const origin = getPublicOrigin(request);
 
   const oauthError = requestUrl.searchParams.get('error');
   const errorDescription = requestUrl.searchParams.get('error_description');
