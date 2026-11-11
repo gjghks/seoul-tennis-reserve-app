@@ -13,15 +13,18 @@ const PROTECTED_PATHS = ['/my'];
 // develop→Preview flow is untouched. `/api` and `/auth` are excluded so cron callers
 // (Authorization header would be dropped on a cross-host redirect) and in-flight OAuth
 // (per-host PKCE code_verifier cookie) are not broken.
+// Self-hosting (Cloudflare Tunnel, 2026-11) serves `www.` identically too, so it gets the same
+// treatment; the legacy Vercel alias stays listed for old links/installed PWAs.
 const CANONICAL_HOST = 'seoul-tennis.com';
-const LEGACY_PROD_HOST = 'seoul-tennis-reserve-app.vercel.app';
+const NON_CANONICAL_HOSTS = new Set(['www.seoul-tennis.com', 'seoul-tennis-reserve-app.vercel.app']);
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const host = request.headers.get('host');
   if (
-    host === LEGACY_PROD_HOST &&
+    host !== null &&
+    NON_CANONICAL_HOSTS.has(host) &&
     !pathname.startsWith('/api') &&
     !pathname.startsWith('/auth')
   ) {
