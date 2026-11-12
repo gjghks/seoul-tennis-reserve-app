@@ -37,6 +37,10 @@ const strictCsp = !!process.env.VERCEL || process.env.STRICT_CSP === '1';
 const nextConfig: NextConfig = {
   ...(process.env.BUILD_STANDALONE === '1' ? { output: 'standalone' as const } : {}),
   turbopack: {},
+  // Render metadata (canonical, robots, title) in <head> for every user agent.
+  // With streaming metadata, dynamic pages (court detail) emitted rel=canonical inside <body>,
+  // which Google ignores → 439 court pages flagged "duplicate without user-selected canonical".
+  htmlLimitedBots: /.*/,
   experimental: {
     optimizePackageImports: ['@supabase/supabase-js', 'swr', 'canvas-confetti'],
   },

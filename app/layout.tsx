@@ -57,12 +57,8 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
-  alternates: {
-    canonical: 'https://seoul-tennis.com',
-    languages: {
-      'ko-KR': 'https://seoul-tennis.com',
-    },
-  },
+  // canonical은 페이지별로 지정한다. 여기서 지정하면 지정 안 한 모든 페이지가
+  // "대표 주소 = 홈"을 상속받아 구글이 홈의 중복으로 처리한다.
   verification: {
     google: "KhPvMRs7o6viKGnlXAESgPhUuUZmtd5p8Z_gEOOyyI8",
   },

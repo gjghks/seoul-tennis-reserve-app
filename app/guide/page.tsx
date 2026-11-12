@@ -2,6 +2,9 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: '/guide',
+  },
   title: '이용 가이드 | 서울 테니스',
   description: '서울 테니스의 다양한 기능을 안내합니다. 예약 방법, 경기 기록, 매칭, 래더, 양도, 대진표, 학교 테니스장 이용 가이드.',
   openGraph: {

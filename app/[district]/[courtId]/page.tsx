@@ -1,7 +1,7 @@
 import { fetchTennisDataWithStatuses, getServedDataMeta, SeoulService } from '@/lib/seoulApi';
 import { getDistrictBySlug, District } from '@/lib/constants/districts';
 import { resolveCourtLookup } from '@/lib/utils/courtLookup';
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import type { Metadata } from 'next';
 import CourtDetailClient from '@/components/court-detail/CourtDetailClient';
 import CourtDetailFallback from '@/components/court-detail/CourtDetailFallback';
@@ -20,13 +20,20 @@ export async function generateMetadata({ params }: CourtDetailPageProps): Promis
   const { district: districtSlug, courtId } = await params;
   const result = await getCourtData(districtSlug, courtId);
 
-  // 404/폴백 페이지는 색인 제외. 루트 layout의 robots(index, follow)를 덮어써서
-  // Next가 notFound 시 넣는 noindex 메타와 서로 충돌하지 않게 한다.
+  // 서울시 SVCID는 예약 회차마다 새로 발급되어 지난 회차 주소가 계속 쌓인다.
+  // 메타데이터가 <head>에서 블로킹 렌더되므로(next.config htmlLimitedBots) 여기서 던지면
+  // loading.tsx 스트리밍 전에 실제 308/404 상태로 응답된다.
   if (result.type === 'not-found') {
-    return { title: '테니스장을 찾을 수 없습니다', robots: { index: false } };
+    if (getDistrictBySlug(districtSlug)) permanentRedirect(`/${districtSlug}`);
+    notFound();
   }
+  // 데이터 소스 장애 시 폴백 페이지: 색인 제외하되 대표 주소는 자기 자신(홈 상속 방지)
   if (result.type === 'api-error') {
-    return { title: '테니스장 정보', robots: { index: false } };
+    return {
+      title: '테니스장 정보',
+      robots: { index: false },
+      alternates: { canonical: `/${districtSlug}/${courtId}` },
+    };
   }
 
   const { court, district } = result;
