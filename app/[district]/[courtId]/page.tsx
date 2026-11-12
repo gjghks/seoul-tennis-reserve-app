@@ -20,13 +20,7 @@ export async function generateMetadata({ params }: CourtDetailPageProps): Promis
   const { district: districtSlug, courtId } = await params;
   const result = await getCourtData(districtSlug, courtId);
 
-  // 서울시 SVCID는 예약 회차마다 새로 발급되어 지난 회차 주소가 계속 쌓인다.
-  // 메타데이터가 <head>에서 블로킹 렌더되므로(next.config htmlLimitedBots) 여기서 던지면
-  // loading.tsx 스트리밍 전에 실제 308/404 상태로 응답된다.
-  if (result.type === 'not-found') {
-    if (getDistrictBySlug(districtSlug)) permanentRedirect(`/${districtSlug}`);
-    notFound();
-  }
+  if (result.type === 'not-found') exitForMissingCourt(districtSlug);
   // 데이터 소스 장애 시 폴백 페이지: 색인 제외하되 대표 주소는 자기 자신(홈 상속 방지)
   if (result.type === 'api-error') {
     return {
@@ -53,6 +47,16 @@ export async function generateMetadata({ params }: CourtDetailPageProps): Promis
       images: court.IMGURL ? [{ url: court.IMGURL }] : undefined,
     },
   };
+}
+
+// 서울시 SVCID는 예약 회차마다 새로 발급되어 지난 회차 주소가 계속 쌓인다 → 해당 구 목록으로 보낸다.
+// loading.tsx 스트리밍으로 상태 코드가 먼저 나가므로 실제 응답은 308이 아니라
+// 200 + <meta http-equiv="refresh" content="0;url=/구"> + noindex 이다
+// (구글은 0초 meta refresh를 영구 리디렉션으로 처리). 잘못된 구는 404.
+// generateMetadata와 페이지가 동시에 렌더되므로 둘 다 이 함수를 써서 결과를 맞춘다.
+function exitForMissingCourt(districtSlug: string): never {
+  if (getDistrictBySlug(districtSlug)) permanentRedirect(`/${districtSlug}`);
+  notFound();
 }
 
 type CourtDataResult =
@@ -117,9 +121,7 @@ export default async function CourtDetailPage({ params }: CourtDetailPageProps) 
   const { district: districtSlug, courtId } = await params;
   const result = await getCourtData(districtSlug, courtId);
 
-  if (result.type === 'not-found') {
-    notFound();
-  }
+  if (result.type === 'not-found') exitForMissingCourt(districtSlug);
 
   if (result.type === 'api-error') {
     return (

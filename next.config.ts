@@ -37,10 +37,13 @@ const strictCsp = !!process.env.VERCEL || process.env.STRICT_CSP === '1';
 const nextConfig: NextConfig = {
   ...(process.env.BUILD_STANDALONE === '1' ? { output: 'standalone' as const } : {}),
   turbopack: {},
-  // Render metadata (canonical, robots, title) in <head> for every user agent.
-  // With streaming metadata, dynamic pages (court detail) emitted rel=canonical inside <body>,
-  // which Google ignores → 439 court pages flagged "duplicate without user-selected canonical".
-  htmlLimitedBots: /.*/,
+  // Crawlers get blocking metadata (canonical/robots/title inside <head>). With streaming metadata,
+  // dynamic pages (court detail) emitted rel=canonical inside <body>, which Google ignores
+  // → 439 court pages flagged "duplicate without user-selected canonical" (2026-11).
+  // Overrides Next's default list (which omits plain Googlebot), so the defaults are repeated here.
+  // Real users keep streaming metadata so loading.tsx shows immediately.
+  htmlLimitedBots:
+    /Googlebot|[\w-]+-Google|Google-[\w-]+|Chrome-Lighthouse|bingbot|BingPreview|Yeti|Daum|Slurp|DuckDuckBot|baiduspider|yandex|sogou|Applebot|facebookexternalhit|facebookcatalog|Twitterbot|LinkedInBot|Slackbot|Discordbot|WhatsApp|SkypeUriPreview|kakaotalk-scrap|redditbot|ia_archiver|googleweblight/i,
   experimental: {
     optimizePackageImports: ['@supabase/supabase-js', 'swr', 'canvas-confetti'],
   },
